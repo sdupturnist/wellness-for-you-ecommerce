@@ -12,8 +12,14 @@
     --foreground: $WHITE;
   }
 }
-.slick-track {
-  @apply flex gap-5;
+.products .slick-slide {
+  @apply sm:mr-5 mr-4;
+}
+.products .slick-slide:last-child {
+  margin-right: 1px !important;
+}
+.products .slick-track {
+  display: flex !important;
 }
 
 body {
@@ -39,7 +45,7 @@ small {
 }
 
 .spacing, section {
-  @apply sm:py-16 py-8;
+  @apply sm:py-12 py-6;
 }
 
 .section-title {
@@ -156,5 +162,5 @@ footer ul li, footer ol li {
 }
 
 .testimonials p {
-  @apply lg:text-[34px] text-lg font-bold leading-normal;
+  @apply lg:text-[30px] text-lg font-bold leading-normal;
 }
