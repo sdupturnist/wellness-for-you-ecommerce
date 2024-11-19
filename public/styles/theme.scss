@@ -1,0 +1,208 @@
+@import 'colors';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+:root {
+  --background: $WHITE;
+  --foreground: $BODY;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: $BLACK;
+    --foreground: $WHITE;
+  }
+}
+
+
+//SLICK SLIDER
+
+.slick-track {
+@apply flex gap-5
+    
+}
+
+
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  line-height: 1.7;;
+
+}
+
+input{
+    outline: none;
+}
+small{
+    @apply text-[12px]
+}
+
+.badge{
+   @apply size-6 bg-primary text-white text-xs absolute top-[-5px] right-[-15px] font-normal
+}
+
+
+.container{
+  
+    @apply mx-auto sm:px-[30px] px-[20px];
+}
+
+.spacing, section{
+    @apply sm:py-16 py-8;
+}
+
+.section-title{
+    @apply sm:text-xl font-semibold
+}
+
+.more{
+    @apply font-semibold sm:text-[16px] text-[14px] text-primary hover:text-primary-hover transition-all;
+}
+
+.banner{
+    @apply sm:rounded-xl rounded-md
+}
+
+.content{
+    a, p, li{
+        @apply text-body mb-5
+    }
+    *{
+        @apply last:mb-0
+    }
+    a{
+        @apply text-primary hover:opacity-50 transition-all;
+    }
+    h1,h2,h3,h4,h5,h6{
+        @apply text-dark font-bold mb-2
+    }
+    h1{
+        @apply text-lg
+    }
+    h2{
+        @apply text-base
+    }
+    h3{
+        @apply text-base
+    }
+    h4{
+        @apply text-sm
+    }
+    h5{
+        @apply text-xs
+    }
+    h6{
+        @apply text-xs
+    }
+  
+}
+
+
+.btn{
+    @apply sm:text-[16px] text-[14px] bg-primary hover:bg-primary-hover px-[20px] sm:h-[45px] h-[40px] min-h-[40px] text-white font-semibold transition-all;
+   }
+
+   input{
+    @apply input-md rounded-md text-dark;
+   }
+
+
+@mixin Radius(){
+        
+    @apply sm:rounded-[12px] rounded-[8px]
+
+}
+
+.product-card{
+
+    @include Radius();
+
+    @apply bg-white  border border-border flex-col justify-start items-start inline-flex hover:shadow-lg transition-all;
+
+    .img-box{
+       @apply w-full min-h-[190px] p-[5px]  justify-center items-center gap-2.5 inline-flex;
+  img{
+   @apply  w-[152px] h-[152px] object-contain;
+  }
+    }
+
+   
+    .btn{
+        @apply text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase h-7 hover:bg-primary hover:text-white hover:shadow-lg;
+    }
+    .product-title{
+        @apply text-sm line-clamp-1;
+    }
+    .product-price{
+        @apply text-[0.875rem] font-bold;
+    }
+    .product-price-regular{
+        @apply text-[0.875rem] line-through opacity-50;
+    }
+    .product-offer{
+        @apply text-[0.875rem];
+        color: $PRIMARY;
+    }
+    svg{
+
+    }
+}
+
+
+header{
+    @apply flex items-center justify-between gap-[30px];
+    .logo{
+        @apply flex items-center justify-center;
+        img{
+            @apply h-[4.15269rem] w-full block;
+        }
+    }
+    
+a{
+    @apply hover:opacity-50 transition-all;
+}
+}
+
+
+
+.search{
+    @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg border sm:p-[5px] p-[3px] overflow-hidden;
+    input{
+        @apply border-none bg-transparent rounded-full;
+    }
+   
+    .btn{
+        @apply lg:rounded-full rounded-md
+    }
+}
+
+
+footer{
+    a, p{
+        @apply text-sm font-light text-white
+    }
+    a{
+        @apply hover:opacity-50 transition-all;
+    }
+    h1,h2,h3,h4,h5,h6{
+        @apply text-lg text-white;
+    }
+    ul, ol{
+       li{
+        @apply mb-2 text-white
+       }
+    }
+}
+
+
+.testimonials{
+    p{
+        @apply lg:text-[34px] text-lg font-bold leading-normal
+    }
+    
+}
