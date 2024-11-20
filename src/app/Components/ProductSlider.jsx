@@ -4,14 +4,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProductCard from "./ProductCard";
 
-export default function ProductSlider({ data }) {
+export default function ProductSlider({ data, count }) {
   const settings = {
     dots: false, // Show navigation dots
     arrows:false,
     infinite: false, // Infinite looping
     speed: 500, // Slide transition speed in ms
-    slidesToShow: 5, // Display one testimonial at a time
-    slidesToScroll: 5, // Scroll one slide at a time
+    slidesToShow: count || 5, // Display one testimonial at a time
+    slidesToScroll: count || 5, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
     autoplaySpeed: 3000,
     responsive: [

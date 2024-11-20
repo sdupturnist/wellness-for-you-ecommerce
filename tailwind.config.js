@@ -22,7 +22,8 @@ module.exports = {
         white: "#fff",                  // White Color
         border: "#ECECEC",              // Border Color
         yellow: "#FFAB07",              // Yellow Color
-        dim: "#ffffff1c",              // Border Dim Color
+        dim: "#ffffff1c",  
+        bggray: "#F6F7FC",            // Border Dim Color
       },
     },
   },

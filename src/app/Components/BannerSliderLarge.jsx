@@ -3,6 +3,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Images from "./Images";
+import { homeUrl } from "../Utils/variables";
+import Link from "next/link";
+
 
 
 export default function BannerSliderLarge({ data }) {
@@ -20,7 +23,10 @@ export default function BannerSliderLarge({ data }) {
   };
 
   const items = data.map((item, index) => (
-    <Images
+   <Link 
+   key={index}
+   href={homeUrl}>
+     <Images
     key={index}
     imageurl={item?.product_photo}
     quality="100"
@@ -31,6 +37,7 @@ export default function BannerSliderLarge({ data }) {
     classes="block w-full h-[150px] banner"
     placeholder={true}
   />
+   </Link>
   ));
 
   return <Slider {...settings}>{items}</Slider>;

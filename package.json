@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "aos": "^2.3.4",
     "heroicons": "^2.2.0",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-alice-carousel": "^2.9.1",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-search-autocomplete": "^8.5.2",
+    "react-share": "^5.1.1",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1"
   },

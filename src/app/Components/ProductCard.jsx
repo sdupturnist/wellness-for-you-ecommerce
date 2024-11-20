@@ -1,46 +1,138 @@
-'use client'
+"use client";
 
 import Images from "./Images";
 import { homeUrl } from "../Utils/variables";
 import { Link } from "react-alice-carousel";
-import { StarIcon } from "@heroicons/react/24/solid";
+import ReviewCount from "./ReviewCount";
+import AddToCart from "./AddToCart";
+
+export default function ProductCard({ data, column, mobileList, inCartPage }) {
 
 
-export default function ProductCard({data}){
-    return(
-        <div  className="product-card w-full mr-2">
-        <Link 
-        className="block w-full"
-        href={homeUrl}>
-          <Images
-            imageurl={data?.product_photo}
-            quality="100"
-            width="150"
-            height="150"
-            alt="Wellness for you"
-            classes="block size-[150px] m-[15px] mx-auto"
-            placeholder={true}
-          />
-          <div className="p-4 pt-0">
-            <h3 className="product-title text-dark mb-2">
-              {data?.product_title}
-            </h3>
-            {data?.review_count > 0 && (
-              <small className="flex items-center gap-1 text-body mb-2">
-                <StarIcon className="size-3 text-yellow" />
-                <span className="opacity-50">{data?.review_count} Review</span>
-              </small>
-            )}
+const leftRightCard =  <div className={`${!inCartPage && 'border-b border-border'} product-card-left-right w-full`}>
+  <div className="flex w-full">
+<Link href={`${homeUrl}/test-cat/test-product`}>
+  <Images
+    imageurl={data?.product_photo}
+    quality="100"
+    width="100"
+    height="100"
+    alt="Wellness for you"
+    classes="block size-[100px] m-[15px] mx-auto"
+    placeholder={true}
+  />
+ </Link>
+  <div className="p-5 pr-0 w-full grid items-center">
+   <div>
+   <Link href={`${homeUrl}/test-cat/test-product`}>
+   <h3 className="product-title text-dark mb-2">
+      {data?.product_title}
+    </h3>
+    </Link>
+    {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
+    <div>
+      <span className="product-price">₹{data?.sale_price}</span>
+      <span className="product-price-regular ml-2">
+        ₹{data?.normal_price}
+      </span>
+      <span className="product-offer font-semibold ml-2">
+        {data?.offer}% OFF
+      </span>
+    </div>
+   {!inCartPage && <AddToCart />}
+   </div>
+  </div>
+</div>
+</div>
+
+
+const leftRightCardMobile =  <div className="product-card-left-right-mobile w-full sm:mr-2">
+<div className="sm:block flex w-full">
+  <Link href={`${homeUrl}/test-cat/test-product`}>
+  <Images
+    imageurl={data?.product_photo}
+    quality="100"
+    width="150"
+    height="150"
+    alt="Wellness for you"
+    classes="block sm:size-[150px] size-[100px] m-[15px] mx-auto"
+    placeholder={true}
+  />
+ </Link>
+ <div className="sm:p-4 sm:pt-0 p-5  pr-0 w-full">
+  <Link href={`${homeUrl}/test-cat/test-product`}>
+   <h3 className="product-title text-dark mb-2">
+      {data?.product_title}
+    </h3>
+    </Link>
+    {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
+    <div>
+      <span className="product-price">₹{data?.sale_price}</span>
+      <span className="product-price-regular ml-2">
+        ₹{data?.normal_price}
+      </span>
+      <span className="product-offer font-semibold ml-2">
+        {data?.offer}% OFF
+      </span>
+    </div>
+    <AddToCart />
+  </div>
+</div>
+</div>
+
+
+  let card;
+
+  switch (true) {
+    case column:
+      // Left-Right Card layout
+      card = leftRightCard
+      break;
+
+
+      case mobileList:
+      // Left-Right Card layout
+      card = leftRightCardMobile
+      break;
+
+    default:
+      // Return nothing or a default layout
+      card = <div className="product-card w-full mr-2">
+      <div className="block w-full" >
+      <Link href={`${homeUrl}/test-cat/test-product`}>
+  <Images
+      imageurl={data?.product_photo}
+      quality="100"
+      width="150"
+      height="150"
+      alt="Wellness for you"
+      classes="block size-[150px] m-[15px] mx-auto"
+      placeholder={true}
+  />
+ </Link>
+
+   <div className="sm:p-4 pt-0">
+        <Link href={`${homeUrl}/test-cat/test-product`}>
+   <h3 className="product-title text-dark mb-2">
+      {data?.product_title}
+    </h3>
+    </Link>
+          {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
+          <div>
             <span className="product-price">₹{data?.sale_price}</span>
-            <div>
-              <span className="product-price-regular">₹{data?.normal_price}</span>
-              <span className="product-offer ml-2">₹{data?.offer}</span>
-            </div>
-            <button className="btn mt-3">
-              add
-            </button>
+            <span className="product-price-regular ml-2">
+              ₹{data?.normal_price}
+            </span>
+            <span className="product-offer font-semibold ml-2">
+              {data?.offer}% OFF
+            </span>
           </div>
-        </Link>
+          <AddToCart />
+        </div>
       </div>
-    )
+    </div>;
+      break;
+  }
+
+  return card;
 }

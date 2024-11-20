@@ -1,16 +1,18 @@
-// import { Link } from "react-alice-carousel";
+import Link from "next/link";
 import BannerSliderLarge from "./Components/BannerSliderLarge";
 import BannerSliderSmall from "./Components/BannerSliderSmall";
 import Images from "./Components/Images";
 import ProductSlider from "./Components/ProductSlider";
 import SectionHeader from "./Components/SectionHeader";
 import Testimonials from "./Components/Testimonials";
+import { homeUrl } from "./Utils/variables";
+
 
 export default function Home() {
   return (
     <div className="container ">
       <section className="pb-0 sm:pt-8">
-        <div class="grid grid-cols-1 sm:grid-cols-[70%_30%]">
+        <div className="grid grid-cols-1 sm:grid-cols-[70%_30%]">
           <div className="w-full lg:pr-7">
             <BannerSliderLarge data={offerBannerLargeData} />
           </div>
@@ -20,6 +22,7 @@ export default function Home() {
         </div>
       </section>
       <section className="banners-full grid sm:gap-12 gap-6 pt-6 sm:pt-10">
+      <Link href={`${homeUrl}test`}>
         <Images
           imageurl="/images/banner_6.jpg"
           quality="100"
@@ -29,6 +32,8 @@ export default function Home() {
           classes="block w-full banner"
           placeholder={true}
         />
+        </Link>
+         <Link href={`${homeUrl}test`}>
         <Images
           imageurl="/images/banner_6.jpg"
           quality="100"
@@ -38,6 +43,8 @@ export default function Home() {
           classes="block w-full banner"
           placeholder={true}
         />
+        </Link>
+         <Link href={`${homeUrl}test`}>
         <Images
           imageurl="/images/banner_6.jpg"
           quality="100"
@@ -47,12 +54,17 @@ export default function Home() {
           classes="block w-full banner"
           placeholder={true}
         />
+        </Link>
       </section>
       <section className="featured-products products pt-0">
-        <SectionHeader />
+        <SectionHeader
+          title="Featured products"
+          url="/"
+        />
         <ProductSlider data={featuredProductData} />
       </section>
       <section className="banners-bottom grid gap-6 pt-0">
+      <Link href={`${homeUrl}test`}>
         <Images
           imageurl="/images/banner_6.jpg"
           quality="100"
@@ -62,8 +74,10 @@ export default function Home() {
           classes="block w-full banner"
           placeholder={true}
         />
+          </Link>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
+          <Link href={`${homeUrl}test`}>
             <Images
               imageurl="/images/banner_7.jpg"
               quality="100"
@@ -73,8 +87,10 @@ export default function Home() {
               classes="block w-full banner h-[350px]"
               placeholder={true}
             />
+              </Link>
           </div>
           <div>
+          <Link href={`${homeUrl}test`}>
             <Images
               imageurl="/images/banner_7.jpg"
               quality="100"
@@ -84,6 +100,7 @@ export default function Home() {
               classes="block w-full banner h-[350px]"
               placeholder={true}
             />
+            </Link>
           </div>
         </div>
       </section>
@@ -170,6 +187,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
 
   {
@@ -179,6 +216,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
 
   {
@@ -188,6 +245,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
 
   {
@@ -197,6 +274,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
   {
     product_photo: "/images/product.jpg",
@@ -205,6 +302,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
   {
     product_photo: "/images/product.jpg",
@@ -213,6 +330,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
   {
     product_photo: "/images/product.jpg",
@@ -221,6 +358,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
   {
     product_photo: "/images/product.jpg",
@@ -229,6 +386,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
   {
     product_photo: "/images/product.jpg",
@@ -237,6 +414,26 @@ const featuredProductData = [
     normal_price: 1040,
     sale_price: 989,
     offer: 20,
+    reviews: [
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 1,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 2,
+      },
+      {
+        review_author: `Esther Howard`,
+        review_post_date: ` 22 Jul`,
+        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
+        review_count: 5,
+      },
+    ],
   },
 ];
 
