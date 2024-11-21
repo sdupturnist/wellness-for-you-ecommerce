@@ -3,11 +3,13 @@
 import { Link } from "react-alice-carousel";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 
-export default function SectionHeader({ title, url, filter, card }) {
+export default function SectionHeader({ title, url, filter, card, spacingSm, titleSmall, small, titleCenter }) {
   return (
-    <div className="flex justify-between items-center mb-7">
-      {card &&  <h3 className="text-xl font-semibold">{title}</h3>}
-      {!card &&  <h3 className="section-title">{title}</h3>}
+    <div className={`${spacingSm ? 'mb-2' : ' mb-7'} flex justify-between items-center`}>
+     {small && !titleSmall && <p className="opacity-50">Payment options</p>}
+      {card && !titleSmall && <h3 className={`${titleCenter && 'text-center w-full'} text-lg font-semibold`}>{title}</h3>}
+      {titleSmall &&  <h3 className={`${titleCenter && 'text-center w-full'} text-base font-bold`}>{title}</h3>}
+      {!card && !small && !titleSmall && <h3 className={`${titleCenter && 'text-center w-full'} section-title`}>{title}</h3>}
       {!filter && url && (
         <Link href={url} className="more">
           More

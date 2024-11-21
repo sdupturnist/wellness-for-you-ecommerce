@@ -25,7 +25,7 @@ export default function Item() {
             </div>
             <div className="block w-full lg:order-2 order-first ">
               <div className="sm:mb-8 bg-white sm:p-0 py-5 px-4">
-                <SectionHeader title="Featured products" url="/" />
+                <SectionHeader title="Featured products" url="/" spacingSm />
                 <div className="products">
                   {featuredProductData && (
                     <ProductSlider count="4" data={featuredProductData} />
@@ -33,7 +33,7 @@ export default function Item() {
                 </div>
               </div>
               <div className="sm:mt-0 mt-5 bg-white sm:p-0 py-5 px-4">
-                <SectionHeader title="All products" url="/" filter />
+                <SectionHeader title="All products" url="/" filter spacingSm/>
                 <div className="products grid sm:grid-cols-4 sm:gap-4">
                   {allProducts &&
                     allProducts.map((item, index) => (

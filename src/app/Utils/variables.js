@@ -16,3 +16,5 @@ export let OfferPercentage = ({ normalprice, saleprice }) => {
 
   return discountPercentage; // Or any message you want to return
 };
+
+

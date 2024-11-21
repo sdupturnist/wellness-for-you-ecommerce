@@ -1,6 +1,8 @@
-import AddToCartWithQty from "../Components/AddToCartWithQty";
+import Link from "next/link";
+import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
-import ProductCard from "../Components/ProductCard";
+import CartListItem from "../Components/CartListItem";
+import CouponCode from "../Components/CouponCode";
 import SectionHeader from "../Components/SectionHeader";
 
 export default function Cart() {
@@ -67,34 +69,26 @@ export default function Cart() {
     <div className="bg-bggray">
       <Breadcrumb />
 
-      <section className="bg-white spacing-sm">
-        <div className="container">
-          <div className="grid grid-cols-1 sm:gap-12 gap-5 lg:grid-cols-[70%_30%] cart">
-            <div>
-              <ul className="added-cart-list">
-                 {cartItems &&
-                    cartItems.map((item, index) => (
-                      <li
-                      key={index}
-                      >
-                      <ProductCard key={index} data={item} column inCartPage/>
-                      <div>
-                      <AddToCartWithQty inCartPage />
-                   </div>
-                   <div>
-                   <div className="join">
-  <button className="btn join-item">Button</button>
-  <button className="btn join-item">Button</button>
-  <button className="btn join-item">Button</button>
-</div>
-                   </div>
-                      </li>
-                    ))}
-                </ul>
+      <section className="sm:bg-white bg-bggray sm:py-10 py-0">
+      <div className="container !px-0 sm:px-5">
+          <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,28%] cart lg:justify-between">
+          <div className="bg-white sm:p-0 py-5 px-4">
+              <ul className="added-cart-list mb-5">
+                {cartItems &&
+                  cartItems.map((item, index) => (
+                    <CartListItem data={item} key={index} />
+                  ))}
+              </ul>
+              <Link href="/" className="btn btn-light">Continue shopping</Link>
             </div>
             <div className="grid gap-7">
-              <div className="card">
+              <div className="card-rounded-none-small w-full bg-white py-5 px-4">
                 <SectionHeader title="Cart totals" card />
+                <div className="grid gap-5">
+                  <CouponCode />
+                  <AmountList />
+                  <button className="btn-large">Proceed to checkout</button>
+                </div>
               </div>
             </div>
           </div>

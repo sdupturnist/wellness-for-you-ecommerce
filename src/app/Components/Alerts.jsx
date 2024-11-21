@@ -1,0 +1,61 @@
+"use client";
+import { XCircleIcon, FaceFrownIcon } from "@heroicons/react/24/solid";
+import { homeUrl } from "../Utils/variables";
+import Link from "next/link";
+import Images from "./Images";
+
+export default function Alerts({ status, title, large }) {
+  let alertClass = "";
+  let icon = null;
+
+  switch (status) {
+    case "red":
+      alertClass = "bg-red-100 text-red-600";
+      icon = <XCircleIcon className="size-4" />;
+      break;
+    case "green":
+      alertClass = "bg-green-100 text-green-600";
+      icon = <XCircleIcon className="size-4" />;
+      break;
+    case "yellow":
+      alertClass = "bg-yellow-100 text-yellow-600";
+      icon = <XCircleIcon className="size-4" />;
+      break;
+    default:
+      alertClass = "bg-gray-100 text-gray-600";
+      icon = <XCircleIcon className="size-4" />;
+      break;
+  }
+
+  return (
+    <>
+      {!large && (
+        <div
+          role="alert"
+          className={`alert ${alertClass} rounded-md p-3 sm:text-base text-sm flex text-start`}>
+          {icon}
+          <span>{title}</span>
+        </div>
+      )}
+      {large && (
+        <div
+          className={`card bg-white !border-0 min-h-[50vh] rounded-md p-5 items-center justify-center flex text-dark sm:text-xl text-lg font-semi-bold `}>
+          {/* <FaceFrownIcon className="size-[150px] text-slate-200"/> */}
+          <Images
+            imageurl="/images/banner_7.jpg"
+            quality="100"
+            width="600"
+            height="350"
+            alt="Wellness for you"
+            classes="block w-full sm:h-[350px] h-[250px] mb-5"
+            placeholder={true}
+          />
+          <span>{title}</span>
+          <Link className="btn btn-light btn-large my-6" href={homeUrl}>
+            Shop now
+          </Link>
+        </div>
+      )}
+    </>
+  );
+}

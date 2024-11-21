@@ -10,19 +10,19 @@ export default function ProductCard({ data, column, mobileList, inCartPage }) {
 
 
 const leftRightCard =  <div className={`${!inCartPage && 'border-b border-border'} product-card-left-right w-full`}>
-  <div className="flex w-full">
-<Link href={`${homeUrl}/test-cat/test-product`}>
+  <div className={`${inCartPage && 'sm:gap-0 gap-3'} flex w-full`}>
+<Link className={`${inCartPage ? 'min-w-12 sm:min-w-24' : 'min-w-32'} flex items-center`} href={`${homeUrl}/test-cat/test-product`}>
   <Images
     imageurl={data?.product_photo}
     quality="100"
     width="100"
     height="100"
     alt="Wellness for you"
-    classes="block size-[100px] m-[15px] mx-auto"
+    classes={`${inCartPage ? 'size-[50px] sm:size-[90px] m-[5px]' : 'size-[100px] m-[15px]'} block  mx-auto`}
     placeholder={true}
   />
  </Link>
-  <div className="p-5 pr-0 w-full grid items-center">
+  <div className="sm:p-5 p-3 pl-0 pr-0 w-full grid items-center">
    <div>
    <Link href={`${homeUrl}/test-cat/test-product`}>
    <h3 className="product-title text-dark mb-2">
@@ -48,7 +48,7 @@ const leftRightCard =  <div className={`${!inCartPage && 'border-b border-border
 
 const leftRightCardMobile =  <div className="product-card-left-right-mobile w-full sm:mr-2">
 <div className="sm:block flex w-full">
-  <Link href={`${homeUrl}/test-cat/test-product`}>
+  <Link className="block min-w-32" href={`${homeUrl}/test-cat/test-product`}>
   <Images
     imageurl={data?.product_photo}
     quality="100"
@@ -59,7 +59,7 @@ const leftRightCardMobile =  <div className="product-card-left-right-mobile w-fu
     placeholder={true}
   />
  </Link>
- <div className="sm:p-4 sm:pt-0 p-5  pr-0 w-full">
+ <div className="sm:p-4 sm:pt-0 p-5 pl-3 pr-0 w-full">
   <Link href={`${homeUrl}/test-cat/test-product`}>
    <h3 className="product-title text-dark mb-2">
       {data?.product_title}
