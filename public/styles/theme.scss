@@ -43,6 +43,9 @@ input{
 .input{
     @apply input-bordered w-full focus:outline-none
 }
+textarea{
+    @apply min-h-[150px] py-3
+}
 small{
     @apply text-[12px]
 }
@@ -577,4 +580,14 @@ footer{
     svg{
       display:none  !important;
     }
+  }
+
+
+  //ORDER TRACKING
+
+  .order-tracking{
+   
+    
+    
+
   }

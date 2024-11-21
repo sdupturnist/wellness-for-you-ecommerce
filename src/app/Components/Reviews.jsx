@@ -2,7 +2,7 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 
 export default function Reviews({ data }) {
-    console.log(data);
+  
 
     // Function to render stars based on review count
     const renderStars = (count) => {

@@ -1,6 +1,8 @@
 "use client";
 
 export default function AmountList({data, forOrderDetails }) {
+
+
   return (
     <>
       {!forOrderDetails && (
@@ -22,7 +24,7 @@ export default function AmountList({data, forOrderDetails }) {
       {forOrderDetails && (
         <ul className="amount-list">
           <li>
-            <span className="label">{data?.product_title} x {data?.order_qty}</span>
+            <span className="label">Products x {data?.items[0]?.qty}</span>
             <span className="val">₹{data?.order_amout}</span>
           </li>
           <li>
