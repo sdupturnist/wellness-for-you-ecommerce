@@ -10,7 +10,7 @@ export default function CancelOrder() {
     <>
       <button
         className="btn btn-medium btn-light"
-        onClick={() => document.getElementById("my_modal_2").showModal()}>
+        onClick={() => document.getElementById("modal_all").showModal()}>
         {" "}
         Cancel order
       </button>

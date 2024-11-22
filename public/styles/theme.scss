@@ -459,7 +459,7 @@ footer{
     .review-list{
         @apply grid;
         li{
-            @apply border-b py-6 grid gap-3 last:border-none last:pb-3;
+            @apply border-b py-6 grid gap-3 last:border-none last:pb-3 first:pt-0;
         }
     }
 
@@ -500,7 +500,7 @@ footer{
 
     .general-list{
         li{
-            @apply lg:flex items-center justify-between gap-8 border-b border-border  mb-7 last:border-0 last:mb-0
+            @apply lg:flex items-center justify-between gap-8 border-b border-border  sm:mb-4 mb-3 last:border-0 last:mb-0
         }
 
         button.option-btn{
@@ -605,3 +605,15 @@ footer{
     
 
   }
+
+
+
+  .list-order-view{
+    @apply lg:flex grid  lg:justify-end lg:items-center lg:gap-4 gap-3 mt-5 lg:mt-0;
+   li{
+    @apply w-full flex justify-between gap-1 lg:font-bold  lg:uppercase  items-center lg:text-xs text-sm whitespace-nowrap border-0 m-0 lg:border-r lg:pr-4 last:pr-0 last:border-r-0;
+    label{
+        @apply flex items-center justify-between capitalize lg:text-xs text-sm font-normal lg:hidden;
+    }
+   }
+  } 

@@ -24,7 +24,7 @@ export default function Testimonials({ data }) {
         ))}
       </div>
       <div className="grid sm:gap-6 gap-4 text-center">
-        <p>{testimonial.review}</p>
+        <p className="text-dark">{testimonial.review}</p>
         <span className="opacity-50">{testimonial.customer}</span>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { year } from "../Utils/variables";
+import { homeUrl, year } from "../Utils/variables";
 import PaymentOptions from "./PaymentOptions";
 import SocialIcons from "./SocialIcons";
 import Subscribe from "./Subscribe";
@@ -15,37 +15,35 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             <ul>
               <li>
-                <Link href="">Home</Link>
+                <Link href={homeUrl}>Home</Link>
               </li>
               <li>
-                <Link href="">About Us</Link>
+                <Link href={`${homeUrl}about-us`}>About Us</Link>
               </li>
               <li>
-                <Link href="">Blog</Link>
+                <Link href={`${homeUrl}blogs`}>Blog</Link>
               </li>
               <li>
-                <Link href="">Contact Us</Link>
+                <Link href={`${homeUrl}contact-us`}>Contact Us</Link>
               </li>
               <li>
-                <Link href="">Returns</Link>
+                <Link href={`${homeUrl}account/returns`}>Returns</Link>
               </li>
             </ul>
             <ul>
               <li>
-                <Link href="">Privacy</Link>
+                <Link href={`${homeUrl}privacy-policy`}>Privacy</Link>
               </li>
               <li>
-                <Link href="">Terms & Conditions</Link>
+                <Link href={`${homeUrl}terms-conditions`}>Terms & Conditions</Link>
               </li>
               <li>
-                <Link href="">Return And Refund Policy</Link>
+                <Link href={`${homeUrl}return-refund-policy`}>Return And Refund Policy</Link>
               </li>
               <li>
-                <Link href="">Shipping Policy</Link>
+                <Link href={`${homeUrl}shipping-policy`}>Shipping Policy</Link>
               </li>
-              <li>
-                <Link href="">Returns</Link>
-              </li>
+             
             </ul>
             <ul>
               <li>

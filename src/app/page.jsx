@@ -109,7 +109,7 @@ export default function Home() {
           <Testimonials data={testimonialsData} />
         </div>
       </section>
-      <section className="about content border-t">
+      <section className="about content border-t sm:pb-14">
         <div className="max-w-screen-lg mx-auto">
           <h2>Company's Journey</h2>
 

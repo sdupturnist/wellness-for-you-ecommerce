@@ -38,23 +38,22 @@ export default function OrderItem() {
 
   return (
     <div className="bg-bggray">
-      <Breadcrumb />
-      <section className="bg-bggray pt-0">
-        <div className="container !px-0 sm:px-5">
-          <div className="max-w-[999px] mx-auto">
-            <div className="sm:px-0 px-5">
-              <AccountHeader back />
-            </div>
-            <div className="sm:pt-2">
-              <div className="grid sm:gap-5 gap-3">
-                <MyOrder data={order} orderView />
-                <div className="card-rounded-none-small w-full bg-white py-4 px-3">
-                  <SectionHeader
-                    title="Shipping address"
-                    card-sm
-                    spacingSm
-                    titleSmall
-                  />
+    <section className="bg-bggray sm:py-10 pb-5 pt-0">
+       <div className="container !px-0 sm:px-5">
+         <div className="max-w-[999px] mx-auto">
+           <AccountHeader back/>
+           <div className="sm:mt-5 mt-3 sm:pt-2">
+                  <div className="grid sm:gap-5 gap-3">
+                   <ul>
+                   <MyOrder data={order} orderView />
+                   </ul>
+                    <div className="card-rounded-none-small w-full bg-white py-4 px-3">
+                      <SectionHeader
+                        title="Shipping address"
+                        card-sm
+                        spacingSm
+                        titleSmall
+                      />
                   <div className="grid gap-5">
                     <p>{order?.order_shipping_address}</p>
                   </div>

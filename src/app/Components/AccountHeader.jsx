@@ -11,7 +11,7 @@ export default function AccountHeader({ back }) {
   const pathname = usePathname();
 
   return (
-    <div className="pb-5 flex gap-3 items-center justify-between">
+    <div className="bg-white sm:bg-transparent sm:px-0 px-5 sm:py-0 py-4 flex gap-3 items-center justify-between">
       <div className="flex gap-3 items-center">
         {!back && (
           <>

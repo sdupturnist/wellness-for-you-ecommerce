@@ -2,12 +2,12 @@
 
 import SectionHeader from "./SectionHeader";
 
-export default function ModalPopup({ title, item }) {
+export default function ModalPopup({ title, item, titleCenter }) {
   return (
-    <dialog id="my_modal_2" className="modal">
+    <dialog id="modal_all" className="modal">
       <div className="modal-box">
         <div className="sm:p-5 p-3">
-          <SectionHeader title={title} titleSmall />
+          <SectionHeader title={title} titleSmall titleCenter />
           {item}
         </div>
       </div>

@@ -6,30 +6,30 @@ import Images from "./Images";
 import { usePathname } from "next/navigation";
 
 
-export default function Alerts({ status, title, large }) {
+export default function Alerts({ status, title, large, noIcon, icon }) {
 
   const pathname = usePathname()
 
 
   let alertClass = "";
-  let icon = null;
+  // let icon = null;
 
   switch (status) {
     case "red":
       alertClass = "bg-red-100 text-red-600";
-      icon = <XCircleIcon className="size-4" />;
+     // icon = <XCircleIcon className="size-4" />;
       break;
     case "green":
       alertClass = "bg-green-100 text-green-600";
-      icon = <XCircleIcon className="size-4" />;
+     // icon = <XCircleIcon className="size-4" />;
       break;
     case "yellow":
       alertClass = "bg-yellow-100 text-yellow-600";
-      icon = <XCircleIcon className="size-4" />;
+    //  icon = <XCircleIcon className="size-4" />;
       break;
     default:
       alertClass = "bg-gray-100 text-gray-600";
-      icon = <XCircleIcon className="size-4" />;
+    //  icon = <XCircleIcon className="size-4" />;
       break;
   }
 
@@ -38,9 +38,9 @@ export default function Alerts({ status, title, large }) {
       {!large && (
         <div
           role="alert"
-          className={`alert ${alertClass} rounded-md p-3 sm:text-base text-sm flex text-start`}>
-          {icon}
-          <span>{title}</span>
+          className={`alert ${alertClass} rounded-md p-3 sm:text-base  flex text-start`}>
+          {!noIcon && icon}
+          <span className="text-sm">{title}</span>
         </div>
       )}
       {large && (
@@ -57,9 +57,9 @@ export default function Alerts({ status, title, large }) {
             placeholder={true}
           />
           <span>{title} {pathname?.split("/").pop()}</span>
-          <Link className="btn btn-light btn-large my-6" href={homeUrl}>
-            Shop now
-          </Link>
+          {/* <Link className="btn btn-light btn-large my-6" href={homeUrl}> */}
+            {/* Shop now */}
+          {/* </Link> */}
         </div>
       )}
     </>

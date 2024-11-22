@@ -13,7 +13,7 @@
   }
 }
 body {
-  color: #444;
+  color: #222;
   background: var(--background);
   @apply sm:text-base text-sm leading-[1.7];
 }
@@ -337,7 +337,7 @@ footer ul li, footer ol li {
   @apply grid;
 }
 .review-list li {
-  @apply border-b py-6 grid gap-3 last:border-none last:pb-3;
+  @apply border-b py-6 grid gap-3 last:border-none last:pb-3 first:pt-0;
 }
 
 .card {
@@ -366,7 +366,7 @@ footer ul li, footer ol li {
 }
 
 .general-list li {
-  @apply lg:flex items-center justify-between gap-8 border-b border-border  mb-7 last:border-0 last:mb-0;
+  @apply lg:flex items-center justify-between gap-8 border-b border-border  sm:mb-4 mb-3 last:border-0 last:mb-0;
 }
 .general-list button.option-btn {
   @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] h-[30px] min-h-[30px] lg:border border-0;
@@ -435,4 +435,14 @@ footer ul li, footer ol li {
 
 .stdropdown-tools svg {
   display: none !important;
+}
+
+.list-order-view {
+  @apply lg:flex grid  lg:justify-end lg:items-center lg:gap-4 gap-3 mt-5 lg:mt-0;
+}
+.list-order-view li {
+  @apply w-full flex justify-between gap-1 lg:font-bold  lg:uppercase  items-center lg:text-xs text-sm whitespace-nowrap border-0 m-0 lg:border-r lg:pr-4 last:pr-0 last:border-r-0;
+}
+.list-order-view li label {
+  @apply flex items-center justify-between capitalize lg:text-xs text-sm font-normal lg:hidden;
 }

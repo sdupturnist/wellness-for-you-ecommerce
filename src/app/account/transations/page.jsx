@@ -3,6 +3,7 @@ import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
 import Alerts from "@/app/Components/Alerts";
 import TableView from "@/app/Components/TableView";
+import ProfileMenu from "@/app/Components/ProfileMenu";
 
 export default function Transations() {
   const transation = [
@@ -36,16 +37,16 @@ export default function Transations() {
   //const myOrders = null
 
   return (
+
     <div className="bg-bggray">
-      <Breadcrumb />
-      <section className="bg-bggray sm:py-10 pb-5 pt-3">
-        <div className="container">
-          <div className="max-w-[999px] mx-auto">
-            <AccountHeader back />
-            <div className="sm:pt-2">
-              <div>
-                <ul className="general-list">
-                  {!transation && <Alerts large title="You have not any" />}
+    <section className="bg-bggray sm:py-10 pb-5 pt-0">
+       <div className="container !px-0 sm:px-5">
+         <div className="max-w-[999px] mx-auto">
+           <AccountHeader back/>
+           <div className="sm:mt-5 mt-3 sm:pt-2">
+             <div>
+               <ul className="general-list">
+               {!transation && <Alerts large title="You have not any" />}
                   {transation &&
                     transation.map((item, index) => (
                       <TableView
@@ -60,12 +61,15 @@ export default function Transations() {
                         ]}
                       />
                     ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+               </ul>
+             </div>
+           </div>
+             <ProfileMenu />
+         </div>
+       </div>
+     </section>
+   </div>
+
+
   );
 }

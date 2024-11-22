@@ -28,7 +28,7 @@ export default function TableView({data, labels}) {
             // Skeleton Loader
             <div className="skeleton h-32 w-full mb-5"></div>
           ) : (
-            <li className="card-sm bg-white">
+            <li className="card-rounded-none-small bg-white">
               <div className="w-full">
               <AmountList data={data && data} labels={labels && labels} tableView/>
               </div>

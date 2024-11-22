@@ -22,7 +22,7 @@ export default function Nav(){
                   />
                 </svg>
               </Link>
-              <Link href={`${homeUrl}wishlist`}>
+              <Link href={`${homeUrl}account/wishlist`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -70,6 +70,10 @@ export default function Nav(){
                 {
                   label: 'Register',
                   url: 'register'
+                },
+                {
+                  label: 'Logout',
+                  url: '/'
                 }
               ]
             } icon={

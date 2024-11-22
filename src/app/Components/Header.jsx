@@ -60,8 +60,8 @@ export default function Header() {
                 </defs>
               </svg>
             </button>
- <div className="hidden lg:flex items-center justify-between gap-7">
-           <Nav/>
+            <div className="hidden lg:flex items-center justify-between gap-7">
+              <Nav />
             </div>
           </div>
         </div>

@@ -7,11 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { currency } from "../Utils/variables";
 
-
 export default function MyOrder({ data, orderView }) {
   const pathname = usePathname();
-
- 
 
   // Define the status to color mapping
   const statusColorMap = {
@@ -41,7 +38,7 @@ export default function MyOrder({ data, orderView }) {
         // Skeleton Loader
         <div className="skeleton h-32 w-full mb-5"></div>
       ) : (
-        <li className="card bg-white">
+        <li className="card-rounded-none-small bg-white">
           <div className="w-full">
             <div className="lg:flex items-start justify-between w-full sm:gap-0 gap-3">
               <div>
@@ -58,52 +55,76 @@ export default function MyOrder({ data, orderView }) {
                         placeholder={true}
                       />
                       <div>
-                        <h3 className="text-sm text-body mb-2 leading-relaxed">
+                        <h3 className="text-xs text-body mb-2 leading-relaxed">
                           {item?.product_title} x {item?.qty}
-                         
                         </h3>
                       </div>
                     </div>
                   ))}
               </div>
 
-              <div className="flex items-center gap-2 border-t lg:border-none mt-4 pt-4 lg:mt-0 lg:pt-0">
-                <span className="block">
-                  <span className="font-bold uppercase text-sm whitespace-nowrap">
-                    Order ID #{data?.order_id}
-                  </span>
-                </span>
-                <span className="text-xs opacity-20 ml-1">&#x2022;</span>
-                <span className="font-semibold text-sm block w-full whitespace-nowrap uppercase ">
-                  {currency}{data?.order_amount} ({data?.items?.length} items)
-                </span>
-                <span className="text-sm block whitespace-nowrap">
-                  {data?.order_status !== "Processing" && (
-                    <span className="text-xs opacity-20 ml-1">&#x2022;</span>
-                  )}
-                </span>
-                <span
-                  className={`${statusColorClass} font-semibold text-sm  whitespace-nowrap uppercase flex items-center gap-2`}>
-                  {data?.order_status === "Processing" && (
-                    <span className="loading loading-spinner size-3"></span>
-                  )}
-                  {data?.order_status}
-                </span>
-              </div>
-            </div>
-            {!orderView && (
-              <div className="mt-5 border-t border-border pt-5">
-                <div className="flex items-center justify-between">
-                <small className="block">{data?.order_date}</small>
-                  <Link
-                    href={`${pathname}/${data?.order_id}`}
-                    className="btn btn-medium btn-light">
-                    View
-                  </Link>
+              <div className="lg:grid justify-between h-full gap-7">
+                <div className="sm:flex items-center justify-between gap-2 border-t lg:border-none mt-4 lg:mt-0 ">
+                  <ul className="list-order-view">
+                    <li>
+                      <label>Order ID</label>#{data?.order_id}
+                    </li>
+                    <li>
+                      <label>Amount</label>
+                      {currency}
+                      {data?.order_amount} ({data?.items?.length} items)
+                    </li>
+                    <li>
+                      <label>Order Date</label>
+                      {data?.order_date}
+                    </li>
+                    <li>
+                      <label>Status</label>
+                      <span className={`${statusColorClass}`}>
+                        {data?.order_status}
+                      </span>
+                    </li>
+                    {!orderView && (
+                      <li>
+                        <Link
+                          href={`${pathname}/${data?.order_id}`}
+                          className="btn btn-medium btn-light md:ml-4 md:mt-0 mt-2">
+                          View
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+
+                  {/* <ul className="amount-list  lg:hidden"> */}
+                  {/* <li> */}
+                  {/* <span className="label">Order ID  #</span> */}
+                  {/* <span className="val"> */}
+                  {/* {data?.order_id} */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/* <li> */}
+                  {/* <span className="label">Amount</span> */}
+                  {/* <span */}
+                  {/* className={` val`}> */}
+                  {/* {currency}{data?.order_amount} ({data?.items?.length} items) */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/* <li> */}
+                  {/* <span className="label">Order Date</span> */}
+                  {/* <span className="val">{data?.order_date}</span> */}
+                  {/* </li> */}
+                  {/* <li> */}
+                  {/* <span className="label">Status</span> */}
+                  {/* <span className="val !text-green-600"> */}
+                  {/* {data?.order_status} */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/*  */}
+                  {/* </ul> */}
                 </div>
               </div>
-            )}
-           
+            </div>
+
             {data?.tracking_message && !orderView && (
               <div className="mt-4">
                 <Alerts status="green" title={data?.tracking_message} />

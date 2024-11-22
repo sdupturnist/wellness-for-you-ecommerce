@@ -2,22 +2,21 @@ import Breadcrumb from "@/app/Components/Breadcrumb";
 import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
 import Alerts from "@/app/Components/Alerts";
+import ProfileMenu from "@/app/Components/ProfileMenu";
 
 export default function Orders() {
- 
- 
   const myOrders = [
     {
       items: [
         {
           product_photo: "/images/product.jpg",
           product_title: "Vitaminberry Just For Gut",
-          qty:1
+          qty: 1,
         },
         {
           product_photo: "/images/product.jpg",
           product_title: "Vitaminberry Just For Gut",
-          qty:2
+          qty: 2,
         },
       ],
       order_id: 25685,
@@ -32,7 +31,7 @@ export default function Orders() {
         {
           product_photo: "/images/product.jpg",
           product_title: "Vitaminberry Just For Gut",
-          qty:1
+          qty: 1,
         },
       ],
       order_id: 25685,
@@ -48,17 +47,14 @@ export default function Orders() {
 
   return (
     <div className="bg-bggray">
-      <Breadcrumb />
-      <section className="bg-bggray sm:py-10 pb-5 pt-3">
-        <div className="container">
+     <section className="bg-bggray sm:py-10 pb-5 pt-0">
+        <div className="container !px-0 sm:px-5">
           <div className="max-w-[999px] mx-auto">
-            <AccountHeader back />
-            <div className="sm:pt-2">
+            <AccountHeader back/>
+            <div className="sm:mt-5 mt-3 sm:pt-2">
               <div>
                 <ul className="general-list">
-                  {!myOrders && (
-                    <Alerts large title="You have not any" />
-                  )}
+                  {!myOrders && <Alerts large title="You have not any" />}
                   {myOrders &&
                     myOrders.map((item, index) => (
                       <MyOrder data={item} key={index} />
@@ -66,6 +62,7 @@ export default function Orders() {
                 </ul>
               </div>
             </div>
+              <ProfileMenu />
           </div>
         </div>
       </section>

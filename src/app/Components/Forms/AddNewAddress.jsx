@@ -88,7 +88,7 @@ export default function AddNewAddressForm(){
           </option>
         ))}
       </select>
-      <h6>City</h6>
+      <h6>City</h6> 
       <select
        className="input"
         onChange={(e) => {
