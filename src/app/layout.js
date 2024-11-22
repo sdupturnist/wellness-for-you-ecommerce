@@ -4,6 +4,7 @@ import Header from "./Components/Header";
 import BottomNav from "./Components/BottomNav";
 import Footer from "./Components/Footer";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

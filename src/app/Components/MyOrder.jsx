@@ -5,6 +5,8 @@ import Alerts from "./Alerts";
 import Images from "./Images";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { currency } from "../Utils/variables";
+
 
 export default function MyOrder({ data, orderView }) {
   const pathname = usePathname();
@@ -73,7 +75,7 @@ export default function MyOrder({ data, orderView }) {
                 </span>
                 <span className="text-xs opacity-20 ml-1">&#x2022;</span>
                 <span className="font-semibold text-sm block w-full whitespace-nowrap uppercase ">
-                  ₹{data?.order_amount} ({data?.items?.length} items)
+                  {currency}{data?.order_amount} ({data?.items?.length} items)
                 </span>
                 <span className="text-sm block whitespace-nowrap">
                   {data?.order_status !== "Processing" && (
@@ -90,8 +92,9 @@ export default function MyOrder({ data, orderView }) {
               </div>
             </div>
             {!orderView && (
-              <div className="flex lg:justify-end mt-4 lg:mt-0">
-                <div className="">
+              <div className="mt-5 border-t border-border pt-5">
+                <div className="flex items-center justify-between">
+                <small className="block">{data?.order_date}</small>
                   <Link
                     href={`${pathname}/${data?.order_id}`}
                     className="btn btn-medium btn-light">
@@ -100,7 +103,7 @@ export default function MyOrder({ data, orderView }) {
                 </div>
               </div>
             )}
-            <small className="block mt-4">{data?.order_date}</small>
+           
             {data?.tracking_message && !orderView && (
               <div className="mt-4">
                 <Alerts status="green" title={data?.tracking_message} />

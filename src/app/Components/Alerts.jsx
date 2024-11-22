@@ -3,8 +3,14 @@ import { XCircleIcon, FaceFrownIcon } from "@heroicons/react/24/solid";
 import { homeUrl } from "../Utils/variables";
 import Link from "next/link";
 import Images from "./Images";
+import { usePathname } from "next/navigation";
+
 
 export default function Alerts({ status, title, large }) {
+
+  const pathname = usePathname()
+
+
   let alertClass = "";
   let icon = null;
 
@@ -50,7 +56,7 @@ export default function Alerts({ status, title, large }) {
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span>{title}</span>
+          <span>{title} {pathname?.split("/").pop()}</span>
           <Link className="btn btn-light btn-large my-6" href={homeUrl}>
             Shop now
           </Link>

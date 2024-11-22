@@ -10,7 +10,8 @@ import Reviews from "@/app/Components/Reviews";
 import SectionHeader from "@/app/Components/SectionHeader";
 import SocialShare from "@/app/Components/SocialShare";
 import WriteReview from "@/app/Components/WriteReview";
-import { OfferPercentage } from "@/app/Utils/variables";
+import { currency, OfferPercentage } from "@/app/Utils/variables";
+
 
 export default function ItemSingle() {
   const singleProduct = {
@@ -108,15 +109,15 @@ export default function ItemSingle() {
               </div>
               <div className="grid gap-1">
                 <span className="product-price">
-                  ₹{singleProduct && singleProduct?.sale_price}
+                  {currency}{singleProduct && singleProduct?.sale_price}
                 </span>
                 {singleProduct?.normal_price > 0 && (
                   <div className="flex items-center justify-start gap-3">
                     <span className="normal-price">
-                      ₹{singleProduct && singleProduct?.normal_price}
+                      {currency}{singleProduct && singleProduct?.normal_price}
                     </span>
                     <span className="offer border-l pl-3">
-                      Save ₹
+                      Save {currency}
                       {singleProduct &&
                         singleProduct?.normal_price -
                           singleProduct?.sale_price}{" "}

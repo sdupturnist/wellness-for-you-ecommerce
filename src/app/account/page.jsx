@@ -35,56 +35,56 @@ export default function MyAccount() {
                 icon={<CalendarIcon className="size-4 text-primary" />}
                 title="My Transactions"
                 desc="Review payment and transaction history."
-                url="my-transactions"
+                url={`account/transations`}
               />
 
               <AccountMenu
                 icon={<HeartIcon className="size-4 text-primary" />}
                 title="My Wishlist"
                 desc="Save items for future purchase."
-                url="my-wishlist"
+                url={`account/wishlist`}
               />
 
               <AccountMenu
                 icon={<MapIcon className="size-4 text-primary" />}
                 title="My Address"
                 desc="Manage your shipping and billing addresses."
-                url="my-address"
+                url={`account/address`}
               />
 
               <AccountMenu
                 icon={<CreditCardIcon className="size-4 text-primary" />}
                 title="My Payments"
                 desc="Update and manage payment methods."
-                url="my-payments"
+                url={`account/payments`}
               />
 
               <AccountMenu
                 icon={<TruckIcon className="size-4 text-primary" />}
                 title="My Returns"
                 desc="Track and manage product returns."
-                url="my-returns"
+                url={`account/returns`}
               />
 
               <AccountMenu
                 icon={<StarIcon className="size-4 text-primary" />}
                 title="My Reviews"
                 desc="View and edit product reviews."
-                url="my-reviews"
+                url={`account/reviews`}
               />
 
               <AccountMenu
                 icon={<GiftIcon className="size-4 text-primary" />}
                 title="My Reward Points"
                 desc="Check and redeem loyalty points."
-                url="my-rewards"
+                url={`account/rewards`}
               />
 
               <AccountMenu
                 icon={<KeyIcon className="size-4 text-primary" />}
                 title="Reset password"
                 desc="Change your account password."
-                url="reset-password"
+                url={`account/reset-password`}
               />
 
               <AccountMenu
@@ -92,7 +92,7 @@ export default function MyAccount() {
                 logout
                 icon={<PencilIcon className="size-4 text-primary" />}
                 title="Logout"
-                url="my-orders"
+                url="/"
               />
             </div>
           </div>

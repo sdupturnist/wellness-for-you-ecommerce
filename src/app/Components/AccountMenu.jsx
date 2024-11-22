@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function AccountMenu({icon, title, url, desc, minimum, logout}){
     return(
         <Link href={`${homeUrl}${url}`}>
-        <div className={`${logout ? 'border border-red-600 px-4 py-3' : 'border p-5'} lg:hover:scale-[1.03] transition-all mb-3 rounded-lg flex items-center justify-between gap-4 bg-white border border-border`}>
+        <div className={`${logout ? 'border border-red-600 px-4 py-3' : 'border p-5'} lg:hover:border-primary transition-all mb-3 rounded-lg flex items-center justify-between gap-4 bg-white border border-border`}>
         <div className="flex items-center justify-start gap-4">
       {!minimum &&  <div className="rounded-full bg-primary-dim size-11 flex items-center justify-center icon">
         {icon}

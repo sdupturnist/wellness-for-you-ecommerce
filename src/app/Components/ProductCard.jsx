@@ -1,7 +1,7 @@
 "use client";
 
 import Images from "./Images";
-import { homeUrl } from "../Utils/variables";
+import { currency, homeUrl } from "../Utils/variables";
 import { Link } from "react-alice-carousel";
 import ReviewCount from "./ReviewCount";
 import AddToCart from "./AddToCart";
@@ -31,9 +31,9 @@ const leftRightCard =  <div className={`${!inCartPage && 'border-b border-border
     </Link>
     {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
     <div>
-      <span className="product-price">₹{data?.sale_price}</span>
+      <span className="product-price">{currency}{data?.sale_price}</span>
       <span className="product-price-regular ml-2">
-        ₹{data?.normal_price}
+        {currency}{data?.normal_price}
       </span>
       <span className="product-offer font-semibold ml-2">
         {data?.offer}% OFF
@@ -67,9 +67,9 @@ const leftRightCardMobile =  <div className="product-card-left-right-mobile w-fu
     </Link>
     {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
     <div>
-      <span className="product-price">₹{data?.sale_price}</span>
+      <span className="product-price">{currency}{data?.sale_price}</span>
       <span className="product-price-regular ml-2">
-        ₹{data?.normal_price}
+        {currency}{data?.normal_price}
       </span>
       <span className="product-offer font-semibold ml-2">
         {data?.offer}% OFF
@@ -119,9 +119,9 @@ const leftRightCardMobile =  <div className="product-card-left-right-mobile w-fu
     </Link>
           {data?.reviews && data?.reviews.length > 0 && <ReviewCount data={data?.reviews} />}
           <div>
-            <span className="product-price">₹{data?.sale_price}</span>
+            <span className="product-price">{currency}{data?.sale_price}</span>
             <span className="product-price-regular ml-2">
-              ₹{data?.normal_price}
+              {currency}{data?.normal_price}
             </span>
             <span className="product-offer font-semibold ml-2">
               {data?.offer}% OFF

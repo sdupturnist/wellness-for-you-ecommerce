@@ -98,7 +98,7 @@ small {
 }
 
 .btn {
-  @apply rounded-lg whitespace-nowrap sm:text-[16px] text-[14px] bg-primary hover:bg-primary-hover px-[20px] sm:h-[45px] h-[40px] min-h-[40px] text-white font-semibold transition-all;
+  @apply rounded-lg whitespace-nowrap sm:text-[16px] text-[14px] bg-primary hover:bg-primary-hover  sm:h-[45px] h-[40px] min-h-[40px] text-white font-semibold transition-all;
 }
 
 .btn-large {
@@ -106,11 +106,11 @@ small {
 }
 
 .btn-medium {
-  @apply sm:h-[45px] h-[40px] min-h-[40px] sm:text-[14px];
+  @apply sm:h-[45px] h-[40px] min-h-[40px] sm:text-[14px] px-[16px];
 }
 
 .btn-light {
-  @apply whitespace-nowrap  bg-white rounded-md border border-border hover:bg-white hover:border-primary px-[20px] text-dark font-semibold transition-all;
+  @apply whitespace-nowrap  bg-white rounded-md border border-border hover:bg-white hover:border-primary  text-dark font-semibold transition-all;
 }
 
 input[type=email], input[type=text], input[type=number], input[type=password], .stdropdown-input, select {
@@ -366,7 +366,7 @@ footer ul li, footer ol li {
 }
 
 .general-list li {
-  @apply lg:flex items-center justify-between gap-8 border-b border-border pb-7 mb-7 last:border-0 last:mb-0;
+  @apply lg:flex items-center justify-between gap-8 border-b border-border  mb-7 last:border-0 last:mb-0;
 }
 .general-list button.option-btn {
   @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] h-[30px] min-h-[30px] lg:border border-0;
@@ -380,6 +380,13 @@ footer ul li, footer ol li {
   @apply flex items-center justify-between text-sm;
 }
 .amount-list li .val {
+  @apply text-dark;
+}
+
+.table-amount-list li {
+  @apply flex items-center justify-between text-sm pb-1 mb-1 last:mb-0 last:pb-0 last:border-0;
+}
+.table-amount-list li .val {
   @apply text-dark;
 }
 

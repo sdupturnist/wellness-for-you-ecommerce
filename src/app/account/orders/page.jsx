@@ -4,6 +4,8 @@ import MyOrder from "@/app/Components/MyOrder";
 import Alerts from "@/app/Components/Alerts";
 
 export default function Orders() {
+ 
+ 
   const myOrders = [
     {
       items: [
@@ -42,7 +44,7 @@ export default function Orders() {
     },
   ];
 
-  // const myOrders = null
+  //const myOrders = null
 
   return (
     <div className="bg-bggray">
@@ -55,7 +57,7 @@ export default function Orders() {
               <div>
                 <ul className="general-list">
                   {!myOrders && (
-                    <Alerts large title="You have placed no orders" />
+                    <Alerts large title="You have not any" />
                   )}
                   {myOrders &&
                     myOrders.map((item, index) => (

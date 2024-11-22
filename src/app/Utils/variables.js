@@ -18,3 +18,6 @@ export let OfferPercentage = ({ normalprice, saleprice }) => {
 };
 
 
+//CURRENCY
+
+export let currency = '₹'
