@@ -4,6 +4,7 @@ import ProfileMenu from "@/app/Components/ProfileMenu";
 import SectionHeader from "@/app/Components/SectionHeader";
 import AddNewAddress from "@/app/Components/AddNewAddress";
 import ModifyAddress from "@/app/Components/ModifyAddress";
+import Alerts from "@/app/Components/Alerts";
 
 
 

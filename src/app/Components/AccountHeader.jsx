@@ -5,6 +5,7 @@ import { avatar } from "../Components/Avatars";
 import { homeUrl } from "../Utils/variables";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Images from "./Images";
 
 export default function AccountHeader({ back }) {
   const router = useRouter();
@@ -17,7 +18,17 @@ export default function AccountHeader({ back }) {
           <>
             <div className="avatar">
               <div className="w-10 rounded-full">
-                <img src={avatar} />
+              
+                <Images
+                imageurl={avatar}
+                quality="80"
+                width="150"
+                height="150"
+                title="test"
+                alt="test"
+                classes="block"
+                placeholder={true}
+              />
               </div>
             </div>
             <h3 className="text-lg font-semibold">Hi, Test user</h3>

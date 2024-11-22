@@ -23,7 +23,7 @@ export default function Aboutus() {
             <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid gap-7">
               <h1 className="sm:text-3xl text-2xl font-bold">About Us</h1>
               <div className="content text-justify">
-                <h2>Company's Journey</h2>
+                <h2>Company&apos;s Journey</h2>
                 <p>
                   Wellness4u Food Supplements was founded with a strong passion
                   for promoting health and wellness through high-quality

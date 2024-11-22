@@ -46,7 +46,7 @@ export default function ContactUs() {
                 </div>
                 <div className="tf-content-right">
                   <p className="mb-6">
-                    If you’ve got great products you're making or looking to
+                    If you’ve got great products you&apos;re making or looking to
                     work with us, then drop us a line.
                   </p>
                   <div>

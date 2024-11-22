@@ -14,7 +14,7 @@ export default function RefundPolicy() {
 
                 <p>
                   At Wellness4U, we want you to be completely satisfied with
-                  your purchase. If you're not happy with your order for any
+                  your purchase. If you&apos;re not happy with your order for any
                   reason, we offer a straightforward return and refund policy to
                   ensure your peace of mind. Please review the following
                   guidelines carefully:
@@ -102,7 +102,7 @@ export default function RefundPolicy() {
                 <h2>11. Contact Us</h2>
                 <p>
                   If you have any questions or concerns regarding our return and
-                  refund policy, please don't hesitate to reach out to our
+                  refund policy, please don&apos;t hesitate to reach out to our
                   customer service team at{" "}
                   <a href="mailto:care@wellness4u.in">care@wellness4u.in</a>. We
                   are here to assist you and ensure that you have a positive

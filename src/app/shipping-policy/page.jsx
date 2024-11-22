@@ -45,7 +45,7 @@ export default function ShippingPolicy() {
     <p>If your order is returned to us due to an incorrect address provided by the customer or failed delivery attempts, we will contact you to arrange a reshipment. Additional shipping charges may apply in such cases.</p>
 
     <h2>10. Contact Us</h2>
-    <p>If you have any questions or concerns regarding our shipping policy, please don't hesitate to contact our customer service team. We are here to assist you and ensure that your shopping experience with Wellness4U is enjoyable and hassle-free.</p>
+    <p>If you have any questions or concerns regarding our shipping policy, please don&apos;t hesitate to contact our customer service team. We are here to assist you and ensure that your shopping experience with Wellness4U is enjoyable and hassle-free.</p>
 
     <p><strong>Note:</strong> This shipping policy is subject to change without prior notice. Please refer to the most recent version on our website for any updates or revisions.</p>
 

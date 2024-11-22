@@ -30,7 +30,7 @@ export default function BlogSingle() {
                   </p>
                 </div>
               <div className="content text-justify border-b pb-8">
-                <h2>Company's Journey</h2>
+                <h2>Company&apos;s Journey</h2>
                 <p>
                   Wellness4u Food Supplements was founded with a strong passion
                   for promoting health and wellness through high-quality
