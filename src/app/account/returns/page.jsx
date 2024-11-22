@@ -3,6 +3,8 @@ import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
 import Alerts from "@/app/Components/Alerts";
 import ProfileMenu from "@/app/Components/ProfileMenu";
+import AddNewReturn from "@/app/Components/AddNewReturn";
+
 
 export default function Returns() {
   const returns = [
@@ -48,7 +50,7 @@ export default function Returns() {
         <div className="container !px-0 sm:px-5">
           <div className="max-w-[999px] mx-auto">
             <AccountHeader back/>
-            <div className="sm:mt-5 mt-3 sm:pt-2">
+            <div className="sm:mt-5 mt-3 sm:pt-2 grid gap-5">
               <div>
                 <ul className="general-list">
                   {!returns && <Alerts large title="You have not any" />}
@@ -57,7 +59,8 @@ export default function Returns() {
                       <MyOrder data={item} key={index} />
                     ))}
                 </ul>
-              </div>
+             </div>
+              
             </div>
               <ProfileMenu />
           </div>

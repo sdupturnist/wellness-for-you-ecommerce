@@ -17,7 +17,7 @@ module.exports = {
         "secondary-light": "#00A1DF",  // Light Secondary Color
         "secondary-dim": "#D7F4FF",    // Dimmed Secondary Color
         dark: "#15181E",                // Dark Color
-        body: "#606875",                // Body Color
+        body: "#333",                // Body Color
         light: "#A8B3C4",               // Light Color
         white: "#fff",                  // White Color
         border: "#ECECEC",              // Border Color

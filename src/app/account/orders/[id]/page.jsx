@@ -5,6 +5,7 @@ import SectionHeader from "@/app/Components/SectionHeader";
 import AmountList from "@/app/Components/AmountList";
 import CancelOrder from "@/app/Components/CancelOrder";
 import Return from "@/app/Components/Return";
+import AddNewReturn from "@/app/Components/AddNewReturn";
 
 export default function OrderItem() {
   const order = {
@@ -82,9 +83,10 @@ export default function OrderItem() {
                     </div>
                   </div>
                 )}{" "}
-                <div className="flex gap-3 sm:px-0 px-3">
-                  {order?.order_status === "Confirmed" && <CancelOrder />}
-                  {order?.order_status === "Completed" && <Return />}
+                
+                <div className="gap-3 sm:px-0 px-3">
+                {order?.order_status === "Completed" &&  <AddNewReturn />}
+                {order?.order_status === "Confirmed" && <CancelOrder />}
                 </div>
               </div>
             </div>
@@ -94,3 +96,5 @@ export default function OrderItem() {
     </div>
   );
 }
+
+

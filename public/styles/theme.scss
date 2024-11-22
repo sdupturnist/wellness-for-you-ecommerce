@@ -46,7 +46,7 @@ input{
     @apply input-bordered w-full focus:outline-none
 }
 textarea{
-    @apply min-h-[150px] py-3
+    @apply min-h-[120px] py-3
 }
 small{
     @apply text-[12px]
@@ -113,7 +113,13 @@ small{
     h6{
         @apply text-xs
     }
+
+    img{
+        @apply rounded-lg my-7;
+    }
   
+    @apply leading-relaxed;
+
 }
 
 

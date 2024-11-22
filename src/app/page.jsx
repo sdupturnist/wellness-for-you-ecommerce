@@ -109,9 +109,9 @@ export default function Home() {
           <Testimonials data={testimonialsData} />
         </div>
       </section>
-      <section className="about content border-t sm:pb-14">
-        <div className="max-w-screen-lg mx-auto">
-          <h2>Company's Journey</h2>
+      <section className="about content border-t sm:pb-14 sm:text-center text-justify">
+        <div className="max-w-screen-lg mx-auto [&>*]:opacity-70">
+          {/* <h2>Company's Journey</h2> */}
 
           <p>
             Wellness4u Food Supplements was founded with a strong passion for
@@ -120,9 +120,6 @@ export default function Home() {
             India, where we recognized the need for a trusted supplier of
             wellness products that prioritize safety, effectiveness, and
             affordability.
-          </p>
-          <h2>Purpose and Goals</h2>
-          <p>
             Wellness4u Food Supplements was founded with a strong passion for
             promoting health and wellness through high-quality nutrition
             supplements and wellness equipment. Our journey began in Kerala,
@@ -130,24 +127,33 @@ export default function Home() {
             wellness products that prioritize safety, effectiveness, and
             affordability.
           </p>
-          <h2>Introduction to the Team</h2>
-          <p>
-            Wellness4u Food Supplements was founded with a strong passion for
-            promoting health and wellness through high-quality nutrition
-            supplements and wellness equipment. Our journey began in Kerala,
-            India, where we recognized the need for a trusted supplier of
-            wellness products that prioritize safety, effectiveness, and
-            affordability.
-          </p>
-          <h2>Offerings</h2>
-          <p>
-            Wellness4u Food Supplements was founded with a strong passion for
-            promoting health and wellness through high-quality nutrition
-            supplements and wellness equipment. Our journey began in Kerala,
-            India, where we recognized the need for a trusted supplier of
-            wellness products that prioritize safety, effectiveness, and
-            affordability.
-          </p>
+          {/* <h2>Purpose and Goals</h2> */}
+          {/* <p> */}
+            {/* Wellness4u Food Supplements was founded with a strong passion for */}
+            {/* promoting health and wellness through high-quality nutrition */}
+            {/* supplements and wellness equipment. Our journey began in Kerala, */}
+            {/* India, where we recognized the need for a trusted supplier of */}
+            {/* wellness products that prioritize safety, effectiveness, and */}
+            {/* affordability. */}
+          {/* </p> */}
+          {/* <h2>Introduction to the Team</h2> */}
+          {/* <p> */}
+            {/* Wellness4u Food Supplements was founded with a strong passion for */}
+            {/* promoting health and wellness through high-quality nutrition */}
+            {/* supplements and wellness equipment. Our journey began in Kerala, */}
+            {/* India, where we recognized the need for a trusted supplier of */}
+            {/* wellness products that prioritize safety, effectiveness, and */}
+            {/* affordability. */}
+          {/* </p> */}
+          {/* <h2>Offerings</h2> */}
+          {/* <p> */}
+            {/* Wellness4u Food Supplements was founded with a strong passion for */}
+            {/* promoting health and wellness through high-quality nutrition */}
+            {/* supplements and wellness equipment. Our journey began in Kerala, */}
+            {/* India, where we recognized the need for a trusted supplier of */}
+            {/* wellness products that prioritize safety, effectiveness, and */}
+            {/* affordability. */}
+          {/* </p> */}
         </div>
       </section>
     </div>

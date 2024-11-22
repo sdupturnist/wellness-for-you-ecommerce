@@ -13,7 +13,7 @@
   }
 }
 body {
-  color: #222;
+  color: #333;
   background: var(--background);
   @apply sm:text-base text-sm leading-[1.7];
 }
@@ -31,7 +31,7 @@ input {
 }
 
 textarea {
-  @apply min-h-[150px] py-3;
+  @apply min-h-[120px] py-3;
 }
 
 small {
@@ -66,6 +66,9 @@ small {
   @apply sm:rounded-xl rounded-md;
 }
 
+.content {
+  @apply leading-relaxed;
+}
 .content a, .content p, .content li {
   @apply text-body mb-5;
 }
@@ -95,6 +98,9 @@ small {
 }
 .content h6 {
   @apply text-xs;
+}
+.content img {
+  @apply rounded-lg my-7;
 }
 
 .btn {
