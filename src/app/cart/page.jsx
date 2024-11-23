@@ -5,6 +5,7 @@ import CartListItem from "../Components/CartListItem";
 import CouponCode from "../Components/CouponCode";
 import SectionHeader from "../Components/SectionHeader";
 
+
 export default function Cart() {
   const cartItems = [
     {
@@ -65,6 +66,8 @@ export default function Cart() {
     },
   ];
 
+  
+
   return (
     <div className="bg-bggray">
       <Breadcrumb />
@@ -73,13 +76,11 @@ export default function Cart() {
       <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,28%] cart lg:justify-between">
           <div className="bg-white sm:p-0 py-5 px-4">
-              <ul className="added-cart-list mb-5">
-                {cartItems &&
-                  cartItems.map((item, index) => (
-                    <CartListItem data={item} key={index} />
-                  ))}
-              </ul>
-              <Link href="/" className="btn btn-light">Continue shopping</Link>
+
+
+          <CartListItem />
+
+    <Link href="/" className="btn btn-light">Continue shopping</Link>
             </div>
             <div className="grid gap-7">
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">

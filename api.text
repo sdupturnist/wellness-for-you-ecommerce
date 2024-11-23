@@ -1,0 +1,788 @@
+
+
+//CREATE ACF FIELDS TO OBJECT DATA FOR REST API
+
+
+add_filter('woocommerce_rest_prepare_product_object', 'include_acf_fields_in_api_response', 10, 3);
+
+function include_acf_fields_in_api_response($response, $post, $request) {
+    $data = $response->get_data();
+	$acf_fields = get_fields($response->data['id']);
+    $data['acf'] = $acf_fields;
+    $response->set_data($data);
+    return $response;
+}
+
+
+
+
+add_filter('rest_prepare_main-category', 'include_acf_fields_in_main_category_response', 10, 3);
+
+function include_acf_fields_in_main_category_response($response, $post, $request) {
+    // Check if ACF is active
+    if (function_exists('get_fields')) {
+        $data = $response->get_data();
+        $acf_fields = get_fields($post->ID); // Use $post->ID to get ACF fields
+
+        // Check if ACF fields exist
+        if ($acf_fields) {
+            $data['acf'] = $acf_fields;
+        } else {
+            $data['acf'] = []; // Return an empty array if no fields found
+        }
+
+        $response->set_data($data);
+    }
+
+    return $response;
+}
+
+
+
+
+add_filter('rest_prepare_sub-categories', 'include_acf_fields_in_sub_categories_response', 10, 3);
+
+function include_acf_fields_in_sub_categories_response($response, $post, $request) {
+    // Check if ACF is active
+    if (function_exists('get_fields')) {
+        $data = $response->get_data();
+        $acf_fields = get_fields($post->ID); // Use $post->ID to get ACF fields
+
+        // Check if ACF fields exist
+        if ($acf_fields) {
+            $data['acf'] = $acf_fields;
+        } else {
+            $data['acf'] = []; // Return an empty array if no fields found
+        }
+
+        $response->set_data($data);
+    }
+
+    return $response;
+}
+
+
+
+
+
+
+add_filter('acf/rest_api/menu_item/get_fields', function($fields, $post) {
+    // Replace 'your_field_name' with the actual name of your ACF field
+    $fields['arabic'] = get_field('arabic', $post->ID);
+    return $fields;
+});
+
+
+
+
+
+//FEATURED IMAGES FOR POSTS AND PAGES TO DSIPLAY IN REST API
+
+add_action('rest_api_init', 'register_rest_images');
+function register_rest_images() {
+    // Register for posts
+    register_rest_field('post', 'fea_data', array(
+        'get_callback'    => 'get_rest_featured_image_data',
+        'update_callback' => null,
+        'schema'          => null,
+    ));
+
+    // Register for pages
+    register_rest_field('page', 'fea_data', array(
+        'get_callback'    => 'get_rest_featured_image_data',
+        'update_callback' => null,
+        'schema'          => null,
+    ));
+}
+
+function get_rest_featured_image_data($object, $field_name, $request) {
+    if ($object['featured_media']) {
+        $attachment_id = $object['featured_media'];
+        $img = wp_get_attachment_image_src($attachment_id, 'app-thumb');
+        $attachment_meta = wp_get_attachment_metadata($attachment_id);
+        $alt_text = get_post_meta($attachment_id, '_wp_attachment_image_alt', true);
+
+        return array(
+            'url'    => $img[0],
+            'alt'    => $alt_text,
+            'width'  => isset($img[1]) ? $img[1] : null,
+            'height' => isset($img[2]) ? $img[2] : null,
+            'sizes'  => isset($attachment_meta['sizes']) ? $attachment_meta['sizes'] : null,
+        );
+    }
+    return false;
+}
+
+
+
+add_action('rest_api_init', function () {
+    error_log('REST API Initialized for main-category');
+    
+    register_rest_field('main-category', 'sub_cat', [
+        'get_callback' => function ($data) {
+            $post_id = $data['id'];
+            error_log('Getting sub_cat for post ID: ' . $post_id);
+            return get_field('sub_cat', $post_id);
+        },
+        'schema' => null,
+    ]);
+});
+
+
+////////MENU
+
+function register_site_menu_endpoint() {
+    register_rest_route('sitemenu/v1', '/menus/(?P<slug>[\w-]+)', array(
+        'methods' => 'GET',
+        'callback' => 'get_menu_by_slug',
+    ));
+}
+
+function get_menu_by_slug($data) {
+    $slug = $data['slug'];
+    $menu = wp_get_nav_menu_object($slug);
+
+    if (!$menu) {
+        return new WP_Error('no_menu', 'Menu not found', array('status' => 404));
+    }
+
+    $menu_items = wp_get_nav_menu_items($menu->term_id);
+
+    // Loop through menu items and add ACF fields
+    foreach ($menu_items as $item) {
+        // Get ACF fields for this menu item
+        $item->acf = get_fields($item->ID); // Replace with the specific field retrieval if needed
+    }
+
+    return new WP_REST_Response($menu_items, 200);
+}
+
+add_action('rest_api_init', 'register_site_menu_endpoint');
+
+
+
+
+
+
+//https://demo.chuchoterqatar.com/wp-json/sitemenu/v1/menus/footer-menu
+
+
+
+
+// Register Custom Post Type for Product Reviews
+function create_product_reviews_post_type() {
+    register_post_type('product-reviews',
+        array(
+            'labels' => array(
+                'name' => __('Product Reviews'),
+                'singular_name' => __('Product Review')
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'supports' => array('title', 'editor', 'custom-fields'),
+            'rewrite' => array('slug' => 'product-reviews'),
+            'show_in_rest' => true, // Enable REST API support
+            'rest_base' => 'product-reviews', // Optional: custom base for REST API
+            'rest_controller_class' => 'WP_REST_Posts_Controller', // Optional: custom controller class
+        )
+    );
+}
+add_action('init', 'create_product_reviews_post_type');
+
+// Register Custom Fields
+function register_product_review_meta() {
+    register_meta('post', 'name', array(
+        'show_in_rest' => true, // Expose in REST API
+        'single' => true,
+        'type' => 'string',
+    ));
+    register_meta('post', 'email', array(
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+    ));
+    register_meta('post', 'rating', array(
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+    ));
+    register_meta('post', 'product_id', array(
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+    ));
+}
+add_action('init', 'register_product_review_meta');
+
+// Optional: Insert Sample Data
+function insert_sample_product_review() {
+    $data = array(
+        'post_title' => 'Great Product!',
+        'post_content' => 'I really enjoyed using this product.',
+        'post_type' => 'product-reviews',
+        'post_status' => 'publish',
+    );
+
+    $post_id = wp_insert_post($data);
+
+    if (!is_wp_error($post_id)) {
+        update_post_meta($post_id, 'name', 'John Doe');
+        update_post_meta($post_id, 'email', 'john@example.com');
+        update_post_meta($post_id, 'rating', '5');
+        update_post_meta($post_id, 'product_id', '12345');
+    }
+}
+
+// Uncomment to run the sample data insertion function once
+// add_action('init', 'insert_sample_product_review');
+
+
+
+////////REST API PRODUCTS////////
+// Hook into REST API initialization to register custom routes
+
+// Register REST API endpoint
+add_action( 'rest_api_init', function() {
+    register_rest_route( 'wc-custom/v1', '/products', [
+        'methods' => 'GET',
+        'callback' => 'get_wc_custom_products',
+        'args' => [
+            'category' => [
+                'required' => false,
+            ],
+            'search' => [
+                'required' => false,
+            ],
+            'min_price' => [
+                'required' => false,
+            ],
+            'page' => [
+                'required' => false,
+                'default' => 1, // Default page is 1 if not provided
+            ],
+            'per_page' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    // Validate that per_page is a positive integer
+                    return is_numeric( $param ) && $param > 0 && $param <= 100; // Limit max per_page to 100
+                },
+                'default' => 30, // Default per_page is 30 if not provided
+            ],
+            'reviews_count' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    // Validate that reviews_count is a valid number
+                    return is_numeric( $param );
+                },
+            ],
+        ],
+    ]);
+});
+
+// Callback function to handle the API request and retrieve product data
+function get_wc_custom_products( $data ) {
+    // Get the parameters from the request
+    $category = $data->get_param( 'category' );
+    $search = $data->get_param( 'search' );
+    $min_price = $data->get_param( 'min_price' );
+    $page = $data->get_param( 'page' );
+    $per_page = $data->get_param( 'per_page' );
+    $reviews_count = $data->get_param( 'reviews_count' ); // reviews_count filter
+
+    // Arguments for WP_Query to get the products
+    $args = array(
+        'post_type' => 'product', // Fetch products
+        'posts_per_page' => $per_page,   // Number of products per page
+        'paged' => $page,                // Pagination: specify the current page
+        'post_status' => 'publish', // Only fetch published products
+    );
+
+    // If a category is provided, filter by category
+    if ( !empty( $category ) ) {
+        if ( is_numeric( $category ) ) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'id',
+                    'terms'    => $category,
+                    'operator' => 'IN',
+                ),
+            );
+        } else {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => $category,
+                    'operator' => 'IN',
+                ),
+            );
+        }
+    }
+
+    // If a search term is provided, filter by the search query
+    if ( !empty( $search ) ) {
+        $args['s'] = $search; // Add the search parameter to the query
+    }
+
+    // If a minimum price is provided, filter by price
+    if ( !empty( $min_price ) ) {
+        $args['meta_query'] = array(
+            array(
+                'key' => '_price', // Meta key for product price
+                'value' => $min_price,
+                'compare' => '>=',
+                'type' => 'NUMERIC',
+            ),
+        );
+    }
+
+    // If reviews_count filter is provided, filter by _product_review_count
+    if ( !empty( $reviews_count ) ) {
+        // Initialize meta_query if it is not already set
+        if ( !isset( $args['meta_query'] ) ) {
+            $args['meta_query'] = [];
+        }
+
+        // Add the filter for _product_review_count
+        $args['meta_query'][] = array(
+            'key' => '_product_review_count', // The product review count post meta key
+            'value' => $reviews_count,
+            'compare' => '>=', // Filter for products with reviews greater than or equal to the specified value
+            'type' => 'NUMERIC',
+        );
+    }
+
+    // Run the query
+    $query = new WP_Query( $args );
+    $products = [];
+
+    if ( $query->have_posts() ) {
+        // Loop through each product
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $product = wc_get_product( get_the_ID() );
+
+            // Get product categories
+            $categories = wp_get_post_terms( get_the_ID(), 'product_cat' );
+            $category_data = [];
+
+            // Loop through categories and get 'arabic_label' ACF field
+            foreach ( $categories as $category ) {
+                // Get ACF field 'arabic_label' for the current category
+                $arabic_label = get_field( 'arabic_label', 'product_cat_' . $category->term_id );
+
+                $category_data[] = [
+                    'id' => $category->term_id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'arabic_label' => $arabic_label, // Add arabic_label
+                ];
+            }
+
+            // Get ACF fields (if any)
+            $acf_fields = get_fields( get_the_ID() );
+
+            // Get Yoast SEO data (make sure Yoast SEO plugin is installed)
+            $yoast_head_json = function_exists('wpseo_json_ld_output') ? wpseo_json_ld_output() : '';
+
+
+            // Get post meta (additional post meta fields)
+            $post_meta = get_post_meta( get_the_ID() );
+
+
+            // Add product data to the response array
+            $products[] = [
+                'id' => $product->get_id(),
+                'name' => $product->get_name(),
+                'slug' => $product->get_slug(),
+                'description' => $product->get_description(),
+                'short_description' => $product->get_short_description(),
+                'price' => $product->get_price(),
+                'regular_price' => $product->get_regular_price(),
+                'sale_price' => $product->get_sale_price(),
+                'images' => wp_get_attachment_url( $product->get_image_id() ),
+                'categories' => $category_data, // Include category data with arabic_label
+                'acf' => $acf_fields, // ACF fields
+                'yoast_head_json' => $yoast_head_json, // Yoast SEO head JSON
+                'post_meta' => $post_meta, // Post meta fields
+            ];
+        }
+        wp_reset_postdata(); // Reset post data to avoid conflicts
+    }
+
+    // Get total count of products
+    $total_products = $query->found_posts;
+
+    // Prepare response with pagination information
+    $response = [
+        'products' => $products,
+        'pagination' => [
+            'total_products' => $total_products,
+            'total_pages' => ceil( $total_products / $per_page ),
+            'current_page' => $page,
+            'per_page' => $per_page,
+        ]
+    ];
+
+    // Return the product data with pagination info
+    return new WP_REST_Response( $response, 200 );
+}
+
+
+// https://admin.chuchoterqatar.com/wp-json/wc-custom/v1/products/?category=flowers&search=&min_price=0&page=1&per_page=30&reviews_count=0
+
+
+//COUNT OF TOTAL PTODUCTS
+
+add_action('rest_api_init', function () {
+    // Register the route with a 'categories' parameter (a comma-separated list of category names)
+    register_rest_route('wc-custom/v1', '/products/count', array(
+        'methods' => 'GET',
+        'callback' => 'get_product_count_by_categories',
+        'permission_callback' => '__return_true', // Adjust permissions as needed
+        'args' => array(
+            'categories' => array(
+                'required' => true, // Make the categories parameter required
+                'validate_callback' => function ($param, $request, $key) {
+                    return !empty($param); // Ensure the categories parameter is not empty
+                },
+            ),
+        ),
+    ));
+});
+
+function get_product_count_by_categories($data) {
+    // Get the categories string from the request
+    $categories_string = sanitize_text_field($data['categories']); // Sanitize the input
+    
+    // Split the string into an array of categories (by comma)
+    $categories = array_map('sanitize_text_field', explode(',', $categories_string));
+
+    // Query to count products by multiple categories
+    $args = array(
+        'post_type' => 'product',  // WooCommerce product post type
+        'post_status' => 'publish',
+        'fields' => 'ids', // Only get product IDs for faster performance
+        'posts_per_page' => -1, // Get all products
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat', // Use the 'product_cat' taxonomy
+                'field' => 'name', // Filter by category names
+                'terms' => $categories, // The list of categories to filter by
+                'operator' => 'IN', // The 'IN' operator ensures any product that belongs to any of these categories will be counted
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+    $total_count = $query->post_count; // Get the count of products
+
+    return new WP_REST_Response(array('categories' => $categories, 'total_count' => $total_count), 200);
+}
+
+
+
+//https://admin.chuchoterqatar.com/wp-json/wc-custom/v1/products/count?categories=Flowers,test%202
+
+
+
+//PRODUCT SINGLE
+
+add_action( 'rest_api_init', function() {
+    // Register a new REST API route under the namespace 'wc-single/v1'
+    register_rest_route( 'wc-single/v1', '/products-single/', [
+        'methods' => 'GET',
+        'callback' => 'get_wc_single_products',
+        'permission_callback' => '__return_true',
+        'args' => [
+            'page' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    return is_numeric( $param ) && $param > 0;
+                },
+                'default' => 1, // Default page is 1 if not provided
+            ],
+            'per_page' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    return is_numeric( $param ) && $param > 0 && $param <= 100;
+                },
+                'default' => 1, // Default per_page is 1 if not provided
+            ],
+            'slug' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    return is_string( $param );
+                },
+            ],
+            'category' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    return is_string( $param );
+                },
+            ],
+        ],
+    ]);
+});
+
+// Callback function to handle the API request and retrieve product data
+function get_wc_single_products( $data ) {
+    // Get the parameters from the request
+    $page = $data->get_param( 'page' );
+    $per_page = $data->get_param( 'per_page' );
+    $slug = $data->get_param( 'slug' ); // Get the slug parameter from the request
+    $category = $data->get_param( 'category' ); // Get the category parameter from the request
+
+    // Arguments for WP_Query to get the products
+    $args = [
+        'post_type' => 'product', // Fetch products
+        'posts_per_page' => $per_page,   // Number of products per page
+        'paged' => $page,                // Pagination: specify the current page
+        'post_status' => 'publish', // Only fetch published products
+    ];
+
+    // If a slug is provided, filter by product slug
+    if ( !empty( $slug ) ) {
+        $args['name'] = $slug; // Filter products by slug (post_name)
+    }
+
+    // If a category is provided, filter by category slug
+    if ( !empty( $category ) ) {
+        $args['tax_query'] = [
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $category,
+                'operator' => 'IN',
+            ],
+        ];
+    }
+
+    // Run the query
+    $query = new WP_Query( $args );
+    $products = [];
+
+    if ( $query->have_posts() ) {
+        // Loop through each product
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $product = wc_get_product( get_the_ID() );
+
+            // Get product categories
+            $categories = wp_get_post_terms( get_the_ID(), 'product_cat' );
+            $category_data = [];
+
+            foreach ( $categories as $category ) {
+                // Get ACF field 'arabic_label' for the current category
+                $arabic_label = get_field( 'arabic_label', 'product_cat_' . $category->term_id );
+
+                $category_data[] = [
+                    'id' => $category->term_id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'arabic_label' => $arabic_label, // Add arabic_label
+                ];
+            }
+
+            // Get product images (featured image)
+            $images = [];
+            if ( has_post_thumbnail() ) {
+                $images[] = wp_get_attachment_url( get_post_thumbnail_id() );
+            }
+
+            // Get ACF fields (if any)
+            $acf_fields = get_fields( get_the_ID() );
+
+            // Get Yoast SEO data (make sure Yoast SEO plugin is installed)
+            $yoast_head_json = function_exists('wpseo_json_ld_output') ? wpseo_json_ld_output() : '';
+
+            // Add product data to the response array
+            $products[] = [
+                'id' => $product->get_id(),
+                'name' => $product->get_name(),
+                'slug' => $product->get_slug(),
+                'description' => $product->get_description(),
+                'short_description' => $product->get_short_description(),
+                'price' => $product->get_price(),
+                'regular_price' => $product->get_regular_price(),
+                'sale_price' => $product->get_sale_price(),
+                'images' => $images, // Product images
+                'categories' => $category_data, // Include category data with arabic_label
+                'acf' => $acf_fields, // ACF fields
+                'yoast_head_json' => $yoast_head_json, // Yoast SEO head JSON
+            ];
+        }
+        wp_reset_postdata(); // Reset post data to avoid conflicts
+    }
+
+    // Get total count of products
+    $total_products = $query->found_posts;
+
+    // Prepare response with pagination information
+    $response = [
+        'products' => $products,
+        'pagination' => [
+            'total_products' => $total_products,
+            'total_pages' => ceil( $total_products / $per_page ),
+            'current_page' => $page,
+            'per_page' => $per_page,
+        ]
+    ];
+
+    // Return the product data with pagination info
+    return new WP_REST_Response( $response, 200 );
+}
+
+
+
+//https://admin.chuchoterqatar.com/wp-json/wc-single/v1/products-single/?slug=test-2-flower-product&page=1&per_page=1
+
+
+
+// SUBCATEOGARY GET BY CATEOGARY NAME FROM ALL PRODUCTS
+
+add_action('rest_api_init', function () {
+    register_rest_route('subcat/v1', '/products', array(
+        'methods' => 'GET',
+        'callback' => 'get_filtered_products',
+        'permission_callback' => '__return_true', // Adjust for security as needed
+    ));
+});
+
+function get_filtered_products($request) {
+    $categories = $request->get_param('categories');
+    $per_page = $request->get_param('per_page') ?: 10;
+
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => $per_page,
+    );
+
+    if ($categories) {
+        $child_terms = explode(',', $categories);
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $child_terms,
+                'include_children' => false, // Don't include children of parent categories
+            ),
+        );
+    }
+
+    $query = new WP_Query($args);
+    $products = array();
+    $all_term_ids = array(); // Array to track all unique term IDs
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $product_id = get_the_ID();
+            $product = array(
+                'id' => $product_id,
+                'categories' => array(),
+            );
+
+            // Get categories
+            $terms = wp_get_post_terms($product_id, 'product_cat');
+            $unique_terms = array(); // Array to track unique terms for this product
+
+            foreach ($terms as $term) {
+                // Only add category if its term ID hasn't been added yet
+                if (!in_array($term->term_id, $all_term_ids)) {
+                    // Get ACF field for the category
+                    $arabic_label = get_field('arabic_label', 'product_cat_' . $term->term_id);
+                    
+                    $product['categories'][] = array(
+                        'term_id' => $term->term_id,
+                        'name' => $term->name,
+                        'slug' => $term->slug,
+                        'arabic_label' => $arabic_label ? $arabic_label : null, // Add arabic_label, or null if not set
+                    );
+
+                    $unique_terms[] = $term->term_id; // Track unique term ID for this product
+                    $all_term_ids[] = $term->term_id; // Track all unique term IDs across products
+                }
+            }
+
+            // Only add product if it has categories
+            if (!empty($product['categories'])) {
+                $products[] = $product;
+            }
+        }
+        wp_reset_postdata();
+    }
+
+    return new WP_REST_Response($products, 200);
+}
+
+
+//https://admin.chuchoterqatar.com/wp-json/subcat/v1/products?per_page=1000&categories=flowers
+
+
+
+//EXCLUDE TRANSALATIONS
+
+function exclude_custom_post_types_from_translation($post_types) {
+    //Debug: Output post types
+    error_log(print_r($post_types, true));
+
+    // Exclude specific post types
+    unset($post_types['product']); // Exclude default post type
+    
+    // Debug: Output modified post types
+    error_log(print_r($post_types, true));
+
+    return $post_types;
+}
+add_filter('pll_get_post_types', 'exclude_custom_post_types_from_translation');
+
+
+
+//test
+// Register the custom REST API route for updating the title of a product review
+// Register the custom REST API route for updating the ACF field 'user_reviews' and adding post meta for a WooCommerce product
+function update_product_review_and_acf_endpoint() {
+    register_rest_route('wc-custom/v1', '/products/reviews-count/', array(
+        'methods' => 'PUT',  // Use PUT method for updating a resource
+        'callback' => 'update_product_review_and_acf',
+        'permission_callback' => function() {
+            return current_user_can('edit_products');  // Ensure the user has permission to edit products
+        },
+    ));
+}
+
+add_action('rest_api_init', 'update_product_review_and_acf_endpoint');
+
+// Callback function to update the ACF field 'user_reviews' and post meta of a WooCommerce product post
+function update_product_review_and_acf(WP_REST_Request $request) {
+    // Get parameters from the request
+    $product_id = $request->get_param('id');  // Product ID to update
+    $user_reviews = $request->get_param('user_reviews');  // New ACF field value (user_reviews)
+    $post_meta_key = $request->get_param('meta_key');  // Post meta key
+    $post_meta_value = $request->get_param('meta_value');  // Post meta value
+
+    // Validate required parameters
+    if (empty($product_id) || empty($user_reviews)) {
+        return new WP_REST_Response('Missing required parameters: ID and user_reviews are required.', 400);
+    }
+
+    // Ensure the product exists and check if it's of the correct post type (product)
+    $product = get_post($product_id);
+    if (!$product || 'product' !== $product->post_type) {
+        return new WP_REST_Response('Product not found or invalid post type.', 404);
+    }
+
+    // If 'user_reviews' was provided, update the ACF field
+    update_field('user_reviews', sanitize_textarea_field($user_reviews), $product_id);
+
+    // If 'meta_key' and 'meta_value' are provided, update the post meta
+    if (isset($post_meta_key) && isset($post_meta_value)) {
+        // Update the product post meta with the provided key and value
+        update_post_meta($product_id, sanitize_text_field($post_meta_key), sanitize_text_field($post_meta_value));
+    }
+
+    // Return a success response
+    return new WP_REST_Response('Product reviews and post meta updated successfully.', 200);
+}

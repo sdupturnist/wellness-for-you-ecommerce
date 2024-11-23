@@ -9,6 +9,9 @@ import Link from "next/link";
 
 
 export default function BannerSliderLarge({ data }) {
+
+
+  
   const settings = {
     dots: false, // Show navigation dots
     arrows:false,
@@ -22,18 +25,19 @@ export default function BannerSliderLarge({ data }) {
     
   };
 
-  const items = data.map((item, index) => (
+  //console.log(data[0])
+
+  const items = data?.map((item, index) => (
    <Link 
    key={index}
-   href={homeUrl}>
+   href={`${homeUrl}${item?.slug}`}>
      <Images
-    key={index}
-    imageurl={item?.product_photo}
+    imageurl={item?.featured_image?.url}
     quality="100"
     width="900"
     height="150"
-    title={item?.product_title}
-    alt={item?.product_title}
+    title={item?.featured_image?.alt}
+    alt={item?.featured_image?.alt}
     classes="block w-full h-[150px] banner"
     placeholder={true}
   />

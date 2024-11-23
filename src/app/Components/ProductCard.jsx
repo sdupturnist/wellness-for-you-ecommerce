@@ -62,7 +62,19 @@ export default function ProductCard({
                 {data?.offer}% OFF
               </span>
             </div>
-            {!inCartPage && <AddToCart />}
+
+           
+            {!inCartPage && 
+            <AddToCart
+            card
+            itemid={data?.id ?? null}
+            price={
+              data?.sale_price !== null
+                ? data?.sale_price
+                : data?.normal_price
+            }
+            name={data?.product_title}
+            />}
           </div>
         </div>
       </div>
@@ -108,7 +120,18 @@ export default function ProductCard({
               {data?.offer}% OFF
             </span>
           </div>
-          <AddToCart />
+          {console.log(data?.id)}
+          {!inCartPage && 
+            <AddToCart
+            card
+            itemid={data?.id}
+            price={
+              data?.sale_price !== null
+                ? data?.sale_price
+                : data?.normal_price
+            }
+            name={data?.product_title}
+            />}
         </div>
       </div>
     </div>
@@ -166,7 +189,17 @@ export default function ProductCard({
                   {data?.offer}% OFF
                 </span>
               </div>
-              <AddToCart />
+              {!inCartPage && 
+            <AddToCart
+            card
+            itemid={data?.id ?? null}
+            price={
+              data?.sale_price !== null
+                ? data?.sale_price
+                : data?.normal_price
+            }
+            name={data?.product_title}
+            />}
             </div>
           </div>
         </div>

@@ -24,15 +24,14 @@ export default function BannerSliderSmall({ data }) {
   const items = data.map((item, index) => (
     <Link
     key={index}
-    href={homeUrl}>
+    href={`${homeUrl}${item?.slug}`}>
     <Images
-    key={index}
-    imageurl={item?.product_photo}
+    imageurl={item?.featured_image?.url}
     quality="100"
     width="425"
     height="150"
-    title={item?.product_title}
-    alt={item?.product_title}
+    title={item?.featured_image?.alt}
+    alt={item?.featured_image?.alt}
     classes="block w-full h-[150px] banner"
     placeholder={true}
   />

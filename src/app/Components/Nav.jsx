@@ -3,10 +3,20 @@
 import Link from "next/link"
 import { homeUrl } from "../Utils/variables"
 import DropDown from "./DropDown"
+import { useCartContext } from "../Context/cartContext"
 
 
 
 export default function Nav(){
+
+
+  const { cartItems } = useCartContext();
+
+  const cartCount = cartItems && cartItems.length;
+
+  const currentCartCount = cartCount == null ? 0 : cartCount;
+
+
     return(
       <>
          <Link href={homeUrl}>
@@ -36,7 +46,7 @@ export default function Nav(){
                 </svg>
               </Link>
               <Link className="relative" href={`${homeUrl}cart`}>
-                <span className="indicator-item badge">0</span>
+                <span className="indicator-item badge">{currentCartCount}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

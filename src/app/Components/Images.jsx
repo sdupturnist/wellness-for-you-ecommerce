@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { siteName } from "../Utils/variables"
 
 
 
@@ -18,8 +19,8 @@ export default function Images({imageurl, styles, quality, width, height, alt, c
     blurDataURL={blurUrl_}
     src={imageurl}
     className={classes}
-    alt={alt}
-    title={alt}
+    alt={alt || siteName}
+    title={alt || siteName}
     />}
    
     </>

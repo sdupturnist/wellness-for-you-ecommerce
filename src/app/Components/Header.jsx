@@ -7,11 +7,14 @@ import { homeUrl } from "../Utils/variables";
 import { useState } from "react";
 import Nav from "./Nav";
 
+
 export default function Header() {
   const [searchMobileVisible, setSearchMobileVisible] = useState(false);
 
+
   return (
     <header className="py-4 border-b border">
+  
       <div className="container">
         <div className="flex items-center justify-between gap-[30px]">
           <div className="logo">

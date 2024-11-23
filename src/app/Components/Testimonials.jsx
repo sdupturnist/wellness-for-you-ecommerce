@@ -7,13 +7,15 @@ import "slick-carousel/slick/slick-theme.css";
 export default function Testimonials({ data }) {
   const settings = {
     dots: false, // Show navigation dots
-    infinite: true, // Infinite looping
+    infinite: false, // Infinite looping
     speed: 500, // Slide transition speed in ms
     slidesToShow: 1, // Display one testimonial at a time
     slidesToScroll: 1, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
     autoplaySpeed: 3000, // Time between slides in ms
   };
+
+ 
 
   const items = data.map((testimonial, index) => (
     <div key={index} className="p-4">
@@ -24,8 +26,9 @@ export default function Testimonials({ data }) {
         ))}
       </div>
       <div className="grid sm:gap-6 gap-4 text-center">
-        <p className="text-dark">{testimonial.review}</p>
-        <span className="opacity-50">{testimonial.customer}</span>
+      <p className="text-dark"
+            dangerouslySetInnerHTML={{ __html: testimonial?.content?.rendered }}></p>
+        <span className="opacity-50">{testimonial?.title?.rendered}</span>
       </div>
     </div>
   ));
