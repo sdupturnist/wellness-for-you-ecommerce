@@ -61,7 +61,7 @@ export default function Address() {
                     </div>
                   ))}
                   
-                   <div>
+                   <div className="sm:mt-0 mt-2">
                    <AddNewAddress />
                    </div>
               </div>

@@ -67,20 +67,27 @@ export default function MyOrder({ data, orderView }) {
                 <div className="sm:flex items-center justify-between gap-2 border-t lg:border-none mt-4 lg:mt-0 ">
                   <ul className="list-order-view">
                     <li>
-                      <label>Order ID</label>#{data?.order_id}
+                      <label>Order ID</label>
+                      <span className="font-semibold">
+                      #{data?.order_id}
+                      </span>
                     </li>
                     <li>
                       <label>Amount</label>
+                      <span className="font-semibold">
                       {currency}
                       {data?.order_amount} ({data?.items?.length} items)
+                      </span>
                     </li>
                     <li>
                       <label>Order Date</label>
+                      <span className="font-semibold">
                       {data?.order_date}
-                    </li>
+                      </span>
+                      </li>
                     <li>
                       <label>Status</label>
-                      <span className={`${statusColorClass}`}>
+                      <span className={`${statusColorClass} font-bold`}>
                         {data?.order_status}
                       </span>
                     </li>

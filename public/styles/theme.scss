@@ -20,6 +20,18 @@
 }
 
 
+
+//DAISY UI
+
+
+.checkbox:checked, .checkbox[aria-checked="true"] {
+    background-repeat: no-repeat;
+    animation: checkmark var(--animation-input, .2s) ease-out;
+    background-color: var(--chkbg);
+    background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%), linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%), linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%), linear-gradient(45deg, var(--chkbg) 30%, oklch(1 0 0) 30.99%, oklch(1 0 0) 40%, transparent 40.99%), linear-gradient(-45deg, oklch(1 0 0) 50%, var(--chkbg) 50.99%);
+}
+
+
 //PDF
 
 
@@ -55,6 +67,11 @@ small{
 .badge{
    @apply size-6 bg-primary text-white text-xs absolute top-[-5px] right-[-15px] font-normal
 }
+
+
+
+
+
 
 
 .container{
@@ -168,7 +185,7 @@ small{
 
    
 
-    @apply bg-white sm:rounded-[12px]  sm:border border-r border-border flex-col justify-start items-start inline-flex sm:hover:shadow-lg transition-all;
+    @apply bg-white rounded-[12px]  border  border-border flex-col justify-start items-start inline-flex sm:hover:shadow-lg transition-all;
 
     .img-box{
        @apply w-full min-h-[190px] p-[5px]  justify-center items-center gap-2.5 inline-flex;
@@ -200,17 +217,17 @@ small{
 
     }
     .count{
-        @apply bg-primary flex items-center text-white rounded px-1 gap-[2px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[4px] pl-[5px]
+        @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[4px] pl-[5px]
     }
     
 }
 
 .count{
-    @apply bg-primary flex items-center text-white rounded px-1 gap-[2px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[4px] pl-[5px]
+    @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[4px] pl-[5px]
 }
 
 .count-large{
-    @apply bg-primary flex items-center text-white rounded px-2 gap-[4px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[6px] 
+    @apply bg-yellow flex items-center text-dark rounded px-2 gap-[4px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[6px] 
 }
 
 
@@ -249,7 +266,7 @@ small{
     }
 
     .count{
-        @apply bg-primary flex items-center text-white rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px]
+        @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px]
     }
 }
 
@@ -289,7 +306,7 @@ small{
     }
 
     .count{
-        @apply bg-primary flex items-center text-white rounded px-1 gap-[2px] text-[11px] leading-[10px] font-semibold py-[4px] pl-[5px]
+        @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] text-[11px] leading-[10px] font-semibold py-[4px] pl-[5px]
     }
 }
 
@@ -494,11 +511,11 @@ footer{
 
     .added-cart-list{
         li{
-            @apply lg:flex items-center justify-between gap-8 border-b border-border pb-3
+            @apply lg:flex items-center justify-between gap-8 border-b border-border sm:pb-3 py-6 first:pt-0
         }
 
         button.option-btn{
-            @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] h-[30px] min-h-[30px] lg:border border-0
+            @apply  whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[35px] min-h-[30px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
         }
     }
 
@@ -522,12 +539,15 @@ footer{
     }
 
     .amount-list{
+        @apply grid gap-3;
         li{
             @apply flex items-center justify-between text-sm;
             .val{
-                @apply text-dark
+                @apply text-dark block p-0 m-0 font-semibold;
             }
-
+            .label{
+                @apply  block p-0 m-0;
+            }
             
         }
     }
@@ -623,3 +643,13 @@ footer{
     }
    }
   } 
+
+
+
+  //ALERT
+
+  .alert{
+    svg{
+        @apply min-w-4 min-h-4;
+    }
+  }

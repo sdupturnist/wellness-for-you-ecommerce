@@ -34,12 +34,12 @@ export default function ProductCard({
             classes={`${
               inCartPage
                 ? "size-[50px] sm:size-[90px] m-[5px]"
-                : "size-[100px] m-[15px]"
+                : "size-[80px] sm:size-[90px] m-[15px]"
             } block  mx-auto`}
             placeholder={true}
           />
         </Link>
-        <div className="sm:p-5 p-3 pl-0 pr-0 w-full grid items-center">
+        <div className="p-5 pl-0 pr-0 w-full grid items-center">
           <div>
             <Link href={`${homeUrl}/test-cat/test-product`}>
               <h3 className="product-title text-dark mb-2">
@@ -74,7 +74,7 @@ export default function ProductCard({
       <div className="sm:block flex w-full relative">
         {wishlist && <AddToWishList small active />}
         <Link
-          className="block min-w-32"
+          className="flex items-center min-w-32"
           href={`${homeUrl}/test-cat/test-product`}>
           <Images
             imageurl={data?.product_photo}
@@ -82,11 +82,11 @@ export default function ProductCard({
             width="150"
             height="150"
             alt="Wellness for you"
-            classes="block sm:size-[150px] size-[100px] m-[15px] mx-auto"
+            classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
             placeholder={true}
           />
         </Link>
-        <div className="sm:p-4 sm:pt-0 p-5 pl-3 pr-0 w-full">
+        <div className="sm:p-4 sm:pt-0 p-5 sm:pl-3 pl-0 pr-0 w-full">
           <Link href={`${homeUrl}/test-cat/test-product`}>
             <h3 className="product-title text-dark mb-2">
               {data?.product_title}
@@ -139,12 +139,12 @@ export default function ProductCard({
                 width="150"
                 height="150"
                 alt="Wellness for you"
-                classes="block size-[150px] m-[15px] mx-auto"
+                classes="block sm:size-[150px] size-[90px] sm:m-[15px] m-[8px] mt-[12px] mx-auto"
                 placeholder={true}
               />
             </Link>
 
-            <div className="sm:p-4 pt-0">
+            <div className="p-4 pt-0">
               <Link href={`${homeUrl}/test-cat/test-product`}>
                 <h3 className="product-title text-dark mb-2">
                   {data?.product_title}

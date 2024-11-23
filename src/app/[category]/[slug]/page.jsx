@@ -142,7 +142,7 @@ export default function ItemSingle() {
                 <AddToCartWithQty />
                 <AddToWishList />
               </div>
-              <div className="gap-2 inline-flex">
+              <div className="gap-2 sm:inline-flex">
                 <Features data={singleProduct?.features} />
               </div>
               <div className="grid gap-4">
@@ -151,10 +151,10 @@ export default function ItemSingle() {
               </div>
             </div>
           </div>
-          <div className="mt-14">
+          <div className="sm:mt-14 mt-7">
             <div className="grid gap-5">
               {singleProduct?.description && (
-                <div className="collapse collapse-plus border">
+                <div className="collapse collapse-plus border rounded-lg">
                   <input type="radio" name="my-accordion-3" />
                   <div className="collapse-title text-md text-dark font-medium">
                     Description
@@ -170,7 +170,7 @@ export default function ItemSingle() {
               )}
 
               {singleProduct?.additional_informations && (
-                <div className="collapse collapse-plus border">
+                <div className="collapse collapse-plus border rounded-lg">
                   <input type="radio" name="my-accordion-3" />
                   <div className="collapse-title text-md text-dark font-medium">
                     Additional information
@@ -186,7 +186,7 @@ export default function ItemSingle() {
               )}
 
               {singleProduct?.shipping_delivery && (
-                <div className="collapse collapse-plus border">
+                <div className="collapse collapse-plus border rounded-lg">
                   <input type="radio" name="my-accordion-3" />
                   <div className="collapse-title text-md text-dark font-medium">
                     Shipping Delivery
@@ -202,17 +202,21 @@ export default function ItemSingle() {
               )}
 
               {singleProduct?.reviews.length > 0 && (
-                <div className="collapse collapse-plus border">
+                <div className="collapse collapse-plus border rounded-lg">
                   <input type="radio" name="my-accordion-3" />
                   <div className="collapse-title text-md text-dark font-medium">
                     Reviews
                   </div>
                   <div className="collapse-content">
-                    <div className="flex justify-between items-center border-b pb-4">
+                    <div className="sm:flex gap-4 justify-between sm:items-center border-b pb-4">
                       <p>Rate this Backer and tell others what you think</p>
+                      <div className="sm:mt-0 mt-2">
                       <WriteReview />
+                      </div>
                     </div>
-                    <Reviews data={singleProduct && singleProduct?.reviews} />
+                   <div className="mt-5">
+                   <Reviews data={singleProduct && singleProduct?.reviews} />
+                   </div>
 
                     {/* <div  dangerouslySetInnerHTML={{ __html: singleProduct?.shipping_delivery }}/> */}
                   </div>

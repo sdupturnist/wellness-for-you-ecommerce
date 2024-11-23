@@ -84,7 +84,7 @@ export default function Home() {
               width="600"
               height="350"
               alt="Wellness for you"
-              classes="block w-full banner h-[350px]"
+              classes="block w-full banner sm:h-[350px]"
               placeholder={true}
             />
               </Link>
@@ -97,7 +97,7 @@ export default function Home() {
               width="600"
               height="350"
               alt="Wellness for you"
-              classes="block w-full banner h-[350px]"
+                classes="block w-full banner sm:h-[350px]"
               placeholder={true}
             />
             </Link>

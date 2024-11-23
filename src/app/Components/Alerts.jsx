@@ -38,7 +38,7 @@ export default function Alerts({ status, title, large, noIcon, icon }) {
       {!large && (
         <div
           role="alert"
-          className={`alert ${alertClass} rounded-md p-3 sm:text-base  flex text-start`}>
+          className={`alert ${alertClass} rounded-md p-3 sm:text-base flex text-start`}>
           {!noIcon && icon}
           <span className="text-sm">{title}</span>
         </div>

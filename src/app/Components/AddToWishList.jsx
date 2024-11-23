@@ -12,7 +12,7 @@ export default function AddToWishList({ small, active }) {
           className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3">
           <HeartIcon
             className={`${
-              active ? "text-primary" : "text-body opacity-25"
+              active ? "text-red-600" : "text-body opacity-25"
             } size-6`}
           />
         </button>

@@ -11,7 +11,7 @@ export default function ProductCartOptions({ data }) {
               <li key={index}>
                 <input
                   type="checkbox"
-                   className="checkbox checkbox-sm"
+                   className="checkbox checkbox-sm checkbox-success"
                 />
                 <label>{item?.title}</label>
               </li>

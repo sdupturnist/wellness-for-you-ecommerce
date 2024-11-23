@@ -12,7 +12,7 @@ export default function Features({data}){
         data.map((item, index) => (
         <span 
         key={index}
-        className="features">
+        className="features mr-2 mb-2">
              <Images
               imageurl={item?.icon || ''}
               quality="100"

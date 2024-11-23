@@ -23,7 +23,7 @@ export default function Card({
             height="300"
             title={alt && alt}
             alt={alt && alt}
-            classes={`${small ? 'h-[200px]' : 'h-[250px]'} block w-full  object-cover`}
+            classes={`${small ? 'sm:h-[200px]' : 'sm:h-[250px]'} block w-full  object-cover`}
             placeholder={true}
           />
       </Link>

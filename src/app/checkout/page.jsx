@@ -38,7 +38,9 @@ export default function Checkout() {
                 <SectionHeader title="Your order" card />
                 <div className="grid gap-5">
                   <CouponCode />
+                  <div className="border-b pb-4">
                   <AmountList />
+                  </div>
                   <div className="grid gap-2">
                     <SectionHeader title="Payment options" small spacingSm />
                     {paymentOptions &&

@@ -31,7 +31,7 @@ export default function AddToCartWithQty({inCartPage}) {
             type="text"
             value={quantity}
             readOnly
-            className={`${inCartPage && 'bg-primary-dim !text-primary'} text-center w-full !px-0 !h-full`}
+            className={`${inCartPage && 'bg-primary-dim !text-primary'} text-center w-full !px-0 !h-full !border-none`}
           />
           <button
             onClick={increment}

@@ -12,7 +12,7 @@ export default function PaymentOptions() {
         width="30"
         height="20"
         alt="Payment card"
-        classes="block w-full"
+        classes="block w-full w-[30px] h-[20px]"
         placeholder={true}
       />
     </li>
@@ -23,7 +23,7 @@ export default function PaymentOptions() {
         width="30"
         height="20"
         alt="Payment card"
-        classes="block w-full"
+        classes="block w-full w-[30px] h-[20px]"
         placeholder={true}
       />
     </li>
@@ -34,7 +34,7 @@ export default function PaymentOptions() {
         width="30"
         height="20"
         alt="Payment card"
-        classes="block w-full"
+        classes="block w-full w-[30px] h-[20px]"
         placeholder={true}
       />
     </li>
@@ -45,7 +45,7 @@ export default function PaymentOptions() {
         width="30"
         height="20"
         alt="Payment card"
-        classes="block w-full"
+        classes="block w-full w-[30px] h-[20px]"
         placeholder={true}
       />
     </li>
@@ -56,7 +56,7 @@ export default function PaymentOptions() {
         width="30"
         height="20"
         alt="Payment card"
-        classes="block w-full"
+        classes="block w-full w-[30px] h-[20px]"
         placeholder={true}
       />
     </li>

@@ -20,7 +20,7 @@ export default function BlogSingle() {
                 height="400"
                 title="test"
                 alt="test"
-                classes="block w-full h-[400px] object-cover rounded-lg"
+                classes="block w-full sm:h-[400px] object-cover rounded-lg"
                 placeholder={true}
               />
                 <div>

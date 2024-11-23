@@ -16,7 +16,7 @@ export default function AddNewAddress() {
       >
         Add a new address
       </button>
-      </div>
+      </div>  
      {showNewAddress && <div className="grid mt-5 b">
         <div className="sm:px-0 px-5">
        <SectionHeader title="Add new address" card  />

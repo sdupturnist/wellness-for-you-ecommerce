@@ -63,7 +63,7 @@ export default function OrderItem() {
                   <SectionHeader
                     title="Order Details"
                     card-sm
-                    spacingSm
+                    spacingMd
                     titleSmall
                   />
                   <div className="grid gap-5">
