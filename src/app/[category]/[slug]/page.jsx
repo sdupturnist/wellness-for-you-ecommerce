@@ -142,7 +142,7 @@ export default function ItemSingle() {
               <ProductCartOptions data={singleProduct?.cartOptions} />
               <div className="flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none">
                 {/* <AddToCartWithQty /> */}
-              {console.log(singleProduct?.id)}
+            
               
                 <AddToCart
             itemid={singleProduct?.id ?? null}

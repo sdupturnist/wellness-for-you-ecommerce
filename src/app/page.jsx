@@ -13,9 +13,12 @@ import {
   woocommerceKey,
 } from "./Utils/variables";
 
-
 export default async function Home({ params, searchParams }) {
-  let pageData = await fetch(`${apiUrl}wp-json/wp/v2/pages/19`, {
+
+  const pageId = 19
+
+
+  let pageData = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`, {
     next: {
       revalidate: 60,
       cache: "no-store",
@@ -70,7 +73,7 @@ export default async function Home({ params, searchParams }) {
   );
 
   let featuredProductsData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}`,
+    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc&featured=true`,
     {
       next: {
         revalidate: 60,
@@ -80,7 +83,7 @@ export default async function Home({ params, searchParams }) {
   );
 
   let categoriesData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}`,
+    `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}&orderby=name&order=desc`,
     {
       next: {
         revalidate: 60,
@@ -195,10 +198,12 @@ export default async function Home({ params, searchParams }) {
 }
 
 export async function generateMetadata({ params, searchParams }, parent) {
-  try {
-    const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/19`);
-    const pageData = await page.json();
 
+  const pageId = 19
+
+  try {
+    const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
+    const pageData = await page.json();
 
     const title = pageData?.yoast_head_json?.title || siteName;
     const description = pageData?.yoast_head_json?.description || "";
@@ -237,5 +242,3 @@ export async function generateMetadata({ params, searchParams }, parent) {
     console.error("Error fetching page data:", error);
   }
 }
-
-

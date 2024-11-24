@@ -5,9 +5,11 @@ import { useCartContext } from "../Context/cartContext";
 import AddToCart from "./AddToCart";
 //import AddToCartWithQty from "./AddToCartWithQty.jsx______"
 import ProductCard from "./ProductCard";
+import Alerts from "./Alerts";
 
 export default function CartListItem() {
-   const { cartItems } = useCartContext();
+   const { cartItems, setCartItems } = useCartContext();
+   
 
   // const cartItems = [
   //   {
@@ -95,9 +97,27 @@ export default function CartListItem() {
 
  // console.log(cartItems);
 
+
+
+ // Load items from localStorage on component mount
+ useEffect(() => {
+   const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+   setCartItems(storedItems);
+ }, []);
+
+
+ const removeFromCartConfirm = (id) => {
+   const updatedCartItems = cartItems.filter((item) => item.id !== id);
+   setCartItems(updatedCartItems);
+   localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+ };
+
+
+
+
   return (
     <ul className="added-cart-list mb-5">
-      {cartItems &&
+      {cartItems.length > 0 ?
         cartItems.map((item, index) => (
           <li key={index}>
             <div className="flex items-center justify-start w-full sm:gap-0 gap-3">
@@ -111,11 +131,20 @@ export default function CartListItem() {
                 <button className="join-item option-btn">
                   Move to wishlist
                 </button>
-                <button className="join-item option-btn">Remove</button>
+                <button 
+                className="join-item option-btn"
+                onClick={(e) => removeFromCartConfirm(item.id)}
+                >Remove</button>
               </div>
             </div>
           </li>
-        ))}
+        ))
+      :
+      <Alerts 
+      title="Not have any items in your "
+      large
+      />
+      }
     </ul>
   );
 }

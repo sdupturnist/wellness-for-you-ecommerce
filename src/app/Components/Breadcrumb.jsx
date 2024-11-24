@@ -10,7 +10,7 @@ export default function Breadcrumb() {
   const pathSegments = pathname.split("/").filter((segment) => segment);
 
   return (
-    <div className="container py-2">
+    <div className="container py-2 !px-6">
       <div className="breadcrumbs text-xs">
         <ul className="flex space-x-2">
           <li>

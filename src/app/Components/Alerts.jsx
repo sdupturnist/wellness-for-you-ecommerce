@@ -6,7 +6,7 @@ import Images from "./Images";
 import { usePathname } from "next/navigation";
 
 
-export default function Alerts({ status, title, large, noIcon, icon }) {
+export default function Alerts({ status, title, large, noIcon, icon, noPageUrl }) {
 
   const pathname = usePathname()
 
@@ -56,7 +56,7 @@ export default function Alerts({ status, title, large, noIcon, icon }) {
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span>{title} {pathname?.split("/").pop()}</span>
+          <span className="font-semibold text-body opacity-65">{title} {!noPageUrl && pathname?.split("/").pop()}</span>
           {/* <Link className="btn btn-light btn-large my-6" href={homeUrl}> */}
             {/* Shop now */}
           {/* </Link> */}

@@ -79,6 +79,21 @@ small{
     @apply mx-auto sm:px-[30px] px-[20px];
 }
 
+
+main{
+
+    .container{
+  
+        @apply mx-auto sm:px-[30px] px-[0];
+    
+      
+    }
+    
+}
+
+
+
+
 .spacing, section{
     @apply sm:py-12 py-6;
 }
@@ -232,10 +247,12 @@ small{
 
 
 .product-card-left-right-mobile{
-
+@apply list-none;
    
-
-    @apply bg-white sm:rounded-[12px]  sm:border sm:border-r border-b border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+li{
+    @apply bg-white sm:rounded-[12px]  sm:border last:sm:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+}
+    
 
     .img-box{
        @apply w-full min-h-[190px] p-[5px]  justify-center items-center gap-2.5 inline-flex;
@@ -652,4 +669,9 @@ footer{
     svg{
         @apply min-w-4 min-h-4;
     }
+  }
+
+
+  .section-header-card{
+    @apply sm:mb-8 bg-white sm:p-7 p-4 sm:rounded-lg 
   }

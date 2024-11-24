@@ -17,7 +17,7 @@ export default function Images({imageurl, styles, quality, width, height, alt, c
     quality={quality}
     placeholder={placeholder == true ? 'blur' : 'empty'}
     blurDataURL={blurUrl_}
-    src={imageurl}
+    src={imageurl || '/images/image-placeholder.webp'}
     className={classes}
     alt={alt || siteName}
     title={alt || siteName}

@@ -6,34 +6,36 @@ import ProductCard from "./ProductCard";
 
 export default function ProductSlider({ data, count }) {
   const settings = {
-    dots: false, // Show navigation dots
-    arrows:false,
-    infinite: false, // Infinite looping
-    speed: 500, // Slide transition speed in ms
-    slidesToShow: count || 5, // Display one testimonial at a time
-    slidesToScroll: count || 5, // Scroll one slide at a time
-    autoplay: true, // Enable autoplay
+    dots: false,
+    arrows: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: count || 5,
+    slidesToScroll: count || 5,
+    autoplay: true,
     autoplaySpeed: 3000,
+    centerMode: true,  // Enable centering of the active slide
+    centerPadding: '0', // Adjust padding if necessary
     responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            centerPadding: "15px", // Adjust space for smaller screens
-          },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          centerPadding: '15px', // Space for smaller screens
         },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            centerPadding: "10px", // Adjust space for mobile screens
-          },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerPadding: '10px', // Adjust for mobile
         },
-      ], // Time between slides in ms
-    
+      },
+    ],
   };
+  
 
   const items = data.map((item, index) => (
     <ProductCard key={index} data={item}/>

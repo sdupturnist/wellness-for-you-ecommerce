@@ -7,67 +7,7 @@ import SectionHeader from "../Components/SectionHeader";
 
 
 export default function Cart() {
-  const cartItems = [
-    {
-      product_photo: "/images/product.jpg",
-      product_title: "Vitaminberry Just For Gut",
-      review_count: 3,
-      normal_price: 1040,
-      sale_price: 989,
-      offer: 20,
-      reviews: [
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 1,
-        },
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 2,
-        },
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 5,
-        },
-      ],
-    },
-    {
-      product_photo: "/images/product.jpg",
-      product_title: "Vitaminberry Just For Gut",
-      review_count: 3,
-      normal_price: 1040,
-      sale_price: 989,
-      offer: 20,
-      reviews: [
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 1,
-        },
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 2,
-        },
-        {
-          review_author: `Esther Howard`,
-          review_post_date: ` 22 Jul`,
-          review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-          review_count: 5,
-        },
-      ],
-    },
-  ];
-
   
-
   return (
     <div className="bg-bggray">
       <Breadcrumb />

@@ -107,7 +107,9 @@ export default function AddToCart({ itemid, price, name, inCartPage, card }) {
   return (
     <>
       {card ? (
-        <button className="btn mt-3" onClick={handleCartAction}>
+        <button
+          className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
+          onClick={handleCartAction}>
           {isInCart ? "Remove" : "Add"}
         </button>
       ) : (

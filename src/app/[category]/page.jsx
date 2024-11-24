@@ -1,700 +1,194 @@
+import Alerts from "../Components/Alerts";
 import Breadcrumb from "../Components/Breadcrumb";
 import Pagination from "../Components/Pagination";
 import ProductCard from "../Components/ProductCard";
-import ProductSlider from "../Components/ProductSlider";
 import SectionHeader from "../Components/SectionHeader";
+import {
+  apiUrl,
+  siteAuthor,
+  woocommerceKey,
+} from "../Utils/variables";
 
-export default function Item() {
+
+export default async function CategoryPage({ params, searchParams }) {
+  const { category } = params;
+  const currentPage = searchParams.page || 1; // Get the current page from the query string, default to 1
+
+  const pageId = 76;
+
+  // Fetch all products for the current page
+  let allProductsData = await fetch(
+    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=1&reviews_count=0`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  // Fetch featured products
+  let featuredProductsData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc&featured=true`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  // Fetch top products
+  let topProductsData = await fetch(
+    `${apiUrl}wp-json/top-products/v1/products`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  // Fetch categories for filters
+  let categoriesData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}&orderby=name&order=desc`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  // Parse responses to JSON
+  let allProductsDataJson = await allProductsData.json();
+  let featuredProductsJson = await featuredProductsData.json();
+  let topProductsJson = await topProductsData.json();
+  let categoriesJson = await categoriesData.json();
+
+  // Extract necessary data
+  const allProducts = allProductsDataJson?.products;
+  const totalProducts = allProducts?.length; // Total number of products
+  const totalPages = Math.ceil(4); // Calculate total number of pages
+
+  //totalProducts / 30);
+ 
   return (
     <div className="bg-bggray">
       <Breadcrumb />
 
-      <section className="sm:bg-white bg-bggray sm:py-6 py-0">
-        <div className="container !px-0 sm:px-5">
-          <div className="grid grid-cols-1 sm:gap-8 gap-5 lg:grid-cols-[25%_75%]">
-            <div className="w-full lg:pr-7 order-last lg:order-1">
-              <div className="sm:mb-8 bg-white sm:p-0 py-5 px-4">
-                <SectionHeader title="Top rated products" />
-                <div className="products">
-                  {topProducts &&
-                    topProducts.map((item, index) => (
-                      <ProductCard key={index} data={item} column />
-                    ))}
+      <section className="sm:py-6 py-0">
+        <div className="container">
+          {allProducts.length > 0 ? (
+            <div
+              className={`${
+                topProductsJson.length > 0 ? "lg:grid-cols-[25%_75%]" : ""
+              } grid grid-cols-1 sm:gap-8 gap-5`}>
+              {topProductsJson.length > 0 && (
+                <div className="w-full lg:pr-7 order-last lg:order-1">
+                  <div className="section-header-card">
+                    <SectionHeader title="Top rated products" />
+                    <div className="products">
+                      {topProductsJson.map((item, index) => (
+                        <ProductCard key={index} data={item} column />
+                      ))}
+                    </div>
+                  </div>
                 </div>
+              )}
+              <div className="grid gap-3 sm:gap-0 w-full lg:order-2 order-first ">
+                {featuredProductsJson.length > 0 && (
+                  <div className="section-header-card">
+                    <SectionHeader
+                      title="Featured products"
+                      url="/"
+                      spacingSm
+                    />
+                    <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
+                      {featuredProductsJson.map((item, index) => (
+                        <ProductCard key={index} data={item} mobileList />
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {allProducts.length > 0 && (
+                  <div className="section-header-card">
+                    <SectionHeader
+                      title="All products"
+                      url="/"
+                      filter
+                      filterData={categoriesJson}
+                      spacingSm
+                    />
+                    <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
+                      {allProducts.map((item, index) => (
+                        <ProductCard key={index} data={item} mobileList />
+                      ))}
+                    </ul>
+                    <Pagination
+                      currentPage={parseInt(currentPage, 10)}
+                      totalPages={totalPages}
+                      baseUrl={`/category/${category}`}
+                    />
+
+{  console.log(totalPages)}
+                  </div>
+                )}
               </div>
             </div>
-            <div className="block w-full lg:order-2 order-first ">
-              <div className="sm:mb-8 bg-white sm:p-0 py-5 px-4">
-                <SectionHeader title="Featured products" url="/" spacingSm />
-                <div className="products">
-                  {featuredProductData && (
-                    <ProductSlider count="4" data={featuredProductData} />
-                  )}
-                </div>
-              </div>
-              <div className="sm:mt-0 mt-5 bg-white sm:p-0 py-5 px-4">
-                <SectionHeader title="All products" url="/" filter spacingSm/>
-                <div className="products grid sm:grid-cols-4 sm:gap-4">
-                  {allProducts &&
-                    allProducts.map((item, index) => (
-                      <ProductCard key={index} data={item} mobileList />
-                    ))}
-                </div>
-                <Pagination />
-              </div>
-            </div>
-          </div>
+          ) : (
+            <Alerts large title="Sorry, no products found." noPageUrl />
+          )}
         </div>
       </section>
     </div>
   );
 }
 
-const featuredProductData = [
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
 
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
+export async function generateMetadata({ params, searchParams }, parent) {
+  const pageId = 76;
 
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
+  try {
+    // Fetch metadata for the page, e.g., SEO-related information
+    const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
+    const pageData = await page.json();
 
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-];
+    const title = pageData?.yoast_head_json?.title || siteName;
+    const description = pageData?.yoast_head_json?.description || "";
+    const ogTitle = pageData?.yoast_head_json?.og_title || title;
+    const ogDescription = pageData?.yoast_head_json?.og_description || "";
+    const canonicalUrl = pageData?.yoast_head_json?.canonical || "";
+    const modifiedTime = pageData?.yoast_head_json?.modified_time || "";
+    const ogImage = pageData?.yoast_head_json?.og_image || "/favicon.ico"; // Fallback image
+    const robots = pageData?.yoast_head_json?.robots || "index, follow"; // Fallback robots directive
+    const keywords = pageData?.acf?.seo_keywords || "";
 
-const allProducts = [
-  {
-    id: 1,
-    product_photo: "/images/product1.jpg",
-    product_title: "Premium Vitamin C Serum",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
+    // Return dynamic metadata based on the page data
+    return {
+      title,
+      description,
+      author: siteAuthor,
+      keywords: keywords,
+      viewport: "width=device-width, initial-scale=1",
+      robots: robots,
+      canonical: canonicalUrl,
+      og_locale: "en_US",
+      og_type: "article",
+      og_title: ogTitle,
+      og_description: ogDescription,
+      og_url: canonicalUrl,
+      og_site_name: "Wellness4u",
+      article_modified_time: modifiedTime,
+      twitter_card: "summary_large_image",
+      twitter_misc: {
+        "Est. reading time": "1 minute",
       },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 2,
-    product_photo: "/images/product2.jpg",
-    product_title: "Organic Turmeric Capsules",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 3,
-    product_photo: "/images/product3.jpg",
-    product_title: "Digestive Health Probiotic",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 4,
-    product_photo: "/images/product4.jpg",
-    product_title: "Aloe Vera Skin Gel",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 5,
-    product_photo: "/images/product5.jpg",
-    product_title: "Hydrating Face Mask",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 6,
-    product_photo: "/images/product6.jpg",
-    product_title: "Essential Omega 3 Fish Oil",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 7,
-    product_photo: "/images/product7.jpg",
-    product_title: "Collagen Peptides Powder",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 8,
-    product_photo: "/images/product8.jpg",
-    product_title: "Zinc and Vitamin D3 Supplement",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    id: 9,
-    product_photo: "/images/product9.jpg",
-    product_title: "Multivitamin Gummies",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 1,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 2,
-      },
-      {
-        review_author: "Esther Howard",
-        review_post_date: "22 Jul",
-        review_content: "Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada.",
-        review_count: 5,
-      },
-    ],
-  },
-];
-
-
-const topProducts = [
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
-];
+      twitter_site: "@yourhandle",
+      twitter_creator: "@yourhandle",
+      twitter_image: ogImage,
+    };
+  } catch (error) {
+    console.error("Error fetching page data:", error);
+  }
+}
