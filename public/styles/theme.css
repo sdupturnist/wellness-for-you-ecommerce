@@ -54,7 +54,7 @@ small {
 }
 
 main .container {
-  @apply mx-auto sm:px-[30px] px-[0];
+  @apply mx-auto sm:px-[20px] px-[0];
 }
 
 .spacing, section {
@@ -80,8 +80,11 @@ main .container {
 .content {
   @apply leading-relaxed;
 }
-.content a, .content p, .content li {
+.content a, .content p {
   @apply text-body mb-5;
+}
+.content li {
+  @apply text-body;
 }
 .content * {
   @apply last:mb-0;
@@ -182,7 +185,7 @@ select {
   @apply list-none;
 }
 .product-card-left-right-mobile li {
-  @apply bg-white sm:rounded-[12px]  sm:border last:sm:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+  @apply bg-white sm:rounded-[12px]  sm:border border-b last:sm:border-b last:border-b-0 last:pb-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
 }
 .product-card-left-right-mobile .img-box {
   @apply w-full min-h-[190px] p-[5px]  justify-center items-center gap-2.5 inline-flex;

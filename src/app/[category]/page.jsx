@@ -3,22 +3,28 @@ import Breadcrumb from "../Components/Breadcrumb";
 import Pagination from "../Components/Pagination";
 import ProductCard from "../Components/ProductCard";
 import SectionHeader from "../Components/SectionHeader";
-import {
-  apiUrl,
-  siteAuthor,
-  woocommerceKey,
-} from "../Utils/variables";
-
+import { apiUrl, siteAuthor, woocommerceKey } from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
   const { category } = params;
   const currentPage = searchParams.page || 1; // Get the current page from the query string, default to 1
 
   const pageId = 76;
+  const itemsShowPerPage = 30;
 
   // Fetch all products for the current page
   let allProductsData = await fetch(
-    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=1&reviews_count=0`,
+    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  let allProductsDataCount = await fetch(
+    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=0&per_page=100&reviews_count=0`,
     {
       next: {
         revalidate: 60,
@@ -65,18 +71,17 @@ export default async function CategoryPage({ params, searchParams }) {
   let featuredProductsJson = await featuredProductsData.json();
   let topProductsJson = await topProductsData.json();
   let categoriesJson = await categoriesData.json();
+  let allProductsCount = await allProductsDataCount.json();
 
   // Extract necessary data
   const allProducts = allProductsDataJson?.products;
-  const totalProducts = allProducts?.length; // Total number of products
-  const totalPages = Math.ceil(4); // Calculate total number of pages
+  const totalProductsCount = allProductsCount?.products ?? [];
+  const totalProducts = totalProductsCount?.length ?? [];
+  const totalPages = Math.ceil(totalProducts / itemsShowPerPage); // Calculate total number of pages
 
-  //totalProducts / 30);
- 
   return (
     <div className="bg-bggray">
       <Breadcrumb />
-
       <section className="sm:py-6 py-0">
         <div className="container">
           {allProducts.length > 0 ? (
@@ -99,11 +104,7 @@ export default async function CategoryPage({ params, searchParams }) {
               <div className="grid gap-3 sm:gap-0 w-full lg:order-2 order-first ">
                 {featuredProductsJson.length > 0 && (
                   <div className="section-header-card">
-                    <SectionHeader
-                      title="Featured products"
-                      url="/"
-                      spacingSm
-                    />
+                    <SectionHeader title="Featured products" spacingSm />
                     <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
                       {featuredProductsJson.map((item, index) => (
                         <ProductCard key={index} data={item} mobileList />
@@ -128,10 +129,9 @@ export default async function CategoryPage({ params, searchParams }) {
                     <Pagination
                       currentPage={parseInt(currentPage, 10)}
                       totalPages={totalPages}
-                      baseUrl={`/category/${category}`}
+                      baseUrl={`${category}`}
+                      itemsShowPerPage={itemsShowPerPage}
                     />
-
-{  console.log(totalPages)}
                   </div>
                 )}
               </div>
@@ -144,7 +144,6 @@ export default async function CategoryPage({ params, searchParams }) {
     </div>
   );
 }
-
 
 export async function generateMetadata({ params, searchParams }, parent) {
   const pageId = 76;

@@ -84,7 +84,7 @@ main{
 
     .container{
   
-        @apply mx-auto sm:px-[30px] px-[0];
+        @apply mx-auto sm:px-[20px] px-[0];
     
       
     }
@@ -115,9 +115,14 @@ main{
 }
 
 .content{
-    a, p, li{
+    a, p{
         @apply text-body mb-5
     }
+
+ li{
+        @apply text-body 
+    }
+
     *{
         @apply last:mb-0
     }
@@ -250,7 +255,7 @@ main{
 @apply list-none;
    
 li{
-    @apply bg-white sm:rounded-[12px]  sm:border last:sm:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+    @apply bg-white sm:rounded-[12px]  sm:border border-b last:sm:border-b last:border-b-0 last:pb-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
 }
     
 

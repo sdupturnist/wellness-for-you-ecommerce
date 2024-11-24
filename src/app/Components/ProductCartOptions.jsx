@@ -2,8 +2,8 @@
 
 export default function ProductCartOptions({ data }) {
   return (
-    <>
-      <div className="product-cart-options">
+    data &&   
+    <div className="product-cart-options">
         <small>Select</small>
         <ul className="select-options">
           {data &&
@@ -18,6 +18,6 @@ export default function ProductCartOptions({ data }) {
             ))}
         </ul>
       </div>
-    </>
+  
   );
 }

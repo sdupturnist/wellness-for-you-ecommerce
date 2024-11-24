@@ -7,7 +7,7 @@ import ReviewCount from "./ReviewCount";
 import AddToCart from "./AddToCart";
 import AddToWishList from "./AddToWishList";
 import { useEffect, useState } from "react";
-
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 
 
@@ -20,6 +20,13 @@ export default function ProductCard({
 }) {
 
 
+
+  const category = usePathname();
+const itemCaturl = homeUrl+category?.replace('/', '')
+
+
+
+
 const [loading, setLoading] = useState(true)
 
 useEffect(() => {
@@ -27,6 +34,8 @@ useEffect(() => {
     setLoading(false);
   }
 }, [data]);
+
+
 
 
   const leftRightCard = (
@@ -49,7 +58,9 @@ useEffect(() => {
           className={`${
             inCartPage ? "min-w-12 sm:min-w-24" : "min-w-32"
           } flex items-center`}
-          href={`${homeUrl}/test-cat/test-product`}>
+          href={`${itemCaturl}/${data?.slug}`}
+          >
+           
           <Images
             imageurl={data?.images[0]?.src || data?.images}
             quality="100"
@@ -67,7 +78,9 @@ useEffect(() => {
         </Link>
         <div className="p-5 pl-0 pr-0 w-full grid items-center">
           <div>
-            <Link href={`${homeUrl}/${data?.slug}`}>
+            <Link 
+           href={`${itemCaturl}/${data?.slug}`}
+            >
               <h3 className="product-title text-dark mb-2">{data?.name}</h3>
             </Link>
             {data?.rating_count > 0 && (
@@ -120,7 +133,8 @@ useEffect(() => {
         {wishlist && <AddToWishList small active />}
         <Link
           className="flex items-center min-w-32"
-          href={`${homeUrl}/test-cat/test-product`}>
+          href={`${itemCaturl}/${data?.slug}`}
+          >
           <Images
                imageurl={data?.images[0]?.src || data?.images}
                quality="100"
@@ -133,7 +147,9 @@ useEffect(() => {
           />
         </Link>
         <div className="sm:p-4 sm:pt-0 p-5 sm:pl-3 pl-0 pr-0 w-full sm:grid items-end">
-          <Link href={`${homeUrl}/${data?.slug}`}>
+          <Link 
+           href={`${itemCaturl}/${data?.slug}`}
+          >
             <h3 className="product-title text-dark mb-2">{data?.name}</h3>
           </Link>
           {data?.rating_count > 0 && (
@@ -199,7 +215,9 @@ useEffect(() => {
 
         <div className="product-card w-full mr-2">
           <div className="block w-full">
-            <Link href={`${homeUrl}/${data?.slug}`}>
+            <Link 
+            href={`${itemCaturl}/${data?.slug}`}
+            >
               <Images
                  imageurl={data?.images[0]?.src || data?.images}
                  quality="100"
@@ -213,7 +231,9 @@ useEffect(() => {
             </Link>
 
             <div className="p-4 pt-0">
-              <Link href={`${homeUrl}/${data?.slug}`}>
+              <Link 
+               href={`${itemCaturl}/${data?.slug}`}
+              >
                 <h3 className="product-title text-dark mb-2">{data?.name}</h3>
               </Link>
               {data?.rating_count > 0 && (

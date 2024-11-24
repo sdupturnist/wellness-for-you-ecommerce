@@ -1,14 +1,18 @@
-'use client'
+"use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+export default function Pagination({
+  currentPage,
+  totalPages,
+  baseUrl,
+  itemsShowPerPage,
+}) {
+  const router = useRouter();
 
-export default function Pagination({ currentPage, totalPages, baseUrl }) {
-
-const test = useRouter()
-
-console.log(test?.push)
+  if (totalPages < itemsShowPerPage) {
+    return null;
+  }
 
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -16,19 +20,15 @@ console.log(test?.push)
   }
 
   return (
-    <div className="pagination">
+    <div className="pagination flex gap-2 items-center justify-center text-center mb-5 mt-11 mx-auto">
       {pages.map((page) => (
-     ''
+        <button
+          key={page}
+          onClick={() => router.push(`${baseUrl}?page=${page}`)} // Correct function
+          className={`page-link ${currentPage === page ? "active" : ""}`}>
+          {page}
+        </button>
       ))}
     </div>
   );
 }
-
-
-{/* <button
-key={page}
-onClick={`${router.forward}?page=${page}`}
-className={`page-link ${currentPage === page ? 'active' : ''}`}
->
-{page}
-</button> */}
