@@ -1,6 +1,8 @@
 "use client";
 
 export default function ProductCartOptions({ data }) {
+
+
   return (
     data &&   
     <div className="product-cart-options">
@@ -13,7 +15,7 @@ export default function ProductCartOptions({ data }) {
                   type="checkbox"
                    className="checkbox checkbox-sm checkbox-success"
                 />
-                <label>{item?.title}</label>
+                <label>{item?.item}</label>
               </li>
             ))}
         </ul>

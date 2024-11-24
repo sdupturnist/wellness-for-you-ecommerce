@@ -112,3 +112,20 @@ export async function generateMetadata({ params, searchParams }, parent, { pageI
     };
   }
 }
+
+
+
+export let convertStringToJSON = (offerString) => {
+
+  let parts = offerString
+    .replace(/\r\n/g, '\n')   
+    .split(',')              
+    .map(part => part.trim()) 
+    .filter(part => part !== ''); 
+
+
+  let offerData = parts.map(part => ({ item: part }));
+
+  return offerData;
+};
+

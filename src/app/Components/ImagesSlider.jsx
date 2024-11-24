@@ -23,12 +23,13 @@ export default function ImageSlider({data}){
         
       };
 
+     
 
 
       const items = data.map((item, index) => (
         <Images
         key={index}
-        imageurl={item?.url || ''}
+        imageurl={item?.src || ''}
         quality="100"
         width="500"
         height="500"

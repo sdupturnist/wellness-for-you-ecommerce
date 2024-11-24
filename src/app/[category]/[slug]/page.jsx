@@ -3,6 +3,7 @@ import AddToCart from "@/app/Components/AddToCart";
 import AddToWishList from "@/app/Components/AddToWishList";
 import Breadcrumb from "@/app/Components/Breadcrumb";
 import Features from "@/app/Components/Features";
+import Images from "@/app/Components/Images";
 import ImageSlider from "@/app/Components/ImagesSlider";
 import ProductCard from "@/app/Components/ProductCard";
 import ProductCartOptions from "@/app/Components/ProductCartOptions";
@@ -12,8 +13,11 @@ import Reviews from "@/app/Components/Reviews";
 import SectionHeader from "@/app/Components/SectionHeader";
 import SocialShare from "@/app/Components/SocialShare";
 import WriteReview from "@/app/Components/WriteReview";
+
+
 import {
   apiUrl,
+  convertStringToJSON,
   currency,
   OfferPercentage,
   woocommerceKey,
@@ -60,7 +64,14 @@ export default async function ItemSingle({ params, searchParams }) {
   let topRatedProducts = await topProductsData.json();
 
 
-  console.log(singleProduct?.images[0]?.src)
+
+//   let offerString = "Single Pack, Buy1 Get 1 Free (+₹225.00)";
+// let offerData = convertStringToJSON(offerString);
+
+// Log the result to see the JSON object
+// console.log(offerData);
+
+
 
   return (
     <div className="bg-bggray">
@@ -70,7 +81,26 @@ export default async function ItemSingle({ params, searchParams }) {
           <div className="grid grid-cols-1 sm:gap-12 gap-5 lg:grid-cols-[40%_60%] product-single">
             <div>
               <div className="border sm:rounded-xl rounded-lg overflow-hidden sm:min-h-[600px] sm:pt-8 pb-16 bg-white">
-                {/* <ImageSlider data={singleProduct?.product_photos} /> */}
+
+              {singleProduct && singleProduct?.images?.length > 1 ? 
+              
+              <ImageSlider data={singleProduct?.images} />
+
+              : 
+               <Images
+               imageurl={singleProduct?.images[0]?.src}
+               quality="100"
+               width="800"
+               height="800"
+               title={`${singleProduct?.images[0]?.alt || singleProduct?.name}`}
+               alt={`${singleProduct?.images[0]?.alt || singleProduct?.name}`}
+               classes="block w-full mx-auto"
+               placeholder={true}
+             />
+              }
+
+
+              
               </div>
             </div>
             <div className="grid gap-7 lg:max-w-[80%]">
@@ -117,7 +147,8 @@ export default async function ItemSingle({ params, searchParams }) {
                   }}
                 />
               )}
-              <ProductCartOptions data={singleProduct?.acf?.options} />
+
+  {singleProduct?.acf?.options &&  <ProductCartOptions data={convertStringToJSON(singleProduct && singleProduct?.acf?.options)} />}
               <div className="flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none">
                 <AddToCart
                   itemid={singleProduct?.id ?? null}
@@ -130,9 +161,8 @@ export default async function ItemSingle({ params, searchParams }) {
                 />
                 <AddToWishList />
               </div>
-              <div className="gap-2 sm:inline-flex">
-                need to add features data{" "}
-                <Features data={singleProduct?.features} />
+  <div className="gap-2 sm:inline-flex">
+                {singleProduct?.acf?.features &&  <Features data={convertStringToJSON(singleProduct && singleProduct?.acf?.features)}  /> }
               </div>
               <div className="grid gap-2">
                 <small className="opacity-50">Share with</small>

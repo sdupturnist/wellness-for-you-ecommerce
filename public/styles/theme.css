@@ -79,6 +79,12 @@ main .container {
 
 .content {
   @apply leading-relaxed;
+  /* Apply to the table element */
+  /* Apply to th and td elements */
+  /* Apply to the th element */
+  /* Apply to even rows */
+  /* Apply to hovered rows */
+  /* Apply to the caption element */
 }
 .content a, .content p {
   @apply text-body mb-5;
@@ -115,6 +121,39 @@ main .container {
 }
 .content img {
   @apply rounded-lg my-7;
+}
+.content .table-custom {
+  @apply min-w-full table-auto border-collapse mt-6 mx-auto;
+}
+.content .table-header {
+  @apply bg-green-500 text-white;
+}
+.content .table-cell {
+  @apply px-4 py-2 text-left;
+}
+.content .table-row {
+  @apply bg-white border-b hover:bg-gray-200;
+}
+.content .caption-custom {
+  @apply text-2xl font-bold mb-4;
+}
+.content table {
+  @apply w-full my-5;
+}
+.content th, .content td {
+  @apply px-2.5 py-2 text-left border border-gray-300;
+}
+.content th {
+  @apply bg-green-500 text-white;
+}
+.content tr:nth-child(even) {
+  @apply bg-gray-100;
+}
+.content tr:hover {
+  @apply bg-gray-300;
+}
+.content caption {
+  @apply text-xl mt-2 font-bold;
 }
 
 .btn {
@@ -349,7 +388,7 @@ footer ul li, footer ol li {
 }
 
 .features {
-  @apply inline-flex items-center gap-2 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg;
+  @apply inline-flex items-center gap-1 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg;
 }
 
 .icon-social-share {

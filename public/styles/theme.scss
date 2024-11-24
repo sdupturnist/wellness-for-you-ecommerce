@@ -115,6 +115,7 @@ main{
 }
 
 .content{
+ 
     a, p{
         @apply text-body mb-5
     }
@@ -156,6 +157,62 @@ main{
     }
   
     @apply leading-relaxed;
+
+
+
+    .table-custom {
+        @apply min-w-full table-auto border-collapse mt-6 mx-auto;
+      }
+      
+      .table-header {
+        @apply bg-green-500 text-white;
+      }
+      
+      .table-cell {
+        @apply px-4 py-2 text-left;
+      }
+      
+      .table-row {
+        @apply bg-white border-b hover:bg-gray-200;
+      }
+      
+      .caption-custom {
+        @apply text-2xl font-bold mb-4;
+      }
+      
+
+   /* Apply to the table element */
+table {
+    @apply w-full my-5 ;
+}
+
+/* Apply to th and td elements */
+th, td {
+    @apply px-2.5 py-2 text-left border border-gray-300;
+}
+
+/* Apply to the th element */
+th {
+    @apply bg-green-500 text-white;
+}
+
+/* Apply to even rows */
+tr:nth-child(even) {
+    @apply bg-gray-100;
+}
+
+/* Apply to hovered rows */
+tr:hover {
+    @apply bg-gray-300;
+}
+
+/* Apply to the caption element */
+caption {
+    @apply text-xl mt-2 font-bold;
+}
+
+
+   
 
 }
 
@@ -489,7 +546,7 @@ footer{
 
 
     .features{
-        @apply inline-flex items-center gap-2 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg
+        @apply inline-flex items-center gap-1 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg
     }
 
 

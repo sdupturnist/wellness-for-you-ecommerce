@@ -1,8 +1,8 @@
 'use client'
 
-import Images from "./Images"
+// import Images from "./Images"
 
-
+import { CheckIcon } from "@heroicons/react/24/solid";
 
 
 export default function Features({data}){
@@ -13,17 +13,8 @@ export default function Features({data}){
         <span 
         key={index}
         className="features mr-2 mb-2">
-             <Images
-              imageurl={item?.icon || ''}
-              quality="100"
-              width="16"
-              height="16"
-              title={item?.title || 'Icon'}
-              alt={item?.title || 'Icon'}
-              classes="block size-[16px]"
-              placeholder={true}
-            />
-            {item?.title}
+            <CheckIcon className="size-[10px]"/>
+            {item?.item}
         </span>
           ))
       
@@ -31,3 +22,13 @@ export default function Features({data}){
 }
 
 
+ {/* <Images */}
+              {/* imageurl={item?.icon || ''} */}
+              {/* quality="100" */}
+              {/* width="16" */}
+              {/* height="16" */}
+              {/* title={item?.title || 'Icon'} */}
+              {/* alt={item?.title || 'Icon'} */}
+              {/* classes="block size-[16px]" */}
+              {/* placeholder={true} */}
+            {/* /> */}
