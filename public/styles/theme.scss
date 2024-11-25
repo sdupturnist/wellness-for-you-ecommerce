@@ -32,7 +32,14 @@
 }
 
 
-//PDF
+//MODAL
+
+
+:root:has(:is(.modal-open, .modal:target, .modal-toggle:checked + .modal, .modal[open])) {
+overflow: auto !important; 
+scrollbar-gutter: initial !important; 
+}
+
 
 
 
