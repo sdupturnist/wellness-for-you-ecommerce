@@ -1,19 +1,24 @@
 "use client";
 
 import SectionHeader from "./SectionHeader";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+
 
 export default function ModalPopup({ title, item, titleCenter }) {
   return (
+
+    
     <dialog id="modal_all" className="modal">
       <div className="modal-box">
+        <span onClick={(e)=> document.getElementById("modal_all").close()} className="cursor-pointer block absolute right-4 top-4">
+          <XMarkIcon className="size-4"/>
+        </span>
         <div className="sm:p-5 p-3">
           <SectionHeader title={title} titleSmall titleCenter={titleCenter && titleCenter} />
           {item}
         </div>
       </div>
-      <form method="dialog" className="modal-backdrop">
-        <button>close</button>
-      </form>
+   
     </dialog>
   );
 }

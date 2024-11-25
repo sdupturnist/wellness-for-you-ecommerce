@@ -44,11 +44,9 @@ export default async function CategoryPage({ params, searchParams }) {
     }
   );
 
-  
   let reviewsData = await fetch(
-
     `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}`,
- {
+    {
       next: {
         revalidate: 60,
         cache: "no-store",
@@ -67,9 +65,6 @@ export default async function CategoryPage({ params, searchParams }) {
     }
   );
 
-
- 
-
   // Parse responses to JSON
   let allProductsDataJson = await allProductsData.json();
   let featuredProductsJson = await featuredProductsData.json();
@@ -81,19 +76,15 @@ export default async function CategoryPage({ params, searchParams }) {
   const allProducts = allProductsDataJson?.products;
   const totalProductsCount = allProductsCount?.products ?? [];
   const totalProducts = totalProductsCount?.length ?? [];
-  const totalPages = Math.ceil(totalProducts / itemsShowPerPage); 
+  const totalPages = Math.ceil(totalProducts / itemsShowPerPage);
 
+  // Filter the products based on matching product_id from the reviews
+  const filteredProductsTopProducts =
+    allProducts &&
+    allProducts.filter((product) =>
+      reviews.some((review) => review.product_id === product.id)
+    );
 
-
-
-// Filter the products based on matching product_id from the reviews
-const filteredProductsTopProducts = allProducts && allProducts.filter(product =>
-  reviews.some(review => review.product_id === product.id)
-);
-
-
-
-  
   return (
     <div className="bg-bggray">
       <Breadcrumb />
@@ -102,16 +93,19 @@ const filteredProductsTopProducts = allProducts && allProducts.filter(product =>
           {allProducts.length > 0 ? (
             <div
               className={`${
-                filteredProductsTopProducts.length > 0 ? "lg:grid-cols-[25%_75%]" : ""
+                filteredProductsTopProducts.length > 0
+                  ? "lg:grid-cols-[25%_75%]"
+                  : ""
               } grid grid-cols-1 sm:gap-8 gap-5`}>
               {filteredProductsTopProducts.length > 0 && (
                 <div className="w-full lg:pr-7 order-last lg:order-1">
                   <div className="section-header-card">
                     <SectionHeader title="Top rated products" />
                     <div className="products">
-                      {filteredProductsTopProducts && filteredProductsTopProducts.map((item, index) => (
-                        <ProductCard key={index} data={item} column />
-                      ))}
+                      {filteredProductsTopProducts &&
+                        filteredProductsTopProducts.map((item, index) => (
+                          <ProductCard key={index} data={item} column />
+                        ))}
                     </div>
                   </div>
                 </div>

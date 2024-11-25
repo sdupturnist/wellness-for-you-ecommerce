@@ -71,8 +71,6 @@ export default async function ItemSingle({ params, searchParams }) {
 
   const [singleProduct] = await singleProductData.json();
 
-
-
   let productReviewData = await fetch(
     `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}&product=${singleProduct?.id}`,
     {
@@ -83,7 +81,6 @@ export default async function ItemSingle({ params, searchParams }) {
     }
   );
 
-  
   const relatedProductsGet = await relatedProductsData.json();
   const relatedProducts = relatedProductsGet?.products;
   let productReview = await productReviewData.json();
@@ -128,8 +125,12 @@ export default async function ItemSingle({ params, searchParams }) {
             <div className="grid gap-7 lg:max-w-[80%]">
               <div className="grid gap-4">
                 <h1>{singleProduct && singleProduct?.name}</h1>
-                {singleProduct?.rating_count > 0 && (
-                  <ReviewCount data={singleProduct?.reviews} large />
+                {productReview.length > 0 && (
+                  <ReviewCount
+                    average={singleProduct?.average_rating}
+                    ratingCount={singleProduct?.rating_count}
+                    large
+                  />
                 )}
               </div>
               <div>
@@ -268,12 +269,10 @@ export default async function ItemSingle({ params, searchParams }) {
                     <div className="grid gap-4 justify-between sm:items-center">
                       <p>Rate this Backer and tell others what you think</p>
                       <div className="sm:mt-0 mt-2">
-                        <WriteReview  productId={singleProduct?.id} />
+                        <WriteReview productId={singleProduct?.id} />
                       </div>
                     </div>
                   )}
-
-
 
                   <div className={`${productReview.length > 0 && "mt-5"}`}>
                     {productReview.length > 0 ? (
@@ -282,7 +281,6 @@ export default async function ItemSingle({ params, searchParams }) {
                       <div className="items-start">
                         <Alerts title="No reviews available yet" center nobg />
                         <div className="text-center pb-7 pt-3">
-                       
                           <WriteReview productId={singleProduct?.id} />
                         </div>
                       </div>
@@ -299,7 +297,7 @@ export default async function ItemSingle({ params, searchParams }) {
                 <SectionHeader title="Frequently bought together" spacingSm />
                 <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
                   {relatedProducts.map((item, index) => (
-                    <ProductCard key={index} data={item} mobileList urlinner/>
+                    <ProductCard key={index} data={item} mobileList />
                   ))}
                 </ul>
               </div>
@@ -310,11 +308,9 @@ export default async function ItemSingle({ params, searchParams }) {
               <div className="section-header-card !p-0">
                 <SectionHeader title="Top rated products" spacingSm />
                 <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-
-               
                   {allProducts &&
                     filteredProductsTopProducts.map((item, index) => (
-                      <ProductCard key={index} data={item} mobileList urlinner/>
+                      <ProductCard key={index} data={item} mobileList />
                     ))}
                 </ul>
               </div>

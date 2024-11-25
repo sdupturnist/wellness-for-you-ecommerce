@@ -31,6 +31,8 @@ export let  siteFromEmail = "jaseerali2012@gmail.com"
 
 
 
+
+
 //OFFER PERCENTAGE
 export let OfferPercentage = ({ normalprice, saleprice }) => {
   let normalPrice = normalprice;
@@ -108,4 +110,33 @@ export let  formatDate = (dateStr) => {
 
   // Return formatted date as "Month Day, Year"
   return `${month} ${day}, ${year}`;
+}
+
+
+
+export let  emailTemplate = () => { 
+  
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Enquiry Notification</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9;">
+     <div style="margin: 0; padding: 0; font-family: 'Arial, sans-serif'; background-color: #fff;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #fff;">
+                <!-- Header -->
+               
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color: #15181E; color: #fff; text-align: center; padding: 10px; font-size: 14px;">
+                       
+                    </td>
+                </tr>
+            </table>
+        </div>
+</body>
+</html>`;
 }

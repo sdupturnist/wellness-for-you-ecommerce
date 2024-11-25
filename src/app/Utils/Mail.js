@@ -1,15 +1,20 @@
-
-
 //https://dev.to/sheraz4194/sending-emails-in-nextjs-via-nodemailer-4ai2
 
-'use server';
-const nodemailer = require('nodemailer');
-const { hostName, portNumber, emailUsername, emailPassword, siteEmail, siteFromEmail } = require('./variables');
-
-
+"use server";
+const nodemailer = require("nodemailer");
+const {
+  hostName,
+  portNumber,
+  emailUsername,
+  emailPassword,
+  siteEmail,
+  siteFromEmail,
+  siteName,
+  copyright,
+} = require("./variables");
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   host: hostName,
   port: portNumber,
   //secure: true,
@@ -19,108 +24,61 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendMail({
-  email,
-  sendTo,
-  subject,
-  text,
-  html,
-}) {
+export async function sendMail({  sendTo, subject, message }) {
   try {
     const isVerified = await transporter.verify();
   } catch (error) {
-    console.error('Something Went Wrong', emailUsername, emailPassword, error);
+    console.error("Something Went Wrong", emailUsername, emailPassword, error);
     return;
   }
   const info = await transporter.sendMail({
     from: siteFromEmail,
-    to: sendTo || siteEmail,
+    to: sendTo,
     subject: subject,
-    text: text,
-    html: html ? html : 'sdsdsdsddsdsdsd',
+    html:
+      `
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Enquiry Notification</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9;">
+     <div style="margin: 0; padding: 0; font-family: 'Arial, sans-serif'; background-color: #fff;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #fff;">
+                <!-- Header -->
+                <tr>
+                    <td style="background-color: #137E43; color: #fff; text-align: center; padding: 20px; font-size: 24px;">
+                        ` + subject +
+      `
+                    </td>
+                </tr>
+                
+                <!-- Body Content -->
+                <tr>
+                    <td style="background-color: #fff; padding: 20px; color: #15181E;">
+                        <h2 style="font-size: 22px; color: #137E43;">Hi,</h2>
+                        <p style="font-size: 16px; line-height: 1.5;"> ` +
+                        message +
+      `. </p>
+                         </td>
+                </tr>
 
-    // from: 'jaseerali2012@gmail.com',
-    // to: 'jaseerali2012@gmail.com',
-    // subject: 'test',
-    // text: 'test',
-    // html: 'test',
-
-
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color: #15181E; color: #fff; text-align: center; padding: 10px; font-size: 14px;">
+                        <p style="margin: 0;">${copyright}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</body>
+</html>
+        
+    `,
   });
-  console.log('Message Sent', info.messageId);
-  console.log('Mail sent to', siteEmail);
+  console.log("Message Sent", info.messageId);
+  console.log("Mail sent to", siteEmail);
   return info;
 }
-
-
-
-
-
-
-
-// 'use server'
-
-
-
-// import nodemailer from 'nodemailer';
-// import { emailPassword, emailUsername, siteEmail, siteFromEmail } from './variables';
-
-
-// export async function sendMail({
-
-//     const { name, email, phone, message } = req.body;
-
-//     // Create a transporter
-//     const transporter = nodemailer.createTransport({
-//       host: 'smtp.gmail.com', // Replace with your SMTP server
-//       port: 587, // Replace with your SMTP port
-//       auth: {
-//         user: emailUsername, // Replace with your email address
-//         pass: emailPassword, // Replace with your email password
-//       },
-//     });
-
-//     const mailOptions = {
-//       from: siteFromEmail,
-//       to: siteEmail,
-//       subject: 'New Contact Enquiry Received | Chuchoter',
-//       html: `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Contact Enquiry Notification</title>
-// </head>
-// <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9;">
-//     <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-//         <h2 style="color: #333333;">New Contact Enquiry Received</h2>
-//         <p style="color: #555555;">Hi Admin,</p>
-//         <p style="color: #555555;">We have received a new contact enquiry through our website. Below are the details:</p>
-        
-//         <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-//             <tr>
-//                 <td style="padding: 8px; background-color: #f1f1f1; font-weight: bold;">Name:</td>
-//                 <td style="padding: 8px; color: #333333;">[`+name+`]</td>
-//             </tr>
-//             <tr>
-//                 <td style="padding: 8px; background-color: #f1f1f1; font-weight: bold;">Email:</td>
-//                 <td style="padding: 8px; color: #333333;">[`+email+`]</td>
-//             </tr>
-//             <tr>
-//                 <td style="padding: 8px; background-color: #f1f1f1; font-weight: bold;">Phone Number:</td>
-//                 <td style="padding: 8px; color: #333333;">[`+phone+`]</td>
-//             </tr>
-//             <tr>
-//                 <td style="padding: 8px; background-color: #f1f1f1; font-weight: bold;">Message:</td>
-//                 <td style="padding: 8px; color: #333333;">[`+message+`]</td>
-//             </tr>
-//         </table>
-
-//         <p style="color: #555555;">Please review the enquiry and respond accordingly.</p>
-//         </div>
-// </body>
-// </html>`,
-//     };
-
-   
-  

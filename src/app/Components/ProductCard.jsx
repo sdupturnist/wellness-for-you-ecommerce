@@ -68,8 +68,12 @@ export default function ProductCard({
             <Link href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title text-dark mb-2">{data?.name}</h3>
             </Link>
+
             {data?.rating_count > 0 && (
-              <ReviewCount data={data?.rating_count} />
+              <ReviewCount
+                average={data?.average_rating}
+                ratingCount={data?.rating_count}
+              />
             )}
             {data?.price && (
               <div>
@@ -131,11 +135,17 @@ export default function ProductCard({
             placeholder={true}
           />
         </Link>
+
         <div className="sm:p-4 sm:pt-0 p-5 sm:pl-3 pl-0 pr-0 w-full sm:grid items-end">
           <Link href={`${itemCaturl}/${data?.slug}`}>
             <h3 className="product-title text-dark mb-2">{data?.name}</h3>
           </Link>
-          {data?.rating_count > 0 && <ReviewCount data={data?.rating_count} />}
+          {data?.rating_count > 0 && (
+            <ReviewCount
+              average={data?.average_rating}
+              ratingCount={data?.rating_count}
+            />
+          )}
           {data?.price && (
             <div>
               <span className="product-price">
@@ -216,7 +226,10 @@ export default function ProductCard({
                 <h3 className="product-title text-dark mb-2">{data?.name}</h3>
               </Link>
               {data?.rating_count > 0 && (
-                <ReviewCount data={data?.rating_count} />
+                <ReviewCount
+                  average={data?.average_rating}
+                  ratingCount={data?.rating_count}
+                />
               )}
               {data?.price && (
                 <div>

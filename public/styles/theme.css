@@ -19,11 +19,6 @@
   background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%), linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%), linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%), linear-gradient(45deg, var(--chkbg) 30%, oklch(1 0 0) 30.99%, oklch(1 0 0) 40%, transparent 40.99%), linear-gradient(-45deg, oklch(1 0 0) 50%, var(--chkbg) 50.99%);
 }
 
-:root:has(:is(.modal-open, .modal:target, .modal-toggle:checked + .modal, .modal[open])) {
-  overflow: auto !important;
-  scrollbar-gutter: initial !important;
-}
-
 body {
   color: #333;
   background: var(--background);
