@@ -49,8 +49,18 @@ export default async function ItemSingle({ params, searchParams }) {
     }
   );
 
-  let topProductsData = await fetch(
-    `${apiUrl}wp-json/top-products/v1/products`,
+  let allProductsData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  let reviewsData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}`,
     {
       next: {
         revalidate: 60,
@@ -60,9 +70,32 @@ export default async function ItemSingle({ params, searchParams }) {
   );
 
   const [singleProduct] = await singleProductData.json();
+
+
+
+  let productReviewData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}&product=${singleProduct?.id}`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  
   const relatedProductsGet = await relatedProductsData.json();
   const relatedProducts = relatedProductsGet?.products;
-  let topRatedProducts = await topProductsData.json();
+  let productReview = await productReviewData.json();
+  let reviews = await reviewsData.json();
+  let allProducts = await allProductsData.json();
+
+  // Filter the products based on matching product_id from the reviews
+  const filteredProductsTopProducts =
+    allProducts &&
+    allProducts.filter((product) =>
+      reviews.some((review) => review.product_id === product.id)
+    );
 
   return (
     <div className="bg-bggray">
@@ -225,35 +258,38 @@ export default async function ItemSingle({ params, searchParams }) {
                 </div>
               )} */}
 
-         
-                <div className="collapse collapse-plus border rounded-lg">
-                  <input type="radio" name="my-accordion-3" />
-                  <div className="collapse-title text-md text-dark font-medium">
-                    Reviews
-                  </div>
-                  <div className="collapse-content content">
-                  {singleProduct?.review && <div className="sm:flex gap-4 justify-between sm:items-center border-b pb-4">
+              <div className="collapse collapse-plus border rounded-lg">
+                <input type="radio" name="my-accordion-3" />
+                <div className="collapse-title text-md text-dark font-medium">
+                  Reviews
+                </div>
+                <div className="collapse-content">
+                  {productReview.length > 0 && (
+                    <div className="grid gap-4 justify-between sm:items-center">
                       <p>Rate this Backer and tell others what you think</p>
                       <div className="sm:mt-0 mt-2">
-                        <WriteReview />
+                        <WriteReview  productId={singleProduct?.id} />
                       </div>
                     </div>
-}
-                    <div className={`${singleProduct?.review && "mt-5"}`}>
-                    {
-                    singleProduct?.reviews ? <Reviews data={singleProduct && singleProduct?.reviews} />
-                    :
-                    <div className="items-start">
-                      <Alerts title="No reviews available yet" center nobg/>
-                      <div className="text-center pb-7 pt-3">
-                      <WriteReview />
+                  )}
+
+
+
+                  <div className={`${productReview.length > 0 && "mt-5"}`}>
+                    {productReview.length > 0 ? (
+                      <Reviews data={productReview && productReview} />
+                    ) : (
+                      <div className="items-start">
+                        <Alerts title="No reviews available yet" center nobg />
+                        <div className="text-center pb-7 pt-3">
+                       
+                          <WriteReview productId={singleProduct?.id} />
+                        </div>
                       </div>
-                    </div>
-                    }
-                    </div>
+                    )}
                   </div>
                 </div>
-            
+              </div>
             </div>
           </div>
 
@@ -263,21 +299,23 @@ export default async function ItemSingle({ params, searchParams }) {
                 <SectionHeader title="Frequently bought together" spacingSm />
                 <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
                   {relatedProducts.map((item, index) => (
-                    <ProductCard key={index} data={item} mobileList />
+                    <ProductCard key={index} data={item} mobileList urlinner/>
                   ))}
                 </ul>
               </div>
             </div>
           )}
-
-          {topRatedProducts.length > 0 && (
+          {allProducts && filteredProductsTopProducts.length > 0 && (
             <div className="sm:mt-10 mt-5">
               <div className="section-header-card !p-0">
                 <SectionHeader title="Top rated products" spacingSm />
                 <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-                  {topRatedProducts.map((item, index) => (
-                    <ProductCard key={index} data={item} mobileList />
-                  ))}
+
+               
+                  {allProducts &&
+                    filteredProductsTopProducts.map((item, index) => (
+                      <ProductCard key={index} data={item} mobileList urlinner/>
+                    ))}
                 </ul>
               </div>
             </div>

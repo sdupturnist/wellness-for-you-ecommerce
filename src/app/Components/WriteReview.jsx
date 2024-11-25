@@ -3,7 +3,9 @@
 import WriteReviewForm from "./Forms/WriteReviewForm";
 import ModalPopup from "./ModalPopup";
 
-export default function WriteReview() {
+export default function WriteReview({productId}) {
+
+  
   return (
     <>
       <button
@@ -11,7 +13,7 @@ export default function WriteReview() {
         onClick={() => document.getElementById("modal_all").showModal()}>
         Write A Review
       </button>
-      <ModalPopup title="Ratings & Review" item={<WriteReviewForm />} />
+      <ModalPopup title="Ratings & Review" item={<WriteReviewForm productId={productId}/>} />
     </>
   );
 }

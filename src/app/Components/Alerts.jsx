@@ -52,7 +52,7 @@ export default function Alerts({
             center ? "text-center justify-center" : "text-start"
           }`}>
           {!noIcon && icon}
-          <span className={`${center && "text-center"} text-sm`}>{title}</span>
+          <span className={`${center && "text-center"} text-base`}>{title}</span>
         </div>
       )}
       {large && (

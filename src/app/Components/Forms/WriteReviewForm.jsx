@@ -1,57 +1,107 @@
 "use client";
 
+import { apiUrl, jwtTocken, woocommerceKey } from "@/app/Utils/variables";
 import { useState } from "react";
+import Alerts from "../Alerts";
+import Loading from "../Loading";
 
-export default function WriteReviewForm() {
+export default function WriteReviewForm({ productId }) {
+  const userInfo = {
+    first_name: "Muhammed",
+    user_email: "muhammed@gmail.com",
+  };
 
-    const [rating, setRating] = useState("");
+  const [rating, setRating] = useState(5);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [review, setReview] = useState("");
+
+  const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  //const modalElement = document.getElementById("modal_all");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const requestData = {
+      review: review,
+      rating: rating,
+      name: name,
+      email: email,
+      status: "hold",
+    };
+
+    try {
+      // Submit the review
+      const response = await fetch(
+        `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}&product_id=${productId}&reviewer=${userInfo.first_name}&reviewer_email=${userInfo.user_email}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: jwtTocken, // Replace with JWT or Basic Auth
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+      if (response.ok) {
+        setLoading(false);
+        setStatus(true);
+
+        setTimeout(() => {
+          document.getElementById("modal_all").style.display = "none";
+        }, 3000);
+
+        //   console.log('Review submitted successfully');
+      } else {
+        const errorResponse = await response.json();
+        console.error(
+          "Failed to submit review",
+          response.status,
+          errorResponse
+        );
+      }
 
 
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        // try {
-        //   // Send email notification
-        //   const emailResponse = await fetch("/api/contactMail", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({ name, place, email, phone, message }),
-        //   });
-    
-        //   if (emailResponse.ok) {
-        //    // setStatus("Email sent successfully!");
-    
-    
-        //    router.push("/thankyou-contact");
-        //    //setSuccess(true);
-        //    setName("");
-        //    setPlace("");
-        //    setEmail("");
-        //    setPhone("");
-        //    setMessage("");
-    
-           
-        //   console.log("success");
-        //   } else {
-        //     const emailErrorResponse = await emailResponse.json();
-        //     console.error("Failed to send email", emailErrorResponse);
-        //    // setStatus("Failed to send email");
-        //   }
-        // } catch (error) {
-        //   console.error("An error occurred:", error);
-        // } finally {
-       
-        // }
-      };
+      // // Send email notification
+      // const emailResponse = await fetch("/api/reviewSendMail", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ productId, name, rating, comment, todayDate }),
+      // });
+
+      // if (emailResponse.ok) {
+      //   setStatus("Email sent successfully!");
+      // } else {
+      //   const emailErrorResponse = await emailResponse.json();
+      //   console.error("Failed to send email", emailErrorResponse);
+      //   setStatus("Failed to send email");
+      // }
+
+      
 
 
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
-        {rating}
+      {status && (
+        <Alerts
+          status="green"
+          title="Your review has been submitted for approval. Thank you for your feedback."
+        />
+      )}
+      {rating}
       need to login
       <div className="grid gap-4">
         <div className="rating rating-lg mb-3">
@@ -99,12 +149,15 @@ export default function WriteReviewForm() {
         </div>
 
         <textarea
+          required
           name=""
           id=""
           className="input"
           placeholder="Write something..."
+          onChange={(e) => setReview(e.target.value)}
           rows="5"></textarea>
         <button className="btn btn-large w-full" type="submit">
+          {loading && <Loading />}
           Submit
         </button>
       </div>

@@ -5,11 +5,8 @@ import { StarIcon } from "@heroicons/react/24/solid";
 export default function ReviewCount({ data, large,  }) {
 
 
-  const totalReviews = data && data.length;
-const totalReviewCount = data && data.reduce((sum, review) => sum + review.review_count, 0);
-const averageReviewCount = totalReviewCount / totalReviews;
-
-//console.log(`Average review count: ${averageReviewCount.toFixed(1)} out of 5`);
+  const totalReviews = data && data;
+const averageReviewCount = (data / 5) * 5;
 
 
 

@@ -372,7 +372,7 @@ footer ul li, footer ol li {
   @apply grid;
 }
 .review-list li {
-  @apply border-b py-6 grid gap-3 last:border-none last:pb-3 first:pt-0;
+  @apply border p-6 grid gap-3 rounded-lg mb-4 last:mb-0;
 }
 
 .card {

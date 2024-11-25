@@ -2,12 +2,12 @@
 
 import Images from "./Images";
 import { currency, homeUrl, OfferPercentage } from "../Utils/variables";
-import { Link } from "react-alice-carousel";
 import ReviewCount from "./ReviewCount";
 import AddToCart from "./AddToCart";
 import AddToWishList from "./AddToWishList";
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function ProductCard({
   data,
@@ -16,8 +16,9 @@ export default function ProductCard({
   inCartPage,
   wishlist,
 }) {
-  const category = usePathname();
-  const itemCaturl = homeUrl + category?.replace("/", "");
+  const category = useParams();
+
+  const itemCaturl = homeUrl + category?.category?.replace("/", "");
 
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +47,9 @@ export default function ProductCard({
           } flex items-center`}
           href={`${itemCaturl}/${data?.slug}`}>
           <Images
-            imageurl={data?.images[0]?.src || data?.images}
+            imageurl={
+              data?.images[0]?.src || (data?.images.length > 0 && data?.images)
+            }
             quality="100"
             width="100"
             height="100"
@@ -102,12 +105,12 @@ export default function ProductCard({
   );
 
   const leftRightCardMobile = loading ? (
-    <l className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <div className="skeleton h-48 w-full"></div>
       <div className="skeleton h-4 w-28"></div>
       <div className="skeleton h-4 w-full"></div>
       <div className="skeleton h-4 w-full"></div>
-    </l>
+    </div>
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 sm:min-h-80  justify-between">
       <div className="sm:grid flex relative h-full w-full">
@@ -116,7 +119,9 @@ export default function ProductCard({
           className="flex items-center min-w-32"
           href={`${itemCaturl}/${data?.slug}`}>
           <Images
-            imageurl={data?.images[0]?.src || data?.images}
+            imageurl={
+              data?.images[0]?.src || (data?.images.length > 0 && data?.images)
+            }
             quality="100"
             width="150"
             height="150"
@@ -192,7 +197,10 @@ export default function ProductCard({
           <div className="block w-full">
             <Link href={`${itemCaturl}/${data?.slug}`}>
               <Images
-                imageurl={data?.images[0]?.src || data?.images}
+                imageurl={
+                  data?.images[0]?.src ||
+                  (data?.images.length > 0 && data?.images)
+                }
                 quality="100"
                 width="150"
                 height="150"
