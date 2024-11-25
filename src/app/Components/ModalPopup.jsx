@@ -7,7 +7,7 @@ export default function ModalPopup({ title, item, titleCenter }) {
     <dialog id="modal_all" className="modal">
       <div className="modal-box">
         <div className="sm:p-5 p-3">
-          <SectionHeader title={title} titleSmall titleCenter />
+          <SectionHeader title={title} titleSmall titleCenter={titleCenter && titleCenter} />
           {item}
         </div>
       </div>

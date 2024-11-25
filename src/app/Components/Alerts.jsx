@@ -5,11 +5,17 @@ import Link from "next/link";
 import Images from "./Images";
 import { usePathname } from "next/navigation";
 
-
-export default function Alerts({ status, title, large, noIcon, icon, noPageUrl }) {
-
-  const pathname = usePathname()
-
+export default function Alerts({
+  status,
+  title,
+  large,
+  noIcon,
+  icon,
+  noPageUrl,
+  center,
+  nobg,
+}) {
+  const pathname = usePathname();
 
   let alertClass = "";
   // let icon = null;
@@ -17,19 +23,19 @@ export default function Alerts({ status, title, large, noIcon, icon, noPageUrl }
   switch (status) {
     case "red":
       alertClass = "bg-red-100 text-red-600";
-     // icon = <XCircleIcon className="size-4" />;
+      // icon = <XCircleIcon className="size-4" />;
       break;
     case "green":
       alertClass = "bg-green-100 text-green-600";
-     // icon = <XCircleIcon className="size-4" />;
+      // icon = <XCircleIcon className="size-4" />;
       break;
     case "yellow":
       alertClass = "bg-yellow-100 text-yellow-600";
-    //  icon = <XCircleIcon className="size-4" />;
+      //  icon = <XCircleIcon className="size-4" />;
       break;
     default:
       alertClass = "bg-gray-100 text-gray-600";
-    //  icon = <XCircleIcon className="size-4" />;
+      //  icon = <XCircleIcon className="size-4" />;
       break;
   }
 
@@ -38,9 +44,15 @@ export default function Alerts({ status, title, large, noIcon, icon, noPageUrl }
       {!large && (
         <div
           role="alert"
-          className={`alert ${alertClass} rounded-md p-3 sm:text-base flex text-start`}>
+          className={`alert ${
+            nobg
+              ? "bg-transparent border-none opacity-40 [&>*]:text-base"
+              : alertClass
+          } rounded-md p-3 sm:text-base flex ${
+            center ? "text-center justify-center" : "text-start"
+          }`}>
           {!noIcon && icon}
-          <span className="text-sm">{title}</span>
+          <span className={`${center && "text-center"} text-sm`}>{title}</span>
         </div>
       )}
       {large && (
@@ -56,9 +68,11 @@ export default function Alerts({ status, title, large, noIcon, icon, noPageUrl }
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span className="font-semibold text-body opacity-65">{title} {!noPageUrl && pathname?.split("/").pop()}</span>
+          <span className="font-semibold text-body opacity-65">
+            {title} {!noPageUrl && pathname?.split("/").pop()}
+          </span>
           {/* <Link className="btn btn-light btn-large my-6" href={homeUrl}> */}
-            {/* Shop now */}
+          {/* Shop now */}
           {/* </Link> */}
         </div>
       )}

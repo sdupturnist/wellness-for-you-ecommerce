@@ -3,8 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useCartContext } from "../Context/cartContext";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import AddToWishList from "./AddToWishList";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { homeUrl } from "../Utils/variables";
 
-export default function AddToCart({ itemid, price, name, inCartPage, card }) {
+export default function AddToCart({ itemid, price, name, inCartPage, card, image }) {
+  const router = useRouter();
+
   const { cartItems, setCartItems, setCart } = useCartContext();
 
   const [quantity, setQuantity] = useState(1);
@@ -41,11 +47,10 @@ export default function AddToCart({ itemid, price, name, inCartPage, card }) {
         (cartItem) => cartItem.id !== itemid
       );
       setCartItems(updatedCartItems);
-
       updateCartInLocalStorage(updatedCartItems);
     } else {
       // Add item to cart
-      const newObject = { id: itemid, quantity: 1, price: price, name: name };
+      const newObject = { id: itemid, quantity: 1, price: price, name: name, image: image };
       const updatedCartItems = [...safeCartItems, newObject];
       setCartItems(updatedCartItems);
       updateCartInLocalStorage(updatedCartItems);
@@ -67,6 +72,7 @@ export default function AddToCart({ itemid, price, name, inCartPage, card }) {
         quantity: 1,
         price: price,
         name: name,
+        image: image,
       });
     }
 
@@ -151,9 +157,17 @@ export default function AddToCart({ itemid, price, name, inCartPage, card }) {
             </button>
           </div>
           {!inCartPage && (
-            <button className="btn !min-h-14" onClick={handleCartAction}>
-              Add to cart
-            </button>
+            <>
+              <Link
+                href={`${homeUrl}cart`}
+                className="btn !min-h-14"
+                onClick={handleCartAction}>
+                Add to cart
+              </Link>
+              <AddToWishList
+                id={itemid}
+              />
+            </>
           )}
         </div>
       )}

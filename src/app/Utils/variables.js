@@ -129,3 +129,28 @@ export let convertStringToJSON = (offerString) => {
   return offerData;
 };
 
+
+
+
+export let metaStaticData = {
+  title: "Default Page Title",
+  description: "Default page description.",
+  author: "Default Author",
+  keywords: "default, seo, keywords",
+  robots: "index, follow",
+  canonical: "https://default-canonical-url.com",
+  og_locale: "en_US",
+  og_type: "article",
+  og_title: "Default OG Title",
+  og_description: "Default OG Description",
+  og_url: "https://default-og-url.com",
+  og_site_name: "Default Site Name",
+  article_modified_time: "",
+  twitter_card: "summary_large_image",
+  twitter_misc: {
+    "Est. reading time": "1 minute",
+  },
+  twitter_site: "@defaulthandle",
+  twitter_creator: "@defaulthandle",
+  twitter_image: "/favicon.ico",
+};

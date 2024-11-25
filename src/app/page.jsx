@@ -8,6 +8,7 @@ import Testimonials from "./Components/Testimonials";
 import {
   apiUrl,
   homeUrl,
+  metaStaticData,
   siteAuthor,
   siteName,
   woocommerceKey,
@@ -198,47 +199,40 @@ export default async function Home({ params, searchParams }) {
 }
 
 export async function generateMetadata({ params, searchParams }, parent) {
+  const pageId = 19;
 
-  const pageId = 19
+  const staticData = metaStaticData
 
   try {
     const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
     const pageData = await page.json();
 
-    const title = pageData?.yoast_head_json?.title || siteName;
-    const description = pageData?.yoast_head_json?.description || "";
-    const ogTitle = pageData?.yoast_head_json?.og_title || title;
-    const ogDescription = pageData?.yoast_head_json?.og_description || "";
-    const canonicalUrl = pageData?.yoast_head_json?.canonical || "";
-    const modifiedTime = pageData?.yoast_head_json?.modified_time || "";
-    const ogImage = pageData?.yoast_head_json?.og_image || "/favicon.ico"; // Fallback image
-    const robots = pageData?.yoast_head_json?.robots || "index, follow"; // Fallback image
-    const keywords = pageData?.acf?.seo_keywords || "";
-    // Return metadata object dynamically
+    // Return metadata object with dynamic values, or fall back to static values
     return {
-      title,
-      description,
-      author: siteAuthor, // Dynamic author can be added if fetched from the API
-      keywords: keywords,
+      title: pageData?.yoast_head_json?.title || staticData.title,
+      description: pageData?.yoast_head_json?.description || staticData.description,
+      author: siteAuthor || staticData.author,  // Dynamic author or static fallback
+      keywords: pageData?.acf?.seo_keywords || staticData.keywords,
       viewport: "width=device-width, initial-scale=1",
-      robots: robots,
-      canonical: canonicalUrl,
-      og_locale: "en_US",
-      og_type: "article",
-      og_title: ogTitle,
-      og_description: ogDescription,
-      og_url: canonicalUrl,
-      og_site_name: "Wellness4u",
-      article_modified_time: modifiedTime,
-      twitter_card: "summary_large_image",
-      twitter_misc: {
-        "Est. reading time": "1 minute",
-      },
-      twitter_site: "@yourhandle",
-      twitter_creator: "@yourhandle",
-      twitter_image: ogImage,
+      robots: pageData?.yoast_head_json?.robots || staticData.robots,
+      canonical: pageData?.yoast_head_json?.canonical || staticData.canonical,
+      og_locale: staticData.og_locale,
+      og_type: staticData.og_type,
+      og_title: pageData?.yoast_head_json?.og_title || staticData.og_title,
+      og_description: pageData?.yoast_head_json?.og_description || staticData.og_description,
+      og_url: pageData?.yoast_head_json?.canonical || staticData.og_url,
+      og_site_name: staticData.og_site_name,
+      article_modified_time: pageData?.yoast_head_json?.modified_time || staticData.article_modified_time,
+      twitter_card: staticData.twitter_card,
+      twitter_misc: pageData?.yoast_head_json?.twitter_misc || staticData.twitter_misc,
+      twitter_site: staticData.twitter_site,
+      twitter_creator: staticData.twitter_creator,
+      twitter_image: pageData?.yoast_head_json?.og_image || staticData.twitter_image,
     };
   } catch (error) {
     console.error("Error fetching page data:", error);
+    // Return static data in case of an error
+    return staticData;
   }
 }
+

@@ -1,20 +1,17 @@
-
-
-
 "use client";
 
+import WriteReviewForm from "./Forms/WriteReviewForm";
 import ModalPopup from "./ModalPopup";
-
-
 
 export default function WriteReview() {
   return (
-<>
-<button className="more" onClick={()=>document.getElementById('modal_all').showModal()}>Write A Review</button>
-<ModalPopup 
-title="Write a review" 
-item="sdsdsd"
-/>
-</>
+    <>
+      <button
+        className="btn btn-medium btn-light"
+        onClick={() => document.getElementById("modal_all").showModal()}>
+        Write A Review
+      </button>
+      <ModalPopup title="Ratings & Review" item={<WriteReviewForm />} />
+    </>
   );
 }

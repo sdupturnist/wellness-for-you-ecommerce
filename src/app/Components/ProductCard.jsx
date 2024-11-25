@@ -9,8 +9,6 @@ import AddToWishList from "./AddToWishList";
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
-
-
 export default function ProductCard({
   data,
   column,
@@ -18,37 +16,25 @@ export default function ProductCard({
   inCartPage,
   wishlist,
 }) {
-
-
-
   const category = usePathname();
-const itemCaturl = homeUrl+category?.replace('/', '')
+  const itemCaturl = homeUrl + category?.replace("/", "");
 
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (data) {
+      setLoading(false);
+    }
+  }, [data]);
 
-
-const [loading, setLoading] = useState(true)
-
-useEffect(() => {
-  if (data) {
-    setLoading(false);
-  }
-}, [data]);
-
-
-
-
-  const leftRightCard = (
-
-    loading ?  <div className="flex w-52 flex-col gap-4">
-    <div className="skeleton h-48 w-full"></div>
-    <div className="skeleton h-4 w-28"></div>
-    <div className="skeleton h-4 w-full"></div>
-    <div className="skeleton h-4 w-full"></div>
-  </div>
-  
-  :
-
+  const leftRightCard = loading ? (
+    <div className="flex w-52 flex-col gap-4">
+      <div className="skeleton h-48 w-full"></div>
+      <div className="skeleton h-4 w-28"></div>
+      <div className="skeleton h-4 w-full"></div>
+      <div className="skeleton h-4 w-full"></div>
+    </div>
+  ) : (
     <div
       className={`${
         !inCartPage && "border-b border-border"
@@ -58,9 +44,7 @@ useEffect(() => {
           className={`${
             inCartPage ? "min-w-12 sm:min-w-24" : "min-w-32"
           } flex items-center`}
-          href={`${itemCaturl}/${data?.slug}`}
-          >
-           
+          href={`${itemCaturl}/${data?.slug}`}>
           <Images
             imageurl={data?.images[0]?.src || data?.images}
             quality="100"
@@ -78,14 +62,76 @@ useEffect(() => {
         </Link>
         <div className="p-5 pl-0 pr-0 w-full grid items-center">
           <div>
-            <Link 
-           href={`${itemCaturl}/${data?.slug}`}
-            >
+            <Link href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title text-dark mb-2">{data?.name}</h3>
             </Link>
             {data?.rating_count > 0 && (
-            <ReviewCount data={data?.rating_count} />
-          )}
+              <ReviewCount data={data?.rating_count} />
+            )}
+            {data?.price && (
+              <div>
+                <span className="product-price">
+                  {currency}
+                  {data?.price}
+                </span>
+                <span className="product-price-regular ml-2">
+                  {currency}
+                  {data?.regular_price}
+                </span>
+                <span className="product-offer font-semibold ml-2">
+                  <OfferPercentage
+                    normalprice={data?.regular_price}
+                    saleprice={data?.price}
+                  />
+                  % OFF
+                </span>
+              </div>
+            )}
+            {!inCartPage && data?.price && (
+              <AddToCart
+                card
+                itemid={data?.id ?? null}
+                price={data?.price !== null ? data?.price : data?.regular_price}
+                name={data?.name}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const leftRightCardMobile = loading ? (
+    <l className="flex w-full flex-col gap-4">
+      <div className="skeleton h-48 w-full"></div>
+      <div className="skeleton h-4 w-28"></div>
+      <div className="skeleton h-4 w-full"></div>
+      <div className="skeleton h-4 w-full"></div>
+    </l>
+  ) : (
+    <li className="w-full sm:w-auto sm:mr-2 sm:min-h-80  justify-between">
+      <div className="sm:grid flex relative h-full w-full">
+        {wishlist && <AddToWishList small active />}
+        <Link
+          className="flex items-center min-w-32"
+          href={`${itemCaturl}/${data?.slug}`}>
+          <Images
+            imageurl={data?.images[0]?.src || data?.images}
+            quality="100"
+            width="150"
+            height="150"
+            title={`${data?.images[0]?.alt || data?.name}`}
+            alt={`${data?.images[0]?.alt || data?.name}`}
+            classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
+            placeholder={true}
+          />
+        </Link>
+        <div className="sm:p-4 sm:pt-0 p-5 sm:pl-3 pl-0 pr-0 w-full sm:grid items-end">
+          <Link href={`${itemCaturl}/${data?.slug}`}>
+            <h3 className="product-title text-dark mb-2">{data?.name}</h3>
+          </Link>
+          {data?.rating_count > 0 && <ReviewCount data={data?.rating_count} />}
+          {data?.price && (
             <div>
               <span className="product-price">
                 {currency}
@@ -103,85 +149,17 @@ useEffect(() => {
                 % OFF
               </span>
             </div>
-
-            {!inCartPage && (
+          )}
+          <div>
+            {!inCartPage && data?.price && (
               <AddToCart
                 card
-                itemid={data?.id ?? null}
+                itemid={data?.id}
                 price={data?.price !== null ? data?.price : data?.regular_price}
                 name={data?.name}
               />
             )}
           </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const leftRightCardMobile = (
-
-    loading ?  <l className="flex w-full flex-col gap-4">
-  <div className="skeleton h-48 w-full"></div>
-  <div className="skeleton h-4 w-28"></div>
-  <div className="skeleton h-4 w-full"></div>
-  <div className="skeleton h-4 w-full"></div>
-</l>
-
-:
-    <li className="w-full sm:w-auto sm:mr-2 sm:min-h-80  justify-between">
-      <div className="sm:grid flex relative h-full w-full">
-        {wishlist && <AddToWishList small active />}
-        <Link
-          className="flex items-center min-w-32"
-          href={`${itemCaturl}/${data?.slug}`}
-          >
-          <Images
-               imageurl={data?.images[0]?.src || data?.images}
-               quality="100"
-               width="150"
-               height="150"
-               title={`${data?.images[0]?.alt || data?.name}`}
-               alt={`${data?.images[0]?.alt || data?.name}`}
-            classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
-            placeholder={true}
-          />
-        </Link>
-        <div className="sm:p-4 sm:pt-0 p-5 sm:pl-3 pl-0 pr-0 w-full sm:grid items-end">
-          <Link 
-           href={`${itemCaturl}/${data?.slug}`}
-          >
-            <h3 className="product-title text-dark mb-2">{data?.name}</h3>
-          </Link>
-          {data?.rating_count > 0 && (
-            <ReviewCount data={data?.rating_count} />
-          )}
-          <div>
-            <span className="product-price">
-              {currency}
-              {data?.price}
-            </span>
-            <span className="product-price-regular ml-2">
-              {currency}
-              {data?.regular_price}
-            </span>
-            <span className="product-offer font-semibold ml-2">
-              <OfferPercentage
-                normalprice={data?.regular_price}
-                saleprice={data?.price}
-              />
-              % OFF
-            </span>
-          </div>
-         <div>
-         {!inCartPage && (
-            <AddToCart
-              card
-              itemid={data?.id}
-              price={data?.price !== null ? data?.price : data?.regular_price}
-              name={data?.name}
-            />
-          )}
-         </div>
         </div>
       </div>
     </li>
@@ -202,61 +180,56 @@ useEffect(() => {
 
     default:
       // Return nothing or a default layout
-      card = (
-
-        loading ?  <div className="flex w-52 flex-col gap-4">
-        <div className="skeleton h-48 w-full"></div>
-        <div className="skeleton h-4 w-28"></div>
-        <div className="skeleton h-4 w-full"></div>
-        <div className="skeleton h-4 w-full"></div>
-      </div>
-      
-      :
-
+      card = loading ? (
+        <div className="flex w-52 flex-col gap-4">
+          <div className="skeleton h-48 w-full"></div>
+          <div className="skeleton h-4 w-28"></div>
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-full"></div>
+        </div>
+      ) : (
         <div className="product-card w-full mr-2">
           <div className="block w-full">
-            <Link 
-            href={`${itemCaturl}/${data?.slug}`}
-            >
+            <Link href={`${itemCaturl}/${data?.slug}`}>
               <Images
-                 imageurl={data?.images[0]?.src || data?.images}
-                 quality="100"
-                 width="150"
-                 height="150"
-                 title={`${data?.images[0]?.alt || data?.name}`}
-                 alt={`${data?.images[0]?.alt || data?.name}`}
+                imageurl={data?.images[0]?.src || data?.images}
+                quality="100"
+                width="150"
+                height="150"
+                title={`${data?.images[0]?.alt || data?.name}`}
+                alt={`${data?.images[0]?.alt || data?.name}`}
                 classes="block sm:size-[150px] size-[90px] my-[20px] mx-auto"
                 placeholder={true}
               />
             </Link>
 
             <div className="p-4 pt-0">
-              <Link 
-               href={`${itemCaturl}/${data?.slug}`}
-              >
+              <Link href={`${itemCaturl}/${data?.slug}`}>
                 <h3 className="product-title text-dark mb-2">{data?.name}</h3>
               </Link>
               {data?.rating_count > 0 && (
-            <ReviewCount data={data?.rating_count} />
-          )}
-              <div>
-                <span className="product-price">
-                  {currency}
-                  {data?.price}
-                </span>
-                <span className="product-price-regular ml-2">
-                  {currency}
-                  {data?.regular_price}
-                </span>
-                <span className="product-offer font-semibold ml-2">
-                  <OfferPercentage
-                    normalprice={data?.regular_price}
-                    saleprice={data?.price}
-                  />
-                  % OFF
-                </span>
-              </div>
-              {!inCartPage && (
+                <ReviewCount data={data?.rating_count} />
+              )}
+              {data?.price && (
+                <div>
+                  <span className="product-price">
+                    {currency}
+                    {data?.price}
+                  </span>
+                  <span className="product-price-regular ml-2">
+                    {currency}
+                    {data?.regular_price}
+                  </span>
+                  <span className="product-offer font-semibold ml-2">
+                    <OfferPercentage
+                      normalprice={data?.regular_price}
+                      saleprice={data?.price}
+                    />
+                    % OFF
+                  </span>
+                </div>
+              )}
+              {!inCartPage && data?.price && (
                 <AddToCart
                   card
                   itemid={data?.id ?? null}

@@ -121,8 +121,14 @@ main{
     }
 
  li{
-        @apply text-body 
+        @apply text-body  pl-[1px] list-disc ml-5 mb-1
     }
+
+   
+ul, ol{
+    @apply mb-4;
+}
+
 
     *{
         @apply last:mb-0
@@ -160,56 +166,25 @@ main{
 
 
 
-    .table-custom {
-        @apply min-w-full table-auto border-collapse mt-6 mx-auto;
-      }
-      
-      .table-header {
-        @apply bg-green-500 text-white;
-      }
-      
-      .table-cell {
-        @apply px-4 py-2 text-left;
-      }
-      
-      .table-row {
-        @apply bg-white border-b hover:bg-gray-200;
-      }
-      
-      .caption-custom {
-        @apply text-2xl font-bold mb-4;
-      }
-      
 
-   /* Apply to the table element */
 table {
-    @apply w-full my-5 ;
+    @apply w-full my-0 ;
 }
 
-/* Apply to th and td elements */
+
 th, td {
-    @apply px-2.5 py-2 text-left border border-gray-300;
+    @apply px-2.5 py-2 text-left;
 }
 
-/* Apply to the th element */
-th {
-    @apply bg-green-500 text-white;
-}
 
-/* Apply to even rows */
+
+
 tr:nth-child(even) {
     @apply bg-gray-100;
 }
 
-/* Apply to hovered rows */
-tr:hover {
-    @apply bg-gray-300;
-}
 
-/* Apply to the caption element */
-caption {
-    @apply text-xl mt-2 font-bold;
-}
+
 
 
    
@@ -736,4 +711,10 @@ footer{
 
   .section-header-card{
     @apply sm:mb-8 bg-white sm:p-7 p-4 sm:rounded-lg 
+  }
+
+  .breadcrumbs{
+    *{
+        @apply first-letter:capitalize
+    }
   }
