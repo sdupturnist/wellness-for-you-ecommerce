@@ -1,24 +1,34 @@
-'use client'
+"use client";
 
-
-import { currency } from "../Utils/variables";
+import Link from "next/link";
+import { currency, homeUrl } from "../Utils/variables";
 import { AOSInit } from "./Aos";
 
 
+export default function ReadyToGoCart({ data }) {
+  const totalAmount =
+    data &&
+    data.reduce((total, item) => {
+      return total + parseFloat(item.price) * item.quantity;
+    }, 0);
 
-export default function ReadyToGoCart({count}){
-    return(
-     <>
-        <AOSInit />
-       <div className="ready-to-go-cart" data-aos="fade-up">
-<div className="grid">
-<small className="text-xs text-body opacity-50">2 items</small>
-<span className="font-bold">{currency}600</span>
-</div>
-<button className="btn">
-        Go to cart
-        </button>
-       </div>
-     </>
-    )
+  return (
+    <>
+      <AOSInit />
+      <div className="ready-to-go-cart" data-aos="fade-up">
+        <div className="">
+          <span className="font-bold">
+            {currency}
+            {totalAmount}
+          </span>{" "}
+          <span className="text-body opacity-50">
+            ({data && data?.length} items)
+          </span>
+        </div>
+        <Link href={`${homeUrl}cart`} className="btn">
+          Go to cart
+        </Link>
+      </div>
+    </>
+  );
 }

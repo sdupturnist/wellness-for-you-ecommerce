@@ -3,30 +3,54 @@
 import Link from "next/link";
 import { currency } from "../Utils/variables";
 import SectionHeader from "./SectionHeader";
-import Invoice from "./Invoice";
+import { useCartContext } from "../Context/cartContext";
+import { useEffect } from "react";
 
 export default function AmountList({
   data,
   labels,
   forOrderDetails,
   tableView,
+  coupon,
 }) {
+
+
+  const { cartItems, couponCode, discount, cartSubTotal } = useCartContext();
+
+useEffect(() => {
+  
+
+}, [cartItems, couponCode, discount, cartSubTotal]);
+
+
+
   const renderAmountList = () => {
     switch (true) {
       case !forOrderDetails && !tableView:
         return (
           <ul className="amount-list">
-             <li>
-              <span className="label">Subtotal</span>
-              <span className="val">-{currency}5,498</span>
-            </li>
             <li>
-              <span className="label">Coupon discount</span>
-              <span className="val !text-green-600">-{currency}498</span>
+              <span className="label">Subtotal</span>
+              <span className="val">
+                {currency}
+                {cartSubTotal}
+              </span>
             </li>
+            {couponCode && (
+              <li>
+                <span className="label">Coupon discount</span>
+                <span className="val !text-green-600">-{currency}{parseInt(discount)}</span>
+              </li>
+            )}
             <li className="border-t border-border pt-3 mt-3">
               <span className="label">Total</span>
-              <span className="val text-lg font-bold">{currency}5,000</span>
+              <span className="val text-lg font-bold !grid justify-end text-end grid-2">
+                <span className="block">
+                  {currency}
+                  {cartSubTotal - discount}
+                </span>
+                {couponCode && <span className="text-xs text-primary font-normal mt-1">Discount amount -{currency}{discount} applied</span>}
+              </span>
             </li>
           </ul>
         );

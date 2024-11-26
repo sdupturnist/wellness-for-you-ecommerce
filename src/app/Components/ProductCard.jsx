@@ -97,11 +97,13 @@ export default function ProductCard({
             )}
             {!inCartPage && data?.price && (
               <AddToCart
-                card
-                itemid={data?.id}
-                price={data?.price !== null ? data?.price : data?.regular_price}
-                name={data?.name}
-                options={convertStringToJSON(data && data?.acf?.options)}
+               card
+                  itemid={data?.id}
+                  price={
+                    data?.price !== null ? data?.price : data?.regular_price
+                  }
+                  name={data?.name}
+                  options={convertStringToJSON(data && data?.acf?.options)}
               />
             )}
           </div>

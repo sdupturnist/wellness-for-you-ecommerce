@@ -6,9 +6,13 @@ import AddToCart from "./AddToCart";
 //import AddToCartWithQty from "./AddToCartWithQty.jsx______"
 import ProductCard from "./ProductCard";
 import Alerts from "./Alerts";
+import { convertStringToJSON } from "../Utils/variables";
 
 export default function CartListItem() {
+
+
    const { cartItems, setCartItems } = useCartContext();
+   
    
 
   // const cartItems = [
@@ -74,6 +78,8 @@ export default function CartListItem() {
     (product) => cartItems && cartItems.some((item) => item.id === product.id)
   );
 
+  
+
   useEffect(() => {
     const storedData = localStorage.getItem("cartData");
     if (storedData) {
@@ -86,8 +92,13 @@ export default function CartListItem() {
     return total + item?.quantity * item?.price;
   }, 0);
 
+
+
+
   // State for order
   const [currentOrder, setCurrentOrder] = useState([]);
+
+
 
   // Update order when totalAmount changes
   useEffect(() => {
@@ -117,13 +128,28 @@ export default function CartListItem() {
 
   return (
     <ul className="added-cart-list mb-5">
-      {cartItems.length > 0 ?
-        cartItems.map((item, index) => (
+      {cartItems && cartItems.length > 0 ?
+        cartItems && cartItems.map((item, index) => (
           <li key={index}>
             <div className="flex items-center justify-start w-full sm:gap-0 gap-3">
-              <ProductCard data={item} column inCartPage />
+              {/* <ProductCard data={item} column inCartPage /> */}
               <div>
-                <AddToCart inCartPage />
+                {/* <AddToCart inCartPage /> */}
+{console.log(item)}
+                {/* <AddToCart
+                inCartPage
+                      itemid={item?.id ?? null}
+                      price={
+                        item?.sale_price !== null
+                          ? item?.sale_price
+                          : item?.regular_price
+                      }
+                      name={item?.name}
+                      image={item?.images[0]?.src}
+                      options={convertStringToJSON(item && item?.acf?.options)}
+                    /> */}
+
+
               </div>
             </div>
             <div className="flex justify-end">

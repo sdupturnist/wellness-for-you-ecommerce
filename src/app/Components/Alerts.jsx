@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 export default function Alerts({
   status,
   title,
+  titleSmall,
   large,
   noIcon,
   icon,
@@ -52,7 +53,7 @@ export default function Alerts({
             center ? "text-center justify-center" : "text-start"
           }`}>
           {!noIcon && icon}
-          <span className={`${center && "text-center"} text-base`}>{title}</span>
+          <span className={`${center && "text-center"} ${titleSmall ? 'text-sm' : 'text-base'}`}>{title}</span>
         </div>
       )}
       {large && (

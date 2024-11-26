@@ -6,8 +6,19 @@ import PaymentOptions from "./PaymentOptions";
 import SocialIcons from "./SocialIcons";
 import Subscribe from "./Subscribe";
 import ReadyToGoCart from "./ReadyToGoCart";
+import { useCartContext } from "../Context/cartContext";
+import { usePathname } from "next/navigation";
+
 
 export default function Footer() {
+
+
+  const {cartItems} = useCartContext()
+  const pathname = usePathname()
+
+
+
+
   return (
     <>
       <footer className="bg-primary spacing">
@@ -78,7 +89,8 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      {/* <ReadyToGoCart /> */}
+      {cartItems && cartItems.length > 0 && pathname !== '/cart' &&  
+  <ReadyToGoCart data={cartItems} />}
     </>
   );
 }

@@ -256,7 +256,7 @@ select {
 }
 
 header {
-  @apply flex items-center justify-between gap-[30px] z-[999] relative;
+  @apply flex items-center justify-between gap-[30px] z-[10] relative;
 }
 header .logo {
   @apply flex items-center justify-center;

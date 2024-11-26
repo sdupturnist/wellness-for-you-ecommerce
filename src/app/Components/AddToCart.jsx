@@ -7,6 +7,7 @@ import AddToWishList from "./AddToWishList";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { homeUrl } from "../Utils/variables";
+import Notification from "./Notification";
 
 export default function AddToCart({
   itemid,
@@ -17,11 +18,9 @@ export default function AddToCart({
   image,
   options,
 }) {
-  const router = useRouter();
-
-  const { cartItems, setCartItems, setCart } = useCartContext();
-
+  const { cartItems, setCartItems, setCart, setDiscount } = useCartContext();
   const [quantity, setQuantity] = useState(1);
+  const [notification, setNotification] = useState(null);
 
   // Memoize safeCartItems to avoid unnecessary recalculations
   const safeCartItems = useMemo(
@@ -68,12 +67,23 @@ export default function AddToCart({
       };
       const updatedCartItems = [...safeCartItems, newObject];
       setCartItems(updatedCartItems);
+      setDiscount(0)
       updateCartInLocalStorage(updatedCartItems);
+
+      setNotification({
+        message: `${name} added to your cart.`,
+        type: "success",
+      });
+
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      
     }
   };
 
   // Function to increase item quantity
-  const CartPlus = () => {
+  const CartPlus = (seletedOption) => {
     const updatedCartItems = safeCartItems.map((item) =>
       item.id === itemid
         ? { ...item, quantity: item.quantity + 1 } // Increase quantity
@@ -88,7 +98,7 @@ export default function AddToCart({
         price: price,
         name: name,
         image: image,
-        option: "test",
+        option: seletedOption || null,
       });
     }
 
@@ -97,6 +107,15 @@ export default function AddToCart({
 
     // Update local quantity state
     setQuantity((prevQuantity) => prevQuantity + 1);
+
+    setNotification({
+      message: `${name} added to your cart.`,
+      type: "success",
+    });
+
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   };
 
   // Function to decrease item quantity
@@ -122,12 +141,12 @@ export default function AddToCart({
         setCartItems(updatedCartItems);
         updateCartInLocalStorage(updatedCartItems);
         setQuantity(0);
+        setDiscount(0)
       }
     }
   };
 
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -136,8 +155,27 @@ export default function AddToCart({
     setIsOpen(false);
   };
 
+  const showNotification = () => {
+    setNotification({
+      message: "This is a notification message!",
+      type: "success",
+    });
+
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
+
   return (
     <>
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
       {card ? (
         options && !isInCart ? (
           <details className="dropdown mt-1">
@@ -147,7 +185,6 @@ export default function AddToCart({
             {isOpen && (
               <ul className="menu card-cart-options">
                 {options?.length === 0 ? (
-                  // If there are no options, render nothing
                   <li>
                     <button onClick={() => handleCartAction("normal")}>
                       Normal
@@ -174,100 +211,88 @@ export default function AddToCart({
         )
       ) : (
         <div>
-          
-
-
-          
-    
-
-        
-
-          <div
-          className={`${
-            !inCartPage ? "w-auto" : "w-24 sm:w-32"
-          } flex items-center justify-start gap-3`}>
           <div
             className={`${
-              !inCartPage
-                ? "h-14"
-                : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
-            } flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
-            <button
+              !inCartPage ? "w-auto" : "w-24 sm:w-32"
+            } flex items-center justify-start gap-3`}>
+            <div
               className={`${
-                inCartPage ? "px-2" : "px-4"
-              } py-2 hover:opacity-50 transition-all text-dark`}
-              onClick={CartMinus}>
-              <MinusIcon
-                className={`${!inCartPage ? "size-5" : "size-4"} font-semibold`}
-              />
-            </button>
-            <input
-              type="text"
-              value={quantity}
-              readOnly
-              className={`${
-                inCartPage && "bg-primary-dim !text-primary"
-              } text-center w-full !px-0 !h-full !border-none`}
-            />
-            <button
-              className={`${
-                inCartPage ? "px-2" : "px-4"
-              } py-2 hover:opacity-50 transition-all text-dark`}
-              onClick={CartPlus}>
-              <PlusIcon
-                className={`${!inCartPage ? "size-5" : "size-4"} font-semibold`}
-              />
-            </button>
-          </div>
-          {!inCartPage && (
-
-
-options && !isInCart ? (
-  <details className="dropdown mt-1">
-    <summary className="btn m-1" onClick={toggleDropdown}>
-      {isInCart ? "Remove" : "Add"}
-    </summary>
-    {isOpen && (
-      <ul className="menu card-cart-options">
-        {options?.length === 0 ? (
-          // If there are no options, render nothing
-          <li>
-            <button onClick={() => handleCartAction("normal")}>
-              Normal
-            </button>
-          </li>
-        ) : (
-          options.map((item, index) => (
-            <li key={index} onClick={closeDropdown}>
-              <button onClick={() => handleCartAction(item?.item)}>
-                {item?.item}
+                !inCartPage
+                  ? "h-14"
+                  : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
+              } flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
+              <button
+                className={`${
+                  inCartPage ? "px-2" : "px-4"
+                } py-2 hover:opacity-50 transition-all text-dark`}
+                onClick={CartMinus}>
+                <MinusIcon
+                  className={`${
+                    !inCartPage ? "size-5" : "size-4"
+                  } font-semibold`}
+                />
               </button>
-            </li>
-          ))
-        )}
-      </ul>
-    )}
-  </details>
-) : <button
-className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
-onClick={(e) => handleCartAction(null)}>
-{isInCart ? "Remove" : "Add"}
-</button>
-
-
-          
-
-
-              <Link
-                href={`${homeUrl}cart`}
-                className="btn !min-h-14"
-                onClick={(e) => handleCartAction(null)}>
-                {isInCart ? "View cart" : "Add to cart"}
-              </Link>
-              <AddToWishList id={itemid} />
-            </>
-          )}
-        </div>
+              <input
+                type="text"
+                value={quantity}
+                readOnly
+                className={`${
+                  inCartPage && "bg-primary-dim !text-primary"
+                } text-center w-full !px-0 !h-full !border-none`}
+              />
+              <button
+                className={`${
+                  inCartPage ? "px-2" : "px-4"
+                } py-2 hover:opacity-50 transition-all text-dark`}
+                onClick={(e) => CartPlus(options[0]?.item)}>
+                <PlusIcon
+                  className={`${
+                    !inCartPage ? "size-5" : "size-4"
+                  } font-semibold`}
+                />
+              </button>
+            </div>
+            {!inCartPage &&
+              (options && !isInCart ? (
+                <details className="dropdown mt-1">
+                  <summary
+                    className="btn !min-h-14 px-8"
+                    onClick={toggleDropdown}>
+                    {isInCart ? "Go to cart" : "Add to cart"}
+                  </summary>
+                  {isOpen && (
+                    <ul className="menu card-cart-options">
+                      {options?.length === 0 ? (
+                        <li>
+                          <button onClick={() => handleCartAction("normal")}>
+                            Normal
+                          </button>
+                        </li>
+                      ) : (
+                        options.map((item, index) => (
+                          <li key={index} onClick={closeDropdown}>
+                            <button
+                              onClick={() => handleCartAction(item?.item)}>
+                              {item?.item}
+                            </button>
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  )}
+                </details>
+              ) : (
+                <>
+                  <Link
+                    href={`${homeUrl}cart`}
+                    className="btn !min-h-14 px-8"
+                    >
+                    {isInCart ? "Go to cart" : "Add to cart"}
+                  </Link>
+                  <AddToWishList id={itemid} />
+                </>
+              ))}
+          </div>
         </div>
       )}
     </>
