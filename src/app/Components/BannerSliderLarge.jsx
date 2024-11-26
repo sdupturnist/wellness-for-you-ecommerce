@@ -25,7 +25,7 @@ export default function BannerSliderLarge({ data }) {
     
   };
 
-  //console.log(data[0])
+
 
   const items = data?.map((item, index) => (
    <Link 

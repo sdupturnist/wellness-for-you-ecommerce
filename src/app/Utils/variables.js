@@ -55,18 +55,28 @@ export let currency = '₹'
 
 
 export let convertStringToJSON = (offerString) => {
-
+  // Split the offerString into parts, handling the line breaks, commas, and trimming unnecessary spaces
   let parts = offerString
-    .replace(/\r\n/g, '\n')   
-    .split(',')              
-    .map(part => part.trim()) 
-    .filter(part => part !== ''); 
+    .replace(/\r\n/g, '\n')   // Normalize line breaks
+    .split(',')               // Split by commas to get individual offers
+    .map(part => part.trim()) // Trim each part to remove extra spaces
+    .filter(part => part !== ''); // Remove empty strings from the array
 
+  // Map each part to an object that contains both the offer description and the price
+  let offerData = parts.map(part => {
+    // Split by the colon to separate the offer description from the price
+    let [description, price] = part.split(':').map(item => item.trim());
 
-  let offerData = parts.map(part => ({ item: part }));
+    // Check if there's a price, and return the object
+    return {
+      item: description,
+      price: price || null // If no price is available, set it to null
+    };
+  });
 
   return offerData;
 };
+
 
 
 

@@ -82,6 +82,7 @@ export default function CouponCode({ data, cartTotal }) {
     <div className="coupon-code">
       <div className="join input-section w-full">
         <input
+        required
           type="text"
           placeholder="Have coupon code?"
           className="input join-item"

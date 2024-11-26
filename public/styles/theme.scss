@@ -41,6 +41,37 @@
 // }
 
 
+//SWEETALERT
+
+div:where(.swal2-container).swal2-center>.swal2-popup {
+    @apply p-[50px] rounded-lg;
+ 
+}
+
+.swal2-title{
+    @apply text-xl font-semibold text-dark;
+}
+
+div:where(.swal2-container) .swal2-html-container{
+    @apply  text-body;  
+    font-size: 15px !important;
+    line-height: 1.7!important;
+    *{
+        @apply  text-body; 
+        
+        font-size: 15px !important;
+        line-height: 1.7!important;
+    }
+
+   
+}
+
+.swal2-actions{
+    @apply flex gap-3 items-center justify-center;
+    button{
+        @apply min-w-[120px]
+    }
+}
 
 
 body {
@@ -576,7 +607,7 @@ footer{
         }
 
         button.option-btn{
-            @apply  whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[35px] min-h-[30px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
+            @apply  whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
         }
     }
 

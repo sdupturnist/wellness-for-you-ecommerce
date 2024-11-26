@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useCartContext } from "../Context/cartContext";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import AddToWishList from "./AddToWishList";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { homeUrl } from "../Utils/variables";
 import Notification from "./Notification";
+import Swal from "sweetalert2";
 
 export default function AddToCart({
   itemid,
@@ -17,10 +17,21 @@ export default function AddToCart({
   card,
   image,
   options,
+  slug,
+  active,
 }) {
   const { cartItems, setCartItems, setCart, setDiscount } = useCartContext();
   const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(null);
+
+  const [isActiveWishList, setIsActiveWishList] = useState(active);
+
+  useEffect(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    if (savedWishlist.includes(itemid)) {
+      setIsActiveWishList(true);
+    }
+  }, [itemid]);
 
   // Memoize safeCartItems to avoid unnecessary recalculations
   const safeCartItems = useMemo(
@@ -47,7 +58,7 @@ export default function AddToCart({
   const isInCart = safeCartItems.some((cartItem) => cartItem.id === itemid);
 
   // Function to handle cart action (Add/Remove)
-  const handleCartAction = (seletedOption) => {
+  const handleCartAction = (seletedOption, price, name) => {
     if (isInCart) {
       // Remove item from cart
       const updatedCartItems = safeCartItems.filter(
@@ -64,10 +75,11 @@ export default function AddToCart({
         name: name,
         image: image,
         option: seletedOption || null,
+        slug: slug,
       };
       const updatedCartItems = [...safeCartItems, newObject];
       setCartItems(updatedCartItems);
-      setDiscount(0)
+      setDiscount(0);
       updateCartInLocalStorage(updatedCartItems);
 
       setNotification({
@@ -78,7 +90,6 @@ export default function AddToCart({
       setTimeout(() => {
         setNotification(null);
       }, 3000);
-      
     }
   };
 
@@ -99,6 +110,7 @@ export default function AddToCart({
         name: name,
         image: image,
         option: seletedOption || null,
+        slug: slug,
       });
     }
 
@@ -141,7 +153,7 @@ export default function AddToCart({
         setCartItems(updatedCartItems);
         updateCartInLocalStorage(updatedCartItems);
         setQuantity(0);
-        setDiscount(0)
+        setDiscount(0);
       }
     }
   };
@@ -166,6 +178,79 @@ export default function AddToCart({
     }, 3000);
   };
 
+  const removeFromCartConfirm = (id, name) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-light",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: `Do you need to remove ${name} item from the list?`,
+        icon: false,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const updatedCartItems = cartItems.filter((item) => item.id !== id);
+          setCartItems(updatedCartItems);
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+        }
+      });
+  };
+
+  const moveToWishList = (id, name) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-light",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: `Do you need to move ${name} item to the wishlist?`,
+        icon: false,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          //TO WISH LIST
+          const savedWishlist =
+            JSON.parse(localStorage.getItem("wishlist")) || [];
+
+          if (isActiveWishList) {
+            // If already in wishlist, remove it
+            const updatedWishlist = savedWishlist.filter(
+              (itemId) => itemId !== id
+            );
+            localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+            setIsActiveWishList(false);
+          } else {
+            // If not in wishlist, add it
+            savedWishlist.push(id);
+            localStorage.setItem("wishlist", JSON.stringify(savedWishlist));
+            setIsActiveWishList(true);
+          }
+
+          //REMOVED FROM CART
+          const updatedCartItems = cartItems.filter((item) => item.id !== id);
+          setCartItems(updatedCartItems);
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+        }
+      });
+  };
+
   return (
     <>
       {notification && (
@@ -186,14 +271,26 @@ export default function AddToCart({
               <ul className="menu card-cart-options">
                 {options?.length === 0 ? (
                   <li>
-                    <button onClick={() => handleCartAction("normal")}>
+                    <button
+                      onClick={() =>
+                        handleCartAction(
+                          name + " - " + item?.item || name,
+                          item?.price || price
+                        )
+                      }>
                       Normal
                     </button>
                   </li>
                 ) : (
                   options.map((item, index) => (
                     <li key={index} onClick={closeDropdown}>
-                      <button onClick={() => handleCartAction(item?.item)}>
+                      <button
+                        onClick={() =>
+                          handleCartAction(
+                            name + " - " + item?.item || name,
+                            item?.price || price
+                          )
+                        }>
                         {item?.item}
                       </button>
                     </li>
@@ -210,11 +307,11 @@ export default function AddToCart({
           </button>
         )
       ) : (
-        <div>
+        <div className="items-end flex justify-between lg:mt-0 mt-4 gap-3">
           <div
             className={`${
               !inCartPage ? "w-auto" : "w-24 sm:w-32"
-            } flex items-center justify-start gap-3`}>
+            } flex items-center justify-start gap-3 lg:order-first order-last`}>
             <div
               className={`${
                 !inCartPage
@@ -264,7 +361,13 @@ export default function AddToCart({
                     <ul className="menu card-cart-options">
                       {options?.length === 0 ? (
                         <li>
-                          <button onClick={() => handleCartAction("normal")}>
+                          <button
+                            onClick={() =>
+                              handleCartAction(
+                                name + " - " + item?.item || name,
+                                item?.price || price
+                              )
+                            }>
                             Normal
                           </button>
                         </li>
@@ -272,7 +375,12 @@ export default function AddToCart({
                         options.map((item, index) => (
                           <li key={index} onClick={closeDropdown}>
                             <button
-                              onClick={() => handleCartAction(item?.item)}>
+                              onClick={() =>
+                                handleCartAction(
+                                  name + " - " + item?.item || name,
+                                  item?.price || price
+                                )
+                              }>
                               {item?.item}
                             </button>
                           </li>
@@ -283,16 +391,30 @@ export default function AddToCart({
                 </details>
               ) : (
                 <>
-                  <Link
-                    href={`${homeUrl}cart`}
-                    className="btn !min-h-14 px-8"
-                    >
+                  <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8">
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </Link>
                   <AddToWishList id={itemid} />
                 </>
               ))}
           </div>
+
+          {inCartPage && (
+            <div className="flex justify-end">
+              <div className="join">
+                <button
+                  className="join-item option-btn"
+                  onClick={() => moveToWishList(itemid, name)}>
+                  Move to wishlist
+                </button>
+                <button
+                  className="join-item option-btn"
+                  onClick={() => removeFromCartConfirm(itemid, name)}>
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>

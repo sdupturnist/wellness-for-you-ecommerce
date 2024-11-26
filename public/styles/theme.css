@@ -19,6 +19,32 @@
   background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%), linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%), linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%), linear-gradient(45deg, var(--chkbg) 30%, oklch(1 0 0) 30.99%, oklch(1 0 0) 40%, transparent 40.99%), linear-gradient(-45deg, oklch(1 0 0) 50%, var(--chkbg) 50.99%);
 }
 
+div:where(.swal2-container).swal2-center > .swal2-popup {
+  @apply p-[50px] rounded-lg;
+}
+
+.swal2-title {
+  @apply text-xl font-semibold text-dark;
+}
+
+div:where(.swal2-container) .swal2-html-container {
+  @apply text-body;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+div:where(.swal2-container) .swal2-html-container * {
+  @apply text-body;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+.swal2-actions {
+  @apply flex gap-3 items-center justify-center;
+}
+.swal2-actions button {
+  @apply min-w-[120px];
+}
+
 body {
   color: #333;
   background: var(--background);
@@ -398,7 +424,7 @@ footer ul li, footer ol li {
   @apply lg:flex items-center justify-between gap-8 border-b border-border sm:pb-3 py-6 first:pt-0;
 }
 .added-cart-list button.option-btn {
-  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[35px] min-h-[30px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
+  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
 }
 
 .general-list li {

@@ -97,13 +97,13 @@ export default function ProductCard({
             )}
             {!inCartPage && data?.price && (
               <AddToCart
-               card
-                  itemid={data?.id}
-                  price={
-                    data?.price !== null ? data?.price : data?.regular_price
-                  }
-                  name={data?.name}
-                  options={convertStringToJSON(data && data?.acf?.options)}
+              card
+              itemid={data?.id}
+              price={data?.price !== null ? data?.price : data?.regular_price}
+              name={data?.name}
+              options={convertStringToJSON(data && data?.acf?.options)}
+              image={data?.images[0]?.src}
+                slug={data?.slug}
               />
             )}
           </div>
@@ -172,14 +172,17 @@ export default function ProductCard({
             </div>
           )}
 
+
           <div>
             {!inCartPage && data?.price && (
               <AddToCart
-                card
-                itemid={data?.id}
-                price={data?.price !== null ? data?.price : data?.regular_price}
-                name={data?.name}
-                options={convertStringToJSON(data && data?.acf?.options)}
+              card
+              itemid={data?.id}
+              price={data?.price !== null ? data?.price : data?.regular_price}
+              name={data?.name}
+              options={convertStringToJSON(data && data?.acf?.options)}
+              image={data?.images[0]?.src}
+                slug={data?.slug}
               />
             )}
           </div>
@@ -262,13 +265,13 @@ export default function ProductCard({
               )}
               {!inCartPage && data?.price && (
                 <AddToCart
-                  card
-                  itemid={data?.id}
-                  price={
-                    data?.price !== null ? data?.price : data?.regular_price
-                  }
-                  name={data?.name}
-                  options={convertStringToJSON(data && data?.acf?.options)}
+                card
+                itemid={data?.id}
+                price={data?.price !== null ? data?.price : data?.regular_price}
+                name={data?.name}
+                options={convertStringToJSON(data && data?.acf?.options)}
+                image={data?.images[0]?.src}
+                  slug={data?.slug}
                 />
               )}
             </div>
