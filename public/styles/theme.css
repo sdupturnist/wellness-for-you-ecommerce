@@ -22,6 +22,7 @@
 body {
   color: #333;
   background: var(--background);
+  scroll-behavior: smooth;
   @apply sm:text-base text-sm leading-[1.7];
 }
 
@@ -498,4 +499,14 @@ footer ul li, footer ol li {
 
 .breadcrumbs * {
   @apply first-letter:capitalize;
+}
+
+.card-cart-options {
+  @apply dropdown-content rounded-box z-[1] w-full min-w-52 bg-white shadow grid p-0 overflow-hidden;
+}
+.card-cart-options li {
+  @apply border-none rounded-none;
+}
+.card-cart-options button {
+  @apply border-none w-full block rounded-none;
 }

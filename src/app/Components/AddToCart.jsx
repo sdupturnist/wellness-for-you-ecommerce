@@ -8,7 +8,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { homeUrl } from "../Utils/variables";
 
-export default function AddToCart({ itemid, price, name, inCartPage, card, image }) {
+export default function AddToCart({
+  itemid,
+  price,
+  name,
+  inCartPage,
+  card,
+  image,
+  options,
+}) {
   const router = useRouter();
 
   const { cartItems, setCartItems, setCart } = useCartContext();
@@ -40,7 +48,7 @@ export default function AddToCart({ itemid, price, name, inCartPage, card, image
   const isInCart = safeCartItems.some((cartItem) => cartItem.id === itemid);
 
   // Function to handle cart action (Add/Remove)
-  const handleCartAction = () => {
+  const handleCartAction = (seletedOption) => {
     if (isInCart) {
       // Remove item from cart
       const updatedCartItems = safeCartItems.filter(
@@ -50,7 +58,14 @@ export default function AddToCart({ itemid, price, name, inCartPage, card, image
       updateCartInLocalStorage(updatedCartItems);
     } else {
       // Add item to cart
-      const newObject = { id: itemid, quantity: 1, price: price, name: name, image: image };
+      const newObject = {
+        id: itemid,
+        quantity: 1,
+        price: price,
+        name: name,
+        image: image,
+        option: seletedOption || null,
+      };
       const updatedCartItems = [...safeCartItems, newObject];
       setCartItems(updatedCartItems);
       updateCartInLocalStorage(updatedCartItems);
@@ -73,6 +88,7 @@ export default function AddToCart({ itemid, price, name, inCartPage, card, image
         price: price,
         name: name,
         image: image,
+        option: "test",
       });
     }
 
@@ -110,16 +126,63 @@ export default function AddToCart({ itemid, price, name, inCartPage, card, image
     }
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       {card ? (
-        <button
-          className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
-          onClick={handleCartAction}>
-          {isInCart ? "Remove" : "Add"}
-        </button>
+        options && !isInCart ? (
+          <details className="dropdown mt-1">
+            <summary className="btn m-1" onClick={toggleDropdown}>
+              {isInCart ? "Remove" : "Add"}
+            </summary>
+            {isOpen && (
+              <ul className="menu card-cart-options">
+                {options?.length === 0 ? (
+                  // If there are no options, render nothing
+                  <li>
+                    <button onClick={() => handleCartAction("normal")}>
+                      Normal
+                    </button>
+                  </li>
+                ) : (
+                  options.map((item, index) => (
+                    <li key={index} onClick={closeDropdown}>
+                      <button onClick={() => handleCartAction(item?.item)}>
+                        {item?.item}
+                      </button>
+                    </li>
+                  ))
+                )}
+              </ul>
+            )}
+          </details>
+        ) : (
+          <button
+            className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
+            onClick={(e) => handleCartAction(null)}>
+            {isInCart ? "Remove" : "Add"}
+          </button>
+        )
       ) : (
-        <div
+        <div>
+          
+
+
+          
+    
+
+        
+
+          <div
           className={`${
             !inCartPage ? "w-auto" : "w-24 sm:w-32"
           } flex items-center justify-start gap-3`}>
@@ -157,18 +220,54 @@ export default function AddToCart({ itemid, price, name, inCartPage, card, image
             </button>
           </div>
           {!inCartPage && (
-            <>
+
+
+options && !isInCart ? (
+  <details className="dropdown mt-1">
+    <summary className="btn m-1" onClick={toggleDropdown}>
+      {isInCart ? "Remove" : "Add"}
+    </summary>
+    {isOpen && (
+      <ul className="menu card-cart-options">
+        {options?.length === 0 ? (
+          // If there are no options, render nothing
+          <li>
+            <button onClick={() => handleCartAction("normal")}>
+              Normal
+            </button>
+          </li>
+        ) : (
+          options.map((item, index) => (
+            <li key={index} onClick={closeDropdown}>
+              <button onClick={() => handleCartAction(item?.item)}>
+                {item?.item}
+              </button>
+            </li>
+          ))
+        )}
+      </ul>
+    )}
+  </details>
+) : <button
+className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
+onClick={(e) => handleCartAction(null)}>
+{isInCart ? "Remove" : "Add"}
+</button>
+
+
+          
+
+
               <Link
                 href={`${homeUrl}cart`}
                 className="btn !min-h-14"
-                onClick={handleCartAction}>
-                Add to cart
+                onClick={(e) => handleCartAction(null)}>
+                {isInCart ? "View cart" : "Add to cart"}
               </Link>
-              <AddToWishList
-                id={itemid}
-              />
+              <AddToWishList id={itemid} />
             </>
           )}
+        </div>
         </div>
       )}
     </>

@@ -1,6 +1,4 @@
 import AddToCart from "@/app/Components/AddToCart";
-//import AddToCartWithQty from "@/app/Components/AddToCartWithQty";
-import AddToWishList from "@/app/Components/AddToWishList";
 import Alerts from "@/app/Components/Alerts";
 import Breadcrumb from "@/app/Components/Breadcrumb";
 import Features from "@/app/Components/Features";
@@ -8,7 +6,6 @@ import Images from "@/app/Components/Images";
 import ImageSlider from "@/app/Components/ImagesSlider";
 import ProductCard from "@/app/Components/ProductCard";
 import ProductCartOptions from "@/app/Components/ProductCartOptions";
-import ProductSlider from "@/app/Components/ProductSlider";
 import ReviewCount from "@/app/Components/ReviewCount";
 import Reviews from "@/app/Components/Reviews";
 import SectionHeader from "@/app/Components/SectionHeader";
@@ -24,6 +21,7 @@ import {
   siteAuthor,
   woocommerceKey,
 } from "@/app/Utils/variables";
+import Link from "next/link";
 
 export default async function ItemSingle({ params, searchParams }) {
   const { slug } = params;
@@ -101,7 +99,7 @@ export default async function ItemSingle({ params, searchParams }) {
         <div className="container">
           <div className="grid grid-cols-1 sm:gap-12 gap-5 lg:grid-cols-[40%_60%] product-single">
             <div>
-              <div className="border sm:rounded-xl rounded-lg overflow-hidden sm:min-h-[600px] sm:pt-8 pb-16 bg-white">
+              <div className="border sm:rounded-xl rounded-lg overflow-hidden sm:min-h-[600px] sm:pt-8 pb-16 bg-white min-h-80">
                 {singleProduct && singleProduct?.images?.length > 1 ? (
                   <ImageSlider data={singleProduct?.images} />
                 ) : (
@@ -122,90 +120,99 @@ export default async function ItemSingle({ params, searchParams }) {
                 )}
               </div>
             </div>
-            <div className="grid gap-7 lg:max-w-[80%]">
-              <div className="grid gap-4">
-                <h1>{singleProduct && singleProduct?.name}</h1>
-                {productReview.length > 0 && (
-                  <ReviewCount
-                    average={singleProduct?.average_rating}
-                    ratingCount={singleProduct?.rating_count}
-                    large
+            <div className="flex items-center gap-7 lg:max-w-[80%]">
+              <div>
+                <div className="grid gap-4 mb-5">
+                  <h1>{singleProduct && singleProduct?.name}</h1>
+                  {productReview.length > 0 && (
+                    <Link href="#reviews">
+                      <ReviewCount
+                        average={singleProduct?.average_rating}
+                        ratingCount={singleProduct?.rating_count}
+                        large
+                      />
+                    </Link>
+                  )}
+                </div>
+                <div className="sm:mt-8">
+                  {singleProduct?.price && (
+                    <span className="product-price block mb-2">
+                      {currency}
+                      {singleProduct && singleProduct?.price}
+                    </span>
+                  )}
+                  {singleProduct?.regular_price > 0 &&
+                    singleProduct?.sale_price && (
+                      <div className="flex items-center justify-start gap-3">
+                        <span className="normal-price">
+                          {currency}
+                          {singleProduct && singleProduct?.regular_price}
+                        </span>
+                        <span className="offer border-l pl-3">
+                          <span className="inline-block pr-1">
+                            Save {currency}
+                            {singleProduct &&
+                              singleProduct?.regular_price -
+                                singleProduct?.sale_price}
+                          </span>
+                          (
+                          {singleProduct && (
+                            <OfferPercentage
+                              normalprice={singleProduct?.regular_price}
+                              saleprice={singleProduct?.sale_price}
+                            />
+                          )}
+                          % off)
+                        </span>
+                      </div>
+                    )}
+                </div>
+                {singleProduct?.short_description && (
+                  <div
+                    className="content sm:my-10 my-5"
+                    dangerouslySetInnerHTML={{
+                      __html: singleProduct && singleProduct?.short_description,
+                    }}
                   />
                 )}
-              </div>
-              <div>
-                {singleProduct?.price && (
-                  <span className="product-price block mb-2">
-                    {currency}
-                    {singleProduct && singleProduct?.price}
-                  </span>
-                )}
-                {singleProduct?.regular_price > 0 && (
-                  <div className="flex items-center justify-start gap-3">
-                    <span className="normal-price">
-                      {currency}
-                      {singleProduct && singleProduct?.regular_price}
-                    </span>
-                    <span className="offer border-l pl-3">
-                      Save {currency}
-                      {singleProduct &&
-                        singleProduct?.regular_price -
-                          singleProduct?.sale_price}
-                      (
-                      {singleProduct && (
-                        <OfferPercentage
-                          normalprice={singleProduct?.regular_price}
-                          saleprice={singleProduct?.sale_price}
-                        />
+
+                {/* {singleProduct?.acf?.options && (
+                  <div className="mb-5">
+                    <ProductCartOptions
+                      data={convertStringToJSON(
+                        singleProduct && singleProduct?.acf?.options
                       )}
-                      % off)
-                    </span>
+                    />
+                  </div>
+                )} */}
+                {singleProduct?.price && (
+                  <div className="flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none">
+                    <AddToCart
+                      itemid={singleProduct?.id ?? null}
+                      price={
+                        singleProduct?.sale_price !== null
+                          ? singleProduct?.sale_price
+                          : singleProduct?.regular_price
+                      }
+                      name={singleProduct?.name}
+                      image={singleProduct?.images[0]?.src}
+                      options={convertStringToJSON(singleProduct && singleProduct?.acf?.options)}
+                    />
                   </div>
                 )}
-              </div>
-
-              {singleProduct?.short_description && (
-                <div
-                  className="content"
-                  dangerouslySetInnerHTML={{
-                    __html: singleProduct && singleProduct?.short_description,
-                  }}
-                />
-              )}
-
-              {singleProduct?.acf?.options && (
-                <ProductCartOptions
-                  data={convertStringToJSON(
-                    singleProduct && singleProduct?.acf?.options
+                <div className="gap-2 sm:inline-flex my-5">
+                  {singleProduct?.acf?.features && (
+                    <Features
+                      data={convertStringToJSON(
+                        singleProduct && singleProduct?.acf?.features
+                      )}
+                    />
                   )}
-                />
-              )}
-              {singleProduct?.price && (
-                <div className="flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none">
-                  <AddToCart
-                    itemid={singleProduct?.id ?? null}
-                    price={
-                      singleProduct?.sale_price !== null
-                        ? singleProduct?.sale_price
-                        : singleProduct?.regular_price
-                    }
-                    name={singleProduct?.name}
-                    image={singleProduct?.images[0]?.src}
-                  />
                 </div>
-              )}
-              <div className="gap-2 sm:inline-flex">
-                {singleProduct?.acf?.features && (
-                  <Features
-                    data={convertStringToJSON(
-                      singleProduct && singleProduct?.acf?.features
-                    )}
-                  />
-                )}
-              </div>
-              <div>
-                <small className="opacity-50 mb-3 block">Share with</small>
-                <SocialShare />
+                <div>
+                  <small className="opacity-50 mb-3 block">Share with</small>
+                  <SocialShare />
+                </div>
               </div>
             </div>
           </div>
@@ -259,7 +266,9 @@ export default async function ItemSingle({ params, searchParams }) {
                 </div>
               )} */}
 
-              <div className="collapse collapse-plus border rounded-lg">
+              <div
+                className="collapse collapse-plus border rounded-lg"
+                id="reviews">
                 <input type="radio" name="my-accordion-3" />
                 <div className="collapse-title text-md text-dark font-medium">
                   Reviews

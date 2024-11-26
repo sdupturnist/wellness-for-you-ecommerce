@@ -1,13 +1,19 @@
 "use client";
 
 import Images from "./Images";
-import { currency, homeUrl, OfferPercentage } from "../Utils/variables";
+import {
+  convertStringToJSON,
+  currency,
+  homeUrl,
+  OfferPercentage,
+} from "../Utils/variables";
 import ReviewCount from "./ReviewCount";
 import AddToCart from "./AddToCart";
 import AddToWishList from "./AddToWishList";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Skelton from "./Skelton";
 
 export default function ProductCard({
   data,
@@ -29,12 +35,7 @@ export default function ProductCard({
   }, [data]);
 
   const leftRightCard = loading ? (
-    <div className="flex w-52 flex-col gap-4">
-      <div className="skeleton h-48 w-full"></div>
-      <div className="skeleton h-4 w-28"></div>
-      <div className="skeleton h-4 w-full"></div>
-      <div className="skeleton h-4 w-full"></div>
-    </div>
+    <Skelton productleftRightCard />
   ) : (
     <div
       className={`${
@@ -97,9 +98,10 @@ export default function ProductCard({
             {!inCartPage && data?.price && (
               <AddToCart
                 card
-                itemid={data?.id ?? null}
+                itemid={data?.id}
                 price={data?.price !== null ? data?.price : data?.regular_price}
                 name={data?.name}
+                options={convertStringToJSON(data && data?.acf?.options)}
               />
             )}
           </div>
@@ -109,12 +111,14 @@ export default function ProductCard({
   );
 
   const leftRightCardMobile = loading ? (
-    <div className="flex w-full flex-col gap-4">
-      <div className="skeleton h-48 w-full"></div>
-      <div className="skeleton h-4 w-28"></div>
-      <div className="skeleton h-4 w-full"></div>
-      <div className="skeleton h-4 w-full"></div>
-    </div>
+    <>
+      <div className="sm:block hidden">
+        <Skelton productCard />
+      </div>
+      <div className="sm:hidden">
+        <Skelton productleftRightCard />
+      </div>
+    </>
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 sm:min-h-80  justify-between">
       <div className="sm:grid flex relative h-full w-full">
@@ -165,6 +169,7 @@ export default function ProductCard({
               </span>
             </div>
           )}
+
           <div>
             {!inCartPage && data?.price && (
               <AddToCart
@@ -172,6 +177,7 @@ export default function ProductCard({
                 itemid={data?.id}
                 price={data?.price !== null ? data?.price : data?.regular_price}
                 name={data?.name}
+                options={convertStringToJSON(data && data?.acf?.options)}
               />
             )}
           </div>
@@ -196,12 +202,14 @@ export default function ProductCard({
     default:
       // Return nothing or a default layout
       card = loading ? (
-        <div className="flex w-52 flex-col gap-4">
-          <div className="skeleton h-48 w-full"></div>
-          <div className="skeleton h-4 w-28"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-        </div>
+        <>
+          <div className="sm:block hidden">
+            <Skelton productCard />
+          </div>
+          <div className="sm:hidden">
+            <Skelton productleftRightCard />
+          </div>
+        </>
       ) : (
         <div className="product-card w-full mr-2">
           <div className="block w-full">
@@ -253,11 +261,12 @@ export default function ProductCard({
               {!inCartPage && data?.price && (
                 <AddToCart
                   card
-                  itemid={data?.id ?? null}
+                  itemid={data?.id}
                   price={
                     data?.price !== null ? data?.price : data?.regular_price
                   }
                   name={data?.name}
+                  options={convertStringToJSON(data && data?.acf?.options)}
                 />
               )}
             </div>
