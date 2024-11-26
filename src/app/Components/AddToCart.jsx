@@ -21,6 +21,9 @@ export default function AddToCart({
   active,
 }) {
   const { cartItems, setCartItems, setCart, setDiscount } = useCartContext();
+
+  console.log(cartItems?.length);
+
   const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(null);
 
@@ -49,16 +52,57 @@ export default function AddToCart({
     }
   }, [safeCartItems, itemid]);
 
+  // Store cartItems length in the cookie
+  // const updateCartLengthCookie = (updatedCartItems) => {
+  //   const cartLength = updatedCartItems.length;
+
+  //   // Update the cart length cookie via the POST API route
+  //   fetch(`${homeUrl}api/setCookie/cart-length`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ cartItemsLength: cartLength }),
+  //   });
+  // };
+
+  const updateCartLengthCookie = async (updatedCartItems) => {
+    const cartLength = updatedCartItems.length;
+
+    try {
+      const response = await fetch(`${homeUrl}api/setCookie/cart-length`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItemsLength: cartLength }),
+      });
+
+      if (response.ok) {
+        // Successfully updated cart length in cookie
+        const data = await response.json();
+        console.log("Success:", data.message); // Log success message from response
+      } else {
+        // If the response status is not OK, log failure
+        console.log("Error: Failed to update cart length", response.statusText);
+      }
+    } catch (error) {
+      // Log any error that occurred during the fetch
+      console.log("Request failed with error:", error);
+    }
+  };
+
   // Function to update cart in localStorage
   const updateCartInLocalStorage = (updatedCartItems) => {
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
   };
 
   // Check if item is in the cart
   const isInCart = safeCartItems.some((cartItem) => cartItem.id === itemid);
 
   // Function to handle cart action (Add/Remove)
-  const handleCartAction = (seletedOption, price, name) => {
+  const handleCartAction = (seletedOption, image, price, name) => {
     if (isInCart) {
       // Remove item from cart
       const updatedCartItems = safeCartItems.filter(
@@ -77,13 +121,15 @@ export default function AddToCart({
         option: seletedOption || null,
         slug: slug,
       };
+
       const updatedCartItems = [...safeCartItems, newObject];
       setCartItems(updatedCartItems);
       setDiscount(0);
+
       updateCartInLocalStorage(updatedCartItems);
 
       setNotification({
-        message: `${name} added to your cart.`,
+        message: `Item added to your cart.`,
         type: "success",
       });
 
@@ -121,7 +167,7 @@ export default function AddToCart({
     setQuantity((prevQuantity) => prevQuantity + 1);
 
     setNotification({
-      message: `${name} added to your cart.`,
+      message: `Item added to your cart.`,
       type: "success",
     });
 
@@ -151,7 +197,7 @@ export default function AddToCart({
           (item) => item.id !== itemid
         );
         setCartItems(updatedCartItems);
-        updateCartInLocalStorage(updatedCartItems);
+        // updateCartInLocalStorage(updatedCartItems);
         setQuantity(0);
         setDiscount(0);
       }
@@ -165,17 +211,6 @@ export default function AddToCart({
 
   const closeDropdown = () => {
     setIsOpen(false);
-  };
-
-  const showNotification = () => {
-    setNotification({
-      message: "This is a notification message!",
-      type: "success",
-    });
-
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
   };
 
   const removeFromCartConfirm = (id, name) => {
@@ -201,6 +236,7 @@ export default function AddToCart({
           const updatedCartItems = cartItems.filter((item) => item.id !== id);
           setCartItems(updatedCartItems);
           localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+          updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
         }
       });
   };
@@ -247,6 +283,7 @@ export default function AddToCart({
           const updatedCartItems = cartItems.filter((item) => item.id !== id);
           setCartItems(updatedCartItems);
           localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+          updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
         }
       });
   };
@@ -267,18 +304,22 @@ export default function AddToCart({
             <summary className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
             </summary>
-            {isOpen && (
+           {
               <ul className="menu card-cart-options">
                 {options?.length === 0 ? (
                   <li>
                     <button
                       onClick={() =>
                         handleCartAction(
-                          name + " - " + item?.item || name,
-                          item?.price || price
+
+                          name,
+                               image,
+                               price,
+                               name
+                       
                         )
                       }>
-                      Normal
+                      Regular
                     </button>
                   </li>
                 ) : (
@@ -287,8 +328,13 @@ export default function AddToCart({
                       <button
                         onClick={() =>
                           handleCartAction(
+                           
+                            item?.option || name,
+                            item?.image || image,
+                            item?.price || price,
                             name + " - " + item?.item || name,
-                            item?.price || price
+
+                          
                           )
                         }>
                         {item?.item}
@@ -297,14 +343,16 @@ export default function AddToCart({
                   ))
                 )}
               </ul>
-            )}
+            }
           </details>
         ) : (
+         <>
           <button
             className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
             onClick={(e) => handleCartAction(null)}>
             {isInCart ? "Remove" : "Add"}
           </button>
+         </>
         )
       ) : (
         <div className="items-end flex justify-between lg:mt-0 mt-4 gap-3">
@@ -351,24 +399,28 @@ export default function AddToCart({
             </div>
             {!inCartPage &&
               (options && !isInCart ? (
+               <>
                 <details className="dropdown mt-1">
                   <summary
                     className="btn !min-h-14 px-8"
                     onClick={toggleDropdown}>
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </summary>
-                  {isOpen && (
+                  {
                     <ul className="menu card-cart-options">
                       {options?.length === 0 ? (
                         <li>
                           <button
                             onClick={() =>
                               handleCartAction(
-                                name + " - " + item?.item || name,
-                                item?.price || price
+
+                                name,
+                               image,
+                               price,
+                               name
                               )
                             }>
-                            Normal
+                            Regular
                           </button>
                         </li>
                       ) : (
@@ -377,8 +429,13 @@ export default function AddToCart({
                             <button
                               onClick={() =>
                                 handleCartAction(
+
+                                  item?.option || name,
+                                  item?.image || image,
+                                  item?.price || price,
                                   name + " - " + item?.item || name,
-                                  item?.price || price
+
+                              
                                 )
                               }>
                               {item?.item}
@@ -387,8 +444,10 @@ export default function AddToCart({
                         ))
                       )}
                     </ul>
-                  )}
+                  }
                 </details>
+                <AddToWishList id={itemid} />
+               </>
               ) : (
                 <>
                   <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8">

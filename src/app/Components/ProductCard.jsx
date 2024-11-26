@@ -102,7 +102,7 @@ export default function ProductCard({
               price={data?.price !== null ? data?.price : data?.regular_price}
               name={data?.name}
               options={convertStringToJSON(data && data?.acf?.options)}
-              image={data?.images[0]?.src}
+              image={data?.images[0]?.src || data?.images}
                 slug={data?.slug}
               />
             )}
@@ -181,7 +181,7 @@ export default function ProductCard({
               price={data?.price !== null ? data?.price : data?.regular_price}
               name={data?.name}
               options={convertStringToJSON(data && data?.acf?.options)}
-              image={data?.images[0]?.src}
+              image={data?.images[0]?.src || data?.images}
                 slug={data?.slug}
               />
             )}
@@ -270,7 +270,7 @@ export default function ProductCard({
                 price={data?.price !== null ? data?.price : data?.regular_price}
                 name={data?.name}
                 options={convertStringToJSON(data && data?.acf?.options)}
-                image={data?.images[0]?.src}
+                image={data?.images[0]?.src || data?.images}
                   slug={data?.slug}
                 />
               )}

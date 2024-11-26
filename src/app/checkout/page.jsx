@@ -4,8 +4,11 @@ import CouponCode from "../Components/CouponCode";
 import SectionHeader from "../Components/SectionHeader";
 import CheckoutAddress from "../Components/CheckoutAddress";
 import ListOptions from "../Components/ListOptions";
+import { apiUrl, woocommerceKey } from "../Utils/variables";
 
-export default function Checkout() {
+
+
+export default async function Checkout() {
   const savedAdrress = [
     {
       user_address: `Jenny Wilson Limeyard, Schanzengasse 10, 8001, Zürich, CHE, 34451 binhan628@gmail.com (225) 555-0118`,
@@ -24,9 +27,26 @@ export default function Checkout() {
     },
   ];
 
+
+
+  let couponCodeData = await fetch(
+    `${apiUrl}wp-json/wc/v3/coupons${woocommerceKey}`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  let couponCodes = await couponCodeData.json();
+
+
+
   return (
     <div className="bg-bggray">
       <Breadcrumb />
+ 
       <section className="sm:bg-white bg-bggray sm:py-10 py-0">
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
@@ -37,7 +57,7 @@ export default function Checkout() {
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">
                 <SectionHeader title="Your order" card />
                 <div className="grid gap-5">
-                  <CouponCode />
+                  <CouponCode data={couponCodes}/>
                   <div className="border-b pb-4">
                   <AmountList />
                   </div>

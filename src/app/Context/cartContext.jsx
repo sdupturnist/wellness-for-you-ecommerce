@@ -9,6 +9,8 @@ export function CartProvider({ children }) {
   const [couponCode, setCouponCode] = useState(false);
   const [discount, setDiscount] = useState(0);
 
+
+  
   // Load cartItems from localStorage when the component mounts (or updates cartItems)
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
