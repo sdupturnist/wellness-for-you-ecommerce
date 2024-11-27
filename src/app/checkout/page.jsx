@@ -1,3 +1,5 @@
+
+
 import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
@@ -5,6 +7,9 @@ import SectionHeader from "../Components/SectionHeader";
 import CheckoutAddress from "../Components/CheckoutAddress";
 import ListOptions from "../Components/ListOptions";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
+import CheckoutStripe from "../Components/Checkout";
+
+
 
 export default async function Checkout() {
   const paymentOptions = [
@@ -65,6 +70,7 @@ export default async function Checkout() {
                       small
                     />
                   </div>
+<CheckoutStripe/>
                   <button className="btn-large">Proceed to checkout</button>
                   <small className="text-xs opacity-55 leading-5">
                     Your personal data will be used to process your order,
