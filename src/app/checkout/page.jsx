@@ -1,4 +1,3 @@
-
 import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
@@ -8,9 +7,6 @@ import ListOptions from "../Components/ListOptions";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
 
 export default async function Checkout() {
- 
-
-
   const paymentOptions = [
     {
       option_title: `Direct bank transfer`,
@@ -40,7 +36,7 @@ export default async function Checkout() {
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
             <div className="grid gap-7">
-              <CheckoutAddress/>
+              <CheckoutAddress />
             </div>
             <div className="grid gap-7">
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">

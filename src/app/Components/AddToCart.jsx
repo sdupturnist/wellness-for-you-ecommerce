@@ -20,7 +20,7 @@ export default function AddToCart({
   slug,
   active,
 }) {
-  const { cartItems, setCartItems, setCart, setDiscount } = useCartContext();
+  const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } = useCartContext();
 
   
 
@@ -108,6 +108,10 @@ export default function AddToCart({
       const updatedCartItems = safeCartItems.filter(
         (cartItem) => cartItem.id !== itemid
       );
+
+    setCouponCode(false);
+    setDiscount(0);
+    
       setCartItems(updatedCartItems);
       updateCartInLocalStorage(updatedCartItems);
     } else {
@@ -160,6 +164,9 @@ export default function AddToCart({
       });
     }
 
+    setCouponCode(false);
+    setDiscount(0);
+    
     setCartItems(updatedCartItems);
     updateCartInLocalStorage(updatedCartItems);
 
@@ -188,6 +195,9 @@ export default function AddToCart({
             ? { ...item, quantity: item.quantity - 1 } // Decrease quantity
             : item
         );
+        setCouponCode(false);
+        setDiscount(0);
+        
         setCartItems(updatedCartItems);
         updateCartInLocalStorage(updatedCartItems);
         setQuantity((prevQuantity) => prevQuantity - 1);

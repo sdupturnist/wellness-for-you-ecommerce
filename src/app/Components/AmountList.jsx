@@ -24,6 +24,7 @@ useEffect(() => {
 
 
 
+
   const renderAmountList = () => {
     switch (true) {
       case !forOrderDetails && !tableView:

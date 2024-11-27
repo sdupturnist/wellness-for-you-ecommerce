@@ -1,6 +1,6 @@
 "use client";
 
-export default function Skelton({ productCard, productleftRightCard }) {
+export default function Skelton({ productCard, productleftRightCard, listAddress }) {
   return (
     <>
       {productleftRightCard && (
@@ -20,6 +20,19 @@ export default function Skelton({ productCard, productleftRightCard }) {
           <div className="skeleton h-48 w-full"></div>
           <div className="skeleton h-4 w-full"></div>
           <div className="skeleton h-4 w-full max-w-[50%]"></div>
+        </div>
+      )}
+
+
+{listAddress && (
+          <div className="flex w-full flex-col gap-4 mb-5">
+          <div className="flex items-center gap-4 justify-between">
+            <div className="flex flex-col gap-4 w-full">
+            <div className="skeleton h-4 w-full max-w-[50%]"></div>
+              <div className="skeleton h-4 w-full"></div>
+              <div className="skeleton h-4 w-full"></div>
+            </div>
+          </div>
         </div>
       )}
     </>

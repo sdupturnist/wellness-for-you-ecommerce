@@ -72,11 +72,11 @@ export default function CouponCode({ data, cartTotal }) {
     }
   }, [showAlert]);
 
-  useLayoutEffect(() => {
-    setCouponCode(false);
-    setDiscount(0);
-    setIsValid(false);
-  }, []);
+  // useLayoutEffect(() => {
+  //   setCouponCode(false);
+  //   setDiscount(0);
+  //   setIsValid(false);
+  // }, []);
 
   return (
     <div className="coupon-code">

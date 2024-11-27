@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CountrySelect,
   CitySelect,
@@ -15,24 +15,31 @@ import {
 } from "@/app/Utils/variables";
 import { sendMail } from "@/app/Utils/Mail";
 import Alerts from "../Alerts";
-import { useUserContext } from "@/app/Context/userContext";
+import { useRouter, useParams } from "next/navigation";
+import { useSiteContext } from "@/app/Context/siteContext";
 
-export default function AddNewAddressForm({ addressCount, id, currentData }) {
+
+
+export default function UpdateAddressForm({ addressCount }) {
  
-  
+  const id = useParams()
+  const router = useRouter()
 
-  
-  const {setShowAddNewAddress, updateAddress} = useUserContext()
 
-  
+  const {editData} =  useSiteContext()
 
-  
+
+
+
 
   const userInfo = {
     id: 2,
     first_name: "Muhammed",
     user_email: "upturnistuae@gmail.com",
   };
+
+
+  
 
   const [region, setRegion] = useState("");
   const [countryid, setCountryid] = useState(0);
@@ -60,32 +67,32 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
     setLoading(true);
 
-    const requestData = {
+    const updatedData = {
       address: {
-        id: addressId,
         address_1: addressOne,
-        address_2: addressTwo,
-        city: city,
-        state: state,
-        postcode: pinCode,
-        country: country,
-        first_name: firstName,
-        last_name: lastName,
-        company: companyName,
+        address_2:  addressTwo,
+        city:  city,
+        state:  state,
+        postcode:  pinCode,
+        country:  country,
+        first_name:  firstName,
+        last_name:  lastName,
+        company:  companyName,
       },
     };
 
     try {
-      // Submit the review
+      
+
       const response = await fetch(
-        `${apiUrl}wp-json/wc/v3/customers/${userInfo?.id}/addresses${woocommerceKey}`,
+        `${apiUrl}wp-json/wc/v3/customers/${userInfo?.id}/addresses/${id?.id}${woocommerceKey}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             // Authorization: jwtTocken, // Replace with JWT or Basic Auth
           },
-          body: JSON.stringify(requestData),
+          body: JSON.stringify(updatedData),
         }
       );
 
@@ -112,7 +119,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
         setPinCode("");
 
 
-        setShowAddNewAddress(false)
+        
 
         //MAIL NOTIFICATION TO USER
 
@@ -182,6 +189,8 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 //         });
 
         console.log("Success");
+       
+        router.back()
 
       //  location.reload();
 
@@ -208,7 +217,9 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="none">
-   <div className="grid gap-4">
+
+      
+     <div className="grid gap-4">
         {status && (
           <Alerts
             status="green"
@@ -223,6 +234,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
         )}
         <input
           type="text"
+          defaultValue={editData && editData?.first_name}
           className="input"
           placeholder="Full Name"
           onChange={(e) => setFirstName(e.target.value)}
@@ -230,6 +242,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           autoComplete="none"
         />
         <input
+         defaultValue={editData && editData?.last_name}
           type="text"
           className="input"
           placeholder="Last Name"
@@ -238,6 +251,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           autoComplete="none"
         />
         <input
+         defaultValue={editData && editData?.company}
           type="text"
           className="input"
           onChange={(e) => setCompanyName(e.target.value)}
@@ -255,6 +269,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           required
         />
         <input
+        defaultValue={editData && editData?.address_1}
           type="text"
           className="input"
           placeholder="House number and street name"
@@ -262,6 +277,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           required
         />
         <input
+              defaultValue={editData && editData?.address_2}
           type="text"
           className="input"
           placeholder="Apartment, suite, unit, etc. (optional)"
@@ -269,15 +285,16 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           autoComplete="none"
         />
         <StateSelect
-          countryid={countryid}
-          onChange={(e) => {
-            setstateid(e.id);
-            setstate(e.name || e.target.value);
-          }}
-          placeHolder="State"
-          required
-          autoComplete="none"
-        />
+  countryid={countryid}
+  onChange={(e) => {
+    setstateid(e.id); // Updates the stateid when the user selects a state
+    setstate(e.name || e.target.value); // Updates the state name based on selection
+  }}
+  placeHolder="State"
+  required
+  autoComplete="none"
+/>
+
         <CitySelect
           countryid={countryid}
           stateid={stateid}
@@ -288,8 +305,10 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           placeHolder="Town/City"
           required
           autoComplete="none"
+          
         />
         <input
+           defaultValue={editData && editData?.postcode}
           type="number"
           className="input"
           placeholder="Pin Code"
