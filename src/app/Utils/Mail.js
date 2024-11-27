@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendMail({  sendTo, subject, message }) {
+export async function sendMail({  sendTo, subject, message, name }) {
   try {
     const isVerified = await transporter.verify();
   } catch (error) {
@@ -58,7 +58,7 @@ export async function sendMail({  sendTo, subject, message }) {
                 <!-- Body Content -->
                 <tr>
                     <td style="background-color: #fff; padding: 20px; color: #15181E;">
-                        <h2 style="font-size: 22px; color: #137E43;">Hi,</h2>
+                        <h2 style="font-size: 22px; color: #137E43;">Hi, `+name+`</h2>
                         <p style="font-size: 16px; line-height: 1.5;"> ` +
                         message +
       `. </p>

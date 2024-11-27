@@ -2,12 +2,6 @@
 
 import {
   apiUrl,
-  copyright,
-  emailPassword,
-  emailUsername,
-  hostName,
-  jwtTocken,
-  portNumber,
   siteEmail,
   siteName,
   woocommerceKey,
@@ -69,7 +63,7 @@ export default function WriteReviewForm({ productId }) {
           setStatus(false);
         }, 3000);
 
-        console.log("Review submitted successfully");
+        console.log("Success");
 
         //MAIL NOTIFICATION TO ADMIN
         await sendMail({

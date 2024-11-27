@@ -11,6 +11,7 @@ export default function ListOptions({ title, noButton, small, data, titleBold })
       </div>
       <div className="pl-8 !grid">
         <div className="!grid !gap-2">
+        {data?.id && <span>{data?.id}</span>}
           {data?.address_1 && <span>{data?.address_1}</span>}
           {data?.address_2 && <span>{data?.address_2}</span>}
           {data?.city && (
@@ -23,7 +24,7 @@ export default function ListOptions({ title, noButton, small, data, titleBold })
         </div>
         <div>
           {!noButton && (
-            <button className="btn-light btn-medium mt-1">
+            <button className="btn-light btn-medium mt-1" onClick={(e) => editAddress()}>
               Edit <PencilIcon className="size-[13px]" />
             </button>
           )}

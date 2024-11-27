@@ -1,3 +1,4 @@
+
 import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
@@ -7,44 +8,8 @@ import ListOptions from "../Components/ListOptions";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
 
 export default async function Checkout() {
+ 
 
-
-
-//  POST https://admin.wellness4u.in//wp-json/wc/v3/customers/2/addresses?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03&reviewer=Muhammed&reviewer_email=test@test.com&product_id=84
-
-// {
-//   "address": {
-//     "address_1": "dfgdf gfgdfg",
-//     "address_2": "dfg dfg ",
-//     "city": "Lodfgdfg Angeles",
-//     "state": "CA",
-//     "postcode": "90005",
-//     "country": "US",
-//     "phone": "123-456-7890"
-//   }
-// }
-
-
-// GET https://admin.wellness4u.in//wp-json/wc/v3/customers/2/addresses?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03&reviewer=Muhammed&reviewer_email=test@test.com&product_id=84
-
-
-
-
-    // Fetch ADDRESS data
-    let savedAddressData = await fetch(
-      `${apiUrl}wp-json/wc/v3/customers/2${woocommerceKey}`,
-      {
-        next: {
-          revalidate: 60,
-          cache: "no-store",
-        },
-      }
-    );
-  
-    let savedAdrress = await savedAddressData.json();
-
-
-  
 
   const paymentOptions = [
     {
@@ -75,7 +40,7 @@ export default async function Checkout() {
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
             <div className="grid gap-7">
-              <CheckoutAddress data={savedAddressData && savedAdrress} multipleAddress={savedAddressData && savedAdrress}/>
+              <CheckoutAddress/>
             </div>
             <div className="grid gap-7">
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">

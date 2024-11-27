@@ -22,7 +22,7 @@ export default function AddToCart({
 }) {
   const { cartItems, setCartItems, setCart, setDiscount } = useCartContext();
 
-  console.log(cartItems?.length);
+  
 
   const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(null);
