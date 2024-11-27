@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { CountrySelect, CitySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
+import axios from 'axios';
 
 export default function AddNewAddressForm(){
 
@@ -20,6 +21,33 @@ export default function AddNewAddressForm(){
     // const [cityList, setCityList] = useState([]);
     const [languageList, setLanguageList] = useState([]);
 
+
+
+    const [countries, setCountries] = useState([]);
+    const [error, setError] = useState(null);
+
+
+
+
+    useEffect(() => {
+      const fetchCountries = async () => {
+        try {
+          const response = await axios.get("https://api.countrystatecity.in/v1/countries", {
+            headers: {
+              "X-CSCAPI-KEY": "dDB4aHZ1RDY1WGJoU3dhallheGRyYVozQjN6VzRvTm9pd0R2RkF0dg==",
+            },
+          });
+          setCountries(response.data); // Set the countries data from the response
+        } catch (error) {
+          setError(error.message); // Set error message if something goes wrong
+        }
+      };
+  
+      fetchCountries();
+    }, []);
+
+
+console.log(countries)
 
     //API
 //https://countrystatecity.in/docs/api/all-countries/

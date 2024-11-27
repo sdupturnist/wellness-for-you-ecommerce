@@ -6,6 +6,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [cartSubTotal, setCartSubTotal] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
   const [couponCode, setCouponCode] = useState(false);
   const [discount, setDiscount] = useState(0);
 
@@ -53,7 +54,8 @@ export function CartProvider({ children }) {
   return (
     <CartContext.Provider value={{
       cart, setCart, cartItems, setCartItems, cartSubTotal, setCartSubTotal, 
-      couponCode, setCouponCode, discount, setDiscount, addToCart, removeFromCart
+      couponCode, setCouponCode, discount, setDiscount, addToCart, removeFromCart,
+      cartTotal, setCartTotal
     }}>
       {children}
     </CartContext.Provider>
