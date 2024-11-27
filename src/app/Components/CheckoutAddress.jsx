@@ -36,7 +36,7 @@ const additionalAddresses = savedAddress?.meta_data?.find(
 
 
 
-console.log(additionalAddresses)
+//console.log(additionalAddresses)
 
   return (
     <div className="card-rounded-none-small w-full bg-white py-5 px-4">
