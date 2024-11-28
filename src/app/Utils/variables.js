@@ -13,6 +13,12 @@ export let homeUrl = process.env.NEXT_PUBLIC_SITE_URL;
 export let apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
+//STRIPE CONFIG
+export let publicKey = `pk_test_51PBumuSFrqNOhHwTB7Rr9WcBG0wxlIC0xkYQIhkOxsf2p1PVip2VzdmEdlNAkqD00GbWkJHtOIp5LW8Pzby8FeLD002sTAqQB5`
+export let secretKey = 'sk_test_51PBumuSFrqNOhHwTjPOTWHb2gkKgkXHSrZjwS09Yf7EAJ6fo3qfmhmRhjHT5NJMgEsRmdGsJHI8CXHZyNs5lhI2s00hQLz3IER'
+
+
+
 
 //GENERAL CONFIG
 export let siteName = 'wellness4u'

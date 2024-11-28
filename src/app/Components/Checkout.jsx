@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { homeUrl } from '../Utils/variables';
+import { homeUrl, publicKey } from '../Utils/variables';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(publicKey);
 
 export default function Checkout() {
   const [isProcessing, setIsProcessing] = useState(false);

@@ -1,7 +1,8 @@
 // app/api/checkout/route.js
+import { homeUrl, secretKey } from '@/app/Utils/variables';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(secretKey);
 
 export async function POST(req) {
   try {
@@ -29,8 +30,8 @@ export async function POST(req) {
         quantity: item.quantity,
       })),
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
+      success_url: `${homeUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${homeUrl}/cancel`,
     });
 
     // Return the session ID
