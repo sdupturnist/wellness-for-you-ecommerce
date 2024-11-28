@@ -6,18 +6,16 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
  
-    const [billingAddress, setBillingAddress] = useState([])
-    const [showAddNewAddress, setShowAddNewAddress] = useState(false)
-    const [updateAddress, setUpdateAddress] = useState([])
+
+  const [test, setTest] = useState('')
+
+
+
+
 
   return (
     <UserContext.Provider value={{ 
-        billingAddress,
-         setBillingAddress,
-         showAddNewAddress, 
-         setShowAddNewAddress,
-         updateAddress, 
-         setUpdateAddress
+      test, setTest
     }}>
       {children}
     </UserContext.Provider>

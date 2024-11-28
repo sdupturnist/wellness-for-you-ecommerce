@@ -15,14 +15,15 @@ import {
 } from "@/app/Utils/variables";
 import { sendMail } from "@/app/Utils/Mail";
 import Alerts from "../Alerts";
-import { useUserContext } from "@/app/Context/userContext";
+
+import { useCheckoutContext } from "@/app/Context/checkoutContext";
 
 export default function AddNewAddressForm({ addressCount, id, currentData }) {
  
   
 
   
-  const {setShowAddNewAddress, updateAddress} = useUserContext()
+  const {setShowAddNewAddress, updateAddress} = useCheckoutContext()
 
   
 

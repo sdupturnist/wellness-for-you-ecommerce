@@ -2,30 +2,59 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { homeUrl, paymentCurrency, publicKey, siteName } from "../Utils/variables";
-import { usePayment } from "../Context/PaymentContext";
-import { useUserContext } from "../Context/userContext";
+import {
+  homeUrl,
+  paymentCurrency,
+  publicKey,
+  siteName,
+} from "../Utils/variables";
 import { useCartContext } from "../Context/cartContext";
+import Alerts from "./Alerts";
+import { useCheckoutContext } from "../Context/checkoutContext";
 
 export default function RazorPayment({ userData }) {
- 
-  const { cartItems, couponCode, discount, cartSubTotal } = useCartContext();
-  const { billingAddress } = useUserContext();
 
+
+
+
+
+  const { cartItems, couponCode, discount, cartSubTotal } = useCartContext();
+
+  const { billingAddress,  setValidateAddress, updatePaymentStatus, paymentTerms, setValidateTerms } =
+    useCheckoutContext();
+
+
+
+
+
+
+console.log(discount)
 
 
   const [loading, setLoading] = useState(false);
+  const [validate, setValidate] = useState(false);
+  const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
 
-  const { updatePaymentStatus } = usePayment(); // Access the updatePaymentStatus function from context
-
-
-  const payAmount = (cartSubTotal-discount)
-
-  console.log(payAmount);
+  const payAmount = cartSubTotal - discount;
 
   const handlePayment = async () => {
+    
     setLoading(true);
+
+    if (!billingAddress) {
+      setValidateAddress(true);
+      setValidate(true);
+      setValidationMessage("Please select a billing address");
+      return;
+    }
+
+    if (!paymentTerms) {
+      setValidateTerms(true);
+      setValidate(true);
+      setValidationMessage("You must accept the terms and conditions to proceed.");
+      return;
+    }
 
     try {
       // Step 1: Get the order ID from the server
@@ -34,7 +63,8 @@ export default function RazorPayment({ userData }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: payAmount && payAmount }), // Amount in INR (1 = 1 INR)
+       // body: JSON.stringify({ amount: payAmount && payAmount }), // Amount in INR (1 = 1 INR)
+        body: JSON.stringify({ amount: 1 }), // Amount in INR (1 = 1 INR)
       });
 
       const data = await response.json();
@@ -49,16 +79,28 @@ export default function RazorPayment({ userData }) {
       const options = {
         key: publicKey, // Your public Razorpay key
 
-        amount: payAmount && payAmount * 100, // Amount in paise (1 INR = 100 paise)
+        //amount: payAmount && payAmount * 100, // Amount in paise (1 INR = 100 paise)
+        amount: 1 * 100, // Amount in paise (1 INR = 100 paise)
         currency: paymentCurrency,
         name: siteName,
-        description: "Payment for Product/Service",
+        description: `Payment - ${siteName}`,
         order_id: data.orderId, // Use the order ID received from the API
         handler: function (response) {
           // Step 3: Handle payment success
-        alert("Payment Successful: " + response.razorpay_payment_id);
+         
+
+         
+          console.log("Payment Successful: " + response.razorpay_payment_id);
           updatePaymentStatus("success"); // Update payment status to 'success'
+         
+         
+         //PUT ORDER
+
+         
+         
+         
           router.push(`${homeUrl}checkout/success`); // Redirect on success
+
         },
         prefill: {
           name: userData?.name,
@@ -67,8 +109,7 @@ export default function RazorPayment({ userData }) {
         },
         notes: {
           // address: "Address for payment",
-
-          company: billingAddress?.company,
+           company: billingAddress?.company,
           country: billingAddress?.country,
           address_1: billingAddress?.address_1,
           address_2: billingAddress?.address_2,
@@ -91,9 +132,17 @@ export default function RazorPayment({ userData }) {
     }
   };
 
+
   return (
-    <button onClick={handlePayment} className="btn-large">
-      Proceed to checkout
-    </button>
+    <>
+      {validate && <Alerts status="red" title={validationMessage} />}
+      <button
+        onClick={handlePayment}
+        className="btn-large"
+        // disabled={!billingAddress}
+      >
+        Proceed to checkout
+      </button>
+    </>
   );
 }

@@ -28,6 +28,8 @@ export let siteName = 'wellness4u'
 export let siteAuthor = 'wellness4u admin'
 export let year = date.getFullYear();
 export let copyright = siteName + ' © '+ year
+export let siteLogo = process.env.NEXT_PUBLIC_LOGO_URL
+export let siteLogoWhite = process.env.NEXT_PUBLIC_LOGO_WHITE_URL
 
 
 //EMAIL CONFIG

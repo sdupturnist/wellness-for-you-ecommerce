@@ -7,11 +7,35 @@ const CheckoutContext = createContext();
 export const CheckoutProvider = ({ children }) => {
  
     const [amountToPay, setAmountToPay] = useState(0)
+    const [billingAddress, setBillingAddress] = useState('')
+    const [showAddNewAddress, setShowAddNewAddress] = useState(false)
+    const [updateAddress, setUpdateAddress] = useState([])
+    const [validateAddress, setValidateAddress] = useState(false)
+    const [paymentStatus, setPaymentStatus] = useState(null);
+    const [paymentMethodOption, setPaymentMethodOption] = useState('cod');
+    const [paymentTerms, setPaymentTerms] = useState(false);
+    const [validateTerms, setValidateTerms] = useState(false);
 
   return (
     <CheckoutContext.Provider value={{ 
         amountToPay, 
-        setAmountToPay
+        setAmountToPay,
+        billingAddress,
+        setBillingAddress,
+        showAddNewAddress, 
+        setShowAddNewAddress,
+        updateAddress, 
+        setUpdateAddress,
+        validateAddress,
+       setValidateAddress,
+        paymentStatus, 
+        setPaymentStatus,
+        paymentMethodOption, 
+        setPaymentMethodOption,
+        paymentTerms,
+         setPaymentTerms,
+         validateTerms, 
+         setValidateTerms
     }}>
       {children}
     </CheckoutContext.Provider>

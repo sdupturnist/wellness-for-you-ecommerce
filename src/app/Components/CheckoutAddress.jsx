@@ -1,68 +1,69 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import SectionHeader from "./SectionHeader";
-import ListOptions from "./ListOptions";
+import ListOptionsAddress from "./ListOptionsAddress";
 import AddNewAddressForm from "./Forms/AddNewAddress";
 import Alerts from "./Alerts";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
-import { useUserContext } from "../Context/userContext";
 import Skelton from "./Skelton";
+import "animate.css/animate.min.css";
+import { useCheckoutContext } from "../Context/checkoutContext";
 
 export default function CheckoutAddress() {
-
-  
-  const { showAddNewAddress, setShowAddNewAddress } = useUserContext();
-
+  const { showAddNewAddress, setShowAddNewAddress, validateAddress } =
+    useCheckoutContext();
 
   const [savedAddress, setAdditionalsavedAddress] = useState("");
-  
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-   
     fetch(`${apiUrl}wp-json/wc/v3/customers/2${woocommerceKey}`)
       .then((res) => res.json())
       .then((data) => {
-        setAdditionalsavedAddress(data); 
-        setLoading(false); 
+        setAdditionalsavedAddress(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, [ savedAddress]); 
+  }, [savedAddress]);
 
-
-  
   const additionalAddresses = useMemo(() => {
     return savedAddress?.meta_data?.find(
       (item) => item.key === "additional_addresses"
     )?.value;
-  }, [savedAddress?.meta_data]); 
-
+  }, [savedAddress?.meta_data]);
 
   return (
-    <div className="card-rounded-none-small w-full bg-white py-5 px-4">
+    <div
+      className={`card-rounded-none-small w-full bg-white py-5 px-4  ${
+        validateAddress &&
+        " !border-red-400 bg-red-50 animate__animated animate__pulse"
+      }`}>
       <SectionHeader title="Billing details" card />
       <ul className="grid gap-5">
-        {!loading  && !showAddNewAddress && (
-  savedAddress && additionalAddresses?.length > 0 ? null  : <Alerts status="red" title="No address has been saved." />
-        )}
+        {!loading &&
+          !showAddNewAddress &&
+          (savedAddress && additionalAddresses?.length > 0 ? null : (
+            <Alerts status="red" title="No address has been saved." />
+          ))}
 
         {loading ? (
           <Skelton listAddress />
         ) : (
           additionalAddresses &&
           !additionalAddresses && (
-          <>
-            <ListOptions
-              data={additionalAddresses && additionalAddresses?.billing}
-              title={`${additionalAddresses && additionalAddresses?.first_name}, ${
-                additionalAddresses && additionalAddresses?.last_name
-              }`}
-              titleBold
-            />
-          </>
+            <>
+              <ListOptionsAddress
+                data={additionalAddresses && additionalAddresses?.billing}
+                title={`${
+                  additionalAddresses && additionalAddresses?.first_name
+                }, ${additionalAddresses && additionalAddresses?.last_name}`}
+                titleBold
+              />
+            </>
           )
         )}
 
@@ -70,7 +71,7 @@ export default function CheckoutAddress() {
           <Skelton listAddress />
         ) : [additionalAddresses]?.length < 1 ? (
           !showAddNewAddress && (
-            <ListOptions
+            <ListOptionsAddress
               data={additionalAddresses?.billing}
               title={`${additionalAddresses?.first_name}, ${additionalAddresses?.last_name}`}
               titleBold
@@ -81,7 +82,7 @@ export default function CheckoutAddress() {
           additionalAddresses.map(
             (item, index) =>
               !showAddNewAddress && (
-                <ListOptions
+                <ListOptionsAddress
                   key={index}
                   data={item}
                   title={`${item && item?.first_name}, ${
@@ -101,9 +102,9 @@ export default function CheckoutAddress() {
         </button>
       </ul>
 
-   {showAddNewAddress && (
+      {showAddNewAddress && (
         <div className="grid mt-5">
-          <SectionHeader title="Billing details" card />
+          <SectionHeader title="Add new billing details" card />
 
           <AddNewAddressForm
             addressCount={additionalAddresses ? additionalAddresses?.length : 0}

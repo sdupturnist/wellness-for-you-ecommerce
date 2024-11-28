@@ -230,6 +230,12 @@ tr:nth-child(even) {
 }
 
 
+
+button:disabled {
+    @apply bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 hover:bg-gray-300 hover:text-gray-500;
+  }
+
+
 .btn{
     @apply rounded-lg whitespace-nowrap sm:text-[16px] text-[14px] bg-primary hover:bg-primary-hover  sm:h-[45px] h-[40px] min-h-[40px] text-white font-semibold transition-all;
    }

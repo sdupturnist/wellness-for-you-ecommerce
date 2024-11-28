@@ -3,35 +3,21 @@ import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
 import SectionHeader from "../Components/SectionHeader";
 import CheckoutAddress from "../Components/CheckoutAddress";
-import ListOptions from "../Components/ListOptions";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
 import PaymentButton from "../Components/PaymentButton";
-
-
+import PaymentOptionsList from "../Components/PaymentOptionsList";
+import TestComponent from "../Components/TestComponent";
 
 export default async function Checkout() {
-  
-
-  const userInfo = 
+  let paymentOptionsData = await fetch(
+    `${apiUrl}wp-json/wc/v3/payment_gateways${woocommerceKey}`,
     {
-      id: 2,
-      name: `Anjali`,
-      email: `anjali_testing@gmail.com`,
-      phone: `911234567890`,
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
     }
-   
-  
-
-  
-  
-  const paymentOptions = [
-    {
-      option_title: `Direct bank transfer`,
-    },
-    {
-      option_title: `Cash on delivery`,
-    },
-  ];
+  );
 
   let couponCodeData = await fetch(
     `${apiUrl}wp-json/wc/v3/coupons${woocommerceKey}`,
@@ -44,11 +30,11 @@ export default async function Checkout() {
   );
 
   let couponCodes = await couponCodeData.json();
+  let paymentOptions = await paymentOptionsData.json();
 
   return (
     <div className="bg-bggray">
       <Breadcrumb />
-
       <section className="sm:bg-white bg-bggray sm:py-10 py-0">
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
@@ -65,25 +51,12 @@ export default async function Checkout() {
                   </div>
                   <div className="grid gap-2">
                     <SectionHeader title="Payment options" small spacingSm />
-                    {paymentOptions &&
-                      paymentOptions.map((item, index) => (
-                        <ListOptions
-                          key={index}
-                          title={item?.option_title}
-                          noButton
-                          small
-                        />
-                      ))}
+                    {paymentOptions && (
+                      <PaymentOptionsList data={paymentOptions} />
+                    )}
                   </div>
-                  <div className="border-t border-border pt-5">
-                    <ListOptions
-                      title="I have read and agree to the website terms and conditions."
-                      noButton
-                      small
-                    />
-                  </div>
-                 <PaymentButton userData={userInfo}/>
-
+                  <TestComponent />
+                  {/* <PaymentButton userData={userInfo} /> */}
                   <small className="text-xs opacity-55 leading-5">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for

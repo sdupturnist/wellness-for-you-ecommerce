@@ -11,6 +11,7 @@ const {
   siteFromEmail,
   siteName,
   copyright,
+  siteLogoWhite,
 } = require("./variables");
 
 const transporter = nodemailer.createTransport({
@@ -37,44 +38,48 @@ export async function sendMail({  sendTo, subject, message, name }) {
     subject: subject,
     html:
       `
-    <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Enquiry Notification</title>
+    <style>
+        /* Import Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    </style>
 </head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9;">
-     <div style="margin: 0; padding: 0; font-family: 'Arial, sans-serif'; background-color: #fff;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #fff;">
-                <!-- Header -->
-                <tr>
-                    <td style="background-color: #137E43; color: #fff; text-align: center; padding: 20px; font-size: 24px;">
-                        ` + subject +
-      `
-                    </td>
-                </tr>
-                
-                <!-- Body Content -->
-                <tr>
-                    <td style="background-color: #fff; padding: 20px; color: #15181E;">
-                        <h2 style="font-size: 22px; color: #137E43;">Hi, `+name+`</h2>
-                        <p style="font-size: 16px; line-height: 1.5;"> ` +
-                        message +
-      `. </p>
-                         </td>
-                </tr>
+<body style="font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #fff;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background:#fff;">
+            <!-- Header with Logo and Title -->
+            <tr>
+                <td style="background-color: #137E43; color: #fff; text-align: center; padding:  20px; font-size: 28px; font-weight: 600; position: relative;">
+                    <!-- Logo Image (left aligned) -->
+                    <img src="${siteLogoWhite}" alt="Logo" style="display:block; height: 40px;">
+                 </td>
+            </tr>
 
-                <!-- Footer -->
-                <tr>
-                    <td style="background-color: #15181E; color: #fff; text-align: center; padding: 10px; font-size: 14px;">
-                        <p style="margin: 0;">${copyright}</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
+            <!-- Body Content -->
+            <tr>
+                <td style="padding: 20px; color: #15181E;">
+                   <h2 style="font-size: 16px; color: #111;">Hi, ${name}</h2>
+                    <p style="font-size: 16px; line-height: 1.6; color:#666; padding-top:10px; padding-bottom:10px; border-bottom:solid thin #ddd; margin-bottom:20px;">${subject}</p>
+                    <p style="font-size: 16px; line-height: 1.6; color:#666;">${message}</p>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td style="background-color: #15181E; color: #fff; text-align: center; padding: 15px; font-size: 14px;">
+                    <p style="margin: 0;">${copyright}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
+
         
     `,
   });
