@@ -1,133 +1,109 @@
 'use client'
 
+import { formatDate } from "./variables"
 
-
-
-export let OrderPlacedEmailTemplate = ({ siteLogo }) => {
+export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid) => {
     
-    const item = `<!-- Header -->
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#fff">
-  <tr><td height="20"></td></tr>
-  <tr>
-    <td>
-      <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff" style="border-radius: 10px 10px 0 0;">
-     <tr>
-          <td>
-            <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-              <tr>
-                <td>
-                  <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                    <tr><td align="left"><img src="${siteLogo}" height="50" alt="logo" border="0" /></td></tr>
-                    <tr class="hiddenMobile"><td height="40"></td></tr>
-                    <tr class="visibleMobile"><td height="20"></td></tr>
-                    <tr>
-                      <td style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; line-height: 18px; text-align: left;">
-                        Hello, Philip Brooks.<br> Thank you for shopping from our store and for your order.
-                      </td>
-                    </tr>
-                  </table>
-                  <table width="220" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
-                    <tr class="visibleMobile"><td height="20"></td></tr>
-                    <tr>
-                      <td height="5"></td>
-                    </tr>
-                    <tr>
-                      <td style="font-size: 21px; color: #111; letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; text-align: right;">
-                        Invoice
-                      </td>
-                    </tr>
-                    <tr class="hiddenMobile"><td height="50"></td></tr>
-                    <tr class="visibleMobile"><td height="20"></td></tr>
-                    <tr>
-                      <td style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; line-height: 18px; text-align: right;">
-                        <small>ORDER</small> #800000025<br />
-                        <small>MARCH 4TH 2016</small>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<!-- /Header -->
+  let today = new Date();
 
-<!-- Order Details -->
-<table width="100%" border="0" style="padding-bottom:50px" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#fff">
-  <tr>
-    <td>
-      <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff">
-        <tr class="hiddenMobile"><td height="60"></td></tr>
-        <tr class="visibleMobile"><td height="40"></td></tr>
-        <tr>
-          <td>
-            <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-              <tr>
-                <th style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; line-height: 1; padding: 0 10px 7px 0;" width="52%" align="left">Item</th>
-                <th style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; line-height: 1; padding: 0 0 7px;" align="left"><small>SKU</small></th>
-                <th style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; line-height: 1; padding: 0 0 7px;" align="center">Quantity</th>
-                <th style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; font-weight: normal; line-height: 1; padding: 0 0 7px;" align="right">Subtotal</th>
-              </tr>
-              <tr><td height="1" style="background: #ECECEC;" colspan="4"></td></tr>
-              <tr><td height="10" colspan="4"></td></tr>
-              <tr>
-                <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" class="article">Beats Studio Over-Ear Headphones</td>
-                <td style="font-size: 12px; color: #646a6e; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;"><small>MH792AM/A</small></td>
-                <td style="font-size: 12px; color: #646a6e; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" align="center">1</td>
-                <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" align="right">$299.95</td>
-              </tr>
-              <tr><td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td></tr>
-              <tr>
-                <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" class="article">Beats RemoteTalk Cable</td>
-                <td style="font-size: 12px; color: #646a6e; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;"><small>MHDV2G/A</small></td>
-                <td style="font-size: 12px; color: #646a6e; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" align="center">1</td>
-                <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; line-height: 18px; padding:10px 0;" align="right">$29.95</td>
-              </tr>
-              <tr><td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td></tr>
-              <tr><td height="25" colspan="4"></td></tr>
-              <tr>
-                <td colspan="2"></td>
-                <td colspan="2">
-                  <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td height="1" style="background:#dddddd;"></td>
-                    </tr>
-                    <tr><td height="10"></td></tr>
-                    <tr>
-                      <td colspan="2" style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; text-align: right; padding-right: 10px;">Subtotal</td>
-                      <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; text-align: right; padding-right: 10px;">$329.90</td>
-                    </tr>
-                    <tr><td height="10"></td></tr>
-                    <tr>
-                      <td colspan="2" style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; text-align: right; padding-right: 10px;">Shipping</td>
-                      <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; text-align: right; padding-right: 10px;">$5.00</td>
-                    </tr>
-                    <tr><td height="10"></td></tr>
-                    <tr>
-                      <td colspan="2" style="font-size: 12px; color: #333; font-family: 'Open Sans', sans-serif; font-weight: normal; text-align: right; padding-right: 10px;">Tax</td>
-                      <td style="font-size: 12px; color: #111; font-family: 'Open Sans', sans-serif; text-align: right; padding-right: 10px;">$20.88</td>
-                    </tr>
-                    <tr><td height="10"></td></tr>
-                    <tr>
-                      <td colspan="2" style="font-size: 14px; color: #111; font-family: 'Open Sans', sans-serif; font-weight: bold; text-align: right; padding-right: 10px;">Total</td>
-                      <td style="font-size: 14px; color: #111; font-family: 'Open Sans', sans-serif; font-weight: bold; text-align: right; padding-right: 10px;">$355.78</td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<!-- /Order Details -->
-`
+  console.log('asdasdasdasdasdasd')
+
+  // Calculate Sub-Total dynamically
+  let subTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
+  let freeShipping = 0.00; // Assuming free shipping for now, can be dynamic
+  let total = subTotal + freeShipping; // Add shipping to total if necessary
+
+  // Mapping cart items into a string of <tr> for the table
+  const orderItems = cartItems.map((item, index) => (
+    `<tr>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${item?.name}</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${item?.quantity}</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${item?.price}</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${(item?.price * item?.quantity).toFixed(2)}</td>
+    </tr>`
+  )).join(''); // Make sure to join all items into one string
+
+  const item = `
+  <p style="margin-top:0px;margin-bottom:20px">Thank you for your interest in Wellness4U Food Supplements products. Your order has been received and will be processed once payment has been confirmed.</p>
+  
+  <table style="border-collapse:collapse;width:100%;border-top:1px solid #dddddd;border-left:1px solid #dddddd;margin-bottom:20px">
+    <thead>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:left;padding:7px;color:#222222" colspan="2">Order Details</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>Order ID:</b> ${orderId}<br>
+          <b>Date Added:</b> ${formatDate(today)}<br>
+          <b>Payment Method:</b> ${paymentMethodOption}<br>
+          <b>Shipping Method:</b> Free Shipping</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${userData?.email}" target="_blank">${userData?.email}</a><br>
+          <b>Telephone:</b> ${userData?.phone}<br>
+          <b>Order Status:</b> Processing<br></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table style="border-collapse:collapse;width:100%;border-top:1px solid #dddddd;border-left:1px solid #dddddd;margin-bottom:20px">
+    <thead>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:left;padding:7px;color:#222222">Instructions</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">Payment Successful. ${paymentMethodOption} ${paymentid}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table style="border-collapse:collapse;width:100%;border-top:1px solid #dddddd;border-left:1px solid #dddddd;margin-bottom:20px">
+    <thead>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:left;padding:7px;color:#222222">Payment Address</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:left;padding:7px;color:#222222">Shipping Address</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table style="border-collapse:collapse;width:100%;border-top:1px solid #dddddd;border-left:1px solid #dddddd;margin-bottom:20px">
+    <thead>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:left;padding:7px;color:#222222">Product</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:right;padding:7px;color:#222222">Quantity</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:right;padding:7px;color:#222222">Price</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:right;padding:7px;color:#222222">Total</td>
+      </tr>
+    </thead>
+    <tbody>  
+      ${orderItems} <!-- Insert the order items here -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Sub-Total:</b></td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${subTotal.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Free Shipping:</b></td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${freeShipping.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Total:</b></td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${total.toFixed(2)}</td>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <p style="margin-top:0px;margin-bottom:20px">Please reply to this e-mail if you have any questions.</p>
+  <font color="#888888"></font>
+  `
     
-    return item
+  return item;
 }

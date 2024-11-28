@@ -230,6 +230,14 @@ tr:nth-child(even) {
 }
 
 
+:where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
+  
+    background-color: $PRIMARY !important;
+    color: $WHITE;
+    outline: 2px solid $PRIMARY !important;
+   
+}
+
 
 button:disabled {
     @apply bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 hover:bg-gray-300 hover:text-gray-500;

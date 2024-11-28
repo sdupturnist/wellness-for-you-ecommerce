@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Images from "./Images";
 import Search from "./Search";
-import { homeUrl } from "../Utils/variables";
+import { homeUrl, siteLogo } from "../Utils/variables";
 import { useState } from "react";
 import Nav from "./Nav";
 
@@ -20,7 +20,7 @@ export default function Header() {
           <div className="logo">
             <Link href={homeUrl}>
               <Images
-                imageurl="/images/logo-wellnesforyou.png"
+                imageurl={siteLogo}
                 quality="100"
                 width="150"
                 height="70"

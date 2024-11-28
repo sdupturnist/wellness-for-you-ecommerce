@@ -101,7 +101,7 @@ export default function ListOptionsAddress({
               })
             }
             type="radio"
-            className="radio radio-sm"
+            className="radio radio-success radio-sm"
             name="selected_address"
             value={title} // This is just for unique identification, not the actual address
           />

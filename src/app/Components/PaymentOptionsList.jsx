@@ -37,7 +37,7 @@ export default function PaymentOptionsList({ data }) {
             <div>
               <input
                 type="radio"
-                className="radio radio-sm"
+                className="radio radio-success radio-sm"
                 name="payment_option"
                 onChange={handlePaymentMethodChange}
                 value={item?.id}
@@ -52,7 +52,7 @@ export default function PaymentOptionsList({ data }) {
           <div>
             <input
               type="checkbox"
-              className="checkbox checkbox-sm"
+              className="checkbox  checkbox-success checkbox-sm"
               name="selected_address"
               onChange={(e) => setPaymentTerms(!paymentTerms)}
             />
