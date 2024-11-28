@@ -14,10 +14,13 @@ export let apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 //STRIPE CONFIG
-export let publicKey = `pk_test_51PBumuSFrqNOhHwTB7Rr9WcBG0wxlIC0xkYQIhkOxsf2p1PVip2VzdmEdlNAkqD00GbWkJHtOIp5LW8Pzby8FeLD002sTAqQB5`
-export let secretKey = 'sk_test_51PBumuSFrqNOhHwTjPOTWHb2gkKgkXHSrZjwS09Yf7EAJ6fo3qfmhmRhjHT5NJMgEsRmdGsJHI8CXHZyNs5lhI2s00hQLz3IER'
+// export let publicKey = `pk_test_51PBumuSFrqNOhHwTB7Rr9WcBG0wxlIC0xkYQIhkOxsf2p1PVip2VzdmEdlNAkqD00GbWkJHtOIp5LW8Pzby8FeLD002sTAqQB5`
+// export let secretKey = 'sk_test_51PBumuSFrqNOhHwTjPOTWHb2gkKgkXHSrZjwS09Yf7EAJ6fo3qfmhmRhjHT5NJMgEsRmdGsJHI8CXHZyNs5lhI2s00hQLz3IER'
 
 
+//RAZORPAY CONFIG
+export let publicKey = `rzp_live_npbJa6vH2XzXnt`
+export let secretKey = '9ixUFClcmehSffk9seqIBfrk'
 
 
 //GENERAL CONFIG
@@ -55,6 +58,7 @@ export let OfferPercentage = ({ normalprice, saleprice }) => {
 //CURRENCY
 
 export let currency = '₹'
+export let paymentCurrency = 'INR'
 
 
 

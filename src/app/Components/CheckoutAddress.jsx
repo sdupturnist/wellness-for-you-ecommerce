@@ -9,10 +9,13 @@ import { useUserContext } from "../Context/userContext";
 import Skelton from "./Skelton";
 
 export default function CheckoutAddress() {
+
+  
   const { showAddNewAddress, setShowAddNewAddress } = useUserContext();
 
 
   const [savedAddress, setAdditionalsavedAddress] = useState("");
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export default function CheckoutAddress() {
 
    {showAddNewAddress && (
         <div className="grid mt-5">
-          <SectionHeader title="Add new address" card />
+          <SectionHeader title="Billing details" card />
 
           <AddNewAddressForm
             addressCount={additionalAddresses ? additionalAddresses?.length : 0}

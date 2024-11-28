@@ -1,5 +1,3 @@
-
-
 import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
@@ -7,11 +5,25 @@ import SectionHeader from "../Components/SectionHeader";
 import CheckoutAddress from "../Components/CheckoutAddress";
 import ListOptions from "../Components/ListOptions";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
-import CheckoutStripe from "../Components/Checkout";
+import PaymentButton from "../Components/PaymentButton";
 
 
 
 export default async function Checkout() {
+  
+
+  const userInfo = 
+    {
+      id: 2,
+      name: `Anjali`,
+      email: `anjali_testing@gmail.com`,
+      phone: `911234567890`,
+    }
+   
+  
+
+  
+  
   const paymentOptions = [
     {
       option_title: `Direct bank transfer`,
@@ -70,8 +82,8 @@ export default async function Checkout() {
                       small
                     />
                   </div>
-<CheckoutStripe/>
-                  <button className="btn-large">Proceed to checkout</button>
+                 <PaymentButton userData={userInfo}/>
+
                   <small className="text-xs opacity-55 leading-5">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for

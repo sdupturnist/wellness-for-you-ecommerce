@@ -4,7 +4,7 @@ import Header from "./Components/Header";
 import BottomNav from "./Components/BottomNav";
 import Footer from "./Components/Footer";
 import ClientProvider from "./ClientProvider";
-
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +30,10 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Script
+    id="razorpay-checkout-js"
+    src="https://checkout.razorpay.com/v1/checkout.js"
+   />
       <body className={inter.className}>
         <ClientProvider>
           <Header />
