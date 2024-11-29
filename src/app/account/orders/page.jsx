@@ -3,46 +3,34 @@ import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
 import Alerts from "@/app/Components/Alerts";
 import ProfileMenu from "@/app/Components/ProfileMenu";
+import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
 
-export default function Orders() {
-  const myOrders = [
-    {
-      items: [
-        {
-          product_photo: "/images/product.jpg",
-          product_title: "Vitaminberry Just For Gut",
-          qty: 1,
-        },
-        {
-          product_photo: "/images/product.jpg",
-          product_title: "Vitaminberry Just For Gut",
-          qty: 2,
-        },
-      ],
-      order_id: 25685,
-      order_date: "January 28, 2024",
-      order_status: "Processing",
-      order_amount: 325,
-      order_items: 1,
-      tracking_message: "",
-    },
-    {
-      items: [
-        {
-          product_photo: "/images/product.jpg",
-          product_title: "Vitaminberry Just For Gut",
-          qty: 1,
-        },
-      ],
-      order_id: 25685,
-      order_date: "January 28, 2024",
-      order_status: "Completed",
-      order_amount: 325,
-      order_items: 1,
-      tracking_message: "Your order has been shipped!",
-    },
-  ];
+export default async function Orders({params}) {
 
+
+
+
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
+
+  let ordersData = await fetch(
+    `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=2`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  let orders = await ordersData.json();
+
+  
   //const myOrders = null
 
   return (
@@ -54,9 +42,9 @@ export default function Orders() {
             <div className="sm:mt-5 mt-3 sm:pt-2">
               <div>
                 <ul className="general-list">
-                  {!myOrders && <Alerts large title="You have not any" />}
-                  {myOrders &&
-                    myOrders.map((item, index) => (
+                  {!orders && <Alerts large title="You have not any" />}
+                  {orders &&
+                    orders.map((item, index) => (
                       <MyOrder data={item} key={index} />
                     ))}
                 </ul>

@@ -4,9 +4,13 @@
 import { CartProvider } from "./Context/cartContext";
 import { CheckoutProvider } from "./Context/checkoutContext";
 import { SiteProvider } from "./Context/siteContext";
-import { UserProvider } from "./Context/userContext";
+import { UserProvider, useUserContext } from "./Context/userContext";
+
 
 export default function ClientProvider({ children }) {
+
+
+
   return (
  
       <UserProvider>

@@ -57,39 +57,41 @@ useEffect(() => {
         );
       case forOrderDetails:
         return (
-          <ul className="amount-list">
+          <ul className="amount-list capitalize">
+            {console.log(data)}
             <li>
-              <span className="label">Products x {data?.items[0]?.qty}</span>
+              <span className="label">Products x {data?.line_items?.length}</span>
               <span className="val">
                 {currency}
-                {data?.order_amout}
+                {data?.total}
               </span>
             </li>
             <li>
               <span className="label">Shipping</span>
               <span
                 className={`${
-                  data?.shipping === "Free Shipping" && "!text-green-600"
+                  data?.shipping_lines[0]?.method_id === "free_shipping" && "!text-green-600"
                 } val`}>
-                {data?.shipping}
+                {data?.shipping_lines[0]?.method_title}
               </span>
             </li>
             <li>
               <span className="label">Payment Method</span>
               <span className="val">{data?.payment_method}</span>
             </li>
-            <li>
-              <span className="label">Coupon discount</span>
-              <span className="val !text-green-600">
-                -{currency}
-                {data?.coupon_discount}
-              </span>
-            </li>
+            {/* <li> */}
+              {/* <span className="label">Coupon discount</span> */}
+              {/* <span className="val !text-green-600"> */}
+                {/* -{currency} */}
+                {/* {data?.coupon_discount} */}
+              {/* </span> */}
+            {/* </li> */}
+           <span className="bg-red-600"> need to add discount</span>
             <li>
               <span className="label">Subtotal</span>
               <span className="val">
                 {currency}
-                {data?.subtotal}
+                {data?.total}
               </span>
             </li>
             <li className="border-t border-border pt-3 mt-3">

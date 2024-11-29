@@ -7,7 +7,8 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
  
 
-  const [test, setTest] = useState('')
+  const [userData, setUserData] = useState([])
+
 
 
 
@@ -15,7 +16,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider value={{ 
-      test, setTest
+      userData, setUserData
     }}>
       {children}
     </UserContext.Provider>

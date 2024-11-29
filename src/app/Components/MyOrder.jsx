@@ -5,21 +5,21 @@ import Alerts from "./Alerts";
 import Images from "./Images";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { currency } from "../Utils/variables";
+import { currency, formatDate } from "../Utils/variables";
 
 export default function MyOrder({ data, orderView }) {
   const pathname = usePathname();
 
   // Define the status to color mapping
   const statusColorMap = {
-    Pending_payment: "text-orange-500",
-    On_hold: "text-yellow-500",
-    Processing: "text-yellow",
-    Completed: "text-green-500",
-    Failed: "text-red-500",
-    Canceled: "text-gray-500",
-    Refunded: "text-blue-500",
-    Confirmed: "text-green-500",
+    pending_payment: "text-orange-500",
+    on_hold: "text-yellow-500",
+    processing: "text-yellow",
+    completed: "text-green-500",
+    failed: "text-red-500",
+    canceled: "text-gray-500",
+    refunded: "text-blue-500",
+    confirmed: "text-green-500",
   };
 
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,9 @@ export default function MyOrder({ data, orderView }) {
     }
   }, [data]);
 
-  const statusColorClass = statusColorMap[data?.order_status] || "text-dark"; // Fallback to default primary color if not matched
+  const statusColorClass = statusColorMap[data?.status] || "text-dark"; // Fallback to default primary color if not matched
+
+  console.log(data);
 
   return (
     <>
@@ -38,69 +40,75 @@ export default function MyOrder({ data, orderView }) {
         // Skeleton Loader
         <div className="skeleton h-32 w-full mb-5"></div>
       ) : (
-        <li className="card-rounded-none-small bg-white">
-          <div className="w-full">
-            <div className="lg:flex items-start justify-between w-full sm:gap-0 gap-3">
-              <div>
+        <li className="card-rounded-none-small bg-white" data-id={data?.id}>
+          <Link className="w-full" href={`${pathname}/${data?.id}`}>
+            <div className="lg:flex items-start justify-between w-full  gap-3">
+              <div className="grid gap-[10px]">
                 {data &&
-                  data?.items?.map((item, index) => (
+                  data?.line_items?.map((item, index) => (
                     <div key={index} className="flex gap-4 items-center">
-                      <Images
-                        imageurl={item?.product_photo}
-                        quality="100"
-                        width="100"
-                        height="100"
-                        alt="Wellness for you"
-                        classes="size-[50px] block"
-                        placeholder={true}
-                      />
+                      <div className="border rounded-md flex items-center sm:h-[60px] sm:w-[60px] h-[50px] w-[50px] p-3">
+                        <Images
+                          imageurl={item?.image?.src}
+                          quality="100"
+                          width="100"
+                          height="100"
+                          title={item?.name}
+                          alt={item?.name}
+                          classes="size-[30px] block mx-auto"
+                          placeholder={true}
+                        />
+                      </div>
                       <div>
-                        <h3 className="text-xs text-body mb-2 leading-relaxed">
-                          {item?.product_title} x {item?.qty}
+                        <small className="text-[12px] font-normal opacity-60 ">
+                          Order ID #{data?.id}
+                        </small>
+                        <h3 className="sm:text-[14px] text-xs text-body leading-relaxed">
+                          {item?.name} x {item?.quantity}
                         </h3>
+                        <div className="flex justify-between"></div>
                       </div>
                     </div>
                   ))}
               </div>
 
               <div className="lg:grid justify-between h-full gap-7">
-                <div className="sm:flex items-center justify-between gap-2 sm:border-t lg:border-none mt-4 lg:mt-0 ">
-                  <ul className="list-order-view">
-                    <li>
-                      <label>Order ID</label>
-                      <span>
-                      #{data?.order_id}
-                      </span>
-                    </li>
-                    <li>
-                      <label>Amount</label>
-                      <span >
-                      {currency}
-                      {data?.order_amount} ({data?.items?.length} items)
-                      </span>
-                    </li>
-                    <li>
-                      <label>Order Date</label>
-                      <span>
-                      {data?.order_date}
-                      </span>
-                      </li>
-                    <li>
-                      <label>Status</label>
-                      <span className={`${statusColorClass} font-bold `}>
-                        {data?.order_status}
-                      </span>
-                    </li>
-                    {!orderView && (
-                      <li>
-                        <Link
-                          href={`${pathname}/${data?.order_id}`}
-                          className="btn btn-medium btn-light lg:ml-4 lg:mt-0">
-                          View
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
+                <div className="sm:flex items-center justify-between gap-2 border-t lg:border-none mt-4 lg:mt-0 pt-3 lg:pt-0">
+                  <span
+                    className={`${statusColorClass} font-bold capitalize lg:pt-4 sm:text-base text-sm`}>
+                    {data?.status}
+                  </span>
+                  {/* <ul className="list-order-view"> */}
+                  {/* {console.log(data)} */}
+                  {/* <li> */}
+                  {/* <label>Amount</label> */}
+                  {/* <span > */}
+                  {/* {currency} */}
+                  {/* {data?.total} ({data?.line_items?.length} {`item${data?.line_items?.length > 1 ? 's' : ''}`}) */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/* <li> */}
+                  {/* <label>Order Date</label> */}
+                  {/* <span> */}
+                  {/* {formatDate(data?.date_created)} */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/* <li> */}
+                  {/* <label>Status</label> */}
+                  {/* <span className={`${statusColorClass} font-bold capitalize`}> */}
+                  {/* {data?.status} */}
+                  {/* </span> */}
+                  {/* </li> */}
+                  {/* {!orderView && ( */}
+                  {/* <li> */}
+                  {/* <Link */}
+                  {/* href={`${pathname}/${data?.id}`} */}
+                  {/* className="btn btn-medium btn-light lg:ml-4 lg:mt-0"> */}
+                  {/* View */}
+                  {/* </Link> */}
+                  {/* </li> */}
+                  {/* )} */}
+                  {/* </ul> */}
 
                   {/* <ul className="amount-list  lg:hidden"> */}
                   {/* <li> */}
@@ -137,7 +145,7 @@ export default function MyOrder({ data, orderView }) {
                 <Alerts status="green" title={data?.tracking_message} />
               </div>
             )}
-          </div>
+          </Link>
         </li>
       )}
     </>

@@ -12,6 +12,7 @@ export default async function CategoryPage({ params, searchParams }) {
   const pageId = 76;
   const itemsShowPerPage = 30;
 
+  
   // Fetch all products for the current page
   let allProductsData = await fetch(
     `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
