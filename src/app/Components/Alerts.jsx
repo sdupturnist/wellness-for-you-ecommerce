@@ -15,6 +15,9 @@ export default function Alerts({
   noPageUrl,
   center,
   nobg,
+  url,
+  buttonLabel,
+  desc,
 }) {
   const pathname = usePathname();
 
@@ -53,7 +56,12 @@ export default function Alerts({
             center ? "text-center justify-center" : "text-start"
           }`}>
           {!noIcon && icon}
-          <span className={`${center && "text-center"} ${titleSmall ? 'text-sm' : 'text-base'}`}>{title}</span>
+          <span
+            className={`${center && "text-center"} ${
+              titleSmall ? "text-sm" : "text-base"
+            }`}>
+            {title}
+          </span>
         </div>
       )}
       {large && (
@@ -69,12 +77,15 @@ export default function Alerts({
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span className="font-semibold text-body opacity-65">
+          <span className="font-semibold text-2xl">
             {title} {!noPageUrl && pathname?.split("/").pop()}
           </span>
-          {/* <Link className="btn btn-light btn-large my-6" href={homeUrl}> */}
-          {/* Shop now */}
-          {/* </Link> */}
+          {desc && <p className="text-base mt-3 leading-relaxed">{desc}</p>}
+          {url && (
+            <Link className="btn btn-light btn-large my-6" href={url}>
+              {buttonLabel}
+            </Link>
+          )}
         </div>
       )}
     </>

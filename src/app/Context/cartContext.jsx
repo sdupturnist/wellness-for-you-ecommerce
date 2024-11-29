@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
@@ -9,9 +9,8 @@ export function CartProvider({ children }) {
   const [cartTotal, setCartTotal] = useState(0);
   const [couponCode, setCouponCode] = useState(false);
   const [discount, setDiscount] = useState(0);
+  const [couponData, setCouponData] = useState([]);
 
-
-  
   // Load cartItems from localStorage when the component mounts (or updates cartItems)
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -37,7 +36,7 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (itemId) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== itemId);
+    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
     setCartItems(updatedCartItems);
   };
 
@@ -49,14 +48,26 @@ export function CartProvider({ children }) {
     setCartSubTotal(subTotal);
   }, [cartItems]); // Recalculate subtotal every time cartItems changes
 
-
-  
   return (
-    <CartContext.Provider value={{
-      cart, setCart, cartItems, setCartItems, cartSubTotal, setCartSubTotal, 
-      couponCode, setCouponCode, discount, setDiscount, addToCart, removeFromCart,
-      cartTotal, setCartTotal
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        cartItems,
+        setCartItems,
+        cartSubTotal,
+        setCartSubTotal,
+        couponCode,
+        setCouponCode,
+        discount,
+        setDiscount,
+        addToCart,
+        removeFromCart,
+        cartTotal,
+        setCartTotal,
+        couponData,
+         setCouponData
+      }}>
       {children}
     </CartContext.Provider>
   );

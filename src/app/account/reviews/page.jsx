@@ -32,7 +32,7 @@ export default function MyReviews() {
 
   return (
     <div className="bg-bggray">
-     <section className="bg-bggray sm:py-10 pb-5 pt-0">
+     <section className="bg-bggray sm:py-10">
         <div className="container !px-0 sm:px-5">
           <div className="max-w-[999px] mx-auto">
             <AccountHeader back/>

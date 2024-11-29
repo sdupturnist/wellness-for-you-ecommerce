@@ -9,6 +9,16 @@ import PaymentOptionsList from "../Components/PaymentOptionsList";
 import TestComponent from "../Components/TestComponent";
 
 export default async function Checkout() {
+
+
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
+  
   let paymentOptionsData = await fetch(
     `${apiUrl}wp-json/wc/v3/payment_gateways${woocommerceKey}`,
     {
@@ -55,8 +65,8 @@ export default async function Checkout() {
                       <PaymentOptionsList data={paymentOptions} />
                     )}
                   </div>
-                  <TestComponent />
-                  {/* <PaymentButton userData={userInfo} /> */}
+                  {/* <TestComponent /> */}
+                  <PaymentButton userData={userInfo} />
                   <small className="text-xs opacity-55 leading-5">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for

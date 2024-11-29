@@ -72,10 +72,6 @@ small {
   @apply text-[12px];
 }
 
-.badge {
-  @apply size-6 bg-primary text-white text-xs absolute top-[-5px] right-[-15px] font-normal;
-}
-
 .container {
   @apply mx-auto sm:px-[30px] px-[20px];
 }
@@ -154,6 +150,12 @@ main .container {
 }
 .content tr:nth-child(even) {
   @apply bg-gray-100;
+}
+
+:where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
+  background-color: #137E43 !important;
+  color: #fff;
+  outline: 2px solid #137E43 !important;
 }
 
 button:disabled {
@@ -283,6 +285,10 @@ select {
 }
 .product-card-left-right .count {
   @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] text-[11px] leading-[10px] font-semibold py-[4px] pl-[5px];
+}
+
+.badge {
+  @apply size-6 bg-primary text-white text-xs absolute top-[-5px] right-[-15px] font-normal;
 }
 
 header {
@@ -428,7 +434,7 @@ footer ul li, footer ol li {
   @apply lg:flex items-center justify-between gap-8 border-b border-border sm:pb-3 py-6 first:pt-0;
 }
 .added-cart-list button.option-btn {
-  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[10px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
+  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[20px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
 }
 
 .general-list li {
@@ -456,7 +462,7 @@ footer ul li, footer ol li {
 }
 
 .table-amount-list li {
-  @apply flex items-center justify-between text-sm pb-1 mb-1 last:mb-0 last:pb-0 last:border-0;
+  @apply flex items-center justify-between text-sm pb-3 mb-3 last:mb-0 last:pb-0 last:border-0;
 }
 .table-amount-list li .val {
   @apply text-dark;
@@ -510,10 +516,10 @@ footer ul li, footer ol li {
 }
 
 .list-order-view {
-  @apply lg:flex grid  lg:justify-end lg:items-center lg:gap-4 gap-3 mt-5 lg:mt-0;
+  @apply lg:flex grid lg:justify-end lg:items-center lg:gap-4  mt-5 lg:mt-0 lg:border-none border border-border rounded-lg w-full;
 }
 .list-order-view li {
-  @apply w-full flex justify-between gap-1 lg:font-bold  lg:uppercase  items-center lg:text-xs text-sm whitespace-nowrap border-0 m-0 lg:border-r lg:pr-4 last:pr-0 last:border-r-0;
+  @apply w-full flex justify-between gap-1 lg:font-bold  lg:uppercase  items-center lg:text-xs text-sm whitespace-nowrap lg:border-0 m-0 border-b lg:border-r lg:pr-4 last:pr-0 py-[10px] px-4 last:border-r-0 last:py-[16px] first:pt-[16px];
 }
 .list-order-view li label {
   @apply flex items-center justify-between capitalize lg:text-xs text-sm font-normal lg:hidden;

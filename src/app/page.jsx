@@ -103,7 +103,8 @@ export default async function Home({ params, searchParams }) {
   let categories = await categoriesData.json();
 
   return (
-    <div className="container ">
+    
+    <div className="container">
       <section className="pb-0 sm:pt-8">
         <div className="grid grid-cols-1 sm:grid-cols-[70%_30%]">
           {topBannerLarge && (

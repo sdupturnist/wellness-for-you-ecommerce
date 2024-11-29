@@ -64,30 +64,30 @@ export default function MyOrder({ data, orderView }) {
               </div>
 
               <div className="lg:grid justify-between h-full gap-7">
-                <div className="sm:flex items-center justify-between gap-2 border-t lg:border-none mt-4 lg:mt-0 ">
+                <div className="sm:flex items-center justify-between gap-2 sm:border-t lg:border-none mt-4 lg:mt-0 ">
                   <ul className="list-order-view">
                     <li>
                       <label>Order ID</label>
-                      <span className="font-semibold">
+                      <span>
                       #{data?.order_id}
                       </span>
                     </li>
                     <li>
                       <label>Amount</label>
-                      <span className="font-semibold">
+                      <span >
                       {currency}
                       {data?.order_amount} ({data?.items?.length} items)
                       </span>
                     </li>
                     <li>
                       <label>Order Date</label>
-                      <span className="font-semibold">
+                      <span>
                       {data?.order_date}
                       </span>
                       </li>
                     <li>
                       <label>Status</label>
-                      <span className={`${statusColorClass} font-bold`}>
+                      <span className={`${statusColorClass} font-bold `}>
                         {data?.order_status}
                       </span>
                     </li>
@@ -95,7 +95,7 @@ export default function MyOrder({ data, orderView }) {
                       <li>
                         <Link
                           href={`${pathname}/${data?.order_id}`}
-                          className="btn btn-medium btn-light md:ml-4 md:mt-0 mt-2">
+                          className="btn btn-medium btn-light lg:ml-4 lg:mt-0">
                           View
                         </Link>
                       </li>

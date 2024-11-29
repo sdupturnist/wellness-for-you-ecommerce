@@ -20,9 +20,8 @@ export default function AddToCart({
   slug,
   active,
 }) {
-  const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } = useCartContext();
-
-  
+  const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } =
+    useCartContext();
 
   const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(null);
@@ -109,15 +108,16 @@ export default function AddToCart({
         (cartItem) => cartItem.id !== itemid
       );
 
-    setCouponCode(false);
-    setDiscount(0);
-    
+      setCouponCode(false);
+      setDiscount(0);
+
       setCartItems(updatedCartItems);
       updateCartInLocalStorage(updatedCartItems);
     } else {
       // Add item to cart
       const newObject = {
         id: itemid,
+        product_id: itemid,
         quantity: 1,
         price: price,
         name: name,
@@ -155,6 +155,7 @@ export default function AddToCart({
     if (!updatedCartItems.some((item) => item.id === itemid)) {
       updatedCartItems.push({
         id: itemid,
+        product_id: itemid,
         quantity: 1,
         price: price,
         name: name,
@@ -166,7 +167,7 @@ export default function AddToCart({
 
     setCouponCode(false);
     setDiscount(0);
-    
+
     setCartItems(updatedCartItems);
     updateCartInLocalStorage(updatedCartItems);
 
@@ -197,7 +198,7 @@ export default function AddToCart({
         );
         setCouponCode(false);
         setDiscount(0);
-        
+
         setCartItems(updatedCartItems);
         updateCartInLocalStorage(updatedCartItems);
         setQuantity((prevQuantity) => prevQuantity - 1);
@@ -314,20 +315,13 @@ export default function AddToCart({
             <summary className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
             </summary>
-           {
+            {
               <ul className="menu card-cart-options">
                 {options?.length === 0 ? (
                   <li>
                     <button
                       onClick={() =>
-                        handleCartAction(
-
-                          name,
-                               image,
-                               price,
-                               name
-                       
-                        )
+                        handleCartAction(name, image, price, name)
                       }>
                       Regular
                     </button>
@@ -338,13 +332,10 @@ export default function AddToCart({
                       <button
                         onClick={() =>
                           handleCartAction(
-                           
                             item?.option || name,
                             item?.image || image,
                             item?.price || price,
-                            name + " - " + item?.item || name,
-
-                          
+                            name + " - " + item?.item || name
                           )
                         }>
                         {item?.item}
@@ -356,13 +347,13 @@ export default function AddToCart({
             }
           </details>
         ) : (
-         <>
-          <button
-            className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
-            onClick={(e) => handleCartAction(null)}>
-            {isInCart ? "Remove" : "Add"}
-          </button>
-         </>
+          <>
+            <button
+              className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
+              onClick={(e) => handleCartAction(null)}>
+              {isInCart ? "Remove" : "Add"}
+            </button>
+          </>
         )
       ) : (
         <div className="items-end flex justify-between lg:mt-0 mt-4 gap-3">
@@ -409,55 +400,46 @@ export default function AddToCart({
             </div>
             {!inCartPage &&
               (options && !isInCart ? (
-               <>
-                <details className="dropdown mt-1">
-                  <summary
-                    className="btn !min-h-14 px-8"
-                    onClick={toggleDropdown}>
-                    {isInCart ? "Go to cart" : "Add to cart"}
-                  </summary>
-                  {
-                    <ul className="menu card-cart-options">
-                      {options?.length === 0 ? (
-                        <li>
-                          <button
-                            onClick={() =>
-                              handleCartAction(
-
-                                name,
-                               image,
-                               price,
-                               name
-                              )
-                            }>
-                            Regular
-                          </button>
-                        </li>
-                      ) : (
-                        options.map((item, index) => (
-                          <li key={index} onClick={closeDropdown}>
+                <>
+                  <details className="dropdown mt-1">
+                    <summary
+                      className="btn !min-h-14 px-8"
+                      onClick={toggleDropdown}>
+                      {isInCart ? "Go to cart" : "Add to cart"}
+                    </summary>
+                    {
+                      <ul className="menu card-cart-options">
+                        {options?.length === 0 ? (
+                          <li>
                             <button
                               onClick={() =>
-                                handleCartAction(
-
-                                  item?.option || name,
-                                  item?.image || image,
-                                  item?.price || price,
-                                  name + " - " + item?.item || name,
-
-                              
-                                )
+                                handleCartAction(name, image, price, name)
                               }>
-                              {item?.item}
+                              Regular
                             </button>
                           </li>
-                        ))
-                      )}
-                    </ul>
-                  }
-                </details>
-                <AddToWishList id={itemid} />
-               </>
+                        ) : (
+                          options.map((item, index) => (
+                            <li key={index} onClick={closeDropdown}>
+                              <button
+                                onClick={() =>
+                                  handleCartAction(
+                                    item?.option || name,
+                                    item?.image || image,
+                                    item?.price || price,
+                                    name + " - " + item?.item || name
+                                  )
+                                }>
+                                {item?.item}
+                              </button>
+                            </li>
+                          ))
+                        )}
+                      </ul>
+                    }
+                  </details>
+                  <AddToWishList id={itemid} />
+                </>
               ) : (
                 <>
                   <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8">

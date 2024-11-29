@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <ClientProvider>
           <Header />
-          <main className="overflow-hidden">{children}</main>
+          <div className="overflow-hidden">{children}</div>
           <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t py-4 z-10">
             <BottomNav />
           </div>

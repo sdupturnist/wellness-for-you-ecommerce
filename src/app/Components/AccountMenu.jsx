@@ -1,5 +1,5 @@
 'use client'
-import { PencilIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, ArrowRightIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { homeUrl } from "../Utils/variables";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default function AccountMenu({icon, title, url, desc, minimum, logout}){
         <Link href={`${homeUrl}${url}`}>
         <div className={`${logout ? 'border px-4 py-3 justify-center text-center sm:m-4 mb-0 mx-4 mt-4 rounded-lg' : 'p-5 justify-between lg:hover:opacity-80'}  transition-all border-b border-border flex items-center  gap-4 bg-white `}>
         <div className="flex items-center justify-start gap-4">
-      {!minimum &&  <div className="rounded-full bg-primary-dim size-11 flex  items-center justify-center icon">
+      {!minimum &&  <div className="rounded-full border border-border size-11 flex  items-center justify-center icon">
         {icon}
           </div>
 }
@@ -19,7 +19,7 @@ export default function AccountMenu({icon, title, url, desc, minimum, logout}){
           </span>
         </div>
         {!minimum && 
-          <ArrowRightIcon className="sm:size-4 size-3 sm:mr-3 mr-1"/>
+          <ChevronRightIcon className="sm:size-4 size-4 sm:mr-3 mr-1"/>
         }
       
         </div>

@@ -16,7 +16,7 @@ import AccountMenu from "./AccountMenu";
 
 export default function ProfileMenu({}){
     return(
-       <div className="card-rounded-none-small !p-0 rounded-lg overflow-hidden sm:mt-10 mt-3">
+       <div className="card-rounded-none-small !pt-0 !px-0 sm:pb-0  rounded-lg overflow-hidden sm:mt-10 mt-3">
          <AccountMenu
                 icon={<ArchiveBoxIcon className="size-4 text-primary" />}
                 title="My Orders"

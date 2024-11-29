@@ -86,9 +86,11 @@ export default async function CategoryPage({ params, searchParams }) {
     );
 
   return (
+  <main>
     <div className="bg-bggray">
+        <div className="container">
       <Breadcrumb />
-      <section className="sm:py-6 py-0">
+      <section className="sm:pb-6 py-0">
         <div className="container">
           {allProducts.length > 0 ? (
             <div
@@ -101,7 +103,7 @@ export default async function CategoryPage({ params, searchParams }) {
                 <div className="w-full lg:pr-7 order-last lg:order-1">
                   <div className="section-header-card">
                     <SectionHeader title="Top rated products" />
-                    <div className="products">
+                    <div className="products product-card-left-right-mobile">
                       {filteredProductsTopProducts &&
                         filteredProductsTopProducts.map((item, index) => (
                           <ProductCard key={index} data={item} column />
@@ -151,6 +153,8 @@ export default async function CategoryPage({ params, searchParams }) {
         </div>
       </section>
     </div>
+    </div>
+  </main>
   );
 }
 

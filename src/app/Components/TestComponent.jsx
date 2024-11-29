@@ -9,7 +9,7 @@ export default function TestComponent() {
 
 
   const testOrder = async (e) => {
-    const requestData = {
+    const orderInfo = {
       payment_method: "bacs", // Payment method, such as bacs (direct bank transfer)
       payment_method_title: "Direct Bank Transfer", // Title to display for the payment method
       set_paid: true, // Whether the order is paid (true/false)
@@ -60,7 +60,7 @@ export default function TestComponent() {
             "Content-Type": "application/json",
             // Authorization: jwtTocken, // Replace with JWT or Basic Auth
           },
-          body: JSON.stringify(requestData),
+          body: JSON.stringify(orderInfo),
         }
       );
 

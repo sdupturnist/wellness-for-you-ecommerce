@@ -20,7 +20,7 @@ export default function CartView({ coupon }) {
           !cartItems.length > 0 && "text-center pb-14"
         }`}>
         <CartListItem />
-        <Link href="/" className="btn btn-light">
+        <Link href="/" className="btn btn-light btn-large sm:w-auto w-full">
           Continue shopping
         </Link>
       </div>

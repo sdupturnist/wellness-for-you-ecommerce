@@ -6,8 +6,8 @@ import Login from "../Components/Forms/Login";
 
 export default function Aboutus() {
   return (
-    <div className="bg-bggray">
-      <section className="sm:bg-white bg-bggray pt-0">
+    <div className="bg-white">
+      <section className="pt-0">
         <div className="container !px-0 sm:px-5 w-full min-w-full">
           <Images
             imageurl="/images/banner_6.jpg"

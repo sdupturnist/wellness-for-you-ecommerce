@@ -9,7 +9,7 @@ import { currency } from "../Utils/variables";
 export default function CouponCode({ data, cartTotal }) {
   const userId = 1; // You can change this or retrieve it from context or props
 
-  const { setCouponCode, setDiscount, cartSubTotal } = useCartContext();
+  const { setCouponCode, setDiscount, cartSubTotal, setCouponData } = useCartContext();
 
   const [coupon, setCoupon] = useState("");
   const [isValid, setIsValid] = useState(null);
@@ -19,6 +19,20 @@ export default function CouponCode({ data, cartTotal }) {
 
   const checkCouponCode = (data, couponCode, cartSubTotal) => {
     setIsLoading(true);
+
+ 
+
+
+    // const validCouponData =   [
+    //   {
+    //     "id": data[0]?.id,
+    //     "code": data[0]?.code,
+    //     "discount": data[0]?.amount,
+    //     "amount":  data[0]?.amount
+    //   }
+    // ]
+
+    // console.log(data)
 
     // Find the coupon data that matches the entered coupon code
     const couponData = data.find((item) => item.code === couponCode);
@@ -35,6 +49,9 @@ export default function CouponCode({ data, cartTotal }) {
       const currentDate = new Date();
       const couponExpirationDate = new Date(expirationDate);
 
+
+    
+
       if (couponExpirationDate < currentDate) {
         setMessage("This coupon has expired");
         setCouponCode(false);
@@ -45,6 +62,7 @@ export default function CouponCode({ data, cartTotal }) {
         setMessage("Coupon code applied successfully!");
         setCouponCode(true);
         setDiscount(discountAmount);
+        setCouponData(data)
       } else {
         setMessage(
           `The minimum cart total of ${currency}${minimumAmount} has not been met to apply the coupon.`

@@ -117,7 +117,7 @@ useEffect(() => {
                   <ul className="table-amount-list mb-2" key={index}>
                     <li>
                       <span className="label">Payment Method:</span>
-                      <span className="text-sm font-semibold">
+                      <span className="text-sm">
                         {item.payment_method}
                       </span>
                     </li>
@@ -128,14 +128,14 @@ useEffect(() => {
                           item.payment_status === "Completed"
                             ? "text-green-600"
                             : "text-red-600"
-                        } text-sm font-semibold`}>
+                        } text-sm`}>
                         {item.payment_status}
                       </span>
                     </li>
                     {item.refund_information === 1 && (
                       <li>
                         <span className="label">Refund Status:</span>
-                        <span className="text-sm text-green-600 font-semibold">
+                        <span className="text-sm text-green-600">
                           Refunded
                         </span>
                       </li>
