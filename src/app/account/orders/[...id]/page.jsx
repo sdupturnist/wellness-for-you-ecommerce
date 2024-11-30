@@ -6,12 +6,31 @@ import AmountList from "@/app/Components/AmountList";
 import CancelOrder from "@/app/Components/CancelOrder";
 import Return from "@/app/Components/Return";
 import AddNewReturn from "@/app/Components/AddNewReturn";
-import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
+import { apiUrl, jwtTocken, woocommerceKey } from "@/app/Utils/variables";
+import ProfileMenu from "@/app/Components/ProfileMenu";
 
 export default async function OrderItem({ params }) {
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
+  const { id } = params;
+
+  const splitSlug = id;
+
+  const customerId = splitSlug[0];
+  const orderKey = splitSlug[1];
+
   let orderData = await fetch(
-    `${apiUrl}wp-json/wc/v3/orders/${params?.id}${woocommerceKey}&customer=2`,
+    `${apiUrl}wp-json/custom/v1/orders?order_key=${orderKey}&customer_id=${customerId}`,
     {
+      method: "GET", // Add method if needed
+      headers: {
+        Authorization: `Bearer ${jwtTocken}`, // Ensure token is a string within backticks
+      },
       next: {
         revalidate: 60,
         cache: "no-store",
@@ -19,14 +38,15 @@ export default async function OrderItem({ params }) {
     }
   );
 
-  let order = await orderData.json();
+  let [order] = await orderData.json();
 
-  console.log(order);
+  const trackingMessage =
+    order && order?.meta_data.filter((item) => item.key === "tracking");
 
   return (
     <>
       <div className="bg-bggray">
-        <section className="bg-bggray sm:py-10">
+        <section className="bg-bggray sm:py-10 py-0">
           <div className="container !px-0 sm:px-5">
             <div className="max-w-[999px] mx-auto">
               <AccountHeader back />
@@ -91,7 +111,7 @@ export default async function OrderItem({ params }) {
                       <AmountList data={order} forOrderDetails />
                     </div>
                   </div>
-                  {order?.tracking_message && (
+                  {trackingMessage.length > 0 && (
                     <div className="card-rounded-none-small w-full bg-white py-4 px-3">
                       <SectionHeader
                         title="Track order"
@@ -100,16 +120,24 @@ export default async function OrderItem({ params }) {
                         titleSmall
                       />
                       <div className="grid gap-5 order-tracking">
-                        {order?.tracking_message}
+                        {trackingMessage[0]?.value}
                       </div>
                     </div>
-                  )}{" "}
+                  )}
+
                   <div className="gap-3 sm:px-0 px-3">
-                    {order?.status === "Completed" && <AddNewReturn />}
-                    {order?.status === "Confirmed" && <CancelOrder />}
+                    <AddNewReturn
+                      userInfo={userInfo && userInfo}
+                      data={order && order}
+                      orderedDate={order && order?.date_completed}
+                    />
+                    {order?.status === "confirmed" ||
+                      ((order?.status === "processing" ||
+                        order?.status === "pending") && <CancelOrder />)}
                   </div>
                 </div>
               </div>
+              <ProfileMenu />
             </div>
           </div>
         </section>

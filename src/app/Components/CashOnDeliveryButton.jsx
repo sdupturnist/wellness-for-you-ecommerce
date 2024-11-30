@@ -6,20 +6,20 @@ import {
   apiUrl,
   freeShipping,
   homeUrl,
+  jwtTocken,
   paymentCurrency,
-  publicKey,
   siteEmail,
   siteLogo,
   siteName,
-  woocommerceKey,
 } from "../Utils/variables"; // Ensure you use environment variables here for sensitive info
 import { useCartContext } from "../Context/cartContext";
 import Alerts from "./Alerts";
 import { useCheckoutContext } from "../Context/checkoutContext";
 import { sendMail } from "../Utils/Mail";
 import { OrderPlacedEmailTemplate } from "../Utils/MailTemplates";
+import Swal from "sweetalert2";
 
-export default function RazorPayment({ userData }) {
+export default function CashOnDeliveryPayment({ userData }) {
   const {
     cartItems,
     couponCode,
@@ -32,107 +32,76 @@ export default function RazorPayment({ userData }) {
     setDiscount,
     couponData,
   } = useCartContext();
+
   const {
     billingAddress,
     setValidateAddress,
     setUpdatePaymentStatus,
     paymentTerms,
     setValidateTerms,
-    paymentMethodOption,
     setPaymentId,
-    paymentId,
-    setPaymentTerms
+    setPaymentTerms,
   } = useCheckoutContext();
-
-  const [ip, setIp] = useState(null);
-
-  useEffect(() => {
-    const getIp = async () => {
-      const response = await fetch("https://api.ipify.org?format=json");
-      const data = await response.json();
-      setIp(data.ip);
-    };
-
-    getIp();
-  }, []);
-
-  // Calculate payAmount (considering discount)
-  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
-
-  const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
-
- 
 
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
 
+  // Calculate the amount to pay after applying any discount
+  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
 
+  // Filter out image and id from the cart items before sending to the backend
+  const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
+  // Handle the payment and order creation logic
   const handlePayment = async () => {
-    setLoading(true);
-  
-    // Validation checks
+    
+
+    // Validation checks for billing address and payment terms
     if (!billingAddress) {
       setValidateAddress(true);
       setValidate(true);
       setValidationMessage("Please select a billing address");
       return;
     }
-  
+
     if (!paymentTerms) {
       setValidateTerms(true);
       setValidate(true);
-      setValidationMessage(
-        "You must accept the terms and conditions to proceed."
-      );
+      setValidationMessage("You must accept the terms and conditions to proceed.");
       return;
     }
-  
-    try {
-      // Step 1: Create the order ID from the server
-      const response = await fetch(`${homeUrl}api/checkout/razorpay`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: payAmount }), // Amount in paise (1 INR = 100 paise)
-      });
-  
-      const data = await response.json();
-  
-      if (!data.success) {
-        alert("Error creating order");
-        setLoading(false);
-        return;
-      }
-  
-      // Step 2: Prepare Razorpay payment options
-      const options = {
-        key: publicKey, // Razorpay public key from environment variables
-        amount: payAmount, // Amount in paise (1 INR = 100 paise)
-        currency: paymentCurrency,
-        name: siteName,
-        description: `Payment - ${siteName}`,
-        order_id: data.orderId, // Use the order ID received from the API
-        handler: async function (response) {
-          // Step 3: Handle payment success
-          console.log("Payment Successful: " + response.razorpay_payment_id);
-          setUpdatePaymentStatus("success");
-  
-          setPaymentId(response.razorpay_payment_id || "null");
-          const transationID = response.razorpay_payment_id;
-  
+
+    // SweetAlert2 confirmation dialog
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-light",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: `Do you need to confirm your order with Cash on Delivery?`,
+        icon: false,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
           try {
-            // PUT Order to WooCommerce API
+            // Prepare the order information for WooCommerce API
             const orderInfo = {
-              transaction_id: transationID || "",
+              transaction_id: "", // No transaction ID for COD
               customer_id: userData?.id,
-              customer_ip_address: (ip && ip) || "",
-              payment_method: paymentMethodOption || "", // Payment method, such as bacs (direct bank transfer)
-              payment_method_title: paymentMethodOption || "", // Title to display for the payment method
-              set_paid: true, // Whether the order is paid (true/false)
+              payment_method: "cash_on_delivery", // Payment method for COD
+              payment_method_title: "Cash on Delivery", // Payment method title
+              set_paid: false, // Mark as unpaid for COD
               billing: {
                 first_name: billingAddress?.fullname_and_lastname || "",
                 last_name: billingAddress?.fullname_and_lastname || "",
@@ -159,60 +128,61 @@ export default function RazorPayment({ userData }) {
               coupon_lines: couponData || [],
               shipping_lines: [
                 {
-                  method_id: "free_shipping", // Shipping method ID for free shipping
+                  method_id: "free_shipping", // Shipping method for free shipping
                   method_title: "Free Shipping", // Shipping method title
-                  total: "0", // Shipping cost for free shipping
+                  total: "0", // No shipping charge for free shipping
                 },
               ],
             };
-  
+
+            // Step 2: Send the order information to WooCommerce API
             const response = await fetch(
-              `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}`,
+              `${apiUrl}wp-json/wc/v3/orders`, // WooCommerce orders endpoint
               {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  // Authorization: jwtTocken, // Use appropriate authorization if needed
+                  Authorization: `Bearer ${jwtTocken}`, // Authorization header with JWT token
                 },
                 body: JSON.stringify(orderInfo),
               }
             );
-  
+
             if (response.ok) {
-              // Send mail notification to user (update the sendMail function as needed)
+              // Send email notification to the user
               await sendMail({
                 sendTo: userData?.email,
-                subject: `You Have Successfully Ordered`,
+                subject: "You Have Successfully Ordered",
                 name: userData?.name,
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
                   billingAddress,
                   cartItems,
-                  data.orderId,
-                  paymentMethodOption,
+                  "COD", // No order ID for COD
+                  "Cash on Delivery", // Payment method
                   userData,
-                  paymentId
+                  ""
                 ),
               });
-  
-              // Send mail notification to Admin
+
+              // Send email notification to the admin
               await sendMail({
                 sendTo: siteEmail,
-                subject: `You Have Recieved a new order`,
-                name: `Admin`,
+                subject: "You Have Received a New Order",
+                name: "Admin",
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
                   billingAddress,
                   cartItems,
-                  data.orderId,
-                  paymentMethodOption,
+                  "COD", // No order ID for COD
+                  "Cash on Delivery", // Payment method
                   userData,
-                  paymentId
+                  ""
                 ),
               });
-  
+
               console.log("Order successfully created");
-  
+
               // Reset cart and validation states after successful payment
               setCartItems([]); // Clear cart items
               setCartSubTotal(0); // Reset subtotal
@@ -221,53 +191,26 @@ export default function RazorPayment({ userData }) {
               setDiscount(0); // Reset discount
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
-              setPaymentTerms(false)
-              localStorage.removeItem("cartItems");
-  
-              // Redirect on success
+              setPaymentTerms(false); // Reset payment terms
+              localStorage.removeItem("cartItems"); // Remove items from localStorage
+
+              // Redirect to success page
               router.push(`${homeUrl}checkout/success`);
             } else {
               throw new Error("Failed to create order in WooCommerce");
             }
           } catch (error) {
             console.error("Error during order processing: ", error);
+            setLoading(false);
             setUpdatePaymentStatus("failed");
+            setValidateTerms(false);
+            setValidateAddress(false);
+            setPaymentTerms(false);
             router.push(`${homeUrl}checkout/failed`); // Redirect to failed checkout page
           }
-        },
-        prefill: {
-          name: userData?.name,
-          email: userData?.email,
-          contact: userData?.phone,
-        },
-        notes: {
-          company: billingAddress?.company,
-          country: billingAddress?.country,
-          address_1: billingAddress?.address_1,
-          address_2: billingAddress?.address_2,
-          state: billingAddress?.state,
-          city: billingAddress?.city,
-          postcode: billingAddress?.postcode,
-        },
-        theme: {
-          color: "#137E43", // Custom theme color
-        },
-      };
-  
-      // Open the Razorpay payment gateway
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error("Error during payment process: ", error);
-      setLoading(false);
-      setUpdatePaymentStatus("failed");
-      setValidateTerms(false); 
-      setValidateAddress(false); 
-      setPaymentTerms(false)
-      router.push(`${homeUrl}checkout/failed`); // Redirect on failure
-    }
+        }
+      });
   };
-  
 
   return (
     <>
@@ -275,10 +218,9 @@ export default function RazorPayment({ userData }) {
       <button
         onClick={handlePayment}
         className="btn-large"
-        //disabled={loading} // Disable button during loading
+       
       >
-        {/* {loading ? "Processing..." : "Proceed to checkout"} */}
-        Proceed to checkout
+       Proceed to checkout
       </button>
     </>
   );

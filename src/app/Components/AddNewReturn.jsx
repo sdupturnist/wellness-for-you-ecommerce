@@ -1,30 +1,38 @@
 "use client";
-import { useState } from "react";
-import SectionHeader from "./SectionHeader";
-import ListOptions from "./ListOptions";
-import AddNewAddressForm from "./Forms/AddNewAddress";
+import { returnDays } from "../Utils/variables";
+import ModalPopup from "./ModalPopup";
+import ReturnOrderForm from "./Forms/ReturnOrderForm";
 
-export default function AddNewReturn() {
-  const [showNewAddress, setShowNewAddress] = useState(false); // Correct useState initialization
+export default function AddNewReturn({ orderedDate, userInfo, data }) {
+
+
+
+
+
+  const orderDate = new Date(orderedDate);
+
+  const currentDate = new Date();
+
+  const returnableDate = new Date(orderDate);
+  returnableDate.setDate(orderDate.getDate() + returnDays);
+
+  const isReturnable = currentDate <= returnableDate;
+
+  const returnedItems = data?.meta_data.filter(item => item.key === "returned" && item.value === "yes");
+
+
+  console.log(returnedItems[0]?.value)
 
   return (
-    <>
-     <div className="sm:px-0 px-5">
-         <button
-        className="btn btn-medium btn-light"
-        onClick={() => setShowNewAddress(!showNewAddress)} // Toggle logic corrected
-      >
-        Add a new return
-      </button>
+    isReturnable && !returnedItems[0]?.value && (
+      <div className="sm:px-0 px-5">
+        <button
+          className="btn btn-medium btn-light"
+          onClick={() => document.getElementById("modal_all").showModal()}>
+          Return
+        </button>
+        <ModalPopup title="Return order?" item={<ReturnOrderForm data={data} userInfo={userInfo}/>} />
       </div>
-     {showNewAddress && <div className="grid mt-5 b">
-        <div className="sm:px-0 px-5">
-       <SectionHeader title="Add new address" card  />
-       </div>
-       <div className="card-rounded-none-small bg-white">
-       <AddNewAddressForm />
-       </div>
-      </div> }
-    </>
+    )
   );
 }

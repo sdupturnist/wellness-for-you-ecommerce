@@ -86,6 +86,8 @@ export default async function CategoryPage({ params, searchParams }) {
       reviews.some((review) => review.product_id === product.id)
     );
 
+   
+
   return (
   <main>
     <div className="bg-bggray">

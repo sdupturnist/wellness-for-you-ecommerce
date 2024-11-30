@@ -107,3 +107,42 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     
   return item;
 }
+
+
+
+//RETURN
+export let ReturnEmailTemplate = (title, content, order_id, amount, transition_id) => {
+
+
+  const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+  <tr>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Details</th>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Title</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${title}</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Content</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${content}</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Order ID</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${order_id}</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Amount</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${amount}</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Transaction ID</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${transition_id}</td>
+  </tr>
+</table>`
+
+  return item
+
+}
+
+

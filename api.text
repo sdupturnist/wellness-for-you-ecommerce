@@ -77,6 +77,10 @@ function register_custom_fields_for_multiple_post_types() {
 }
 add_action( 'rest_api_init', 'register_custom_fields_for_multiple_post_types' );
 
+
+
+
+
 // Callback function to get featured image URL and alt text
 function get_featured_image_info_for_slider_banner( $object ) {
     $post_id = $object['id'];
@@ -551,3 +555,227 @@ function delete_customer_address( $data ) {
 //POST /customers/{id}/addresses
 //PUT /customers/{id}/addresses/{address_id}
 //DELETE /customers/{id}/addresses/{address_id}
+
+
+
+// GET ORDER DETAILS BY CUSTOMER ID AND ORDER KEY
+add_action('rest_api_init', 'custom_woocommerce_orders_api');
+
+function custom_woocommerce_orders_api() {
+    // Register the custom endpoint with the 'custom' namespace
+    register_rest_route('custom/v1', '/orders', array(
+        'methods' => 'GET', // Define the request method
+        'callback' => 'get_woocommerce_orders', // Define the callback function
+        'permission_callback' => 'custom_orders_api_permission_check', // Define permission check function
+        'args' => array(
+            'customer_id' => array(
+                'required' => false, // Not required, can be left blank
+                'validate_callback' => function($param, $request, $key) {
+                    return is_numeric($param); // Ensure it's a valid number
+                }
+            ),
+            'order_key' => array(
+                'required' => false, // Not required, can be left blank
+                'validate_callback' => function($param, $request, $key) {
+                    return is_string($param); // Ensure it's a valid string
+                }
+            ),
+        ),
+    ));
+}
+
+// Function to check permissions for the API request
+function custom_orders_api_permission_check() {
+    return current_user_can('manage_woocommerce'); // Only allow WooCommerce admin access
+}
+
+// Function to retrieve WooCommerce orders, with optional customer_id and order_key filters
+function get_woocommerce_orders(WP_REST_Request $request) {
+    // Get the customer_id and order_key from the request (if provided)
+    $customer_id = $request->get_param('customer_id');
+    $order_key = $request->get_param('order_key');
+
+    // Set up the query parameters for WooCommerce orders
+    $args = array(
+        //'status' => 'completed', // You can change this to any status you need
+        'limit' => 1000, // Number of orders to fetch
+    );
+
+    // If customer_id is provided, filter the orders by customer
+    if ($customer_id) {
+        $args['customer'] = $customer_id; // Filter orders by customer ID
+    }
+
+    // If order_key is provided, filter the orders by order key
+    if ($order_key) {
+        $args['order_key'] = $order_key; // Filter orders by order key
+    }
+
+    // Fetch orders
+    $orders = wc_get_orders($args);
+
+    // Prepare the data to return
+    $order_data = array();
+
+    foreach ($orders as $order) {
+        // Ensure we are working with a WC_Order object
+        if (!$order instanceof WC_Order) {
+            continue; // Skip if not an instance of WC_Order
+        }
+
+        $order_data[] = array(
+            'id' => $order->get_id(),
+            'parent_id' => $order->get_parent_id(),
+            'status' => $order->get_status(),
+            'currency' => $order->get_currency(),
+            'version' => get_bloginfo('version'),
+            'prices_include_tax' => get_option('woocommerce_prices_include_tax'),
+            'date_created' => $order->get_date_created()->date('Y-m-d\TH:i:s'),
+            'date_modified' => $order->get_date_modified()->date('Y-m-d\TH:i:s'),
+            'discount_total' => $order->get_discount_total(),
+            'discount_tax' => $order->get_discount_tax(),
+            'shipping_total' => $order->get_shipping_total(),
+            'shipping_tax' => $order->get_shipping_tax(),
+            'cart_tax' => $order->get_cart_tax(),
+            'total' => $order->get_total(),
+            'total_tax' => $order->get_total_tax(),
+            'customer_id' => $order->get_customer_id(),
+            'order_key' => $order->get_order_key(),
+            'billing' => array(
+                'first_name' => $order->get_billing_first_name(),
+                'last_name' => $order->get_billing_last_name(),
+                'company' => $order->get_billing_company(),
+                'address_1' => $order->get_billing_address_1(),
+                'address_2' => $order->get_billing_address_2(),
+                'city' => $order->get_billing_city(),
+                'state' => $order->get_billing_state(),
+                'postcode' => $order->get_billing_postcode(),
+                'country' => $order->get_billing_country(),
+                'email' => $order->get_billing_email(),
+                'phone' => $order->get_billing_phone(),
+            ),
+            'shipping' => array(
+                'first_name' => $order->get_shipping_first_name(),
+                'last_name' => $order->get_shipping_last_name(),
+                'company' => $order->get_shipping_company(),
+                'address_1' => $order->get_shipping_address_1(),
+                'address_2' => $order->get_shipping_address_2(),
+                'city' => $order->get_shipping_city(),
+                'state' => $order->get_shipping_state(),
+                'postcode' => $order->get_shipping_postcode(),
+                'country' => $order->get_shipping_country(),
+                'phone' => $order->get_shipping_phone(),
+            ),
+            'payment_method' => $order->get_payment_method(),
+            'payment_method_title' => $order->get_payment_method_title(),
+            'transaction_id' => $order->get_transaction_id(),
+            'created_via' => $order->get_created_via(),
+            'customer_note' => $order->get_customer_note(),
+            'date_completed' => $order->get_date_completed() ? $order->get_date_completed()->date('Y-m-d\TH:i:s') : null,
+            'date_paid' => $order->get_date_paid() ? $order->get_date_paid()->date('Y-m-d\TH:i:s') : null,
+            'number' => $order->get_order_number(),
+            'meta_data' => $order->get_meta_data(),
+            'line_items' => get_order_items($order), // Get items in the order
+            'shipping_lines' => get_shipping_lines($order), // Corrected function name
+            'payment_url' => $order->get_checkout_payment_url(),
+          
+        );
+    }
+
+    return rest_ensure_response($order_data);
+}
+
+
+function get_order_items($order) {
+    $items = array();
+
+    foreach ($order->get_items() as $item_id => $item) {
+        $items[] = array(
+            'product_id' => $item->get_product_id(),
+            'product_name' => $item->get_name(),
+            'quantity' => $item->get_quantity(),
+            'total' => $item->get_total(),
+            'price' => $item->get_total() / $item->get_quantity(), // Calculate price per item
+            'sku' => $item->get_product()->get_sku(),
+            'image' => wp_get_attachment_url($item->get_product()->get_image_id()), // Get product image
+        );
+    }
+
+    return $items;
+}
+
+// Function to get shipping lines (Updated method to match WooCommerce's actual method)
+function get_shipping_lines($order) {
+    $shipping_lines = array();
+
+    foreach ($order->get_shipping_methods() as $shipping_item) {
+        $shipping_lines[] = array(
+            'id' => $shipping_item->get_id(),
+            'method_title' => $shipping_item->get_method_title(),
+            'method_id' => $shipping_item->get_method_id(),
+            'total' => $shipping_item->get_total(),
+            'total_tax' => $shipping_item->get_total_tax(),
+        );
+    }
+
+    return $shipping_lines;
+}
+
+
+//https://admin.wellness4u.in/wp-json/custom/v1/orders?consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03&consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&order_key=wc_order_xWGJvBgNPo4Dk&customer_id=3
+
+
+
+// Hook to initialize the custom REST API endpoint
+add_action('rest_api_init', function() {
+    register_rest_route('custom/v1', '/returns/', [
+        'methods' => 'POST',
+        'callback' => 'create_return_post',
+        'permission_callback' => '__return_true', // Change this to proper capability check if needed
+    ]);
+});
+
+// Callback function to create a new "returns" post
+function create_return_post(WP_REST_Request $request) {
+    // Get the post data from the request
+    $title = $request->get_param('title');
+    $content = $request->get_param('content');
+    $status = $request->get_param('status') ? $request->get_param('status') : 'publish'; // Default status to 'publish'
+    $order_id = $request->get_param('order_id'); // ACF field: order_id
+    $amount = $request->get_param('amount'); // ACF field: amount
+    $transition_id = $request->get_param('transition_id'); // ACF field: transition_id
+
+    // Validate required parameters
+    if (empty($title) || empty($content) || empty($order_id) || empty($amount) || empty($transition_id)) {
+        return new WP_REST_Response('Missing required parameters.', 400);
+    }
+
+    // Create the post array
+    $post_data = array(
+        'post_title'   => sanitize_text_field($title),
+        'post_content' => sanitize_textarea_field($content),
+        'post_status'  => sanitize_text_field($status),
+        'post_type'    => 'returns', // Custom post type "returns"
+    );
+
+    // Insert the post into the database
+    $post_id = wp_insert_post($post_data);
+
+    // Check if the post was created successfully
+    if (is_wp_error($post_id)) {
+        return new WP_REST_Response($post_id->get_error_message(), 500);
+    }
+
+    // Save ACF fields
+    update_field('order_id', sanitize_text_field($order_id), $post_id);  // Save 'order_id' ACF field
+    update_field('amount', sanitize_text_field($amount), $post_id);      // Save 'amount' ACF field
+    update_field('transition_id', sanitize_text_field($transition_id), $post_id); // Save 'transition_id' ACF field
+
+    // Return a response with the post ID and success message
+    return new WP_REST_Response(array(
+        'message' => 'Post created successfully!',
+        'post_id' => $post_id
+    ), 201);
+}
+
+//https://admin.wellness4u.in/wp-json/custom/v1/returns/

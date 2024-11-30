@@ -178,7 +178,7 @@ button:disabled {
   @apply whitespace-nowrap  bg-white rounded-md border border-border hover:bg-white hover:border-primary  text-dark font-semibold transition-all;
 }
 
-input[type=email], input[type=text], input[type=number], input[type=password], .stdropdown-input, select {
+input[type=email], input[type=text], input[type=number], input[type=password], .stdropdown-input, select, textarea {
   @apply input-md rounded-md text-dark border;
 }
 
@@ -449,13 +449,13 @@ footer ul li, footer ol li {
 }
 
 .amount-list {
-  @apply grid gap-3;
+  @apply grid;
 }
 .amount-list li {
-  @apply flex items-center justify-between text-sm;
+  @apply flex items-center justify-between text-sm py-3  border-b border-border  last:border-none;
 }
 .amount-list li .val {
-  @apply text-dark block p-0 m-0 font-semibold;
+  @apply text-dark block p-0 m-0;
 }
 .amount-list li .label {
   @apply block p-0 m-0;

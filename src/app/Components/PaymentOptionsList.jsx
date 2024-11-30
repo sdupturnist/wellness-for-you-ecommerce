@@ -60,6 +60,7 @@ export default function PaymentOptionsList({ data }) {
               I have read and agree to the website <Link className="underline" href={`${homeUrl}terms-conditions`}>terms and conditions</Link>.
             </label>
           </div>
+       
         </div>
       </div>
     </>

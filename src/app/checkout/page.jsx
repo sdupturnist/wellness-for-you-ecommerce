@@ -11,6 +11,13 @@ import TestComponent from "../Components/TestComponent";
 export default async function Checkout() {
 
 
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
  
   
   let paymentOptionsData = await fetch(

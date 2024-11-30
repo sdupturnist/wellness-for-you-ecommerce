@@ -6,8 +6,11 @@ import Images from "./Images";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { currency, formatDate } from "../Utils/variables";
+import Skelton from "./Skelton";
 
-export default function MyOrder({ data, orderView }) {
+export default function MyOrder({ data, orderView, userInfo }) {
+
+  
   const pathname = usePathname();
 
   // Define the status to color mapping
@@ -32,39 +35,39 @@ export default function MyOrder({ data, orderView }) {
 
   const statusColorClass = statusColorMap[data?.status] || "text-dark"; // Fallback to default primary color if not matched
 
-  console.log(data);
-
+ // console.log(data?.order_key);
+ 
   return (
     <>
       {loading ? (
         // Skeleton Loader
-        <div className="skeleton h-32 w-full mb-5"></div>
+        <Skelton productleftRightCard/>
       ) : (
         <li className="card-rounded-none-small bg-white" data-id={data?.id}>
-          <Link className="w-full" href={`${pathname}/${data?.id}`}>
+          <Link className="w-full" href={`${pathname}/${userInfo?.id}/${data?.order_key}`}>
             <div className="lg:flex items-start justify-between w-full  gap-3">
               <div className="grid gap-[10px]">
                 {data &&
                   data?.line_items?.map((item, index) => (
                     <div key={index} className="flex gap-4 items-center">
                       <div className="border rounded-md flex items-center sm:h-[60px] sm:w-[60px] h-[50px] w-[50px] p-3">
-                        <Images
-                          imageurl={item?.image?.src}
+                       <Images
+                          imageurl={item?.image?.src || item?.image}
                           quality="100"
                           width="100"
                           height="100"
-                          title={item?.name}
-                          alt={item?.name}
+                          title={item?.name || item?.product_name}
+                          alt={item?.name || item?.product_name}
                           classes="size-[30px] block mx-auto"
                           placeholder={true}
                         />
                       </div>
-                      <div>
+                      <div className="grid gap-[3px]">
                         <small className="text-[12px] font-normal opacity-60 ">
-                          Order ID #{data?.id}
+                          Order ID #{data?.id} <span className="text-[9px] px-1 font-extralight"> | </span>{formatDate(data?.date_created)}
                         </small>
                         <h3 className="sm:text-[14px] text-xs text-body leading-relaxed">
-                          {item?.name} x {item?.quantity}
+                          {item?.name || item?.product_name} x {item?.quantity}
                         </h3>
                         <div className="flex justify-between"></div>
                       </div>
@@ -136,6 +139,7 @@ export default function MyOrder({ data, orderView }) {
                   {/* </li> */}
                   {/*  */}
                   {/* </ul> */}
+                  
                 </div>
               </div>
             </div>

@@ -1,13 +1,21 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import Loading from "./Loading";
 import Alerts from "./Alerts";
 import { useCartContext } from "../Context/cartContext";
 import { currency } from "../Utils/variables";
 
 export default function CouponCode({ data, cartTotal }) {
-  const userId = 1; // You can change this or retrieve it from context or props
+ 
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
+ 
 
   const { setCouponCode, setDiscount, cartSubTotal, setCouponData } = useCartContext();
 
@@ -20,40 +28,48 @@ export default function CouponCode({ data, cartTotal }) {
   const checkCouponCode = (data, couponCode, cartSubTotal) => {
     setIsLoading(true);
 
- 
+    let couponDataToPaymentInfo = data.map(item => {
+      const { id, ...rest } = item; // Remove 'id' and keep the rest
+      return rest;
+    });
 
 
-    // const validCouponData =   [
-    //   {
-    //     "id": data[0]?.id,
-    //     "code": data[0]?.code,
-    //     "discount": data[0]?.amount,
-    //     "amount":  data[0]?.amount
-    //   }
-    // ]
-
-    // console.log(data)
-
+  
     // Find the coupon data that matches the entered coupon code
     const couponData = data.find((item) => item.code === couponCode);
     const hasValidCoupon = couponData && couponData.code === couponCode;
     setIsValid(hasValidCoupon);
     setIsLoading(false);
 
+
     if (hasValidCoupon) {
-      const discountAmount = couponData?.amount || 0;
+      const discountAmount = parseFloat(couponData?.amount || 0);
       const minimumAmount = parseFloat(couponData?.minimum_amount || 0);
       const expirationDate = couponData?.date_expires;
+      const usageLimit = couponData?.usage_limit_per_user || 0;
+      const usedCount = couponData?.usage_count || 0; // assuming `usage_count` tracks how many times this coupon has been used
+      const usedBy = couponData?.used_by || [];
 
       // Check if the coupon has expired
       const currentDate = new Date();
       const couponExpirationDate = new Date(expirationDate);
 
 
-    
+   
 
       if (couponExpirationDate < currentDate) {
         setMessage("This coupon has expired");
+        setCouponCode(false);
+        setDiscount(0);
+        setIsValid(false);
+      } else if (usedBy.includes(userInfo?.id) || usedBy.includes(userInfo?.id)) {
+        // Assuming userInfo?.id is the current user's ID or email
+        setMessage("You have already used this coupon.");
+        setCouponCode(false);
+        setDiscount(0);
+        setIsValid(false);
+      } else if (usedCount >= usageLimit && couponData?.usage_limit_per_user !== null) {
+        setMessage("This coupon has reached its usage limit for your account.");
         setCouponCode(false);
         setDiscount(0);
         setIsValid(false);
@@ -62,7 +78,7 @@ export default function CouponCode({ data, cartTotal }) {
         setMessage("Coupon code applied successfully!");
         setCouponCode(true);
         setDiscount(discountAmount);
-        setCouponData(data)
+        setCouponData(couponDataToPaymentInfo);
       } else {
         setMessage(
           `The minimum cart total of ${currency}${minimumAmount} has not been met to apply the coupon.`
@@ -90,17 +106,11 @@ export default function CouponCode({ data, cartTotal }) {
     }
   }, [showAlert]);
 
-  // useLayoutEffect(() => {
-  //   setCouponCode(false);
-  //   setDiscount(0);
-  //   setIsValid(false);
-  // }, []);
-
   return (
     <div className="coupon-code">
       <div className="join input-section w-full">
         <input
-        required
+          required
           type="text"
           placeholder="Have coupon code?"
           className="input join-item"
@@ -129,3 +139,4 @@ export default function CouponCode({ data, cartTotal }) {
     </div>
   );
 }
+

@@ -7,10 +7,13 @@ const date = new Date();
 //WOOCOMMERECE 
 export let woocommerceKey = '?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03'
 export let freeShipping = true
+export let returnDays = 7
 
 
 //JWT AUTH TOCKEN
-export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzI1MDQ3ODIsIm5iZiI6MTczMjUwNDc4MiwiZXhwIjoxNzMzMTA5NTgyLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.MQsEgPtgiaphgFnntRwCj_cbfpLPBZomEdhkrjMT-gE`
+export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzI5NjgxNjUsIm5iZiI6MTczMjk2ODE2NSwiZXhwIjoxNzMzNTcyOTY1LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.bWJoTwTwXd5bLDWKAEIL7mRk95knBzZfipgSCHbt4z0`
+
+
 
 
 //.ENV 
