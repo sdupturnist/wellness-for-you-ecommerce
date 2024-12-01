@@ -211,7 +211,7 @@ export default function RazorPayment({ userData }) {
                 ),
               });
   
-              console.log("Order successfully created");
+        
   
               // Reset cart and validation states after successful payment
               setCartItems([]); // Clear cart items
