@@ -18,7 +18,7 @@ export default async function CategoryPage({ params, searchParams }) {
     `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
     {
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }
@@ -28,7 +28,7 @@ export default async function CategoryPage({ params, searchParams }) {
     `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=0&per_page=100&reviews_count=0`,
     {
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }
@@ -39,7 +39,7 @@ export default async function CategoryPage({ params, searchParams }) {
     `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc&featured=true`,
     {
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }
@@ -49,7 +49,7 @@ export default async function CategoryPage({ params, searchParams }) {
     `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}`,
     {
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params, searchParams }) {
     `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}&orderby=name&order=desc`,
     {
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }

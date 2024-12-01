@@ -21,7 +21,7 @@ export default function AddNewReturn({ orderedDate, userInfo, data }) {
   const returnedItems = data?.meta_data.filter(item => item.key === "returned" && item.value === "yes");
 
 
-  console.log(returnedItems[0]?.value)
+
 
   return (
     isReturnable && !returnedItems[0]?.value && (

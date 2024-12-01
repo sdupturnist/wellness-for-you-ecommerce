@@ -8,7 +8,7 @@ export default function PaymentButton({ message, type, onClose, userData }) {
   
   const { paymentMethodOption } = useCheckoutContext();
 
-  console.log(paymentMethodOption)
+
 
   return paymentMethodOption === "cod" ? (
     <CashOnDeliveryPayment userData={userData} />

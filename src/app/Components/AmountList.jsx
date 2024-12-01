@@ -17,6 +17,8 @@ export default function AmountList({
 
   useEffect(() => {}, [cartItems, couponCode, discount, cartSubTotal]);
 
+  
+
   const renderAmountList = () => {
     switch (true) {
       case !forOrderDetails && !tableView:
@@ -58,6 +60,7 @@ export default function AmountList({
       case forOrderDetails:
         return (
           <ul className="amount-list capitalize">
+     
             <li>
               <span className="label">
                 Products x {data?.line_items?.length}
@@ -81,7 +84,7 @@ export default function AmountList({
               <span className="label">Payment Method</span>
               <span className="val">{data?.payment_method_title}</span>
             </li>
-            {console.log(data?.discount_total)}
+         
             {data?.discount_total > 0 && (
               <li>
                 <span className="label !text-green-600">Coupon discount</span>

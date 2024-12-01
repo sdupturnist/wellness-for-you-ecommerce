@@ -51,18 +51,24 @@ export let  siteFromEmail = "jaseerali2012@gmail.com"
 
 
 
-
-//OFFER PERCENTAGE
+// OFFER PERCENTAGE
 export let OfferPercentage = ({ normalprice, saleprice }) => {
   let normalPrice = normalprice;
   let salePrice = saleprice;
 
+  // Check if the prices are the same
+  if (normalPrice === salePrice) {
+    return null;  // Return null to hide when there's no discount
+  }
+
+  // Calculate the discount percentage
   let discountPercentage = Math.round(
     ((normalPrice - salePrice) / normalPrice) * 100
   );
 
-  return discountPercentage; // Or any message you want to return
+  return <span className="product-offer font-semibold ml-2">{discountPercentage} % OFF</span>;  // Return the discount percentage
 };
+
 
 
 //CURRENCY

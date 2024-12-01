@@ -14,14 +14,14 @@ export default async function Orders({ params }) {
   };
 
   let ordersData = await fetch(
-    `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userInfo?.id}`,
+    `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userInfo?.id}&per_page=100`,
     {
       method: "GET", // Add method if needed
       headers: {
         Authorization: `Bearer ${jwtTocken}`, // Ensure token is a string within backticks
       },
       next: {
-        revalidate: 60,
+        revalidate: 1,
         cache: "no-store",
       },
     }

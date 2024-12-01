@@ -17,8 +17,10 @@ export function CartProvider({ children }) {
     setCartItems(storedCartItems);
 
     const subTotal = storedCartItems.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
+
+
 
     setCartSubTotal(subTotal);
   }, []); // Only run once on initial mount
@@ -43,7 +45,7 @@ export function CartProvider({ children }) {
   // Update subtotal when cartItems change
   useEffect(() => {
     const subTotal = cartItems.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + (item.price) * item.quantity;
     }, 0);
     setCartSubTotal(subTotal);
   }, [cartItems]); // Recalculate subtotal every time cartItems changes

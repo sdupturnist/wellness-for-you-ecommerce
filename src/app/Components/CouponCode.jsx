@@ -43,8 +43,8 @@ export default function CouponCode({ data, cartTotal }) {
 
 
     if (hasValidCoupon) {
-      const discountAmount = parseFloat(couponData?.amount || 0);
-      const minimumAmount = parseFloat(couponData?.minimum_amount || 0);
+      const discountAmount = couponData?.amount || 0;
+      const minimumAmount = couponData?.minimum_amount || 0;
       const expirationDate = couponData?.date_expires;
       const usageLimit = couponData?.usage_limit_per_user || 0;
       const usedCount = couponData?.usage_count || 0; // assuming `usage_count` tracks how many times this coupon has been used
@@ -55,7 +55,7 @@ export default function CouponCode({ data, cartTotal }) {
       const couponExpirationDate = new Date(expirationDate);
 
 
-   
+  //    console.log(parseInt(discountAmount))
 
       if (couponExpirationDate < currentDate) {
         setMessage("This coupon has expired");
@@ -77,7 +77,8 @@ export default function CouponCode({ data, cartTotal }) {
         // Apply the discount
         setMessage("Coupon code applied successfully!");
         setCouponCode(true);
-        setDiscount(discountAmount);
+        setDiscount(parseInt(discountAmount));
+    
         setCouponData(couponDataToPaymentInfo);
       } else {
         setMessage(

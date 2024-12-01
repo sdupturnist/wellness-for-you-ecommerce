@@ -9,7 +9,7 @@ export default function ReadyToGoCart({ data }) {
   const totalAmount =
     data &&
     data.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + (item.price) * item.quantity;
     }, 0);
 
   return (

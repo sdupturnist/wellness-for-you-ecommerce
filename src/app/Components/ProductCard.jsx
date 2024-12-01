@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Skelton from "./Skelton";
+import Price from "./Price";
 
 export default function ProductCard({
   data,
@@ -72,24 +73,12 @@ export default function ProductCard({
               ratingCount={data?.rating_count}
             />
           )}
-          {data?.price && (
-            <div>
-              <span className="product-price">
-                {currency}
-                {data?.price}
-              </span>
-              <span className="product-price-regular ml-2">
-                {currency}
-                {data?.regular_price}
-              </span>
-              <span className="product-offer font-semibold ml-2">
-                <OfferPercentage
-                  normalprice={data?.regular_price}
-                  saleprice={data?.price}
-                />
-                % OFF
-              </span>
-            </div>
+            {data?.price && (
+            <Price
+            regular={data?.regular_price}
+            sale= {data?.price}
+            />
+           
           )}
 
           <div>
@@ -156,23 +145,11 @@ export default function ProductCard({
             />
           )}
           {data?.price && (
-            <div>
-              <span className="product-price">
-                {currency}
-                {data?.price}
-              </span>
-              <span className="product-price-regular ml-2">
-                {currency}
-                {data?.regular_price}
-              </span>
-              <span className="product-offer font-semibold ml-2">
-                <OfferPercentage
-                  normalprice={data?.regular_price}
-                  saleprice={data?.price}
-                />
-                % OFF
-              </span>
-            </div>
+            <Price
+            regular={data?.regular_price}
+            sale= {data?.price}
+            />
+           
           )}
 
           <div>
@@ -247,25 +224,13 @@ export default function ProductCard({
                   ratingCount={data?.rating_count}
                 />
               )}
-              {data?.price && (
-                <div>
-                  <span className="product-price">
-                    {currency}
-                    {data?.price}
-                  </span>
-                  <span className="product-price-regular ml-2">
-                    {currency}
-                    {data?.regular_price}
-                  </span>
-                  <span className="product-offer font-semibold ml-2">
-                    <OfferPercentage
-                      normalprice={data?.regular_price}
-                      saleprice={data?.price}
-                    />
-                    % OFF
-                  </span>
-                </div>
-              )}
+               {data?.price && (
+            <Price
+            regular={data?.regular_price}
+            sale= {data?.price}
+            />
+           
+          )}
               {!inCartPage && data?.price && (
                 <AddToCart
                   card
