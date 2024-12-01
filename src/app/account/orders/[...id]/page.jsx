@@ -1,3 +1,7 @@
+'use client'
+
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation"; // Import useRouter for dynamic routes
 import Breadcrumb from "@/app/Components/Breadcrumb";
 import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
@@ -8,8 +12,13 @@ import Return from "@/app/Components/Return";
 import AddNewReturn from "@/app/Components/AddNewReturn";
 import { apiUrl, jwtTocken, woocommerceKey } from "@/app/Utils/variables";
 import ProfileMenu from "@/app/Components/ProfileMenu";
+import Loading from "@/app/Components/Loading";
 
-export default async function OrderItem({ params }) {
+export default function OrderItem() {
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
   const userInfo = {
     id: 2,
     name: `Anjali`,
@@ -17,34 +26,63 @@ export default async function OrderItem({ params }) {
     phone: `911234567890`,
   };
 
-  const { id } = params;
+
+  const { id } = useParams(); // Accessing dynamic route parameter 'id'
+
+  // Ensure id is available before proceeding
+  if (!id) {
+    return <div>Loading...</div>;
+  }
 
   const splitSlug = id;
 
   const customerId = splitSlug[0];
   const orderKey = splitSlug[1];
 
-  let orderData = await fetch(
-    `${apiUrl}wp-json/custom/v1/orders?order_key=${orderKey}&customer_id=${customerId}`,
-    {
-      method: "GET", // Add method if needed
-      headers: {
-        Authorization: `Bearer ${jwtTocken}`, // Ensure token is a string within backticks
-      },
-      next: {
-        revalidate: 60,
-        cache: "no-store",
-      },
-    }
-  );
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}wp-json/custom/v1/orders?order_key=${orderKey}&customer_id=${customerId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwtTocken}`,
+            },
+          }
+        );
 
-  let [order] = await orderData.json();
+        if (!response.ok) {
+          throw new Error("Failed to fetch order data");
+        }
+
+        const data = await response.json();
+        setOrder(data[0]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrderData();
+  }, [customerId, orderKey]);
+
 
   const trackingMessage =
     order && order?.meta_data.filter((item) => item.key === "tracking");
 
+
   return (
-    <>
+
+
+    <div>
+    {loading ? (
+      <div className="text-center min-h-[70vh] flex items-center justify-center">
+        <Loading spinner/>
+      </div>
+    ) : (
+      <>
       <div className="bg-bggray">
         <section className="bg-bggray sm:py-10 py-0">
           <div className="container !px-0 sm:px-5">
@@ -143,5 +181,10 @@ export default async function OrderItem({ params }) {
         </section>
       </div>
     </>
+    )}
+  </div>
+
+  
+   
   );
 }

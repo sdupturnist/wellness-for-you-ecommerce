@@ -10,7 +10,7 @@ export default function MyAccount() {
           <div className="sm:bg-transparent bg-white max-w-[999px] mx-auto">
           <AccountHeader/>
             <div>
-            <ProfileMenu/>
+          
             </div>
           </div>
         </div>
