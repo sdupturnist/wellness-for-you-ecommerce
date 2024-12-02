@@ -7,7 +7,7 @@ import CouponCode from "./CouponCode";
 import { useCartContext } from "../Context/cartContext";
 import { homeUrl } from "../Utils/variables";
 
-export default function CartView({ coupon }) {
+export default function CartView() {
   const { cartItems } = useCartContext();
 
   return (
@@ -29,7 +29,7 @@ export default function CartView({ coupon }) {
           <div className="card-rounded-none-small w-full bg-white py-5 px-4">
             <SectionHeader title="Cart totals" card />
             <div className="grid gap-5">
-              <CouponCode data={coupon} />
+              <CouponCode />
               <AmountList />
               <Link href={`${homeUrl}checkout`} className="btn btn-large">
                 Proceed to checkout

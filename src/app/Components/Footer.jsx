@@ -89,8 +89,8 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      {cartItems && cartItems.length > 0 && pathname !== '/cart' &&  
-  <ReadyToGoCart data={cartItems} />}
+      {/* {cartItems && cartItems.length > 0 && pathname !== '/cart' &&   */}
+  {/* <ReadyToGoCart data={cartItems} />} */}
     </>
   );
 }

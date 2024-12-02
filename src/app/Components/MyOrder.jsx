@@ -67,9 +67,10 @@ export default function MyOrder({ data, orderView, userInfo }) {
                       </div>
                       <div className="grid gap-[3px]">
                         <small className="text-[12px] font-normal opacity-60 ">
-                          Order ID #{data?.id} <span className="text-[9px] px-1 font-extralight"> | </span>{formatDate(data?.date_created)}
+                          Order ID #{data?.id} 
+                       
                         </small>
-                        <h3 className="sm:text-[14px] text-xs text-body leading-relaxed">
+                        <h3 className="text-[14px] text-body leading-relaxed">
                           {item?.name || item?.product_name} x {item?.quantity}
                         </h3>
                         <div className="flex justify-between"></div>
@@ -156,7 +157,7 @@ export default function MyOrder({ data, orderView, userInfo }) {
                 </div>
               </div>
             </div>
-
+            <div className="text-[12px] font-extralight lg:border-t lg:border-border lg:mt-5 lg:pt-3 pt-2">{formatDate(data?.date_created)} </div>
             {data?.tracking_message && !orderView && (
               <div className="mt-4">
                 <Alerts status="green" title={data?.tracking_message} />

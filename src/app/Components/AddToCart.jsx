@@ -19,6 +19,7 @@ export default function AddToCart({
   options,
   slug,
   active,
+  singlePage
 }) {
   const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } =
     useCartContext();
@@ -174,7 +175,8 @@ export default function AddToCart({
     // Update local quantity state
     setQuantity((prevQuantity) => prevQuantity + 1);
 
-    setNotification({
+
+    singlePage &&  setNotification({
       message: `Item added to your cart.`,
       type: "success",
     });
@@ -311,7 +313,7 @@ export default function AddToCart({
 
       {card ? (
         options && !isInCart ? (
-          <details className="dropdown mt-1">
+          <details className="dropdown mt-2">
             <summary className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
             </summary>
@@ -356,7 +358,7 @@ export default function AddToCart({
           </>
         )
       ) : (
-        <div className="items-end flex justify-between lg:mt-0 mt-4 gap-3">
+        <div className="items-end flex justify-between lg:mt-0 gap-3">
           <div
             className={`${
               !inCartPage ? "w-auto" : "w-24 sm:w-32"
@@ -401,7 +403,7 @@ export default function AddToCart({
             {!inCartPage &&
               (options && !isInCart ? (
                 <>
-                  <details className="dropdown mt-1">
+                  <details className="dropdown mt-2">
                     <summary
                       className="btn !min-h-14 px-8"
                       onClick={toggleDropdown}>

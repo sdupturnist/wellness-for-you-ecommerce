@@ -21,7 +21,7 @@ export default function AccountMenu({
         className={`${
           logout
             ? "border px-4 py-3 justify-center text-center sm:m-4 mb-0 mx-4 mt-4 rounded-lg"
-            : "px-4 py-5 justify-between lg:hover:opacity-50"
+            : "px-4 sm:py-5 py-4 justify-between lg:hover:opacity-50"
         }  transition-all border-b border-border flex items-center  gap-4 bg-white `}>
         <div className="flex items-center justify-start gap-3">
           {!minimum && (

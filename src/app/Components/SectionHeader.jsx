@@ -20,7 +20,7 @@ export default function SectionHeader({
   titleCenter,
 }) {
   return (
-    <div className={`mb-5 flex justify-between items-center`}>
+    <div className={`sm:mb-5 mb-4 flex justify-between items-center`}>
       {small && !titleSmall && <p className="opacity-50">Payment options</p>}
       {card && !titleSmall && (
         <h3

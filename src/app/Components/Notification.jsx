@@ -5,7 +5,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 export default function Notification({ message, type, onClose }){
     return (
         <div 
-        className={`fixed top-5 right-5 p-4 rounded shadow-lg flex gap-4 justify-between items-center z-50  
+        className={`fixed sm:top-5 top-0 sm:right-5 right-0 sm:left-auto left-0 p-4 sm:rounded sm:shadow-lg flex gap-4 justify-between items-center z-50  
                     ${type === 'success' ? 'bg-primary' : 'bg-red-500'} text-white`}
       >
         <span className="text-sm">{message}</span>

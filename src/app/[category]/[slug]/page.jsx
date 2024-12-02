@@ -124,7 +124,7 @@ export default async function ItemSingle({ params, searchParams }) {
               </div>
               <div className="flex items-center gap-7 lg:max-w-[80%]">
                 <div>
-                  <div className="grid gap-4 mb-5">
+                  <div className="grid gap-4 mb-3">
                     <h1>{singleProduct && singleProduct?.name}</h1>
                     {productReview.length > 0 && (
                       <Link href="#reviews">
@@ -203,6 +203,7 @@ export default async function ItemSingle({ params, searchParams }) {
                         options={convertStringToJSON(
                           singleProduct && singleProduct?.acf?.options
                         )}
+                        singlePage
                       />
                     </div>
                   )}

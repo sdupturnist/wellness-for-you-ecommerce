@@ -33,7 +33,7 @@ export default function PaymentOptionsList({ data }) {
     <>
       {data &&
         enabledGateways.map((item, index) => (
-          <div key={index} className="list-options-small !gap-2">
+          <div key={index} className="list-options-small !gap-2 mb-1">
             <div>
               <input
                 type="radio"

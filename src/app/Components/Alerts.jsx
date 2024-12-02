@@ -77,10 +77,10 @@ export default function Alerts({
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span className="font-semibold text-2xl">
+          <span className="font-semibold sm:text-2xl text-lg">
             {title} {!noPageUrl && pathname?.split("/").pop()}
           </span>
-          {desc && <p className="text-base mt-3 leading-relaxed">{desc}</p>}
+          {desc && <p className="sm:text-base mt-3 leading-relaxed">{desc}</p>}
           {url && (
             <Link className="btn btn-light btn-large my-6" href={url}>
               {buttonLabel}

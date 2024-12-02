@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 import Loading from "./Loading";
 import Alerts from "./Alerts";
 import { useCartContext } from "../Context/cartContext";
-import { currency } from "../Utils/variables";
+import {
+  apiUrl,
+  currency,
+  jwtTocken,
+  woocommerceKey,
+} from "../Utils/variables";
 
-export default function CouponCode({ data, cartTotal }) {
- 
+export default function CouponCode() {
   const userInfo = {
     id: 2,
     name: `Anjali`,
@@ -15,32 +19,57 @@ export default function CouponCode({ data, cartTotal }) {
     phone: `911234567890`,
   };
 
- 
+  const { setCouponCode, setDiscount, cartSubTotal, setCouponData } =
+    useCartContext();
 
-  const { setCouponCode, setDiscount, cartSubTotal, setCouponData } = useCartContext();
-
+  const [allCouponData, setAllCouponData] = useState([]);
   const [coupon, setCoupon] = useState("");
   const [isValid, setIsValid] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    const fetchCouponsData = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}wp-json/wc/v3/coupons${woocommerceKey}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwtTocken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setAllCouponData(data);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+      }
+    };
+
+    fetchCouponsData();
+  }, [allCouponData]);
+
   const checkCouponCode = (data, couponCode, cartSubTotal) => {
     setIsLoading(true);
 
-    let couponDataToPaymentInfo = data.map(item => {
+    let couponDataToPaymentInfo = data.map((item) => {
       const { id, ...rest } = item; // Remove 'id' and keep the rest
       return rest;
     });
 
-
-  
     // Find the coupon data that matches the entered coupon code
     const couponData = data.find((item) => item.code === couponCode);
     const hasValidCoupon = couponData && couponData.code === couponCode;
     setIsValid(hasValidCoupon);
     setIsLoading(false);
-
 
     if (hasValidCoupon) {
       const discountAmount = couponData?.amount || 0;
@@ -54,21 +83,26 @@ export default function CouponCode({ data, cartTotal }) {
       const currentDate = new Date();
       const couponExpirationDate = new Date(expirationDate);
 
-
-  //    console.log(parseInt(discountAmount))
+      //    console.log(parseInt(discountAmount))
 
       if (couponExpirationDate < currentDate) {
         setMessage("This coupon has expired");
         setCouponCode(false);
         setDiscount(0);
         setIsValid(false);
-      } else if (usedBy.includes(userInfo?.id) || usedBy.includes(userInfo?.id)) {
+      } else if (
+        usedBy.includes(userInfo?.id) ||
+        usedBy.includes(userInfo?.id)
+      ) {
         // Assuming userInfo?.id is the current user's ID or email
         setMessage("You have already used this coupon.");
         setCouponCode(false);
         setDiscount(0);
         setIsValid(false);
-      } else if (usedCount >= usageLimit && couponData?.usage_limit_per_user !== null) {
+      } else if (
+        usedCount >= usageLimit &&
+        couponData?.usage_limit_per_user !== null
+      ) {
         setMessage("This coupon has reached its usage limit for your account.");
         setCouponCode(false);
         setDiscount(0);
@@ -78,7 +112,7 @@ export default function CouponCode({ data, cartTotal }) {
         setMessage("Coupon code applied successfully!");
         setCouponCode(true);
         setDiscount(parseInt(discountAmount));
-    
+
         setCouponData(couponDataToPaymentInfo);
       } else {
         setMessage(
@@ -118,7 +152,7 @@ export default function CouponCode({ data, cartTotal }) {
           onChange={(e) => setCoupon(e.target.value)}
         />
         <button
-          onClick={() => checkCouponCode(data, coupon, cartSubTotal)}
+          onClick={() => checkCouponCode(allCouponData, coupon, cartSubTotal)}
           className="btn join-item !h-[48px]">
           Apply
           {isLoading && <Loading />}
@@ -140,4 +174,3 @@ export default function CouponCode({ data, cartTotal }) {
     </div>
   );
 }
-
