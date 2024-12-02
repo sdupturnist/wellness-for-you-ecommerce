@@ -1,54 +1,58 @@
-import Breadcrumb from "@/app/Components/Breadcrumb";
-import AccountHeader from "@/app/Components/AccountHeader";
-import MyOrder from "@/app/Components/MyOrder";
+"use client";
+
 import Alerts from "@/app/Components/Alerts";
+import Invoice from "@/app/Components/Invoice";
+import Loading from "@/app/Components/Loading";
+import ModalPopup from "@/app/Components/ModalPopup";
 import TableView from "@/app/Components/TableView";
-import ProfileMenu from "@/app/Components/ProfileMenu";
+import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
+import { useEffect, useState } from "react";
+import { Preview, print } from "react-html2pdf";
 
 export default function Transations() {
-  const transation = [
-    {
-      transaction_ID: 25685,
-      payment_method: "Stripe", //Payment Gateway (e.g., PayPal, Stripe, Credit Card, Bank Transfer, etc.)
-      payment_status: "Completed", //Current payment status (e.g., Completed, Pending, Failed, Refunded).
-      //payment_confirmation: '', //Payment Gateway Confirmation (e.g., a receipt or reference number indicating successful payment).
-      refund_information: 0, //(if the transaction is partially or fully refunded).
-    },
-    {
-      transaction_ID: 11223,
-      payment_method: "Stripe", 
-      payment_status: "Completed", 
-      refund_information: 0, 
-    },
-    {
-      transaction_ID: 47444,
-      payment_method: "Stripe", 
-      payment_status: "Completed", 
-      refund_information: 0, 
-    },
-    {
-      transaction_ID: 53443,
-      payment_method: "Stripe", 
-      payment_status: "Failed", 
-      refund_information: 1, 
-    },
-  ];
+  const [transations, setTransations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  //const myOrders = null
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
+
+  useEffect(() => {
+    // Only run once on mount
+    fetch(
+      `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userInfo?.id}&per_page=100`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setTransations(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
 
   return (
-
-    <div className="bg-bggray">
-    <section className="bg-bggray sm:py-10">
-       <div className="container !px-0 sm:px-5">
-         <div className="max-w-[999px] mx-auto">
-           <AccountHeader back/>
-           <div className="sm:mt-5 mt-3 sm:pt-2">
-             <div>
-               <ul className="general-list">
-               {!transation && <Alerts large title="You have not any" />}
-                  {transation &&
-                    transation.map((item, index) => (
+    <>
+      <div className="bg-bggray">
+        <section className="pb-0 sm:pt-0 pt-3">
+          <div className="sm:bg-transparent max-w-[999px] mx-auto">
+            <div>
+              {loading ? (
+                <div className="text-center min-h-[70vh] flex items-center justify-center">
+                  <Loading spinner />
+                </div>
+              ) : (
+                <ul className="general-list">
+                  {!transations?.length > 0 && (
+                    <Alerts large title="You have no transations" />
+                  )}
+                  {transations &&
+                    transations.map((item, index) => (
                       <TableView
                         data={[item]}
                         key={index}
@@ -61,15 +65,12 @@ export default function Transations() {
                         ]}
                       />
                     ))}
-               </ul>
-             </div>
-           </div>
-             <ProfileMenu />
-         </div>
-       </div>
-     </section>
-   </div>
-
-
+                </ul>
+              )}
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }

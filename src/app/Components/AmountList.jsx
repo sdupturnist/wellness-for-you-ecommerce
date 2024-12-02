@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { currency } from "../Utils/variables";
+import { currency, homeUrl } from "../Utils/variables";
 import SectionHeader from "./SectionHeader";
 import { useCartContext } from "../Context/cartContext";
 import { useEffect } from "react";
@@ -12,12 +12,11 @@ export default function AmountList({
   forOrderDetails,
   tableView,
   coupon,
+  action,
 }) {
   const { cartItems, couponCode, discount, cartSubTotal } = useCartContext();
 
   useEffect(() => {}, [cartItems, couponCode, discount, cartSubTotal]);
-
-  
 
   const renderAmountList = () => {
     switch (true) {
@@ -60,7 +59,6 @@ export default function AmountList({
       case forOrderDetails:
         return (
           <ul className="amount-list capitalize">
-     
             <li>
               <span className="label">
                 Products x {data?.line_items?.length}
@@ -84,8 +82,7 @@ export default function AmountList({
               <span className="label">Payment Method</span>
               <span className="val">{data?.payment_method_title}</span>
             </li>
-         
-      
+
             {data?.discount_total > 0 && (
               <li>
                 <span className="label !text-green-600">Coupon discount</span>
@@ -121,23 +118,29 @@ export default function AmountList({
                     <SectionHeader
                       spacingSm
                       titleSmall
-                      title={`Transaction ID: #${item.transaction_ID}`}
+                      title={`${
+                        item.transaction_id
+                          ? `Transaction ID: #`
+                          : `Order ID: #` + item?.id
+                      }`}
                     />
                   </div>
-                  <ul className="table-amount-list mb-2" key={index}>
+                  <ul className="table-amount-list mb-2 capitalize" key={index}>
                     <li>
                       <span className="label">Payment Method:</span>
-                       <span className="text-sm">{item.payment_method}</span>
+                      <span className="text-sm">
+                        {item.payment_method_title}
+                      </span>
                     </li>
                     <li>
                       <span className="label">Payment Status:</span>
                       <span
                         className={`${
-                          item.payment_status === "Completed"
+                          item.status === "completed"
                             ? "text-green-600"
                             : "text-red-600"
-                        } text-sm`}>
-                        {item.payment_status}
+                        } text-sm font-semibold`}>
+                        {item.status}
                       </span>
                     </li>
                     {item.refund_information === 1 && (
@@ -147,11 +150,15 @@ export default function AmountList({
                       </li>
                     )}
                   </ul>
-
+                  {console.log(item?.status === "completed")}
                   {/* <Invoice/> */}
-                  <Link href={"asd"} className="btn btn-medium btn-light mt-2">
-                    Download Invoice
-                  </Link>
+                  {item?.status === "completed" && (
+                    <Link
+                      href={`${homeUrl}account/transations/${item?.id}`}
+                      className="btn btn-medium btn-light mt-3">
+                      View
+                    </Link>
+                  )}
                 </div>
               ))}
           </ul>

@@ -636,7 +636,7 @@ footer{
 
     .general-list{
         li{
-            @apply lg:flex items-center justify-between gap-8 border-b border-border  sm:mb-4 mb-3 last:border-0 last:mb-0
+            @apply lg:flex items-center justify-between gap-8 border-b border-border  last:border-0 last:mb-0
         }
 
         button.option-btn{
@@ -668,7 +668,7 @@ footer{
 
     .table-amount-list{
         li{
-            @apply flex items-center justify-between text-sm pb-3 mb-3 last:mb-0 last:pb-0 last:border-0;
+            @apply flex items-center justify-between text-sm pb-3 last:mb-0 last:pb-0 last:border-0;
             .val{
                 @apply text-dark
             }
@@ -788,4 +788,18 @@ footer{
     button {
         @apply border-none w-full block rounded-none;
     }
+  }
+
+
+  @media print {
+    * {
+      color: #000000 !important;  /* Fallback to black color for all text */
+      background-color: #ffffff !important;  /* Fallback to white background */
+    }
+  }
+  
+
+  #jsx-template{
+   //width: 1px !important;
+
   }
