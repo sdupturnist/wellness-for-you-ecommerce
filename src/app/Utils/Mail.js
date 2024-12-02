@@ -51,7 +51,7 @@ export async function sendMail({  sendTo, subject, message, name }) {
 </head>
 <body style="font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; background-color: #fff;">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background:#fff;">
+        <table role="presentation" width="100%" cellspacing="0" cellPadding="0" style="border-collapse: collapse; background:#fff;">
             <!-- Header with Logo and Title -->
             <tr>
                 <td style="background-color: #137E43; color: #fff; text-align: center; padding:  20px; font-size: 28px; font-weight: 600; position: relative;">

@@ -1,12 +1,23 @@
 "use client";
 
+import { currency, freeShipping, siteLogo } from "../Utils/variables";
+
+
+const userInfo = {
+  id: 2,
+  name: `Anjali`,
+  email: `upturnistuae@gmail.com`,
+  phone: `911234567890`,
+};
+
+
 export default function Invoice({ data }) {
   return (
     <table
       role="presentation"
       width="100%"
       cellSpacing="0"
-      cellpadding="0"
+      cellPadding="0"
       style={{ borderCollapse: "collapse", backgroundColor: "#fff" }}>
       <tbody>
         <tr>
@@ -20,7 +31,7 @@ export default function Invoice({ data }) {
               fontWeight: "600",
             }}>
             <img
-              src="https://ci3.googleusercontent.com/meips/ADKq_NYRZkJBYseDIdDZ3-mGN3FXWZ7q17kPjiUsESEbIvsqESzcBRw9Zbc5_hcmr-rCe2u3clzGdBMYKz-T09PCrphYtY6VKti_iRHJEswfTv7jZH01R7SotNPdmQM=s0-d-e1-ft#https://admin.wellness4u.in/wp-content/uploads/2024/11/logo-white.png"
+              src={siteLogo}
               alt="Logo"
               style={{ display: "block", height: "40px" }}
             />
@@ -57,6 +68,7 @@ export default function Invoice({ data }) {
               </thead>
               <tbody>
                 <tr>
+                
                   <td
                     style={{
                       fontSize: "12px",
@@ -65,13 +77,13 @@ export default function Invoice({ data }) {
                       textAlign: "left",
                       padding: "7px",
                     }}>
-                    <b>Order ID:</b> COD
+                    <b>Order ID:</b> {data?.id}
                     <br />
-                    <b>Date Added:</b> December 2, 2024
+                    <b>Date Added:</b> {data?.date_completed}
                     <br />
-                    <b>Payment Method:</b> Cash on Delivery
+                    <b>Payment Method:</b> {data?.payment_method_title}
                     <br />
-                    <b>Shipping Method:</b> Free Shipping
+                    <b>Shipping Method:</b> {freeShipping && 'Free Shipping'}
                   </td>
                   <td
                     style={{
@@ -86,12 +98,12 @@ export default function Invoice({ data }) {
                       href="mailto:upturnistuae@gmail.com"
                       target="_blank"
                       rel="noopener noreferrer">
-                      upturnistuae@gmail.com
+                      {userInfo?.email}
                     </a>
                     <br />
-                    <b>Telephone:</b> 911234567890
+                    <b>Telephone:</b>    {userInfo?.phone}
                     <br />
-                    <b>Order Status:</b> Processing
+                    <b>Order Status:</b> {data?.status}
                   </td>
                 </tr>
               </tbody>
@@ -132,7 +144,7 @@ export default function Invoice({ data }) {
                       textAlign: "left",
                       padding: "7px",
                     }}>
-                    Payment Successful. Cash on Delivery
+                    Payment Successful. {data?.payment_method_title}
                   </td>
                 </tr>
               </tbody>
@@ -178,7 +190,7 @@ export default function Invoice({ data }) {
               </thead>
               <tbody>
                 <tr>
-                  <td
+               <td
                     style={{
                       fontSize: "12px",
                       borderRight: "1px solid #dddddd",
@@ -186,17 +198,16 @@ export default function Invoice({ data }) {
                       textAlign: "left",
                       padding: "7px",
                     }}>
-                    Rajesh, KK
+                    {data?.shipping?.first_name}
                     <br />
-                    Flat No. 203, Green View Apartments Kalamassery Road, Mavoor
-                    Kozhikode, Kerala, 673004 India
+                    {data?.shipping?.address_1}
                     <br />
                     <br />
-                    Kozhikode 673004
+                    {data?.shipping?.address_2}
                     <br />
-                    Kerala
+                    {data?.shipping?.state}
                     <br />
-                    India
+                    {data?.shipping?.country}
                   </td>
                   <td
                     style={{
@@ -206,17 +217,16 @@ export default function Invoice({ data }) {
                       textAlign: "left",
                       padding: "7px",
                     }}>
-                    Rajesh, KK
+                              {data?.shipping?.first_name}
                     <br />
-                    Flat No. 203, Green View Apartments Kalamassery Road, Mavoor
-                    Kozhikode, Kerala, 673004 India
+                    {data?.shipping?.address_1}
                     <br />
                     <br />
-                    Kozhikode 673004
+                    {data?.shipping?.address_2}
                     <br />
-                    Kerala
+                    {data?.shipping?.state}
                     <br />
-                    India
+                    {data?.shipping?.country}
                   </td>
                 </tr>
               </tbody>
@@ -287,48 +297,52 @@ export default function Invoice({ data }) {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td
-                    style={{
-                      fontSize: "12px",
-                      borderRight: "1px solid #dddddd",
-                      borderBottom: "1px solid #dddddd",
-                      textAlign: "left",
-                      padding: "7px",
-                    }}>
-                    Vitaminberry Joint Repair - Buy1 Get 1 Free (+₹325.00)
-                  </td>
-                  <td
-                    style={{
-                      fontSize: "12px",
-                      borderRight: "1px solid #dddddd",
-                      borderBottom: "1px solid #dddddd",
-                      textAlign: "right",
-                      padding: "7px",
-                    }}>
-                    1
-                  </td>
-                  <td
-                    style={{
-                      fontSize: "12px",
-                      borderRight: "1px solid #dddddd",
-                      borderBottom: "1px solid #dddddd",
-                      textAlign: "right",
-                      padding: "7px",
-                    }}>
-                    ₹1299
-                  </td>
-                  <td
-                    style={{
-                      fontSize: "12px",
-                      borderRight: "1px solid #dddddd",
-                      borderBottom: "1px solid #dddddd",
-                      textAlign: "right",
-                      padding: "7px",
-                    }}>
-                    ₹1299.00
-                  </td>
-                </tr>
+              {data?.line_items &&
+          data?.line_items.map((item, index) => (
+            <tr key={index}>
+            <td
+              style={{
+                fontSize: "12px",
+                borderRight: "1px solid #dddddd",
+                borderBottom: "1px solid #dddddd",
+                textAlign: "left",
+                padding: "7px",
+              }}>
+              {item?.name}
+            </td>
+            <td
+              style={{
+                fontSize: "12px",
+                borderRight: "1px solid #dddddd",
+                borderBottom: "1px solid #dddddd",
+                textAlign: "right",
+                padding: "7px",
+              }}>
+               {item?.quantity}
+            </td>
+            <td
+              style={{
+                fontSize: "12px",
+                borderRight: "1px solid #dddddd",
+                borderBottom: "1px solid #dddddd",
+                textAlign: "right",
+                padding: "7px",
+              }}>
+              {currency}{item?.total}
+            </td>
+            <td
+              style={{
+                fontSize: "12px",
+                borderRight: "1px solid #dddddd",
+                borderBottom: "1px solid #dddddd",
+                textAlign: "right",
+                padding: "7px",
+              }}>
+              {currency}{item?.total}
+            </td>
+          </tr>
+          ))}
+
               </tbody>
               <tfoot>
                 <tr>
@@ -351,7 +365,7 @@ export default function Invoice({ data }) {
                       textAlign: "right",
                       padding: "7px",
                     }}>
-                    ₹1299.00
+                    {currency}{data?.total}
                   </td>
                 </tr>
                 <tr>
@@ -374,7 +388,7 @@ export default function Invoice({ data }) {
                       textAlign: "right",
                       padding: "7px",
                     }}>
-                    ₹0.00
+                    {freeShipping && 'Free Shipping'}
                   </td>
                 </tr>
                 <tr>
@@ -397,7 +411,7 @@ export default function Invoice({ data }) {
                       textAlign: "right",
                       padding: "7px",
                     }}>
-                    ₹1299.00
+                    {currency}{data?.total}
                   </td>
                 </tr>
               </tfoot>

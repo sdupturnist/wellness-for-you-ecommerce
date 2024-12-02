@@ -1,6 +1,6 @@
 'use client'
 
-import { formatDate } from "./variables"
+import { currency, formatDate } from "./variables"
 
 export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid) => {
     
@@ -18,8 +18,8 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     `<tr>
       <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${item?.name}</td>
       <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${item?.quantity}</td>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${item?.price}</td>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${(item?.price * item?.quantity).toFixed(2)}</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${item?.price}</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(item?.price * item?.quantity).toFixed(2)}</td>
     </tr>`
   )).join(''); // Make sure to join all items into one string
 
@@ -88,15 +88,15 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     <tfoot>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Sub-Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${subTotal.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${subTotal.toFixed(2)}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Free Shipping:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${freeShipping.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${freeShipping.toFixed(2)}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">₹${total.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${total.toFixed(2)}</td>
       </tr>
     </tfoot>
   </table>

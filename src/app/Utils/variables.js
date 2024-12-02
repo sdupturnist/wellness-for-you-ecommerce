@@ -235,7 +235,7 @@ export let  emailTemplate = () => {
 </head>
 <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9;">
      <div style="margin: 0; padding: 0; font-family: 'Arial, sans-serif'; background-color: #fff;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #fff;">
+            <table role="presentation" width="100%" cellspacing="0" cellPadding="0" style="border-collapse: collapse; background-color: #fff;">
                 <!-- Header -->
                
 
