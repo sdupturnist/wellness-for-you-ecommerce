@@ -724,8 +724,6 @@ function get_shipping_lines($order) {
 
 //https://admin.wellness4u.in/wp-json/custom/v1/orders?consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03&consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&order_key=wc_order_xWGJvBgNPo4Dk&customer_id=3
 
-
-
 // Hook to initialize the custom REST API endpoint
 add_action('rest_api_init', function() {
     register_rest_route('custom/v1', '/returns/', [
@@ -744,9 +742,10 @@ function create_return_post(WP_REST_Request $request) {
     $order_id = $request->get_param('order_id'); // ACF field: order_id
     $amount = $request->get_param('amount'); // ACF field: amount
     $transition_id = $request->get_param('transition_id'); // ACF field: transition_id
+    $opened = $request->get_param('opened'); // ACF field: opened (new field)
 
     // Validate required parameters
-    if (empty($title) || empty($content) || empty($order_id) || empty($amount) || empty($transition_id)) {
+    if (empty($title) || empty($content) || empty($order_id) || empty($amount) || empty($transition_id) || !isset($opened)) {
         return new WP_REST_Response('Missing required parameters.', 400);
     }
 
@@ -770,6 +769,7 @@ function create_return_post(WP_REST_Request $request) {
     update_field('order_id', sanitize_text_field($order_id), $post_id);  // Save 'order_id' ACF field
     update_field('amount', sanitize_text_field($amount), $post_id);      // Save 'amount' ACF field
     update_field('transition_id', sanitize_text_field($transition_id), $post_id); // Save 'transition_id' ACF field
+    update_field('opened', sanitize_text_field($opened), $post_id); // Save 'opened' ACF field (new field)
 
     // Return a response with the post ID and success message
     return new WP_REST_Response(array(
@@ -778,4 +778,137 @@ function create_return_post(WP_REST_Request $request) {
     ), 201);
 }
 
+
 //https://admin.wellness4u.in/wp-json/custom/v1/returns/
+
+
+//GET RETURN DETAILS BY ORDER ID
+
+// Hook into the REST API initialization to create a custom endpoint
+add_action('rest_api_init', function () {
+    // Register the custom endpoint '/returns/order/{order_id}'
+    register_rest_route('custom/v1', '/returns/order/(?P<order_id>\d+)', [
+        'methods' => 'GET',
+        'callback' => 'get_return_by_order_id',
+        'permission_callback' => '__return_true', // Adjust as needed for permissions
+    ]);
+});
+
+// Define the callback function for the custom endpoint
+function get_return_by_order_id($data) {
+    // Get the order_id from the URL
+    $order_id = $data['order_id'];
+
+    // Query the "returns" custom post type based on the order_id ACF field
+    $args = [
+        'post_type' => 'returns', // Custom post type "returns"
+        'meta_key' => 'order_id', // ACF field key for order_id
+        'meta_value' => $order_id, // The order_id passed in the URL
+        'posts_per_page' => 1, // We only expect one return per order_id
+    ];
+
+    // Execute the query
+    $query = new WP_Query($args);
+
+    // Check if any returns are found
+    if ($query->have_posts()) {
+        // Return the post data
+        $return_data = [];
+        while ($query->have_posts()) {
+            $query->the_post();
+            $return_data[] = [
+                'ID' => get_the_ID(),
+                'post_title' => get_the_title(),
+                'post_content' => get_the_content(),
+                'order_id' => get_field('order_id'), // Get ACF field data
+                'other_custom_field' => get_field('other_custom_field'), // Replace with your other ACF field
+            ];
+        }
+
+        // Reset post data
+        wp_reset_postdata();
+
+        // Return the data in the response
+        return new WP_REST_Response($return_data, 200);
+    } else {
+        // If no returns are found, return an error response
+        return new WP_REST_Response(['message' => 'No returns found for this order ID'], 404);
+    }
+}
+
+
+
+
+//UPDATE ORDER
+function custom_update_order_endpoint() {
+    register_rest_route( 'custom/v1', '/update-order/(?P<order_id>\d+)', array(
+        'methods' => 'PUT',
+        'callback' => 'custom_update_order',  // Callback function to handle the request
+        'permission_callback' => function () {
+            return current_user_can( 'manage_woocommerce' );  // Ensure the user has permission to update WooCommerce orders
+        },
+    ));
+}
+
+add_action( 'rest_api_init', 'custom_update_order_endpoint' );  // Register the custom endpoint when REST API is initialized
+
+
+
+function custom_update_order( $data ) {
+    // Get the order ID from the URL parameter
+    $order_id = $data['order_id'];
+
+    // Get the order object using WooCommerce function
+    $order = wc_get_order( $order_id );
+
+    // If the order is not found, return a 404 error
+    if ( !$order ) {
+        return new WP_Error('order_not_found', 'Order not found', array('status' => 404));
+    }
+
+    // Get the request body (the JSON data sent with the PUT request)
+    $body = json_decode( file_get_contents( 'php://input' ), true );
+
+    // Update order status if provided
+//     if ( isset( $body['status'] ) ) {
+//         $order->update_status( sanitize_text_field( $body['status'] ) );
+//     }
+
+    // Update billing address if provided
+//     if ( isset( $body['billing'] ) ) {
+//         $billing = $body['billing'];
+//         $order->set_billing_first_name( sanitize_text_field( $billing['first_name'] ) );
+//         $order->set_billing_last_name( sanitize_text_field( $billing['last_name'] ) );
+//         $order->set_billing_address_1( sanitize_text_field( $billing['address_1'] ) );
+//         $order->set_billing_address_2( sanitize_text_field( $billing['address_2'] ) );
+//         $order->set_billing_city( sanitize_text_field( $billing['city'] ) );
+//         $order->set_billing_postcode( sanitize_text_field( $billing['postcode'] ) );
+//         $order->set_billing_country( sanitize_text_field( $billing['country'] ) );
+//         $order->set_billing_email( sanitize_email( $billing['email'] ) );
+//     }
+
+    // Update shipping address if provided
+//     if ( isset( $body['shipping'] ) ) {
+//         $shipping = $body['shipping'];
+//         $order->set_shipping_first_name( sanitize_text_field( $shipping['first_name'] ) );
+//         $order->set_shipping_last_name( sanitize_text_field( $shipping['last_name'] ) );
+//         $order->set_shipping_address_1( sanitize_text_field( $shipping['address_1'] ) );
+//         $order->set_shipping_address_2( sanitize_text_field( $shipping['address_2'] ) );
+//         $order->set_shipping_city( sanitize_text_field( $shipping['city'] ) );
+//         $order->set_shipping_postcode( sanitize_text_field( $shipping['postcode'] ) );
+//         $order->set_shipping_country( sanitize_text_field( $shipping['country'] ) );
+//     }
+
+    // Update order meta data if provided
+    if ( isset( $body['meta_data'] ) ) {
+        foreach ( $body['meta_data'] as $meta ) {
+            $order->update_meta_data( sanitize_text_field( $meta['key'] ), sanitize_text_field( $meta['value'] ) );
+        }
+    }
+
+    // Save the updated order
+    $order->save();
+
+    // Return the updated order as the response
+    return rest_ensure_response( $order );
+}

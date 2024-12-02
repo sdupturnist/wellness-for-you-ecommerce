@@ -14,8 +14,8 @@ export default function SuccessPage() {
             <Alerts
               title="Thank You for Your Order!"
               large
-              url={`${homeUrl}account`}
-              buttonLabel="My account"
+              url={`${homeUrl}account/orders`}
+              buttonLabel="My Orders"
               desc="Thank you for shopping with us! We’ll keep you updated on your
             order status."
             />

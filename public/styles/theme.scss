@@ -338,7 +338,7 @@ button:disabled {
 @apply list-none;
    
 li{
-    @apply bg-white sm:rounded-[12px]  sm:border border-b last:sm:border-b last:border-b-0 last:pb-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+    @apply bg-white sm:rounded-[12px]  sm:border border-b  border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
 }
     
 

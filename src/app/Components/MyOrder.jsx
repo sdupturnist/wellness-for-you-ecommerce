@@ -35,8 +35,11 @@ export default function MyOrder({ data, orderView, userInfo }) {
 
   const statusColorClass = statusColorMap[data?.status] || "text-dark"; // Fallback to default primary color if not matched
 
- // console.log(data?.order_key);
- 
+
+  const returnedItems = data?.meta_data.filter(
+    (item) => item.key === "returned" && item.value === "yes"
+  );
+
   return (
     <>
       {loading ? (
@@ -77,10 +80,20 @@ export default function MyOrder({ data, orderView, userInfo }) {
 
               <div className="lg:grid justify-between h-full gap-7">
                 <div className="sm:flex items-center justify-between gap-2 border-t lg:border-none mt-4 lg:mt-0 pt-3 lg:pt-0">
+{returnedItems?.length > 0 ? <span
+                    className={`text-red-500 font-bold capitalize lg:pt-4 sm:text-base text-sm`}>
+                   Returned
+                  </span> :
+                  
                   <span
-                    className={`${statusColorClass} font-bold capitalize lg:pt-4 sm:text-base text-sm`}>
-                    {data?.status}
-                  </span>
+                  className={`${statusColorClass} font-bold capitalize lg:pt-4 sm:text-base text-sm`}>
+                  {data?.status}
+                </span>
+                  }
+               
+
+
+                
                   {/* <ul className="list-order-view"> */}
                   {/* {console.log(data)} */}
                   {/* <li> */}

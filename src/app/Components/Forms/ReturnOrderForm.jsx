@@ -10,21 +10,25 @@ import {
   siteName,
   woocommerceKey,
 } from "@/app/Utils/variables";
-
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import { sendMail } from "@/app/Utils/Mail";
 import Alerts from "../Alerts";
 import { ReturnEmailTemplate } from "@/app/Utils/MailTemplates";
 
 export default function ReturnOrderForm({ userInfo, data }) {
+
+
+  const router = useRouter(); 
+
+
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
+  const [packageStatus, setPackageStatus] = useState("");
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null); // Enhanced error state to store error messages
 
-
-console.log(data)
-
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,28 +47,45 @@ console.log(data)
       status: "publish",
       order_id: data?.id,
       amount: data?.total || "",
-      transition_id: data?.transaction_id || "",
+      opened: packageStatus || "",
+      transition_id: data?.transaction_id || "COD",
     };
 
     try {
       // Submit the return request
-      const responseReturnDataCollection = await fetch(`${apiUrl}wp-json/custom/v1/returns/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+      const responseReturnDataCollection = await fetch(
+        `${apiUrl}wp-json/custom/v1/returns/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+
 
       // Update the order status
-      const responseUpdateCurrentOrder = await fetch(`${apiUrl}wp-json/custom/v1/update-order/${data?.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtTocken}`,
-        },
-        body: JSON.stringify(requestData),
-      });
+      const responseUpdateCurrentOrder = await fetch(
+        `${apiUrl}wp-json/custom/v1/update-order/${data?.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtTocken}`,
+          },
+          body: JSON.stringify({
+    
+            "meta_data": [
+                {
+                    "key": "returned",
+                    "value": "yes"
+                }
+            ]
+        }),
+        }
+      );
 
       if (responseReturnDataCollection.ok && responseUpdateCurrentOrder.ok) {
         setLoading(false);
@@ -73,6 +94,7 @@ console.log(data)
         setTimeout(() => {
           setStatus(false);
           document.getElementById("modal_all").close();
+          router.push("/account"); // Redirect to account page
         }, 3000);
 
         setReason("");
@@ -88,7 +110,8 @@ console.log(data)
             requestData?.content,
             requestData?.order_id,
             requestData?.amount,
-            requestData?.transition_id
+            requestData?.opened,
+            requestData?.transaction_id || "COD"
           ),
         });
 
@@ -102,18 +125,23 @@ console.log(data)
             requestData?.content,
             requestData?.order_id,
             requestData?.amount,
-            requestData?.transition_id
+            requestData?.opened,
+            requestData?.transaction_id || "COD"
           ),
         });
-
       } else {
         const errorResponse = await responseReturnDataCollection.json();
-        setError(errorResponse?.message || "An unknown error occurred while submitting your return request.");
+        setError(
+          errorResponse?.message ||
+            "An unknown error occurred while submitting your return request."
+        );
         setLoading(false);
         setStatus(false);
       }
     } catch (error) {
-      setError("An error occurred while submitting the return request. Please try again later.");
+      setError(
+        "An error occurred while submitting the return request. Please try again later."
+      );
       setLoading(false);
       setStatus(false);
     }
@@ -127,21 +155,38 @@ console.log(data)
           title="Your order return request has been successfully submitted. We will review the details and get back to you shortly."
         />
       )}
-      {error && (
-        <Alerts
-          status="red"
-          title={error}
-        />
-      )}
-      <div className="grid gap-4 mt-4">
-        <input
+      {error && <Alerts status="red" title={error} />}
+
+      <div className="grid gap-6 mt-4">
+        <select
           type="text"
           className="input"
-          placeholder="Reason for Return"
           onChange={(e) => setReason(e.target.value)}
           required
-          autoComplete="none"
-        />
+          autoComplete="none">
+          <option value="" disabled selected>
+            Reason for Return
+          </option>
+          <option value="Dead On Arrival">Dead On Arrival</option>
+          <option value="Faulty, please supply details">
+            Faulty, please supply details
+          </option>
+          <option value="Order Error">Order Error</option>
+          <option value="Other, please supply details">
+            Other, please supply details
+          </option>
+          <option value="Received Wrong Item">Received Wrong Item</option>
+        </select>
+
+        <div className="flex items-center gap-2">
+          <input
+            value="Opened"
+            onChange={(e) => setPackageStatus(e.target.value)}
+            type="checkbox"
+            className="checkbox checkbox-sm checkbox-success"
+          />
+          <label className="label-text">Product is opened?</label>
+        </div>
         <textarea
           type="text"
           className="input"
@@ -151,7 +196,7 @@ console.log(data)
           rows="5"
         />
         <button className="btn btn-large w-full" type="submit">
-          {loading && <Loading />} Submit
+          {loading && <Loading />} Confirm to return
         </button>
       </div>
     </form>

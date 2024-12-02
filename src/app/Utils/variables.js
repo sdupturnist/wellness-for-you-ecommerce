@@ -1,4 +1,21 @@
 
+import {
+  PencilIcon,
+  HeartIcon,
+  ArchiveBoxIcon,
+  TruckIcon,
+  MapIcon,
+  CreditCardIcon,
+  StarIcon,
+  GiftIcon,
+  KeyIcon,
+  UserIcon,
+  CogIcon,
+  CalendarIcon,
+  ArrowUturnUpIcon,
+} from "@heroicons/react/24/solid";
+
+
 
 
 const date = new Date();
@@ -38,6 +55,63 @@ export let year = date.getFullYear();
 export let copyright = siteName + ' © '+ year
 export let siteLogo = process.env.NEXT_PUBLIC_LOGO_URL
 export let siteLogoWhite = process.env.NEXT_PUBLIC_LOGO_WHITE_URL
+
+
+//ADMIN MENU
+export let accountMenus = [
+  {
+    label: 'Orders',
+    url: 'account/orders',
+    icon: <ArchiveBoxIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Transactions',
+    url: 'account/transations',
+    icon: <CalendarIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Wishlist',
+    url: 'account/wishlist',
+    icon: <HeartIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Address',
+    url: 'account/address',
+    icon: <MapIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Payments',
+    url: 'account/payments',
+    icon: <CreditCardIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Returns',
+    url: 'account/returns',
+    icon: <TruckIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Reviews',
+    url: 'account/reviews',
+    icon: <StarIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Reward Points',
+    url: 'account/rewards',
+    icon: <GiftIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Edit profile',
+    url: 'account/edit-profile',
+    icon: <UserIcon className="size-4 text-primary" />,
+  },
+  {
+    label: 'Reset password',
+    url: 'account/reset-password',
+    icon: <KeyIcon className="size-4 text-primary" />,
+  },
+ 
+];
+
 
 
 //EMAIL CONFIG

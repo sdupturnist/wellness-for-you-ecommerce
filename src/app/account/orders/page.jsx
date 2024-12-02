@@ -16,20 +16,13 @@ export default async function Orders({ params }) {
     phone: `911234567890`,
   };
 
-
   return (
     <div className="bg-bggray">
-      <section className="bg-bggray sm:py-10 p-0">
-        <div className="container !px-0 sm:px-5">
-          <div className="max-w-[999px] mx-auto">
-            <AccountHeader back />
-            <div className="sm:mt-5 mt-3 sm:pt-2">
-        <AllOrders/>
-              </div>
-            <ProfileMenu />
-          </div>
+    <section className="pb-0 sm:pt-0 pt-3">
+       <div className="sm:bg-transparent max-w-[999px] mx-auto">
+     <AllOrders/>
         </div>
-      </section>
-    </div>
+   </section>
+  </div>
   );
 }

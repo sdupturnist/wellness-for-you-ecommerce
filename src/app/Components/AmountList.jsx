@@ -85,6 +85,7 @@ export default function AmountList({
               <span className="val">{data?.payment_method_title}</span>
             </li>
          
+      
             {data?.discount_total > 0 && (
               <li>
                 <span className="label !text-green-600">Coupon discount</span>
