@@ -37,40 +37,28 @@ export default function OrderItem() {
 
   const splitSlug = id;
   const customerId = splitSlug[0];
-  const orderKey = splitSlug[1];
+  const orderId = splitSlug[1];
+
+
+
+
 
   useEffect(() => {
-    const fetchOrderData = async () => {
-      try {
-        const response = await fetch(
-          `${apiUrl}wp-json/custom/v1/orders?order_key=${orderKey}&customer_id=${customerId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${jwtTocken}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch order data");
-        }
-
-        const data = await response.json();
-        if (data && data.length > 0) {
-          setOrder(data[0]);
-        } else {
-          setError("Order not found");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
+    // Only run once on mount
+    
+    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userInfo?.id}&per_page=1`)
+      .then((res) => res.json())
+      .then((data) => {
+        setOrder(data);
         setLoading(false);
-      }
-    };
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);  // Empty dependency array to run the effect once
 
-    fetchOrderData();
-  }, [customerId, orderKey]);
+
 
   // Redirect to account page if no order is found
   useEffect(() => {
@@ -78,6 +66,7 @@ export default function OrderItem() {
       router.push("/account"); // Redirect to account page
     }
   }, [error, router]);
+
 
   const trackingMessage =
     order && order?.meta_data.filter((item) => item.key === "tracking");

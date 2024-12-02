@@ -19,6 +19,7 @@ export default function AllOrders() {
 
   useEffect(() => {
     // Only run once on mount
+    
     fetch(`${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userInfo?.id}&per_page=100`)
       .then((res) => res.json())
       .then((data) => {
@@ -30,6 +31,9 @@ export default function AllOrders() {
         setLoading(false);
       });
   }, []);  // Empty dependency array to run the effect once
+
+
+  console.log(orders)
 
   return (
     <div>

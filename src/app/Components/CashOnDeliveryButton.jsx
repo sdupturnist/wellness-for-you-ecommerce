@@ -43,6 +43,7 @@ export default function CashOnDeliveryPayment({ userData }) {
     setPaymentTerms,
   } = useCheckoutContext();
 
+  console.log(cartItems)
 
 
   const [loading, setLoading] = useState(false);
@@ -53,11 +54,14 @@ export default function CashOnDeliveryPayment({ userData }) {
   // Calculate the amount to pay after applying any discount
   const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
 
+ 
+
 
   // Filter out image and id from the cart items before sending to the backend
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
 
+  console.log(filteredItems)
 
   // Handle the payment and order creation logic
   const handlePayment = async () => {

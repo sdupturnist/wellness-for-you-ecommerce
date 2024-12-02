@@ -297,6 +297,7 @@ export default function Invoice({ data }) {
                 </tr>
               </thead>
               <tbody>
+                {console.log(data?.line_items)}
               {data?.line_items &&
           data?.line_items.map((item, index) => (
             <tr key={index}>
@@ -328,7 +329,7 @@ export default function Invoice({ data }) {
                 textAlign: "right",
                 padding: "7px",
               }}>
-              {currency}{item?.total}
+              {currency}{item?.subtotal}
             </td>
             <td
               style={{
@@ -338,7 +339,7 @@ export default function Invoice({ data }) {
                 textAlign: "right",
                 padding: "7px",
               }}>
-              {currency}{item?.total}
+              {currency}{item?.subtotal}
             </td>
           </tr>
           ))}

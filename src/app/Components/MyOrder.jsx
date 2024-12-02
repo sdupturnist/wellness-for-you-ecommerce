@@ -46,8 +46,8 @@ export default function MyOrder({ data, orderView, userInfo }) {
         // Skeleton Loader
         <Skelton productleftRightCard/>
       ) : (
-        <li className="card-rounded-none-small bg-white" data-id={data?.id}>
-          <Link className="w-full" href={`${pathname}/${userInfo?.id}/${data?.order_key}`}>
+        <li className={`${orderView ? 'mb-0' : 'mb-5'} card-rounded-none-small bg-white`} data-id={data?.id}>
+          <Link className="w-full" href={`${pathname}/${userInfo?.id}/${data?.id}`}>
             <div className="lg:flex items-start justify-between w-full  gap-3">
               <div className="grid gap-[10px]">
                 {data &&

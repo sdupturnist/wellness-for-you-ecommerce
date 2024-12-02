@@ -59,54 +59,67 @@ export default function AmountList({
       case forOrderDetails:
         return (
           <ul className="amount-list capitalize">
-            <li>
+          {console.log(data)}
+        
+          {data?.line_items && data?.line_items.map((item, index) => (
+            <li key={index}>
               <span className="label">
-                Products x {data?.line_items?.length}
+                {item?.product_name} x {item?.quantity}
               </span>
               <span className="val">
                 {currency}
-                {data?.total}
+                {(item?.total * item?.quantity)}
               </span>
             </li>
+          ))}
+        
+        
+          
+          {/* <li> */}
+            {/* <span className="label">Payment Method</span> */}
+            {/* <span className="val">{data?.payment_method_title}</span> */}
+          {/* </li> */}
+        
+          {/* Subtotal Calculation */}
+          <li>
+            <span className="label">Subtotal</span>
+            <span className="val">
+              {currency}
+              {data?.line_items?.reduce((acc, item) => {
+                const priceWithQuantity = item?.price * item?.quantity;
+                return acc + priceWithQuantity;
+              }, 0) + parseInt(data?.discount_total, 10)}
+            </span>
+          </li>
+          <li>
+            <span className="label">Shipping</span>
+            <span
+              className={`${
+                data?.shipping_lines[0]?.method_id === "free_shipping" &&
+                "!text-green-600"
+              } val`}>
+              {data?.shipping_lines[0]?.method_title}
+            </span>
+          </li>
+          {data?.discount_total > 0 && (
             <li>
-              <span className="label">Shipping</span>
-              <span
-                className={`${
-                  data?.shipping_lines[0]?.method_id === "free_shipping" &&
-                  "!text-green-600"
-                } val`}>
-                {data?.shipping_lines[0]?.method_title}
+              <span className="label !text-green-600">Coupon discount</span>
+              <span className="val !text-green-600">
+                -{currency}
+                {data?.discount_total}
               </span>
             </li>
-            <li>
-              <span className="label">Payment Method</span>
-              <span className="val">{data?.payment_method_title}</span>
-            </li>
-
-            {data?.discount_total > 0 && (
-              <li>
-                <span className="label !text-green-600">Coupon discount</span>
-                <span className="val !text-green-600">
-                  -{currency}
-                  {data?.discount_total}
-                </span>
-              </li>
-            )}
-            <li>
-              <span className="label">Subtotal</span>
-              <span className="val">
-                {currency}
-                {data?.total}
-              </span>
-            </li>
-            <li>
-              <span className="label">Total</span>
-              <span className="val text-lg font-bold">
-                {currency}
-                {data?.total}
-              </span>
-            </li>
-          </ul>
+          )}
+        
+          <li>
+            <span className="label">Total</span>
+            <span className="val text-lg font-bold">
+              {currency}
+              {data?.total}
+            </span>
+          </li>
+        </ul>
+        
         );
       case tableView:
         return (
