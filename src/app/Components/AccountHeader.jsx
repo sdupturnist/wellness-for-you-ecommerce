@@ -17,20 +17,20 @@ export default function AccountHeader({ back }) {
       <div className="flex gap-3 items-center">
         {!back && (
           <>
-            <div className="avatar">
-              <div className="w-10 rounded-full">
-                <Images
-                  imageurl={avatar}
-                  quality="80"
-                  width="150"
-                  height="150"
-                  title="test"
-                  alt="test"
-                  classes="block"
-                  placeholder={true}
-                />
-              </div>
-            </div>
+            {/* <div className="avatar"> */}
+              {/* <div className="w-10 rounded-full"> */}
+                {/* <Images */}
+                  {/* imageurl={avatar} */}
+                  {/* quality="80" */}
+                  {/* width="150" */}
+                  {/* height="150" */}
+                  {/* title="test" */}
+                  {/* alt="test" */}
+                  {/* classes="block" */}
+                  {/* placeholder={true} */}
+                {/* /> */}
+              {/* </div> */}
+            {/* </div> */}
             <h3 className="text-lg font-semibold">Hi, Test user</h3>
           </>
         )}

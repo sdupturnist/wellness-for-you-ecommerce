@@ -43,7 +43,7 @@ export default function CashOnDeliveryPayment({ userData }) {
     setPaymentTerms,
   } = useCheckoutContext();
 
-  console.log(cartItems)
+  
 
 
   const [loading, setLoading] = useState(false);
@@ -60,8 +60,8 @@ export default function CashOnDeliveryPayment({ userData }) {
   // Filter out image and id from the cart items before sending to the backend
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
+  const totalDiscount = discount || 0
 
-  console.log(filteredItems)
 
   // Handle the payment and order creation logic
   const handlePayment = async () => {
@@ -170,7 +170,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "COD", // No order ID for COD
                   "Cash on Delivery", // Payment method
                   userData,
-                  ""
+                  "",
+                  totalDiscount || 0
                 ),
               });
 
@@ -186,7 +187,9 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "COD", // No order ID for COD
                   "Cash on Delivery", // Payment method
                   userData,
-                  ""
+                  "",
+                  totalDiscount || 0
+
                 ),
               });
 

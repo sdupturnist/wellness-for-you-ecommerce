@@ -61,7 +61,7 @@ export default function RazorPayment({ userData }) {
 
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
- 
+ const totalDiscount = discount || 0
 
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
@@ -191,7 +191,8 @@ export default function RazorPayment({ userData }) {
                   data.orderId,
                   paymentMethodOption,
                   userData,
-                  paymentId
+                  paymentId,
+                  totalDiscount
                 ),
               });
   
@@ -207,7 +208,8 @@ export default function RazorPayment({ userData }) {
                   data.orderId,
                   paymentMethodOption,
                   userData,
-                  paymentId
+                  paymentId,
+                  totalDiscount
                 ),
               });
   

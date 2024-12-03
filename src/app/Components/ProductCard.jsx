@@ -35,69 +35,94 @@ export default function ProductCard({
     }
   }, [data]);
 
+  const [activeWishlist, setActiveWishlist] = useState([]);
+
+  // Fetch wishlist items
+  useEffect(() => {
+    fetch("https://admin.wellness4u.in/wp-json/wishlist/v1/items?user_id=2")
+      .then((res) => res.json())
+      .then((data) => {
+        setActiveWishlist(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  // const filterWishListFromItems = data && data.filter(product => product.id === 66);
+
+  console.log(activeWishlist);
+
   const leftRightCard = loading ? (
     <Skelton productleftRightCard />
   ) : (
-    <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0">
-    <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-      {wishlist && <AddToWishList small active />}
-      <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
-        <Link
-          className="flex sm:block items-center min-w-32"
-          href={`${itemCaturl}/${data?.slug}`}>
-          <Images
-            imageurl={
-              data?.images[0]?.src ||
-              (data?.images.length > 0 && data?.images)
+    <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
+        <AddToWishList
+            small
+            activeWishlist={
+              activeWishlist &&
+              Object.values(activeWishlist).includes(data?.id) &&
+              "active"
             }
-            quality="100"
-            width="150"
-            height="150"
-            title={`${data?.images[0]?.alt || data?.name}`}
-            alt={`${data?.images[0]?.alt || data?.name}`}
-            classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
-            placeholder={true}
+            itemName={data?.name}
+            productId={data?.id}
           />
-        </Link>
-      </div>
-
-      <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3">
-       
-      <div>
-          <Link href={`${itemCaturl}/${data?.slug}`}>
-            <h3 className="product-title text-dark mb-2">{data?.name}</h3>
+      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
+     <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+           <Link
+            className="flex sm:block items-center min-w-32"
+            href={`${itemCaturl}/${data?.slug}`}>
+            <Images
+              imageurl={
+                data?.images[0]?.src ||
+                (data?.images.length > 0 && data?.images)
+              }
+              quality="100"
+              width="150"
+              height="150"
+              title={`${data?.images[0]?.alt || data?.name}`}
+              alt={`${data?.images[0]?.alt || data?.name}`}
+              classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
+              placeholder={true}
+            />
           </Link>
-          {data?.rating_count > 0 && (
-            <ReviewCount
-              average={data?.average_rating}
-              ratingCount={data?.rating_count}
-            />
-          )}
-            {data?.price && (
-            <Price
-            regular={data?.regular_price}
-            sale= {data?.price}
-            />
-           
-          )}
+        </div>
 
+        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3 sm:max-w-full max-w-[60%]">
           <div>
-            {!inCartPage && data?.price && (
-              <AddToCart
-                card
-                itemid={data?.id}
-                price={data?.price !== null ? data?.price : data?.regular_price}
-                name={data?.name}
-                options={convertStringToJSON(data && data?.acf?.options)}
-                image={data?.images[0]?.src || data?.images}
-                slug={data?.slug}
+            <Link href={`${itemCaturl}/${data?.slug}`}>
+              <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
+            </Link>
+            {data?.rating_count > 0 && (
+              <ReviewCount
+                average={data?.average_rating}
+                ratingCount={data?.rating_count}
               />
             )}
+            {data?.price && (
+              <Price regular={data?.regular_price} sale={data?.price} />
+            )}
+
+            <div>
+              {!inCartPage && data?.price && (
+                <AddToCart
+                  card
+                  itemid={data?.id}
+                  price={
+                    data?.price !== null ? data?.price : data?.regular_price
+                  }
+                  name={data?.name}
+                  options={convertStringToJSON(data && data?.acf?.options)}
+                  image={data?.images[0]?.src || data?.images}
+                  slug={data?.slug}
+                />
+              )}
+            </div>
           </div>
-          </div>
+        </div>
       </div>
-    </div>
-  </li>
+    </li>
   );
 
   const leftRightCardMobile = loading ? (
@@ -110,10 +135,19 @@ export default function ProductCard({
       </div>
     </>
   ) : (
-    <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0">
+    <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
+       <AddToWishList
+            small
+            activeWishlist={
+              activeWishlist &&
+              Object.values(activeWishlist).includes(data?.id) &&
+              "active"
+            }
+            itemName={data?.name}
+            productId={data?.id}
+          />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-        {wishlist && <AddToWishList small active />}
-        <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+      <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
           <Link
             className="flex sm:block items-center min-w-32"
             href={`${itemCaturl}/${data?.slug}`}>
@@ -133,38 +167,36 @@ export default function ProductCard({
           </Link>
         </div>
 
-        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3">
+        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3 sm:max-w-full max-w-[60%]">
           <div>
-          <Link href={`${itemCaturl}/${data?.slug}`}>
-            <h3 className="product-title text-dark mb-2">{data?.name}</h3>
-          </Link>
-          {data?.rating_count > 0 && (
-            <ReviewCount
-              average={data?.average_rating}
-              ratingCount={data?.rating_count}
-            />
-          )}
-          {data?.price && (
-            <Price
-            regular={data?.regular_price}
-            sale= {data?.price}
-            />
-           
-          )}
-
-          <div>
-            {!inCartPage && data?.price && (
-              <AddToCart
-                card
-                itemid={data?.id}
-                price={data?.price !== null ? data?.price : data?.regular_price}
-                name={data?.name}
-                options={convertStringToJSON(data && data?.acf?.options)}
-                image={data?.images[0]?.src || data?.images}
-                slug={data?.slug}
+            <Link href={`${itemCaturl}/${data?.slug}`}>
+              <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
+            </Link>
+            {data?.rating_count > 0 && (
+              <ReviewCount
+                average={data?.average_rating}
+                ratingCount={data?.rating_count}
               />
             )}
-          </div>
+            {data?.price && (
+              <Price regular={data?.regular_price} sale={data?.price} />
+            )}
+
+            <div>
+              {!inCartPage && data?.price && (
+                <AddToCart
+                  card
+                  itemid={data?.id}
+                  price={
+                    data?.price !== null ? data?.price : data?.regular_price
+                  }
+                  name={data?.name}
+                  options={convertStringToJSON(data && data?.acf?.options)}
+                  image={data?.images[0]?.src || data?.images}
+                  slug={data?.slug}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -197,8 +229,14 @@ export default function ProductCard({
         </>
       ) : (
         <div className="product-card w-full mr-2">
+            <AddToWishList
+              small
+              active
+              itemName={data?.name}
+              productId={data?.id}
+            />
           <div className="block w-full">
-            <Link href={`${itemCaturl}/${data?.slug}`}>
+             <Link href={`${itemCaturl}/${data?.slug}`}>
               <Images
                 imageurl={
                   data?.images[0]?.src ||
@@ -216,7 +254,7 @@ export default function ProductCard({
 
             <div className="p-4 pt-0">
               <Link href={`${itemCaturl}/${data?.slug}`}>
-                <h3 className="product-title text-dark mb-2">{data?.name}</h3>
+                <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
               </Link>
               {data?.rating_count > 0 && (
                 <ReviewCount
@@ -224,13 +262,9 @@ export default function ProductCard({
                   ratingCount={data?.rating_count}
                 />
               )}
-               {data?.price && (
-            <Price
-            regular={data?.regular_price}
-            sale= {data?.price}
-            />
-           
-          )}
+              {data?.price && (
+                <Price regular={data?.regular_price} sale={data?.price} />
+              )}
               {!inCartPage && data?.price && (
                 <AddToCart
                   card

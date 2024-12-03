@@ -283,7 +283,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           countryid={countryid}
           stateid={stateid}
           onChange={(e) => {
-            console.log(e);
+       
             setCity(e.name || e.target.value);
           }}
           placeHolder="Town/City"

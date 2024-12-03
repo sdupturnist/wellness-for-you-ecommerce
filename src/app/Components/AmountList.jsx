@@ -59,21 +59,21 @@ export default function AmountList({
       case forOrderDetails:
         return (
           <ul className="amount-list capitalize">
-          {console.log(data)}
+      
         
           {data?.line_items && data?.line_items.map((item, index) => (
             <li key={index}>
               <span className="label">
-                {item?.product_name} x {item?.quantity}
+                {item?.name} x {item?.quantity}
               </span>
               <span className="val">
                 {currency}
-                {(item?.total * item?.quantity)}
+                {(item?.subtotal)}
               </span>
             </li>
           ))}
         
-        
+
           
           {/* <li> */}
             {/* <span className="label">Payment Method</span> */}
@@ -163,7 +163,7 @@ export default function AmountList({
                       </li>
                     )}
                   </ul>
-                  {console.log(item?.status === "completed")}
+              
                   {/* <Invoice/> */}
                   {item?.status === "completed" && (
                     <Link

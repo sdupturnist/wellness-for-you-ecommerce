@@ -2,16 +2,18 @@
 
 import { currency, formatDate } from "./variables"
 
-export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid) => {
+export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount) => {
     
   let today = new Date();
 
-  console.log('asdasdasdasdasdasd')
+
 
   // Calculate Sub-Total dynamically
   let subTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
   let freeShipping = 0.00; // Assuming free shipping for now, can be dynamic
   let total = subTotal + freeShipping; // Add shipping to total if necessary
+
+
 
   // Mapping cart items into a string of <tr> for the table
   const orderItems = cartItems.map((item, index) => (
@@ -91,12 +93,16 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${subTotal.toFixed(2)}</td>
       </tr>
       <tr>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Discount:</b></td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${discount !== 0 ? discount : '0'}</td>
+      </tr>
+          <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Free Shipping:</b></td>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${freeShipping.toFixed(2)}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${total.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(discount !== 0 ? total-discount : total).toFixed(2)}</td>
       </tr>
     </tfoot>
   </table>

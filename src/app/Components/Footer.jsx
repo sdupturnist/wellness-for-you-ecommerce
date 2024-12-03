@@ -9,19 +9,13 @@ import ReadyToGoCart from "./ReadyToGoCart";
 import { useCartContext } from "../Context/cartContext";
 import { usePathname } from "next/navigation";
 
-
 export default function Footer() {
-
-
-  const {cartItems} = useCartContext()
-  const pathname = usePathname()
-
-
-
+  const { cartItems } = useCartContext();
+  const pathname = usePathname();
 
   return (
     <>
-      <footer className="bg-primary spacing">
+      <footer className="spacing">
         <div className="container grid gap-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             <ul>
@@ -46,15 +40,18 @@ export default function Footer() {
                 <Link href={`${homeUrl}privacy-policy`}>Privacy</Link>
               </li>
               <li>
-                <Link href={`${homeUrl}terms-conditions`}>Terms & Conditions</Link>
+                <Link href={`${homeUrl}terms-conditions`}>
+                  Terms & Conditions
+                </Link>
               </li>
               <li>
-                <Link href={`${homeUrl}return-refund-policy`}>Return And Refund Policy</Link>
+                <Link href={`${homeUrl}return-refund-policy`}>
+                  Return And Refund Policy
+                </Link>
               </li>
               <li>
                 <Link href={`${homeUrl}shipping-policy`}>Shipping Policy</Link>
               </li>
-             
             </ul>
             <ul>
               <li>
@@ -90,7 +87,7 @@ export default function Footer() {
         </div>
       </footer>
       {/* {cartItems && cartItems.length > 0 && pathname !== '/cart' &&   */}
-  {/* <ReadyToGoCart data={cartItems} />} */}
+      {/* <ReadyToGoCart data={cartItems} />} */}
     </>
   );
 }

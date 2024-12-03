@@ -12,6 +12,7 @@ export default function Skelton({ productCard, productleftRightCard, listAddress
             <div className="flex flex-col gap-4 w-full">
               <div className="skeleton h-4 w-full"></div>
               <div className="skeleton h-4 w-full max-w-[50%]"></div>
+              
             </div>
           </div>
         </div>
@@ -21,7 +22,9 @@ export default function Skelton({ productCard, productleftRightCard, listAddress
         <div className="flex w-full flex-col gap-4 bg-white">
           <div className="skeleton h-48 w-full"></div>
           <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full max-w-[50%]"></div>
+          <div className="skeleton h-4 w-full"></div>
+              <div className="skeleton h-4 w-full max-w-[70%]"></div>
+              <div className="skeleton h-4 w-full max-w-[80px]"></div>
         </div>
       )}
 

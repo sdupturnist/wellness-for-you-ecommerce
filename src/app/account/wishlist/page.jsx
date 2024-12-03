@@ -1,129 +1,99 @@
-import Breadcrumb from "@/app/Components/Breadcrumb";
-import AccountHeader from "@/app/Components/AccountHeader";
-import ProfileMenu from "@/app/Components/ProfileMenu";
+"use client";
+
 import ProductCard from "@/app/Components/ProductCard";
 import Alerts from "@/app/Components/Alerts";
-
-
+import { useEffect, useState } from "react";
+import Loading from "@/app/Components/Loading";
+import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
+import AddToWishList from "@/app/Components/AddToWishList";  // Import the AddToWishList component
 
 export default function WishList() {
+  const [wishlist, setWishlist] = useState([]);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  
-const wishListItems = [
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
+  const userInfo = {
+    id: 2,
+    name: `Anjali`,
+    email: `upturnistuae@gmail.com`,
+    phone: `911234567890`,
+  };
 
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
+  // Fetch wishlist items
+  useEffect(() => {
+    fetch(`https://admin.wellness4u.in/wp-json/wishlist/v1/items?user_id=2`)
+      .then((res) => res.json())
+      .then((data) => {
+        setWishlist(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
-  {
-    product_photo: "/images/product.jpg",
-    product_title: "Vitaminberry Just For Gut",
-    review_count: 3,
-    normal_price: 1040,
-    sale_price: 989,
-    offer: 20,
-    reviews: [
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 1,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 2,
-      },
-      {
-        review_author: `Esther Howard`,
-        review_post_date: ` 22 Jul`,
-        review_content: `Lorem ipsum dolor sit amet consectetur. Gravida accumsan semper lacus mus orci diam malesuada. Turpis et iaculis in dolor platea ut amet arcu auctor. Odio aliquam porta tincidunt sed senectus egestas vel ut. Sociis risus eu lobortis tortor vitae nunc volutpat. Erat posuere amet ligula pellentesque mauris porta viverra vitae.`,
-        review_count: 5,
-      },
-    ],
-  },
+  // Generate result string for the wishlist items
+  let result = "";
+  if (Array.isArray(wishlist)) {
+    result = wishlist.map((id) => `&include[]=${id}`).join("");
+  } else if (wishlist && typeof wishlist === "object") {
+    result = Object.values(wishlist)
+      .map((value) => `&include[]=${value}`)
+      .join("");
+  }
 
-  
-];
+  // Fetch product data based on wishlist
+  useEffect(() => {
+    if (result) {
+      fetch(`${apiUrl}wp-json/wc/v3/products${woocommerceKey}${result}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setItems(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+        });
+    }
+  }, [result]);
+
+
 
 
   return (
     <div className="bg-bggray">
-    <section className="bg-bggray sm:py-10">
-       <div className="container !px-0 sm:px-5">
-         <div className="max-w-[999px] mx-auto">
-           <AccountHeader back/>
-           <div className="sm:mt-5 mt-3 sm:pt-2">
-              <div className="grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-5 gap-1">
-                 {!wishListItems && <Alerts large title="You have not any" />}
-                 {wishListItems &&
-                   wishListItems.map((item, index) => (
-                    <div key={index} className="card-rounded-none-small !p-0 overflow-hidden">
-                      <ProductCard key={index} data={item} mobileList wishlist/>
+      <section className="pb-0 sm:pt-0 pt-3">
+        <div className="sm:bg-transparent max-w-[999px] mx-auto">
+          <div>
+            {loading ? (
+              <div className="text-center min-h-[70vh] flex items-center justify-center">
+                <Loading spinner />
+              </div>
+            ) : !items || items.length === 0 ? (
+              <Alerts large title="You have not any products in your wishlist" />
+            ) : (
+              <>
+                <div className="grid gap-3 sm:gap-0 w-full lg:order-2 order-first ">
+                  {wishlist && (
+                    <div className="section-header-card">
+                      <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
+                        {items.map((item, index) => (
+                          <ProductCard
+                            key={index}
+                            data={item}
+                            mobileList
+                          />
+                        ))}
+                      </ul>
                     </div>
-                   ))}
-               </div>
-           </div>
-             <ProfileMenu />
-         </div>
-       </div>
-     </section>
-   </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
-
-

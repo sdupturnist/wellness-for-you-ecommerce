@@ -299,8 +299,7 @@ export default function UpdateAddressForm({ addressCount }) {
           countryid={countryid}
           stateid={stateid}
           onChange={(e) => {
-            console.log(e);
-            setCity(e.name || e.target.value);
+           setCity(e.name || e.target.value);
           }}
           placeHolder="Town/City"
           required

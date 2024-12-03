@@ -1,6 +1,6 @@
 "use client";
 
-import { currency, freeShipping, siteLogo } from "../Utils/variables";
+import { currency, freeShipping, siteLogo, siteLogoWhite } from "../Utils/variables";
 
 
 const userInfo = {
@@ -31,9 +31,9 @@ export default function Invoice({ data }) {
               fontWeight: "600",
             }}>
             <img
-              src={siteLogo}
+              src={siteLogoWhite}
               alt="Logo"
-              style={{ display: "block", height: "40px" }}
+              style={{ display: "block", height: "40px", width: "100px"}}
             />
           </td>
         </tr>
@@ -297,7 +297,7 @@ export default function Invoice({ data }) {
                 </tr>
               </thead>
               <tbody>
-                {console.log(data?.line_items)}
+            
               {data?.line_items &&
           data?.line_items.map((item, index) => (
             <tr key={index}>
@@ -329,8 +329,9 @@ export default function Invoice({ data }) {
                 textAlign: "right",
                 padding: "7px",
               }}>
-              {currency}{item?.subtotal}
+              {currency}{item?.subtotal/item?.quantity}
             </td>
+          
             <td
               style={{
                 fontSize: "12px",
@@ -339,11 +340,10 @@ export default function Invoice({ data }) {
                 textAlign: "right",
                 padding: "7px",
               }}>
-              {currency}{item?.subtotal}
+             {currency}{item?.subtotal/item?.quantity*item?.quantity}
             </td>
           </tr>
           ))}
-
               </tbody>
               <tfoot>
                 <tr>
@@ -366,7 +366,30 @@ export default function Invoice({ data }) {
                       textAlign: "right",
                       padding: "7px",
                     }}>
-                    {currency}{data?.total}
+                  {currency}{parseInt(data?.total)+parseInt(data?.discount_total)}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontSize: "12px",
+                      borderRight: "1px solid #dddddd",
+                      borderBottom: "1px solid #dddddd",
+                      textAlign: "right",
+                      padding: "7px",
+                    }}
+                    colSpan="3">
+                    <b>Discount:</b>
+                  </td>
+                  <td
+                    style={{
+                      fontSize: "12px",
+                      borderRight: "1px solid #dddddd",
+                      borderBottom: "1px solid #dddddd",
+                      textAlign: "right",
+                      padding: "7px",
+                    }}>
+                    -{currency}{parseInt(data?.discount_total)}
                   </td>
                 </tr>
                 <tr>
@@ -417,11 +440,7 @@ export default function Invoice({ data }) {
                 </tr>
               </tfoot>
             </table>
-
-            <p style={{ marginTop: "0px", marginBottom: "20px" }}>
-              Please reply to this e-mail if you have any questions.
-            </p>
-          </td>
+  </td>
         </tr>
 
         <tr>

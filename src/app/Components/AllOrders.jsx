@@ -33,8 +33,6 @@ export default function AllOrders() {
   }, []);  // Empty dependency array to run the effect once
 
 
-  console.log(orders)
-
   return (
     <div>
       {loading ? (

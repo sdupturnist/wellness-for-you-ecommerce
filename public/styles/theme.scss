@@ -304,7 +304,7 @@ button:disabled {
 
     
     .product-title{
-        @apply text-sm line-clamp-1 text-dark;
+        @apply text-[14px]  text-dark;
     }
     .product-price{
         @apply text-[0.875rem] font-bold text-dark;
@@ -354,7 +354,7 @@ li{
         @apply rounded-md  text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
     }
     .product-title{
-        @apply text-sm line-clamp-1 text-dark;
+        @apply text-[14px] text-dark;
     }
     .product-price{
         @apply text-[0.875rem] font-bold text-dark;
@@ -388,13 +388,12 @@ li{
    @apply  w-[152px] h-[152px] object-contain;
   }
     }
-
    
     .btn{
         @apply rounded-md  text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
     }
     .product-title{
-        @apply text-sm line-clamp-1 text-dark;
+        @apply text-[14px]  text-dark;
     }
     .product-price{
         @apply text-[0.875rem] font-bold text-dark;
@@ -478,6 +477,7 @@ a{
 
 
 footer{
+    background: $GREENLIGHT;
     a, p{
         @apply text-sm font-light text-white
     }
