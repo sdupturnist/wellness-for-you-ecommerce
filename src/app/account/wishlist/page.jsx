@@ -21,7 +21,7 @@ export default function WishList() {
 
   // Fetch wishlist items
   useEffect(() => {
-    fetch(`https://admin.wellness4u.in/wp-json/wishlist/v1/items?user_id=2`)
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userInfo?.id}`)
       .then((res) => res.json())
       .then((data) => {
         setWishlist(data);
