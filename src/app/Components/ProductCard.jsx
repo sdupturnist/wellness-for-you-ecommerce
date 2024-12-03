@@ -52,7 +52,7 @@ export default function ProductCard({
 
   // const filterWishListFromItems = data && data.filter(product => product.id === 66);
 
-  console.log(activeWishlist);
+ 
 
   const leftRightCard = loading ? (
     <Skelton productleftRightCard />
@@ -103,6 +103,7 @@ export default function ProductCard({
             {data?.price && (
               <Price regular={data?.regular_price} sale={data?.price} />
             )}
+
 
             <div>
               {!inCartPage && data?.price && (

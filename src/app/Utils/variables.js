@@ -62,52 +62,52 @@ export let accountMenus = [
   {
     label: 'Orders',
     url: 'account/orders',
-    icon: <ArchiveBoxIcon className="size-4 text-primary" />,
+    icon: <ArchiveBoxIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   {
     label: 'Transactions',
     url: 'account/transations',
-    icon: <CalendarIcon className="size-4 text-primary" />,
+    icon: <CalendarIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   {
     label: 'Wishlist',
     url: 'account/wishlist',
-    icon: <HeartIcon className="size-4 text-primary" />,
+    icon: <HeartIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   {
     label: 'Address',
     url: 'account/address',
-    icon: <MapIcon className="size-4 text-primary" />,
+    icon: <MapIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   // {
   //   label: 'Payments',
   //   url: 'account/payments',
-  //   icon: <CreditCardIcon className="size-4 text-primary" />,
+  //   icon: <CreditCardIcon className="sm:size-4 size-[18px] text-primary" />,
   // },
   // {
   //   label: 'Returns',
   //   url: 'account/returns',
-  //   icon: <TruckIcon className="size-4 text-primary" />,
+  //   icon: <TruckIcon className="sm:size-4 size-[18px] text-primary" />,
   // },
   {
     label: 'Reviews',
     url: 'account/reviews',
-    icon: <StarIcon className="size-4 text-primary" />,
+    icon: <StarIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   // {
   //   label: 'Reward Points',
   //   url: 'account/rewards',
-  //   icon: <GiftIcon className="size-4 text-primary" />,
+  //   icon: <GiftIcon className="sm:size-4 size-[18px] text-primary" />,
   // },
   {
     label: 'Edit profile',
     url: 'account/edit-profile',
-    icon: <UserIcon className="size-4 text-primary" />,
+    icon: <UserIcon className="sm:size-4 size-[18px] text-primary" />,
   },
   {
     label: 'Reset password',
     url: 'account/reset-password',
-    icon: <KeyIcon className="size-4 text-primary" />,
+    icon: <KeyIcon className="sm:size-4 size-[18px] text-primary" />,
   },
  
 ];

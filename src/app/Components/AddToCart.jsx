@@ -301,6 +301,9 @@ export default function AddToCart({
       });
   };
 
+
+  const [activeWishlist, setActiveWishlist] = useState([]);
+
   return (
     <>
       {notification && (
@@ -441,14 +444,30 @@ export default function AddToCart({
                       </ul>
                     }
                   </details>
-                  <AddToWishList id={itemid} />
+                   <AddToWishList
+            activeWishlist={
+              activeWishlist &&
+              Object.values(activeWishlist).includes(itemid) &&
+              "active"
+            }
+            itemName={name}
+            productId={itemid}
+          />
                 </>
               ) : (
                 <>
                   <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8">
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </Link>
-                  <AddToWishList id={itemid} />
+                  <AddToWishList
+            activeWishlist={
+              activeWishlist &&
+              Object.values(activeWishlist).includes(itemid) &&
+              "active"
+            }
+            itemName={name}
+            productId={itemid}
+          />
                 </>
               ))}
           </div>

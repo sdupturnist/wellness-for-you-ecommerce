@@ -8,7 +8,7 @@ export default function BottomNav(){
     return(
        <div className="container">
          <div className="flex items-center justify-between gap-7">
-      <Nav/>
+      <Nav bottomNav/>
       </div>
        </div>
     )

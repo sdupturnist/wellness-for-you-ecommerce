@@ -1,21 +1,7 @@
 "use client";
-import {
-  PencilIcon,
-  HeartIcon,
-  ArchiveBoxIcon,
-  TruckIcon,
-  MapIcon,
-  CreditCardIcon,
-  StarIcon,
-  GiftIcon,
-  KeyIcon,
-  UserIcon,
-  CogIcon,
-  CalendarIcon,
-  ArrowUturnUpIcon,
-} from "@heroicons/react/24/solid";
 import { accountMenus } from "../Utils/variables";
 import AccountMenu from "./AccountMenu";
+import Logout from "./Logout";
 
 export default function ProfileMenu({}) {
   return (
@@ -30,14 +16,14 @@ export default function ProfileMenu({}) {
             url={item?.url}
           />
         ))}
-
-      <AccountMenu
+<Logout/>
+      {/* <AccountMenu
         minimum
         logout
         icon={<PencilIcon className="size-4 text-primary" />}
         title="Logout"
         url="/"
-      />
+      /> */}
     </div>
   );
 }

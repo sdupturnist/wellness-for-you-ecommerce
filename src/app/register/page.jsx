@@ -4,7 +4,6 @@ import SectionHeader from "../Components/SectionHeader";
 import { homeUrl } from "../Utils/variables";
 import Signup from "../Components/Forms/Signup";
 
-
 export default function SignupPage() {
   return (
     <div className="bg-bggray">
@@ -16,11 +15,11 @@ export default function SignupPage() {
             width="1700"
             height="600"
             alt="Wellness for you"
-        classes="block w-full sm:h-[350px] h-[150px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
+            classes="block w-full sm:h-[350px] h-[150px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
             placeholder={true}
           />
 
-          <div className="card bg-white py-5 px-4 sm:max-w-[500px] max-w-[350px] w-full mx-auto relative sm:top-[-200px] top-[-100px]">
+          <div className="bg-white sm:p-14 p-8 sm:max-w-[500px] max-w-[400px] w-full mx-auto relative sm:top-[-200px] top-[-100px] rounded-lg border border-border">
             <SectionHeader title="Create a account" titleCenter />
             <div className="grid gap-5">
               <Signup />

@@ -319,8 +319,15 @@ header a {
 .search .result-item {
   @apply font-semibold py-3 cursor-pointer;
 }
+.search .ewTnKk {
+  margin: 0px 14px 0 0 !important;
+}
 .search .dYrfwz {
   justify-content: space-between !important;
+}
+.search .dYrfwz input {
+  border: 0 !important;
+  outline: none !important;
 }
 .search .jiMOeR .wrapper {
   border: 0 !important;
