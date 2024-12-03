@@ -1,6 +1,6 @@
 "use client"; // This is necessary to enable React in this file
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   apiUrl,
@@ -35,16 +35,16 @@ export default function CashOnDeliveryPayment({ userData }) {
 
   const {
     billingAddress,
+    validateAddress,
     setValidateAddress,
     setUpdatePaymentStatus,
     paymentTerms,
+    validateTerms,
     setValidateTerms,
     setPaymentId,
     setPaymentTerms,
+    setBillingAddress,
   } = useCheckoutContext();
-
-  
-
 
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
@@ -54,31 +54,33 @@ export default function CashOnDeliveryPayment({ userData }) {
   // Calculate the amount to pay after applying any discount
   const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
 
- 
-
-
   // Filter out image and id from the cart items before sending to the backend
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
-  const totalDiscount = discount || 0
+  const totalDiscount = discount || 0;
 
+  useLayoutEffect(() => {
+    setBillingAddress("");
+    setValidateTerms(false);
+  }, []);
 
   // Handle the payment and order creation logic
   const handlePayment = async () => {
-    
-
     // Validation checks for billing address and payment terms
-    if (!billingAddress) {
+
+    if (!billingAddress && validateAddress === false) {
       setValidateAddress(true);
       setValidate(true);
       setValidationMessage("Please select a billing address");
       return;
     }
 
-    if (!paymentTerms) {
+    if (validateTerms === false) {
       setValidateTerms(true);
       setValidate(true);
-      setValidationMessage("You must accept the terms and conditions to proceed.");
+      setValidationMessage(
+        "You must accept the terms and conditions to proceed."
+      );
       return;
     }
 
@@ -189,7 +191,6 @@ export default function CashOnDeliveryPayment({ userData }) {
                   userData,
                   "",
                   totalDiscount || 0
-
                 ),
               });
 
@@ -227,12 +228,8 @@ export default function CashOnDeliveryPayment({ userData }) {
   return (
     <>
       {validate && <Alerts status="red" title={validationMessage} />}
-      <button
-        onClick={handlePayment}
-        className="btn-large"
-       
-      >
-       Proceed to checkout
+      <button onClick={handlePayment} className="btn-large">
+        Proceed to checkout
       </button>
     </>
   );

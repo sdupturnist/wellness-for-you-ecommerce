@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { homeUrl } from "../Utils/variables";
 
 export default function PaymentOptionsList({ data }) {
-  const { setPaymentMethodOption, setPaymentTerms, paymentTerms, validateTerms } =
+  const { setPaymentMethodOption, setPaymentTerms, paymentTerms, validateTerms, setValidateTerms } =
     useCheckoutContext();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
@@ -47,14 +47,17 @@ export default function PaymentOptionsList({ data }) {
             </div>
           </div>
         ))}
-      <div className={`${validateTerms && " !border-red-400 !border rounded-lg p-3 bg-red-50 animate__animated animate__pulse"} border-t border-border pt-5 mt-4`}>
+      <div className={`border-t border-border pt-5 mt-4`}>
         <div className="list-options-small !gap-2">
           <div>
             <input
               type="checkbox"
               className="checkbox  checkbox-success checkbox-sm"
               name="selected_address"
-              onChange={(e) => setPaymentTerms(!paymentTerms)}
+              onChange={(e) => {
+                setPaymentTerms(!paymentTerms),
+                setValidateTerms(true)
+              }}
             />
              <label>
               I have read and agree to the website <Link className="underline" href={`${homeUrl}terms-conditions`}>terms and conditions</Link>.

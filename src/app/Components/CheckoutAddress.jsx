@@ -10,7 +10,7 @@ import "animate.css/animate.min.css";
 import { useCheckoutContext } from "../Context/checkoutContext";
 
 export default function CheckoutAddress() {
-  const { showAddNewAddress, setShowAddNewAddress, validateAddress } =
+  const { showAddNewAddress, setShowAddNewAddress } =
     useCheckoutContext();
 
   const [savedAddress, setAdditionalsavedAddress] = useState("");
@@ -38,10 +38,7 @@ export default function CheckoutAddress() {
 
   return (
     <div
-      className={`card-rounded-none-small w-full bg-white py-5 px-4  ${
-        validateAddress &&
-        " !border-red-400 bg-red-50 animate__animated animate__pulse"
-      }`}>
+      className={`card-rounded-none-small w-full bg-white py-5 px-4`}>
       <SectionHeader title="Billing details" card />
       <ul className="grid gap-5">
         {!loading &&

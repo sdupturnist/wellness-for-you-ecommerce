@@ -18,28 +18,19 @@ import Alerts from "../Alerts";
 import { useRouter, useParams } from "next/navigation";
 import { useSiteContext } from "@/app/Context/siteContext";
 
-
-
 export default function UpdateAddressForm({ addressCount }) {
- 
-  const id = useParams()
-  const router = useRouter()
+  const id = useParams();
+  const router = useRouter();
 
+  const { editData } = useSiteContext();
 
-  const {editData} =  useSiteContext()
-
-
-
-
+  console.log(editData);
 
   const userInfo = {
     id: 2,
     first_name: "Muhammed",
     user_email: "upturnistuae@gmail.com",
   };
-
-
-  
 
   const [region, setRegion] = useState("");
   const [countryid, setCountryid] = useState(0);
@@ -60,8 +51,6 @@ export default function UpdateAddressForm({ addressCount }) {
 
   const addressId = addressCount + 1; // Increment counter for each request
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,20 +59,18 @@ export default function UpdateAddressForm({ addressCount }) {
     const updatedData = {
       address: {
         address_1: addressOne,
-        address_2:  addressTwo,
-        city:  city,
-        state:  state,
-        postcode:  pinCode,
-        country:  country,
-        first_name:  firstName,
-        last_name:  lastName,
-        company:  companyName,
+        address_2: addressTwo,
+        city: city,
+        state: state,
+        postcode: pinCode,
+        country: country,
+        first_name: firstName,
+        last_name: lastName,
+        company: companyName,
       },
     };
 
     try {
-      
-
       const response = await fetch(
         `${apiUrl}wp-json/wc/v3/customers/${userInfo?.id}/addresses/${id?.id}${woocommerceKey}`,
         {
@@ -118,81 +105,78 @@ export default function UpdateAddressForm({ addressCount }) {
         setAddressTwo("");
         setPinCode("");
 
-
-        
-
         //MAIL NOTIFICATION TO USER
 
-//         await sendMail({
-//           sendTo: userInfo && userInfo?.user_email,
-//           subject: `You have successfully added your new address. | ${siteName}`,
-//           name: userInfo && userInfo?.first_name,
-//           message:
-//             `<table style="width: 100%; border-collapse: collapse;">
-//     <tbody>
-//       <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">First Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             firstName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Last Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             lastName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Company Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             companyName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 1</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             addressOne +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 2</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             addressTwo +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">City</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             city +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">State</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             state +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Pin Code / Postcode</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             pinCode +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Country</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             country +
-//             `</td> 
-//         </tr>
-//      </tbody>
-// </table>`,
-//         });
+        //         await sendMail({
+        //           sendTo: userInfo && userInfo?.user_email,
+        //           subject: `You have successfully added your new address. | ${siteName}`,
+        //           name: userInfo && userInfo?.first_name,
+        //           message:
+        //             `<table style="width: 100%; border-collapse: collapse;">
+        //     <tbody>
+        //       <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">First Name</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             firstName +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Last Name</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             lastName +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Company Name</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             companyName +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 1</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             addressOne +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 2</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             addressTwo +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">City</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             city +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">State</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             state +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Pin Code / Postcode</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             pinCode +
+        //             `</td>
+        //         </tr>
+        //         <tr>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">Country</td>
+        //             <td style="padding: 8px; border: 1px solid #ddd;">` +
+        //             country +
+        //             `</td>
+        //         </tr>
+        //      </tbody>
+        // </table>`,
+        //         });
 
         console.log("Success");
-       
-        router.back()
 
-      //  location.reload();
+        router.back();
+
+        //  location.reload();
 
         //  router.replace(router.asPath)
       } else {
@@ -217,9 +201,7 @@ export default function UpdateAddressForm({ addressCount }) {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="none">
-
-      
-     <div className="grid gap-4">
+      <div className="grid gap-4">
         {status && (
           <Alerts
             status="green"
@@ -234,7 +216,9 @@ export default function UpdateAddressForm({ addressCount }) {
         )}
         <input
           type="text"
-          defaultValue={editData && editData?.first_name}
+          defaultValue={
+            (editData && editData?.first_name) || editData?.shipping?.first_name
+          }
           className="input"
           placeholder="Full Name"
           onChange={(e) => setFirstName(e.target.value)}
@@ -242,7 +226,9 @@ export default function UpdateAddressForm({ addressCount }) {
           autoComplete="none"
         />
         <input
-         defaultValue={editData && editData?.last_name}
+          defaultValue={
+            (editData && editData?.last_name) || editData?.shipping?.last_name
+          }
           type="text"
           className="input"
           placeholder="Last Name"
@@ -251,7 +237,9 @@ export default function UpdateAddressForm({ addressCount }) {
           autoComplete="none"
         />
         <input
-         defaultValue={editData && editData?.company}
+          defaultValue={
+            (editData && editData?.country) || editData?.shipping?.company
+          }
           type="text"
           className="input"
           onChange={(e) => setCompanyName(e.target.value)}
@@ -269,7 +257,9 @@ export default function UpdateAddressForm({ addressCount }) {
           required
         />
         <input
-        defaultValue={editData && editData?.address_1}
+          defaultValue={
+            (editData && editData?.address_1) || editData?.shipping?.address_1
+          }
           type="text"
           className="input"
           placeholder="House number and street name"
@@ -277,7 +267,9 @@ export default function UpdateAddressForm({ addressCount }) {
           required
         />
         <input
-              defaultValue={editData && editData?.address_2}
+          defaultValue={
+            (editData && editData?.address_2) || editData?.shipping?.address_2
+          }
           type="text"
           className="input"
           placeholder="Apartment, suite, unit, etc. (optional)"
@@ -285,29 +277,30 @@ export default function UpdateAddressForm({ addressCount }) {
           autoComplete="none"
         />
         <StateSelect
-  countryid={countryid}
-  onChange={(e) => {
-    setstateid(e.id); // Updates the stateid when the user selects a state
-    setstate(e.name || e.target.value); // Updates the state name based on selection
-  }}
-  placeHolder="State"
-  required
-  autoComplete="none"
-/>
+          countryid={countryid}
+          onChange={(e) => {
+            setstateid(e.id); // Updates the stateid when the user selects a state
+            setstate(e.name || e.target.value); // Updates the state name based on selection
+          }}
+          placeHolder="State"
+          required
+          autoComplete="none"
+        />
 
         <CitySelect
           countryid={countryid}
           stateid={stateid}
           onChange={(e) => {
-           setCity(e.name || e.target.value);
+            setCity(e.name || e.target.value);
           }}
           placeHolder="Town/City"
           required
           autoComplete="none"
-          
         />
         <input
-           defaultValue={editData && editData?.postcode}
+          defaultValue={
+            (editData && editData?.postcode) || editData?.shipping?.postcode
+          }
           type="number"
           className="input"
           placeholder="Pin Code"

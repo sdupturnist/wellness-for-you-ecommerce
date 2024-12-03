@@ -1,12 +1,13 @@
 "use client";
 
-import { Link } from "react-alice-carousel";
 import { avatar } from "../Components/Avatars";
 import { accountMenus, homeUrl } from "../Utils/variables";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeftIcon, HeartIcon, Bars2Icon } from "@heroicons/react/24/solid";
 import Images from "./Images";
 import DropDown from "./DropDown";
+import Link from "next/link";
+
 
 export default function AccountHeader({ back }) {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function AccountHeader({ back }) {
                 {/* /> */}
               {/* </div> */}
             {/* </div> */}
-            <h3 className="text-lg font-semibold">Hi, Test user</h3>
+            <Link href={`${homeUrl}account`} className="text-lg font-semibold">Hi, Test user</Link>
           </>
         )}
         {back && (

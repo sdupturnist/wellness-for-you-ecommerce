@@ -79,26 +79,26 @@ export let accountMenus = [
     url: 'account/address',
     icon: <MapIcon className="size-4 text-primary" />,
   },
-  {
-    label: 'Payments',
-    url: 'account/payments',
-    icon: <CreditCardIcon className="size-4 text-primary" />,
-  },
-  {
-    label: 'Returns',
-    url: 'account/returns',
-    icon: <TruckIcon className="size-4 text-primary" />,
-  },
+  // {
+  //   label: 'Payments',
+  //   url: 'account/payments',
+  //   icon: <CreditCardIcon className="size-4 text-primary" />,
+  // },
+  // {
+  //   label: 'Returns',
+  //   url: 'account/returns',
+  //   icon: <TruckIcon className="size-4 text-primary" />,
+  // },
   {
     label: 'Reviews',
     url: 'account/reviews',
     icon: <StarIcon className="size-4 text-primary" />,
   },
-  {
-    label: 'Reward Points',
-    url: 'account/rewards',
-    icon: <GiftIcon className="size-4 text-primary" />,
-  },
+  // {
+  //   label: 'Reward Points',
+  //   url: 'account/rewards',
+  //   icon: <GiftIcon className="size-4 text-primary" />,
+  // },
   {
     label: 'Edit profile',
     url: 'account/edit-profile',

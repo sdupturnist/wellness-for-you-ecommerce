@@ -34,14 +34,15 @@ export default function RazorPayment({ userData }) {
   } = useCartContext();
   const {
     billingAddress,
+    validateAddress,
     setValidateAddress,
     setUpdatePaymentStatus,
     paymentTerms,
+    validateTerms,
     setValidateTerms,
-    paymentMethodOption,
     setPaymentId,
-    paymentId,
-    setPaymentTerms
+    setPaymentTerms,
+    setBillingAddress,
   } = useCheckoutContext();
 
   const [ip, setIp] = useState(null);
@@ -61,27 +62,29 @@ export default function RazorPayment({ userData }) {
 
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
- const totalDiscount = discount || 0
+  const totalDiscount = discount || 0;
 
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
 
-
+  useLayoutEffect(() => {
+    setBillingAddress("");
+    setValidateTerms(false);
+  }, []);
 
   const handlePayment = async () => {
     setLoading(true);
-  
-    // Validation checks
-    if (!billingAddress) {
+
+    if (!billingAddress && validateAddress === false) {
       setValidateAddress(true);
       setValidate(true);
       setValidationMessage("Please select a billing address");
       return;
     }
-  
-    if (!paymentTerms) {
+
+    if (validateTerms === false) {
       setValidateTerms(true);
       setValidate(true);
       setValidationMessage(
@@ -89,7 +92,7 @@ export default function RazorPayment({ userData }) {
       );
       return;
     }
-  
+
     try {
       // Step 1: Create the order ID from the server
       const response = await fetch(`${homeUrl}api/checkout/razorpay`, {
@@ -99,15 +102,15 @@ export default function RazorPayment({ userData }) {
         },
         body: JSON.stringify({ amount: payAmount }), // Amount in paise (1 INR = 100 paise)
       });
-  
+
       const data = await response.json();
-  
+
       if (!data.success) {
         alert("Error creating order");
         setLoading(false);
         return;
       }
-  
+
       // Step 2: Prepare Razorpay payment options
       const options = {
         key: publicKey, // Razorpay public key from environment variables
@@ -120,10 +123,10 @@ export default function RazorPayment({ userData }) {
           // Step 3: Handle payment success
           console.log("Payment Successful: " + response.razorpay_payment_id);
           setUpdatePaymentStatus("success");
-  
+
           setPaymentId(response.razorpay_payment_id || "null");
           const transationID = response.razorpay_payment_id;
-  
+
           try {
             // PUT Order to WooCommerce API
             const orderInfo = {
@@ -165,7 +168,7 @@ export default function RazorPayment({ userData }) {
                 },
               ],
             };
-  
+
             const response = await fetch(
               `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}`,
               {
@@ -177,7 +180,7 @@ export default function RazorPayment({ userData }) {
                 body: JSON.stringify(orderInfo),
               }
             );
-  
+
             if (response.ok) {
               // Send mail notification to user (update the sendMail function as needed)
               await sendMail({
@@ -195,7 +198,7 @@ export default function RazorPayment({ userData }) {
                   totalDiscount
                 ),
               });
-  
+
               // Send mail notification to Admin
               await sendMail({
                 sendTo: siteEmail,
@@ -212,9 +215,7 @@ export default function RazorPayment({ userData }) {
                   totalDiscount
                 ),
               });
-  
-        
-  
+
               // Reset cart and validation states after successful payment
               setCartItems([]); // Clear cart items
               setCartSubTotal(0); // Reset subtotal
@@ -223,9 +224,9 @@ export default function RazorPayment({ userData }) {
               setDiscount(0); // Reset discount
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
-              setPaymentTerms(false)
+              setPaymentTerms(false);
               localStorage.removeItem("cartItems");
-  
+
               // Redirect on success
               router.push(`${homeUrl}checkout/success`);
             } else {
@@ -255,7 +256,7 @@ export default function RazorPayment({ userData }) {
           color: "#137E43", // Custom theme color
         },
       };
-  
+
       // Open the Razorpay payment gateway
       const razorpay = new window.Razorpay(options);
       razorpay.open();
@@ -263,13 +264,12 @@ export default function RazorPayment({ userData }) {
       console.error("Error during payment process: ", error);
       setLoading(false);
       setUpdatePaymentStatus("failed");
-      setValidateTerms(false); 
-      setValidateAddress(false); 
-      setPaymentTerms(false)
+      setValidateTerms(false);
+      setValidateAddress(false);
+      setPaymentTerms(false);
       router.push(`${homeUrl}checkout/failed`); // Redirect on failure
     }
   };
-  
 
   return (
     <>

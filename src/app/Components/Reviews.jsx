@@ -25,7 +25,7 @@ export default function Reviews({ data }) {
     <ul className="review-list">
       {data &&
         data.map((item, index) => (
-          <li key={index}>
+          <li key={index} className="bg-white">
               <div className="flex justify-between items-center">
                 <small>
                   {item?.reviewer} ~{" "}

@@ -48,7 +48,7 @@ export default async function Checkout() {
   return (
     <div className="bg-bggray">
       <Breadcrumb />
-      <section className="sm:bg-white bg-bggray sm:py-10 py-0">
+      <section className="pt-0 sm:pb-10 pb-0">
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
             <div className="grid gap-7">

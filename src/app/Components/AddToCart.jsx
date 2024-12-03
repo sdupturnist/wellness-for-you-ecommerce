@@ -136,7 +136,7 @@ export default function AddToCart({
       setNotification({
         message: `Item added to your cart.`,
         type: "success",
-      });
+       });
 
       setTimeout(() => {
         setNotification(null);
@@ -305,6 +305,7 @@ export default function AddToCart({
     <>
       {notification && (
         <Notification
+        url={homeUrl+`cart`}
           message={notification.message}
           type={notification.type}
           onClose={() => setNotification(null)}

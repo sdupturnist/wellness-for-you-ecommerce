@@ -13,9 +13,11 @@ export default function ListOptionsAddress({
   small,
   data,
   titleBold,
+  noSelection
 }) {
   const { setEditData } = useSiteContext();
-  const { setBillingAddress } = useCheckoutContext();
+  const { setBillingAddress, validateAddress, setValidateAddress } = useCheckoutContext();
+
 
   const [savedAddress, setSavedAddress] = useState(data); // Initialize with `data`
   //const [selectAddress, setSelectAddress] = useState(null); // Initialize with null or an empty object
@@ -79,15 +81,16 @@ export default function ListOptionsAddress({
   // Handle radio button selection and set the address
   const handleSelectAddress = (selectedBillingAddress) => {
     setBillingAddress(selectedBillingAddress);
+    setValidateAddress(false)
   };
 
   //console.log(selectAddress)
 
   return (
-    <li className="card shadow-sm bg-white hover:shadow-none transition-all hover:border-primary">
+    <li className={`${noSelection ? 'rounded-none sm:rounded-xl list-none sm:p-10 p-5' : 'card shadow-sm hover:shadow-none transition-all hover:border-primary'}  bg-white `}>
       <div className="pb-2">
         <div className="flex gap-3 mb-2">
-          <input
+         {!noSelection &&  <input
             onChange={(e) =>
               handleSelectAddress({
                 fullname_and_lastname: title,
@@ -104,10 +107,10 @@ export default function ListOptionsAddress({
             className="radio radio-success radio-sm"
             name="selected_address"
             value={title} // This is just for unique identification, not the actual address
-          />
+          />}
           <label className={`${titleBold && "font-semibold"}`}>{title}</label>
         </div>
-        <div className="pl-8 !grid gap-1 [&>*]:text-base [&>*]:opacity-70 sm:max-w-[60%]">
+        <div className={`${!noSelection && 'pl-8'} !grid gap-1 [&>*]:text-base [&>*]:opacity-70 sm:max-w-[60%]`}>
           {savedAddress?.address_1 && <span>{savedAddress?.address_1}</span>}
           {savedAddress?.address_2 && <span>{savedAddress?.address_2}</span>}
           {savedAddress?.company && <span>{savedAddress?.company}</span>}

@@ -1,5 +1,5 @@
 // context/CheckoutContext.js
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 
 const CheckoutContext = createContext();
 
@@ -15,6 +15,13 @@ export const CheckoutProvider = ({ children }) => {
   const [validateTerms, setValidateTerms] = useState(false);
   const [updatePaymentStatus, setUpdatePaymentStatus] = useState("");
   const [paymentId, setPaymentId] = useState("");
+
+
+
+
+  // useEffect(() => {
+  //   setValidateAddress(false);
+  // }, [validateAddress]); 
 
   return (
     <CheckoutContext.Provider
