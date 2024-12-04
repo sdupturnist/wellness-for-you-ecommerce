@@ -21,6 +21,10 @@ import {
 const date = new Date();
 
 
+//SECRET USER TOCKEN
+export let userTocken = `9AzTrOe80vVVRgu80WPjO5itzqXJzWFVLhfxZjm6ujiCUsQvIQr1kmxT7PFj8QTkuO7QQ0H3CsbHsx3lImBghkdt0gIbA3VSjcKL4G4CEzwCYF`
+
+
 //WOOCOMMERECE 
 export let woocommerceKey = '?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03'
 export let freeShipping = true

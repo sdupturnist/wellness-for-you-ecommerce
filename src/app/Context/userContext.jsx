@@ -1,23 +1,19 @@
-// context/UserContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
- 
+  const [userData, setUserData] = useState([]);
 
-  const [userData, setUserData] = useState([])
-
-
-
-
-
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
 
   return (
-    <UserContext.Provider value={{ 
-      userData, setUserData
-    }}>
+    <UserContext.Provider value={{ userData, setUserData }}>
       {children}
     </UserContext.Provider>
   );

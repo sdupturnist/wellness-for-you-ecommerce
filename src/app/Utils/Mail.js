@@ -63,7 +63,7 @@ export async function sendMail({  sendTo, subject, message, name }) {
             <!-- Body Content -->
             <tr>
                 <td style="padding: 20px; color: #15181E;">
-                   <h2 style="font-size: 16px; color: #111;">Hi, ${name}</h2>
+                   <h2 style="font-size: 16px; color: #111;">Hi, ${name || ''}</h2>
                     <p style="font-size: 16px; line-height: 1.6; color:#666; padding-top:10px; padding-bottom:10px; border-bottom:solid thin #ddd; margin-bottom:20px;">${subject}</p>
                     <p style="font-size: 16px; line-height: 1.6; color:#666;">${message}</p>
                 </td>

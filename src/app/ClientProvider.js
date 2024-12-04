@@ -1,6 +1,7 @@
 // app/ClientProvider.js
 "use client";
 
+import { AuthProvider } from "./Context/authContext";
 import { CartProvider } from "./Context/cartContext";
 import { CheckoutProvider } from "./Context/checkoutContext";
 import { SiteProvider } from "./Context/siteContext";
@@ -12,7 +13,7 @@ export default function ClientProvider({ children }) {
 
 
   return (
- 
+ <AuthProvider>
       <UserProvider>
         <CartProvider>
           <CheckoutProvider>
@@ -22,6 +23,7 @@ export default function ClientProvider({ children }) {
             </CheckoutProvider>
         </CartProvider>
       </UserProvider>
+ </AuthProvider>
     
   );
 }

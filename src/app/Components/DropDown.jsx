@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { homeUrl } from "../Utils/variables";
 
-export default function DropDown({ items, label, icon }) {
+export default function DropDown({ items, label, icon, component }) {
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button">
@@ -18,6 +18,7 @@ export default function DropDown({ items, label, icon }) {
               <Link href={`${homeUrl}${item?.url}`}>{item?.label}</Link>
             </li>
           ))}
+        {component && <li>{component}</li>}
       </ul>
     </div>
   );

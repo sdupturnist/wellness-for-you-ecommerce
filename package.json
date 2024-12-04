@@ -16,6 +16,8 @@
     "aos": "^2.3.4",
     "heroicons": "^2.2.0",
     "html2pdf.js": "^0.9.3",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.0.3",
     "nodemailer": "^6.9.16",
     "pdfjs-dist": "^3.4.120",

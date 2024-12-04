@@ -26,16 +26,16 @@ export default function Alerts({
 
   switch (status) {
     case "red":
-      alertClass = "danger text-white";
+      alertClass = "bg-red-500 text-white";
       break;
     case "green":
-      alertClass = "success text-white";
+      alertClass = "bg-green-500 text-white";
       break;
     case "yellow":
-      alertClass = "yellow text-white";
+      alertClass = "bg-yellow-500 text-white";
       break;
     default:
-      alertClass = "bg-gray-100 text-white";
+      alertClass = "bg-gray-300 text-white";
       break;
   }
 
@@ -67,13 +67,13 @@ export default function Alerts({
           <Images
             imageurl="/images/banner_7.jpg"
             quality="100"
-            width="600"
+            width="500"
             height="350"
             alt="Wellness for you"
             classes="block w-full sm:h-[350px] h-[250px] mb-5"
             placeholder={true}
           />
-          <span className="font-semibold sm:text-2xl text-lg">
+          <span className={`${titleSmall ? 'text-lg font-medium' : 'sm:text-2xl text-lg font-semibold'}`}>
             {title} {!noPageUrl && pathname?.split("/").pop()}
           </span>
           {desc && <p className="sm:text-base mt-3 leading-relaxed">{desc}</p>}

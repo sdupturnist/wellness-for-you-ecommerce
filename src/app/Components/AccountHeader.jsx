@@ -7,7 +7,7 @@ import { ArrowLeftIcon, HeartIcon, Bars2Icon } from "@heroicons/react/24/solid";
 import Images from "./Images";
 import DropDown from "./DropDown";
 import Link from "next/link";
-
+import Logout from "./Logout";
 
 export default function AccountHeader({ back }) {
   const router = useRouter();
@@ -19,20 +19,22 @@ export default function AccountHeader({ back }) {
         {!back && (
           <>
             {/* <div className="avatar"> */}
-              {/* <div className="w-10 rounded-full"> */}
-                {/* <Images */}
-                  {/* imageurl={avatar} */}
-                  {/* quality="80" */}
-                  {/* width="150" */}
-                  {/* height="150" */}
-                  {/* title="test" */}
-                  {/* alt="test" */}
-                  {/* classes="block" */}
-                  {/* placeholder={true} */}
-                {/* /> */}
-              {/* </div> */}
+            {/* <div className="w-10 rounded-full"> */}
+            {/* <Images */}
+            {/* imageurl={avatar} */}
+            {/* quality="80" */}
+            {/* width="150" */}
+            {/* height="150" */}
+            {/* title="test" */}
+            {/* alt="test" */}
+            {/* classes="block" */}
+            {/* placeholder={true} */}
+            {/* /> */}
             {/* </div> */}
-            <Link href={`${homeUrl}account`} className="text-lg font-semibold">Hi, Test user</Link>
+            {/* </div> */}
+            <Link href={`${homeUrl}account`} className="text-lg font-semibold">
+              Hi, Test user
+            </Link>
           </>
         )}
         {back && (
@@ -46,20 +48,16 @@ export default function AccountHeader({ back }) {
           </>
         )}
       </div>
-  <div className="xl:hidden">
-  <DropDown
-        icon={<Bars2Icon className="size-8" />}
-        label="medd"
-        items={[
-          ...accountMenus,
-          {
-            label: "Logout",
-            url: "account/wishlist",
-            icon: <HeartIcon className="size-4 text-primary" />,
-          },
-        ]}
-      />
-  </div>
+      <div className="xl:hidden">
+        <DropDown
+          icon={<Bars2Icon className="size-8" />}
+          label="medd"
+          component={<Logout small/>}
+          items={[
+            ...accountMenus,
+          ]}
+        />
+      </div>
 
       {/* <Link */}
       {/* href={`${homeUrl}account/edit-profile`} */}

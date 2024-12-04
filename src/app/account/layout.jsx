@@ -1,14 +1,20 @@
+'use client'
+
 import AccountHeader from "../Components/AccountHeader";
 import ProfileMenu from "../Components/ProfileMenu";
+import { useAuthContext } from "../Context/authContext";
 
 export default function AccountLayout({ children }) {
+
+  const {auth, userToken} =  useAuthContext()
+
+console.log(userToken)
   return (
     <section className="bg-bggray sm:py-10 py-0">
-    
-        <main className="flex flex-col">
+      <main className="flex flex-col">
         <div className="container">
           <AccountHeader />
-          <div className="xl:flex grid xl:mt-8 xl:gap-x-8"> 
+          <div className="xl:flex grid xl:mt-8 xl:gap-x-8">
             <aside className="xl:w-1/5 xl:order-first order-last w-full">
               <ProfileMenu />
             </aside>
@@ -16,8 +22,8 @@ export default function AccountLayout({ children }) {
               {children}
             </div>
           </div>
-          </div>
-        </main>
+        </div>
+      </main>
     </section>
   );
 }

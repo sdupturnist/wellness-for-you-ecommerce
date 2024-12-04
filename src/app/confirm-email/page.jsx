@@ -62,7 +62,7 @@ export default function ConfirmEmail() {
 
         setIsConfirmed(true);
       } catch (err) {
-        setError("There was an error confirming your email. Please try again.");
+        setError("If this email address is already associated with an existing account, or if there was an error confirming your email, please try again.");
       }
     };
 
@@ -79,7 +79,7 @@ export default function ConfirmEmail() {
         <div className="container !px-0 sm:px-5 w-full min-w-full">
           <div className="sm:min-h-[70vh] min-h-[60vh] flex items-center justify-center">
             <div className="text-center grid md:gap-8 sm:gap-6 gap-4 sm:max-w-[60%] max-w-[95%] mx-auto">
-              {error && <Alerts title={error} status="red" />}
+              {error && <Alerts large titleSmall title={error} status="red" buttonLabel="Try again" url={`${homeUrl}/register`} noPageUrl/>}
               {isConfirmed ? (
                 <Alerts
                   noPageUrl
@@ -90,7 +90,7 @@ export default function ConfirmEmail() {
                   desc={`Your email has been successfully confirmed. You can now access your account `}
                 />
               ) : (
-                <div className="grid gap-5 items-center justify-center text-center">
+                !error && <div className="grid gap-5 items-center justify-center text-center">
                   <Loading classes="mx-auto" spinner />
                   <h2>Confirming your email...</h2>
                 </div>
