@@ -6,6 +6,7 @@ export default function ListOptions({
   small,
   data,
   titleBold,
+  checkbox
 }) {
 
 

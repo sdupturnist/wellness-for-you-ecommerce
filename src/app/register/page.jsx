@@ -21,7 +21,7 @@ export default function SignupPage() {
 
           <div className="bg-white sm:p-14 p-8 sm:max-w-[500px] max-w-[400px] w-full mx-auto relative sm:top-[-200px] top-[-100px] rounded-lg border border-border">
             <SectionHeader title="Create a account" titleCenter />
-            <div className="grid gap-5">
+            <div className="grid gap-5 pt-3">
               <Signup />
               <Link
                 href={`${homeUrl}login`}

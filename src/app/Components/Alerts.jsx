@@ -26,20 +26,16 @@ export default function Alerts({
 
   switch (status) {
     case "red":
-      alertClass = "bg-red-100 text-red-600";
-      // icon = <XCircleIcon className="size-4" />;
+      alertClass = "danger text-white";
       break;
     case "green":
-      alertClass = "bg-green-100 text-green-600";
-      // icon = <XCircleIcon className="size-4" />;
+      alertClass = "success text-white";
       break;
     case "yellow":
-      alertClass = "bg-yellow-100 text-yellow-600";
-      //  icon = <XCircleIcon className="size-4" />;
+      alertClass = "yellow text-white";
       break;
     default:
-      alertClass = "bg-gray-100 text-gray-600";
-      //  icon = <XCircleIcon className="size-4" />;
+      alertClass = "bg-gray-100 text-white";
       break;
   }
 

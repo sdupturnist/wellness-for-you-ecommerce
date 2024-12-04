@@ -1,16 +1,16 @@
 'use client'
 
 
-export default function Loading({dot, spinner}){
+export default function Loading({dot, spinner, classes}){
     return(
 
     <>
         {dot && (
-            <span className="loading loading-dots text-primary"></span>
+            <span className={`${classes} loading loading-dots text-primary`}></span>
           )}
 
           {spinner && (
-            <span className="loading loading-spinner text-primary"></span>
+            <span className={`${classes} loading loading-spinner text-primary`}></span>
           )}
     </>
 

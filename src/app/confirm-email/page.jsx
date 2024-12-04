@@ -3,16 +3,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { homeUrl } from "@/app/Utils/variables";
+import { useRouter, useSearchParams } from "next/navigation";
+import { apiUrl, homeUrl, woocommerceKey } from "@/app/Utils/variables";
 import Alerts from "../Components/Alerts";
-
+import Loading from "../Components/Loading";
 
 export default function ConfirmEmail() {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username");
+  const email = searchParams.get("email");
+  const password = searchParams.get("password");
+  const subscribe = searchParams.get("subscribe");
   const token = new URLSearchParams(window.location.search).get("token");
+
+  // console.log(username)
+  // console.log(email)
+  // console.log(password)
 
   useEffect(() => {
     const confirmUser = async () => {
@@ -22,31 +31,34 @@ export default function ConfirmEmail() {
       }
 
       try {
-
         const data = {
-            username: 'upturnist',
-            email: 'upturnistuae@gmail.com',
-            password: '123',
-          };
-
+          username: username,
+          password: password,
+          email: email,
+          first_name: username,
+          last_name: username,
+          meta_data: [
+            {
+              key: "newsletter_subscribed",
+              value: subscribe || "",
+            },
+          ],
+        };
 
         const response = await fetch(
-            "https://admin.wellness4u.in/wp-json/wc/v3/customers?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
+          `${apiUrl}wp-json/wc/v3/customers${woocommerceKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
 
-
-           if (!response.ok) {
-        throw new Error("Failed to create customer");
-      }
-
-
+        if (!response.ok) {
+          throw new Error("Failed to create customer");
+        }
 
         setIsConfirmed(true);
       } catch (err) {
@@ -62,18 +74,31 @@ export default function ConfirmEmail() {
   };
 
   return (
-    <div className="grid gap-5">
-      {error && <Alerts title={error} status="red" />}
-      {isConfirmed ? (
-        <div>
-          <h2>Email Confirmed Successfully!</h2>
-          <button className="btn" onClick={handleRedirect}>Go to Login</button>
+    <section className="pt-0">
+      <div className="container">
+        <div className="container !px-0 sm:px-5 w-full min-w-full">
+          <div className="sm:min-h-[70vh] min-h-[60vh] flex items-center justify-center">
+            <div className="text-center grid md:gap-8 sm:gap-6 gap-4 sm:max-w-[60%] max-w-[95%] mx-auto">
+              {error && <Alerts title={error} status="red" />}
+              {isConfirmed ? (
+                <Alerts
+                  noPageUrl
+                  title="Email Confirmed Successfully!"
+                  large
+                  buttonLabel=" Go to login"
+                  url={`${homeUrl}login`}
+                  desc={`Your email has been successfully confirmed. You can now access your account `}
+                />
+              ) : (
+                <div className="grid gap-5 items-center justify-center text-center">
+                  <Loading classes="mx-auto" spinner />
+                  <h2>Confirming your email...</h2>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      ) : (
-        <div>
-          <h2>Confirming your email...</h2>
-        </div>
-      )}
-    </div>
+      </div>
+    </section>
   );
 }
