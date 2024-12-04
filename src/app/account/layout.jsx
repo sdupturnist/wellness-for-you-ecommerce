@@ -1,14 +1,11 @@
-'use client'
+// AccountLayout.js
+"use client";
 
 import AccountHeader from "../Components/AccountHeader";
 import ProfileMenu from "../Components/ProfileMenu";
-import { useAuthContext } from "../Context/authContext";
+import withAuth from "../Utils/withAuth"; // Import the HOC
 
-export default function AccountLayout({ children }) {
-
-  const {auth, userToken} =  useAuthContext()
-
-console.log(userToken)
+function AccountLayout({ children }) {
   return (
     <section className="bg-bggray sm:py-10 py-0">
       <main className="flex flex-col">
@@ -27,3 +24,6 @@ console.log(userToken)
     </section>
   );
 }
+
+// Wrap the AccountLayout with withAuth HOC
+export default withAuth(AccountLayout);

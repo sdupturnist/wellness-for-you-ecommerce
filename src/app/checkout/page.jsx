@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import AmountList from "../Components/AmountList";
 import Breadcrumb from "../Components/Breadcrumb";
 import CouponCode from "../Components/CouponCode";
@@ -6,44 +9,49 @@ import CheckoutAddress from "../Components/CheckoutAddress";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
 import PaymentButton from "../Components/PaymentButton";
 import PaymentOptionsList from "../Components/PaymentOptionsList";
-import TestComponent from "../Components/TestComponent";
+import withAuth from "../Utils/withAuth";
 
-export default async function Checkout() {
+function Checkout() {
+  // State to store the fetched data
+  const [paymentOptions, setPaymentOptions] = useState(null);
+  const [couponCodes, setCouponCodes] = useState(null);
 
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch payment options
+        const paymentOptionsResponse = await fetch(
+          `${apiUrl}wp-json/wc/v3/payment_gateways${woocommerceKey}`,
+          {
+            next: {
+              revalidate: 60,
+              cache: "no-store",
+            },
+          }
+        );
+        const paymentOptionsData = await paymentOptionsResponse.json();
+        setPaymentOptions(paymentOptionsData);
 
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
+        // Fetch coupon codes
+        const couponCodeResponse = await fetch(
+          `${apiUrl}wp-json/wc/v3/coupons${woocommerceKey}`,
+          {
+            next: {
+              revalidate: 60,
+              cache: "no-store",
+            },
+          }
+        );
+        const couponCodeData = await couponCodeResponse.json();
+        setCouponCodes(couponCodeData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
- 
-  
-  let paymentOptionsData = await fetch(
-    `${apiUrl}wp-json/wc/v3/payment_gateways${woocommerceKey}`,
-    {
-      next: {
-        revalidate: 60,
-        cache: "no-store",
-      },
-    }
-  );
-
-  let couponCodeData = await fetch(
-    `${apiUrl}wp-json/wc/v3/coupons${woocommerceKey}`,
-    {
-      next: {
-        revalidate: 60,
-        cache: "no-store",
-      },
-    }
-  );
-
-  let couponCodes = await couponCodeData.json();
-  let paymentOptions = await paymentOptionsData.json();
-
-
+    fetchData();
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   return (
     <div className="bg-bggray">
@@ -58,7 +66,7 @@ export default async function Checkout() {
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">
                 <SectionHeader title="Your order" card />
                 <div className="grid gap-5">
-                  <CouponCode data={couponCodes} />
+                  <CouponCode data={couponCodes && couponCodes} />
                   <div className="border-b pb-4">
                     <AmountList />
                   </div>
@@ -68,8 +76,7 @@ export default async function Checkout() {
                       <PaymentOptionsList data={paymentOptions} />
                     )}
                   </div>
-                  {/* <TestComponent /> */}
-                  <PaymentButton userData={userInfo} />
+                  <PaymentButton />
                   <small className="text-xs opacity-55 leading-5">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
@@ -84,3 +91,5 @@ export default async function Checkout() {
     </div>
   );
 }
+
+export default withAuth(Checkout);

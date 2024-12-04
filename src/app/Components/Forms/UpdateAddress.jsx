@@ -17,6 +17,7 @@ import { sendMail } from "@/app/Utils/Mail";
 import Alerts from "../Alerts";
 import { useRouter, useParams } from "next/navigation";
 import { useSiteContext } from "@/app/Context/siteContext";
+import { useAuthContext } from "@/app/Context/authContext";
 
 export default function UpdateAddressForm({ addressCount }) {
   const id = useParams();
@@ -24,13 +25,9 @@ export default function UpdateAddressForm({ addressCount }) {
 
   const { editData } = useSiteContext();
 
-  console.log(editData);
 
-  const userInfo = {
-    id: 2,
-    first_name: "Muhammed",
-    user_email: "upturnistuae@gmail.com",
-  };
+
+  const { userData } = useAuthContext();
 
   const [region, setRegion] = useState("");
   const [countryid, setCountryid] = useState(0);
@@ -72,7 +69,7 @@ export default function UpdateAddressForm({ addressCount }) {
 
     try {
       const response = await fetch(
-        `${apiUrl}wp-json/wc/v3/customers/${userInfo?.id}/addresses/${id?.id}${woocommerceKey}`,
+        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses/${id?.id}${woocommerceKey}`,
         {
           method: "PUT",
           headers: {
@@ -108,9 +105,9 @@ export default function UpdateAddressForm({ addressCount }) {
         //MAIL NOTIFICATION TO USER
 
         //         await sendMail({
-        //           sendTo: userInfo && userInfo?.user_email,
+        //           sendTo: userData && userData?.user_email,
         //           subject: `You have successfully added your new address. | ${siteName}`,
-        //           name: userInfo && userInfo?.first_name,
+        //           name: userData && userData?.first_name,
         //           message:
         //             `<table style="width: 100%; border-collapse: collapse;">
         //     <tbody>

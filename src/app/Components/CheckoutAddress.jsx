@@ -8,17 +8,21 @@ import { apiUrl, woocommerceKey } from "../Utils/variables";
 import Skelton from "./Skelton";
 import "animate.css/animate.min.css";
 import { useCheckoutContext } from "../Context/checkoutContext";
+import { useAuthContext } from "../Context/authContext";
 
 export default function CheckoutAddress() {
-  const { showAddNewAddress, setShowAddNewAddress } =
-    useCheckoutContext();
+  const { userData } = useAuthContext();
+
+  const { showAddNewAddress, setShowAddNewAddress } = useCheckoutContext();
 
   const [savedAddress, setAdditionalsavedAddress] = useState("");
 
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
-    fetch(`${apiUrl}wp-json/wc/v3/customers/2${woocommerceKey}`)
+    fetch(`${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`)
       .then((res) => res.json())
       .then((data) => {
         setAdditionalsavedAddress(data);
@@ -37,8 +41,7 @@ export default function CheckoutAddress() {
   }, [savedAddress?.meta_data]);
 
   return (
-    <div
-      className={`card-rounded-none-small w-full bg-white py-5 px-4`}>
+    <div className={`card-rounded-none-small w-full bg-white py-5 px-4`}>
       <SectionHeader title="Billing details" card />
       <ul className="grid gap-5">
         {!loading &&

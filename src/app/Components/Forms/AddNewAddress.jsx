@@ -15,25 +15,13 @@ import {
 } from "@/app/Utils/variables";
 import { sendMail } from "@/app/Utils/Mail";
 import Alerts from "../Alerts";
-
 import { useCheckoutContext } from "@/app/Context/checkoutContext";
+import { useAuthContext } from "@/app/Context/authContext";
 
 export default function AddNewAddressForm({ addressCount, id, currentData }) {
- 
-  
+  const { setShowAddNewAddress, updateAddress } = useCheckoutContext();
 
-  
-  const {setShowAddNewAddress, updateAddress} = useCheckoutContext()
-
-  
-
-  
-
-  const userInfo = {
-    id: 2,
-    first_name: "Muhammed",
-    user_email: "upturnistuae@gmail.com",
-  };
+  const { userData } = useAuthContext();
 
   const [region, setRegion] = useState("");
   const [countryid, setCountryid] = useState(0);
@@ -42,6 +30,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
   const [state, setstate] = useState("");
   const [city, setCity] = useState("");
   const [firstName, setFirstName] = useState("");
+  const [phone, setPhone] = useState("");
   const [lastName, setLastName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [addressOne, setAddressOne] = useState("");
@@ -54,8 +43,6 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
   const addressId = addressCount + 1; // Increment counter for each request
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,6 +53,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
         id: addressId,
         address_1: addressOne,
         address_2: addressTwo,
+        phone: phone,
         city: city,
         state: state,
         postcode: pinCode,
@@ -79,7 +67,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
     try {
       // Submit the review
       const response = await fetch(
-        `${apiUrl}wp-json/wc/v3/customers/${userInfo?.id}/addresses${woocommerceKey}`,
+        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses${woocommerceKey}`,
         {
           method: "POST",
           headers: {
@@ -107,84 +95,19 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
         setCity("");
         setFirstName("");
         setLastName("");
+        setPhone("");
         setCompanyName("");
         setAddressOne("");
         setAddressTwo("");
         setPinCode("");
 
+        setShowAddNewAddress(false);
 
-        setShowAddNewAddress(false)
-
-        //MAIL NOTIFICATION TO USER
-
-//         await sendMail({
-//           sendTo: userInfo && userInfo?.user_email,
-//           subject: `You have successfully added your new address. | ${siteName}`,
-//           name: userInfo && userInfo?.first_name,
-//           message:
-//             `<table style="width: 100%; border-collapse: collapse;">
-//     <tbody>
-//       <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">First Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             firstName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Last Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             lastName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Company Name</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             companyName +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 1</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             addressOne +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Address Line 2</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             addressTwo +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">City</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             city +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">State</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             state +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Pin Code / Postcode</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             pinCode +
-//             `</td> 
-//         </tr>
-//         <tr>
-//             <td style="padding: 8px; border: 1px solid #ddd;">Country</td>
-//             <td style="padding: 8px; border: 1px solid #ddd;">` +
-//             country +
-//             `</td> 
-//         </tr>
-//      </tbody>
-// </table>`,
-//         });
+    
 
         console.log("Success");
 
-      //  location.reload();
+        //  location.reload();
 
         //  router.replace(router.asPath)
       } else {
@@ -209,7 +132,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="none">
-   <div className="grid gap-4">
+      <div className="grid gap-4">
         {status && (
           <Alerts
             status="green"
@@ -235,6 +158,14 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           className="input"
           placeholder="Last Name"
           onChange={(e) => setLastName(e.target.value)}
+          required
+          autoComplete="none"
+        />
+         <input
+          type="number"
+          className="input"
+          placeholder="Phone"
+          onChange={(e) => setPhone(e.target.value)}
           required
           autoComplete="none"
         />
@@ -283,7 +214,6 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
           countryid={countryid}
           stateid={stateid}
           onChange={(e) => {
-       
             setCity(e.name || e.target.value);
           }}
           placeHolder="Town/City"

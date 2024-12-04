@@ -4,7 +4,7 @@ import SectionHeader from "./SectionHeader";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 
-export default function ModalPopup({ title, item, titleCenter, action, actionLabel, noPadding }) {
+export default function ModalPopup({ title, item, titleCenter, action, actionLabel, noPadding, noButton }) {
   return (
 
     
@@ -16,7 +16,7 @@ export default function ModalPopup({ title, item, titleCenter, action, actionLab
         <div className={`${noPadding ? '' : 'sm:p-5 p-3'}`}>
           <SectionHeader title={title} titleSmall titleCenter={titleCenter && titleCenter} />
           {item}
-          <button className="w-full btn btn-large btn-light mt-5" onClick={action}>{actionLabel}</button>
+         {!noButton && <button className="w-full btn btn-large btn-light mt-5" onClick={action}>{actionLabel}</button>}
         </div>
       </div>
    

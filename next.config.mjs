@@ -3,7 +3,8 @@ const nextConfig = {
     images: {
       domains: [
         'avataaars.io', 
-        'admin.wellness4u.in'
+        'admin.wellness4u.in',
+        'secure.gravatar.com'
       ],
     },
 

@@ -2,47 +2,55 @@
 
 import { useState, useEffect } from "react";
 import { HeartIcon } from "@heroicons/react/24/solid";
-import { apiUrl, woocommerceKey } from "../Utils/variables";
+import { apiUrl, homeUrl, woocommerceKey } from "../Utils/variables";
+import { useAuthContext } from "../Context/authContext";
+import { useRouter } from "next/navigation";
+
 
 export default function AddToWishList({ productId, itemName, small, activeWishlist, onWishlistChange }) {
-  // Mocked user info. In a real app, this would be dynamically fetched.
-  const userInfo = {
-    id: 2,
-    name: "Anjali",
-    email: "upturnistuae@gmail.com",
-    phone: "911234567890",
-  };
 
-  const [wishlist, setWishlist] = useState([]); // Store the wishlist items
-  const [items, setItems] = useState([]); // Store product data for wishlist items
+  const router = useRouter(); // Initialize the router
+
+  const { userData, auth } = useAuthContext();
+
+
+  console.log(userData)
+
+  const [wishlist, setWishlist] = useState([]); // Store the wishlist items as an array
   const [isActive, setIsActive] = useState(activeWishlist); // Tracks if the current product is in the wishlist
   const [action, setAction] = useState(null);
 
   // Fetch wishlist items for the user
   useEffect(() => {
-    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userInfo?.id}`)
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userData?.id}`)
       .then((res) => res.json())
       .then((data) => {
-        setWishlist(data);
+        // Ensure wishlist is always an array
+        setWishlist(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [userData?.id]);
 
   // Check if the product is in the wishlist
-  const isProductInWishlist = wishlist.includes(productId); // This will now work because wishlist is an array
+  const isProductInWishlist = Array.isArray(wishlist) && wishlist.includes(productId); // Ensure wishlist is an array
 
   // Click handler to toggle between adding/removing the product
   const handleClick = () => {
-    // Check if product is in the wishlist and decide to add/remove
-    const actionType = isProductInWishlist ? "remove" : "add"; // If product is in the wishlist, remove it; otherwise, add it
-    setIsActive(!isProductInWishlist); // Toggle the active state
+
+    if(!auth){
+      router.push(`${homeUrl}/login`);
+ return false
+    }
+
+    const actionType = isProductInWishlist ? "remove" : "add"; // Toggle between adding and removing
+    setIsActive(!isProductInWishlist); // Update the active state
 
     // Set action data to trigger the API call
     setAction({
       productId,
-      userId: userInfo.id,
+      userId: userData.id,
       actionType,
     });
   };
@@ -111,9 +119,7 @@ export default function AddToWishList({ productId, itemName, small, activeWishli
           className="btn-light bg-white border !min-h-14 !px-4 remove-from-list"
         >
           <HeartIcon
-            className={`size-6 ${
-              isProductInWishlist ? "text-red-600" : "text-body opacity-25"
-            }`} // Red color if product is in wishlist
+            className={`size-6 ${isProductInWishlist ? "text-red-600" : "text-body opacity-25"}`} // Red color if product is in wishlist
           />
         </button>
       )}

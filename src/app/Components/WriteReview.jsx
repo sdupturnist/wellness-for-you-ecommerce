@@ -13,7 +13,7 @@ export default function WriteReview({productId}) {
         onClick={() => document.getElementById("modal_all").showModal()}>
         Write A Review
       </button>
-      <ModalPopup title="Ratings & Review" item={<WriteReviewForm productId={productId}/>} />
+      <ModalPopup noButton title="Ratings & Review" item={<WriteReviewForm productId={productId}/>} />
     </>
   );
 }

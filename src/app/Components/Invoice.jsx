@@ -1,17 +1,17 @@
 "use client";
 
+import { useAuthContext } from "../Context/authContext";
 import { currency, freeShipping, siteLogo, siteLogoWhite } from "../Utils/variables";
 
 
-const userInfo = {
-  id: 2,
-  name: `Anjali`,
-  email: `upturnistuae@gmail.com`,
-  phone: `911234567890`,
-};
 
 
 export default function Invoice({ data }) {
+
+
+  const { userData } = useAuthContext();
+
+
   return (
     <table
       role="presentation"
@@ -98,10 +98,10 @@ export default function Invoice({ data }) {
                       href="mailto:upturnistuae@gmail.com"
                       target="_blank"
                       rel="noopener noreferrer">
-                      {userInfo?.email}
+                      {userData?.email}
                     </a>
                     <br />
-                    <b>Telephone:</b>    {userInfo?.phone}
+                    <b>Telephone:</b>    {userData?.phone}
                     <br />
                     <b>Order Status:</b> {data?.status}
                   </td>

@@ -5,23 +5,20 @@ import Alerts from "@/app/Components/Alerts";
 import { useEffect, useState } from "react";
 import Loading from "@/app/Components/Loading";
 import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
-import AddToWishList from "@/app/Components/AddToWishList"; // Import the AddToWishList component
+import { useAuthContext } from "@/app/Context/authContext";
+
 
 export default function WishList() {
   const [wishlist, setWishlist] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
+  const { userData } = useAuthContext();
+
 
   // Fetch wishlist items
   useEffect(() => {
-    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userInfo?.id}`)
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userData?.id}`)
       .then((res) => res.json())
       .then((data) => {
         setWishlist(data);
@@ -30,7 +27,7 @@ export default function WishList() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [userData?.id]);
 
   // Generate result string for the wishlist items
 
@@ -84,6 +81,7 @@ export default function WishList() {
               {items.length === 0 ? (
                 showAlert && (
                   <Alerts
+                  noPageUrl
                     large
                     title="You have not any products in your wishlist"
                   />

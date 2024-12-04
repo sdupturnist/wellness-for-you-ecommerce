@@ -2,6 +2,7 @@
 
 import {
   apiUrl,
+  homeUrl,
   siteEmail,
   siteName,
   woocommerceKey,
@@ -10,12 +11,28 @@ import { useState } from "react";
 import Alerts from "../Alerts";
 import Loading from "../Loading";
 import { sendMail } from "@/app/Utils/Mail";
+import { useAuthContext } from "@/app/Context/authContext";
+import { useRouter } from "next/navigation";
+
 
 export default function WriteReviewForm({ productId }) {
-  const userInfo = {
-    first_name: "Muhammed",
-    user_email: "upturnistuae@gmail.com",
-  };
+
+  
+
+
+  const { auth, userData} = useAuthContext(); 
+
+  const router = useRouter(); 
+
+
+ 
+
+
+
+ 
+
+
+  
 
   const [rating, setRating] = useState(5);
   const [review, setReview] = useState("");
@@ -25,24 +42,31 @@ export default function WriteReviewForm({ productId }) {
   const [error, setError] = useState(false);
 
   //const modalElement = document.getElementById("modal_all");
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    if (!auth) {
+      router.push(`${homeUrl}login`);
+      return false
+    } 
+
 
     setLoading(true);
 
     const requestData = {
       review: review,
       rating: rating,
-      name: userInfo?.first_name,
-      email: userInfo?.user_email,
+      name: userData?.first_name,
+      email: userData?.email,
       status: "hold",
     };
 
     try {
       // Submit the review
       const response = await fetch(
-        `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}&product_id=${productId}&reviewer=${userInfo.first_name}&reviewer_email=${userInfo.user_email}`,
+        `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}&product_id=${productId}&reviewer=${userData.first_name}&reviewer_email=${userData.email}`,
         {
           method: "POST",
           headers: {
@@ -74,7 +98,7 @@ export default function WriteReviewForm({ productId }) {
 
         //MAIL NOTIFICATION TO REVIEWER
         await sendMail({
-          sendTo: userInfo?.user_email,
+          sendTo: userData?.user_email,
           subject: `Thank You for Sharing Your Feedback! | ${siteName}`,
           message: `Your review will be reviewed by the admin, and if approved, it will be published soon.`,
         });
@@ -121,9 +145,6 @@ export default function WriteReviewForm({ productId }) {
           title="We're sorry, but we were unable to submit your review. Please try again later."
         />
       )}
-
-      <span className="text-red-500">need to login</span>
-      <br />
       <div className="grid gap-4">
         <div className="rating rating-lg mb-3 flex gap-4">
           <input
@@ -185,3 +206,4 @@ export default function WriteReviewForm({ productId }) {
     </form>
   );
 }
+

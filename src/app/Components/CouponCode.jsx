@@ -10,14 +10,16 @@ import {
   jwtTocken,
   woocommerceKey,
 } from "../Utils/variables";
+import { useAuthContext } from "../Context/authContext";
+
+
 
 export default function CouponCode() {
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
+
+  
+
+  const { userData } = useAuthContext();
+
 
   const { setCouponCode, setDiscount, cartSubTotal, setCouponData } =
     useCartContext();
@@ -91,10 +93,10 @@ export default function CouponCode() {
         setDiscount(0);
         setIsValid(false);
       } else if (
-        usedBy.includes(userInfo?.id) ||
-        usedBy.includes(userInfo?.id)
+        usedBy.includes(userData?.id) ||
+        usedBy.includes(userData?.id)
       ) {
-        // Assuming userInfo?.id is the current user's ID or email
+        // Assuming userData?.id is the current user's ID or email
         setMessage("You have already used this coupon.");
         setCouponCode(false);
         setDiscount(0);

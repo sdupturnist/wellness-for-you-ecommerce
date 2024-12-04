@@ -41,7 +41,7 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
           <b>Payment Method:</b> ${paymentMethodOption}<br>
           <b>Shipping Method:</b> Free Shipping</td>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${userData?.email}" target="_blank">${userData?.email}</a><br>
-          <b>Telephone:</b> ${userData?.phone}<br>
+          <b>Telephone:</b> ${billingAddress?.phone}<br>
           <b>Order Status:</b> Processing<br></td>
       </tr>
     </tbody>

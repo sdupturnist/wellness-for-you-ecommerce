@@ -1082,3 +1082,91 @@ function verify_token_and_reset_password(WP_REST_Request $request) {
 
 
 //POST /wp-json/password-reset/v1/reset
+
+
+//LOGIN
+
+// Hook into the REST API initialization
+add_action('rest_api_init', function () {
+    register_rest_route('custom/v1', '/login', [
+        'methods' => 'POST',
+        'callback' => 'custom_login_user',
+        'permission_callback' => '__return_true', // You can adjust the permissions as needed
+    ]);
+});
+
+// Function to handle login request
+function custom_login_user(WP_REST_Request $request) {
+    // Get the email and password from the request
+    $email = $request->get_param('email');
+    $password = $request->get_param('password');
+
+    // Validate email and password
+    if (empty($email) || empty($password)) {
+        return new WP_REST_Response('Email and password are required.', 400);
+    }
+
+    // Check if user exists by email
+    $user = get_user_by('email', $email);
+    if (!$user) {
+        return new WP_REST_Response('User not found with that email address.', 404);
+    }
+
+    // Verify the password
+    if (!wp_check_password($password, $user->user_pass, $user->ID)) {
+        return new WP_REST_Response('Incorrect password.', 403);
+    }
+
+    // Check if the user has the "customer" role (WooCommerce role)
+    if (!in_array('customer', (array) $user->roles)) {
+        return new WP_REST_Response('User is not a customer.', 403);
+    }
+
+    // Generate authentication token (JWT or cookie based)
+    $token = wp_create_nonce('wp_rest');  // This is a simple nonce for demo purposes. You can use JWT for better security.
+
+    // Return success with user data
+    return new WP_REST_Response([
+        'message' => 'Login successful.',
+        'user_id' => $user->ID,
+        'user_email' => $user->user_email,
+        'role' => $user->roles[0],  // Return the role of the user
+        'token' => $token,  // You can use JWT or a custom session token here
+    ], 200);
+}
+
+
+
+//-----------------
+
+// Hook into the REST API initialization
+add_action('rest_api_init', function () {
+    register_rest_route('custom/v1', '/validate-token', [
+        'methods' => 'POST',
+        'callback' => 'validate_token',
+        'permission_callback' => '__return_true', // Adjust permission callback as needed
+    ]);
+});
+
+// Function to handle token validation
+function validate_token(WP_REST_Request $request) {
+    $token = $request->get_param('token');
+    
+    // In a real-world scenario, you would validate the token here.
+    // For example, you can check if it's a valid JWT and extract user information.
+    // For nonce-based token, you could verify it with wp_verify_nonce().
+
+    // Example: If using JWT, you would decode and verify it here.
+    if (!$token) {
+        return new WP_REST_Response('No token provided.', 400);
+    }
+
+    // Dummy validation (replace with your JWT or other token validation logic)
+    // Check if the token exists (as a simple example)
+    if (wp_verify_nonce($token, 'wp_rest')) {
+        return new WP_REST_Response('Token is valid.', 200);
+    }
+
+    return new WP_REST_Response('Invalid token.', 403);
+}
+

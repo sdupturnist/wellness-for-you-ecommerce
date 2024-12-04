@@ -19,6 +19,8 @@ import { sendMail } from "../Utils/Mail";
 import { OrderPlacedEmailTemplate } from "../Utils/MailTemplates";
 import Swal from "sweetalert2";
 
+
+
 export default function CashOnDeliveryPayment({ userData }) {
   const {
     cartItems,
@@ -45,6 +47,11 @@ export default function CashOnDeliveryPayment({ userData }) {
     setPaymentTerms,
     setBillingAddress,
   } = useCheckoutContext();
+
+
+
+console.log(billingAddress?.phone)
+
 
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);

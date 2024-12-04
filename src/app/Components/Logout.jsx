@@ -5,16 +5,24 @@ import { homeUrl } from "../Utils/variables";
 import { useAuthContext } from "../Context/authContext";
 
 export default function Logout({ small }) {
-  const navigate = useRouter();
-  const { setUserToken } = useAuthContext();
+  const router = useRouter();
+
+  const { setAuth, setUserToken, setUserData, setUser, setLoadingAuth } =
+    useAuthContext();
 
   const handleLogout = () => {
-    setUserToken(null);
+    // Clear localStorage
     localStorage.removeItem("token");
-    localStorage.removeItem("userData");
-    document.cookie = "token=; path=/; max-age=0; secure; SameSite=Strict";
-    navigate.push(`${homeUrl}login`);
-    console.log("Logout success");
+    localStorage.removeItem("user_email");
+
+    setAuth(false);
+    setUserToken("");
+    setUserData([]);
+    setUser(null);
+    setLoadingAuth(true);
+
+    // Redirect to the login page
+    router.push(`${homeUrl}/login`);
   };
 
   return (
@@ -27,8 +35,7 @@ export default function Logout({ small }) {
         <div className="px-4 pt-3 pb-4">
           <button
             onClick={handleLogout}
-            className="btn btn-light w-full btn-medium !text-red-500 hover:border-red-500"
-          >
+            className="btn btn-light w-full btn-medium !text-red-500 hover:border-red-500">
             Logout
           </button>
         </div>

@@ -3,6 +3,7 @@
 import Alerts from "@/app/Components/Alerts";
 import Loading from "@/app/Components/Loading";
 import TableView from "@/app/Components/TableView";
+import { useAuthContext } from "@/app/Context/authContext";
 import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
 import { useEffect, useState } from "react";
 
@@ -10,28 +11,27 @@ export default function Transations() {
   const [transations, setTransations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
+  const { userData } = useAuthContext();
 
   useEffect(() => {
-    // Only run once on mount
-    fetch(
-      `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userInfo?.id}&per_page=100`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setTransations(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, []);
+    if (userData?.id) {
+    
+      fetch(
+        `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userData?.id}&per_page=100`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+        
+          setTransations(Array.isArray(data) ? data : []);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+          setTransations([]); 
+        });
+    }
+  }, [userData?.id]); 
 
   return (
     <>
@@ -45,10 +45,9 @@ export default function Transations() {
                 </div>
               ) : (
                 <ul className="general-list">
-                  {!transations?.length > 0 && (
-                    <Alerts large title="You have no transations" />
-                  )}
-                  {transations &&
+                  {!transations?.length ? (
+                    <Alerts noPageUrl large title="You have no transations" />
+                  ) : (
                     transations.map((item, index) => (
                       <TableView
                         data={[item]}
@@ -61,7 +60,8 @@ export default function Transations() {
                           { label: "Invoice" },
                         ]}
                       />
-                    ))}
+                    ))
+                  )}
                 </ul>
               )}
             </div>
