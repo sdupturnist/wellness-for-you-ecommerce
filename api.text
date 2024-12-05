@@ -1219,3 +1219,17 @@ function change_user_password( WP_REST_Request $request ) {
 //     "old_password": "123456",
 //       "new_password": "123456789"
 // }
+
+
+//POSTS IMAGE URL
+
+
+function add_image_to_api_response( $data, $post, $context ) {
+    if ( has_post_thumbnail( $post->ID ) ) {
+        $thumbnail_url = get_the_post_thumbnail_url( $post->ID, 'full' );
+        $data->data['featured_image_url'] = $thumbnail_url;
+    }
+    return $data;
+}
+
+add_filter( 'rest_prepare_post', 'add_image_to_api_response', 10, 3 );

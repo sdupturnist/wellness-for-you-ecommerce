@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Images from "./Images";
+import { truncateText } from "../Utils/variables";
 
 export default function Card({
     thumbnail,
@@ -31,8 +32,9 @@ export default function Card({
         <Link href={url && url}>
           <h2 className="card-title">{heading && heading}</h2>
         </Link>
-        <p className="leading-relaxed">{desc && desc}</p>
-        
+        <p className="leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: desc && truncateText(desc, 200) }}></p>
+
   
         <div className="card-actions justify-start mt-2">
        <p className="text-xs text-gray-500 mt-2 uppercase">{author && author} <span className="text-[8px] mx-1 opacity-50">|</span> {date && date}</p>

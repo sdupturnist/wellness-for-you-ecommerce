@@ -22,7 +22,7 @@ export default function Header() {
                 width="150"
                 height="70"
                 alt="Wellness for you logo"
-                classes="block w-full"
+                classes="block w-full sm:max-w-[140px] max-w-[120px]"
                 placeholder={true}
               />
             </Link>

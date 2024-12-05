@@ -345,7 +345,7 @@ header .logo {
   @apply flex items-center justify-center;
 }
 header .logo img {
-  @apply sm:h-[4.15269rem] h-[50px] w-full block;
+  @apply w-full block;
 }
 header a {
   @apply hover:opacity-50 transition-all;

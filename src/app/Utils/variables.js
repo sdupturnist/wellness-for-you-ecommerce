@@ -212,6 +212,15 @@ export let metaStaticData = {
 
 
 
+export let truncateText = (text, length) => {
+  if (!text) return '';
+ 
+  return text.length > length ? text.slice(0, length - 3) + '...' : text;
+};
+
+
+
+
 export let  formatDate = (dateStr) => { 
   const date = new Date(dateStr);
 

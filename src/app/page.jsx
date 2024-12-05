@@ -13,11 +13,10 @@ import {
   siteName,
   woocommerceKey,
 } from "./Utils/variables";
+import ProductCard from "./Components/ProductCard";
 
 export default async function Home({ params, searchParams }) {
-
-  const pageId = 19
-
+  const pageId = 19;
 
   let pageData = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`, {
     next: {
@@ -103,7 +102,6 @@ export default async function Home({ params, searchParams }) {
   let categories = await categoriesData.json();
 
   return (
-    
     <div className="container">
       <section className="pb-0 sm:pt-8">
         <div className="grid grid-cols-1 sm:grid-cols-[70%_30%]">
@@ -138,8 +136,15 @@ export default async function Home({ params, searchParams }) {
       </section>
       {featuredProducts.length > 0 && (
         <section className="featured-products products pt-0">
-          <SectionHeader title="Featured products" url="/" />
-          <ProductSlider data={featuredProducts} />
+          <SectionHeader title="Featured products" />
+
+          <ul className="products product-card-left-right-mobile grid xl:grid-cols-4 sm:grid-cols-2 sm:gap-4">
+            {featuredProducts.map((item, index) => (
+              <ProductCard key={index} data={item} mobileList />
+            ))}
+          </ul>
+
+          {/* <ProductSlider data={featuredProducts} /> */}
         </section>
       )}
       <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
@@ -202,7 +207,7 @@ export default async function Home({ params, searchParams }) {
 export async function generateMetadata({ params, searchParams }, parent) {
   const pageId = 19;
 
-  const staticData = metaStaticData
+  const staticData = metaStaticData;
 
   try {
     const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
@@ -211,8 +216,9 @@ export async function generateMetadata({ params, searchParams }, parent) {
     // Return metadata object with dynamic values, or fall back to static values
     return {
       title: pageData?.yoast_head_json?.title || staticData.title,
-      description: pageData?.yoast_head_json?.description || staticData.description,
-      author: siteAuthor || staticData.author,  // Dynamic author or static fallback
+      description:
+        pageData?.yoast_head_json?.description || staticData.description,
+      author: siteAuthor || staticData.author, // Dynamic author or static fallback
       keywords: pageData?.acf?.seo_keywords || staticData.keywords,
       viewport: "width=device-width, initial-scale=1",
       robots: pageData?.yoast_head_json?.robots || staticData.robots,
@@ -220,15 +226,20 @@ export async function generateMetadata({ params, searchParams }, parent) {
       og_locale: staticData.og_locale,
       og_type: staticData.og_type,
       og_title: pageData?.yoast_head_json?.og_title || staticData.og_title,
-      og_description: pageData?.yoast_head_json?.og_description || staticData.og_description,
+      og_description:
+        pageData?.yoast_head_json?.og_description || staticData.og_description,
       og_url: pageData?.yoast_head_json?.canonical || staticData.og_url,
       og_site_name: staticData.og_site_name,
-      article_modified_time: pageData?.yoast_head_json?.modified_time || staticData.article_modified_time,
+      article_modified_time:
+        pageData?.yoast_head_json?.modified_time ||
+        staticData.article_modified_time,
       twitter_card: staticData.twitter_card,
-      twitter_misc: pageData?.yoast_head_json?.twitter_misc || staticData.twitter_misc,
+      twitter_misc:
+        pageData?.yoast_head_json?.twitter_misc || staticData.twitter_misc,
       twitter_site: staticData.twitter_site,
       twitter_creator: staticData.twitter_creator,
-      twitter_image: pageData?.yoast_head_json?.og_image || staticData.twitter_image,
+      twitter_image:
+        pageData?.yoast_head_json?.og_image || staticData.twitter_image,
     };
   } catch (error) {
     console.error("Error fetching page data:", error);
@@ -236,4 +247,3 @@ export async function generateMetadata({ params, searchParams }, parent) {
     return staticData;
   }
 }
-

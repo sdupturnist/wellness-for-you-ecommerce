@@ -116,7 +116,7 @@ export default async function CategoryPage({ params, searchParams }) {
                     {featuredProductsJson.length > 0 && (
                       <div className="section-header-card">
                         <SectionHeader title="Featured products" spacingSm />
-                        <ul className="products product-card-left-right-mobile grid xl:grid-cols-3 sm:grid-cols-2 sm:gap-4">
+                        <ul className={`${filteredProductsTopProducts.length > 0 ? 'xl:grid-cols-3' : 'xl:grid-cols-4'} products product-card-left-right-mobile grid  sm:grid-cols-2 sm:gap-4`}>
                           {featuredProductsJson.map((item, index) => (
                             <ProductCard key={index} data={item} mobileList />
                           ))}
@@ -132,7 +132,7 @@ export default async function CategoryPage({ params, searchParams }) {
                           filterData={categoriesJson}
                           spacingSm
                         />
-                        <ul className="products product-card-left-right-mobile grid xl:grid-cols-3 sm:grid-cols-2 sm:gap-4">
+                        <ul className={`${filteredProductsTopProducts.length > 0 ? 'xl:grid-cols-3' : 'xl:grid-cols-4'} products product-card-left-right-mobile grid  sm:grid-cols-2 sm:gap-4`}>
                           {allProducts.map((item, index) => (
                             <ProductCard key={index} data={item} mobileList />
                           ))}

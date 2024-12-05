@@ -21,7 +21,10 @@ export default function SectionHeader({
   titleCenter,
 }) {
   return (
-    <div className={`${!noSpacing && 'sm:mb-5 mb-4'} flex justify-between items-center`}>
+    <div
+      className={`${
+        !noSpacing && "sm:mb-5 mb-4"
+      } flex justify-between items-center`}>
       {small && !titleSmall && <p className="opacity-50">Payment options</p>}
       {card && !titleSmall && (
         <h3
@@ -40,7 +43,10 @@ export default function SectionHeader({
         </h3>
       )}
       {!card && !small && !titleSmall && (
-        <h3 className={`${titleCenter && "text-center w-full"} section-title first-letter:capitalize`}>
+        <h3
+          className={`${
+            titleCenter && "text-center w-full"
+          } section-title first-letter:capitalize`}>
           {title}
         </h3>
       )}
@@ -59,7 +65,7 @@ export default function SectionHeader({
           <div tabIndex={0} role="button" className="text-sm text-body">
             <AdjustmentsHorizontalIcon className="size-5" />
           </div>
-         
+
           <ul
             tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
