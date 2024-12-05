@@ -14,18 +14,20 @@ import { apiUrl, jwtTocken, woocommerceKey } from "@/app/Utils/variables";
 import ProfileMenu from "@/app/Components/ProfileMenu";
 import Loading from "@/app/Components/Loading";
 import Alerts from "@/app/Components/Alerts";
+import { userId } from "@/app/Utils/UserInfo";
+import { useAuthContext } from "../Context/authContext";
+
 
 export default function OrderItem() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Added error state for error handling
 
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
+
+  const { userData } = useAuthContext();
+
+
+
 
   const { id } = useParams();
   const router = useRouter();
@@ -46,7 +48,7 @@ export default function OrderItem() {
   useEffect(() => {
     // Only run once on mount
     
-    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userInfo?.id}&per_page=1`)
+    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
       .then((res) => res.json())
       .then((data) => {
         setOrder(data);
@@ -158,7 +160,7 @@ export default function OrderItem() {
 
                 <div className="gap-3 sm:px-0 px-3">
                   <AddNewReturn
-                    userInfo={userInfo && userInfo}
+                    userInfo={userData && userData}
                     data={order && order}
                     orderedDate={order && order?.date_completed}
                   />
@@ -166,7 +168,7 @@ export default function OrderItem() {
                     ((order?.status === "processing" ||
                       order?.status === "pending") && (
                       <CancelOrder
-                        userInfo={userInfo && userInfo}
+                        userInfo={userData && userData}
                         data={order && order}
                         orderedDate={order && order?.date_completed}
                       />

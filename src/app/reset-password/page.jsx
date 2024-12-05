@@ -2,7 +2,7 @@ import Link from "next/link";
 import Images from "../Components/Images";
 import SectionHeader from "../Components/SectionHeader";
 import { homeUrl } from "../Utils/variables";
-import ResetPasswordForm from "../Components/Forms/ResetPassword";
+import ResetPasswordForm from "../Components/Forms/ResetPasswordForm";
 
 export default function ResetPassword() {
   return (

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { homeUrl } from "../Utils/variables";
 import { useAuthContext } from "../Context/authContext";
+import Cookies from "js-cookie"; // Import js-cookie
 
 export default function Logout({ small }) {
   const router = useRouter();
@@ -14,7 +15,13 @@ export default function Logout({ small }) {
     // Clear localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("user_email");
+    localStorage.removeItem("u_id");
 
+    // Clear cookies
+    Cookies.remove("token");
+    Cookies.remove("user_email");
+
+    // Reset context and state
     setAuth(false);
     setUserToken("");
     setUserData([]);
@@ -28,14 +35,15 @@ export default function Logout({ small }) {
   return (
     <>
       {small ? (
-        <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+        <span onClick={handleLogout} style={{ cursor: "pointer" }}>
           Logout
-        </li>
+        </span>
       ) : (
-        <div className="px-4 pt-3 pb-4">
+        <div className="px-4 pt-3 smpb-4">
           <button
             onClick={handleLogout}
-            className="btn btn-light w-full btn-medium !text-red-500 hover:border-red-500">
+            className="btn btn-light w-full btn-medium !text-red-500 hover:border-red-500"
+          >
             Logout
           </button>
         </div>

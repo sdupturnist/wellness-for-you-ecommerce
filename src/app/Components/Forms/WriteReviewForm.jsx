@@ -87,11 +87,12 @@ export default function WriteReviewForm({ productId }) {
           setStatus(false);
         }, 3000);
 
-        console.log("Success");
+      
 
         //MAIL NOTIFICATION TO ADMIN
         await sendMail({
           sendTo: siteEmail,
+          name:  'Admin',
           subject: `Review | ${siteName}`,
           message: `You have received a new review from ${siteName}`,
         });
@@ -99,6 +100,7 @@ export default function WriteReviewForm({ productId }) {
         //MAIL NOTIFICATION TO REVIEWER
         await sendMail({
           sendTo: userData?.user_email,
+          name: userData?.first_name || '',
           subject: `Thank You for Sharing Your Feedback! | ${siteName}`,
           message: `Your review will be reviewed by the admin, and if approved, it will be published soon.`,
         });
@@ -133,7 +135,9 @@ export default function WriteReviewForm({ productId }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {status && (
+ <div className="grid gap-5">
+ <div>
+   {status && (
         <Alerts
           status="green"
           title="Your review has been submitted for approval. Thank you for your feedback."
@@ -145,6 +149,7 @@ export default function WriteReviewForm({ productId }) {
           title="We're sorry, but we were unable to submit your review. Please try again later."
         />
       )}
+   </div>
       <div className="grid gap-4">
         <div className="rating rating-lg mb-3 flex gap-4">
           <input
@@ -203,6 +208,7 @@ export default function WriteReviewForm({ productId }) {
           Submit
         </button>
       </div>
+ </div>
     </form>
   );
 }

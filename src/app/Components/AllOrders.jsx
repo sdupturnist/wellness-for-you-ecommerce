@@ -29,7 +29,7 @@ export default function AllOrders() {
       });
   }, [userData?.id]); // Re-run the effect if userData.id changes
 
-  console.log(orders);
+
 
   return (
     <div>

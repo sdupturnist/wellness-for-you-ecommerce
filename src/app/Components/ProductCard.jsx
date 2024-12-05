@@ -2,6 +2,7 @@
 
 import Images from "./Images";
 import {
+  apiUrl,
   convertStringToJSON,
   currency,
   homeUrl,
@@ -15,6 +16,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Skelton from "./Skelton";
 import Price from "./Price";
+import { userId } from "../Utils/UserInfo";
 
 export default function ProductCard({
   data,
@@ -22,6 +24,7 @@ export default function ProductCard({
   mobileList,
   inCartPage,
   wishlist,
+  miniCard,
 }) {
   const category = useParams();
 
@@ -37,9 +40,8 @@ export default function ProductCard({
 
   const [activeWishlist, setActiveWishlist] = useState([]);
 
-  // Fetch wishlist items
   useEffect(() => {
-    fetch("https://admin.wellness4u.in/wp-json/wishlist/v1/items?user_id=2")
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
       .then((res) => res.json())
       .then((data) => {
         setActiveWishlist(data);
@@ -52,25 +54,23 @@ export default function ProductCard({
 
   // const filterWishListFromItems = data && data.filter(product => product.id === 66);
 
- 
-
   const leftRightCard = loading ? (
     <Skelton productleftRightCard />
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
-        <AddToWishList
-            small
-            activeWishlist={
-              activeWishlist &&
-              Object.values(activeWishlist).includes(data?.id) &&
-              "active"
-            }
-            itemName={data?.name}
-            productId={data?.id}
-          />
+      <AddToWishList
+        small
+        activeWishlist={
+          activeWishlist &&
+          Object.values(activeWishlist).includes(data?.id) &&
+          "active"
+        }
+        itemName={data?.name}
+        productId={data?.id}
+      />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-     <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
-           <Link
+        <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+          <Link
             className="flex sm:block items-center min-w-32"
             href={`${itemCaturl}/${data?.slug}`}>
             <Images
@@ -92,7 +92,9 @@ export default function ProductCard({
         <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3 sm:max-w-full max-w-[60%]">
           <div>
             <Link href={`${itemCaturl}/${data?.slug}`}>
-              <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
+              <h3 className="product-title leading-[1.6em] text-dark mb-2">
+                {data?.name}
+              </h3>
             </Link>
             {data?.rating_count > 0 && (
               <ReviewCount
@@ -103,7 +105,6 @@ export default function ProductCard({
             {data?.price && (
               <Price regular={data?.regular_price} sale={data?.price} />
             )}
-
 
             <div>
               {!inCartPage && data?.price && (
@@ -137,18 +138,18 @@ export default function ProductCard({
     </>
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
-       <AddToWishList
-            small
-            activeWishlist={
-              activeWishlist &&
-              Object.values(activeWishlist).includes(data?.id) &&
-              "active"
-            }
-            itemName={data?.name}
-            productId={data?.id}
-          />
+      <AddToWishList
+        small
+        activeWishlist={
+          activeWishlist &&
+          Object.values(activeWishlist).includes(data?.id) &&
+          "active"
+        }
+        itemName={data?.name}
+        productId={data?.id}
+      />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-      <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+        <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
           <Link
             className="flex sm:block items-center min-w-32"
             href={`${itemCaturl}/${data?.slug}`}>
@@ -171,7 +172,9 @@ export default function ProductCard({
         <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:pt-3 sm:max-w-full max-w-[60%]">
           <div>
             <Link href={`${itemCaturl}/${data?.slug}`}>
-              <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
+              <h3 className="product-title leading-[1.6em] text-dark mb-2">
+                {data?.name}
+              </h3>
             </Link>
             {data?.rating_count > 0 && (
               <ReviewCount
@@ -204,17 +207,117 @@ export default function ProductCard({
     </li>
   );
 
+
+
+
+//TOP 
+
+
+
+  const miniCardColumn = loading ? (
+    <>
+      <div className="sm:block hidden">
+        <Skelton productCard />
+      </div>
+      <div className="sm:hidden">
+        <Skelton productleftRightCard />
+      </div>
+    </>
+  ) : (
+    <li className="w-full sm:w-auto sm:mr-2 justify-between  relative">
+    <AddToWishList
+      small
+      activeWishlist={
+        activeWishlist &&
+        Object.values(activeWishlist).includes(data?.id) &&
+        "active"
+      }
+      itemName={data?.name}
+      productId={data?.id}
+    />
+    <div className="flex relative h-full w-full sm:gap-0 gap-5">
+      <div className="img-box">
+        <Link
+          className="block w-full"
+          href={`${itemCaturl}/${data?.slug}`}>
+          <Images
+            imageurl={
+              data?.images[0]?.src ||
+              (data?.images.length > 0 && data?.images)
+            }
+            quality="100"
+            width="200"
+            height="200"
+            title={`${data?.images[0]?.alt || data?.name}`}
+            alt={`${data?.images[0]?.alt || data?.name}`}
+            classes="block sm:size-[50px] size-[50px] my-[15px] mx-auto"
+            placeholder={true}
+          />
+        </Link>
+      </div>
+
+      <div className="w-full grid items-center sm:px-4 sm:max-w-[70%] max-w-[60%]">
+        <div>
+          <Link href={`${itemCaturl}/${data?.slug}`}>
+            <h3 className="product-title leading-[1.6em] text-dark mb-2">
+              {data?.name}
+            </h3>
+          </Link>
+          {data?.rating_count > 0 && (
+            <ReviewCount
+              average={data?.average_rating}
+              ratingCount={data?.rating_count}
+            />
+          )}
+          {data?.price && (
+            <Price regular={data?.regular_price} sale={data?.price} />
+          )}
+
+          <div>
+            {!inCartPage && data?.price && (
+              <AddToCart
+                card
+                itemid={data?.id}
+                price={
+                  data?.price !== null ? data?.price : data?.regular_price
+                }
+                name={data?.name}
+                options={convertStringToJSON(data && data?.acf?.options)}
+                image={data?.images[0]?.src || data?.images}
+                slug={data?.slug}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+  );
+
+
+
+
+//CASE START
+
+
+
+
   let card;
 
   switch (true) {
     case column:
-      // Left-Right Card layout
+    
       card = leftRightCard;
       break;
 
     case mobileList:
-      // Left-Right Card layout
+   
       card = leftRightCardMobile;
+      break;
+
+    case miniCard:
+    
+      card = miniCardColumn;
       break;
 
     default:
@@ -230,14 +333,14 @@ export default function ProductCard({
         </>
       ) : (
         <div className="product-card w-full mr-2">
-            <AddToWishList
-              small
-              active
-              itemName={data?.name}
-              productId={data?.id}
-            />
+          <AddToWishList
+            small
+            active
+            itemName={data?.name}
+            productId={data?.id}
+          />
           <div className="block w-full">
-             <Link href={`${itemCaturl}/${data?.slug}`}>
+            <Link href={`${itemCaturl}/${data?.slug}`}>
               <Images
                 imageurl={
                   data?.images[0]?.src ||
@@ -255,7 +358,9 @@ export default function ProductCard({
 
             <div className="p-4 pt-0">
               <Link href={`${itemCaturl}/${data?.slug}`}>
-                <h3 className="product-title leading-[1.6em] text-dark mb-2">{data?.name}</h3>
+                <h3 className="product-title leading-[1.6em] text-dark mb-2">
+                  {data?.name}
+                </h3>
               </Link>
               {data?.rating_count > 0 && (
                 <ReviewCount

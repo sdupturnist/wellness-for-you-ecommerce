@@ -4,9 +4,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { apiUrl, homeUrl, woocommerceKey } from "@/app/Utils/variables";
+import { apiUrl, homeUrl, siteName, woocommerceKey } from "@/app/Utils/variables";
 import Alerts from "../Components/Alerts";
 import Loading from "../Components/Loading";
+import { sendMail } from "../Utils/Mail";
+import { WelcomeEmailTemplate } from "../Utils/MailTemplates";
+
 
 export default function ConfirmEmail() {
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -19,9 +22,7 @@ export default function ConfirmEmail() {
   const subscribe = searchParams.get("subscribe");
   const token = new URLSearchParams(window.location.search).get("token");
 
-  // console.log(username)
-  // console.log(email)
-  // console.log(password)
+
 
   useEffect(() => {
     const confirmUser = async () => {
@@ -58,6 +59,17 @@ export default function ConfirmEmail() {
 
         if (!response.ok) {
           throw new Error("Failed to create customer");
+        }
+
+        if(response.ok){
+
+          await sendMail({
+            sendTo: email,
+            subject: `Welcome to ${siteName}`,
+            name: username,
+            message: WelcomeEmailTemplate('Our primary goal at Wellness4u Food Supplements is to provide our customers with a wide selection of nutrition supplements and wellness equipment that have been rigorously tested for both quality and safety. We strive to offer products that not only enhance overall health and well-being but also empower individuals to take control of their own wellness journey.', username),
+          });
+
         }
 
         setIsConfirmed(true);

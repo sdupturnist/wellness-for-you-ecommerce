@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Alerts from "../Alerts";
 import { sendMail } from "@/app/Utils/Mail";
 import Link from "next/link";
+import Cookies from 'js-cookie';
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -15,19 +16,18 @@ export default function Signup() {
   const [subscribeEmail, setSubscribeEmail] = useState("");
   const [error, setError] = useState(null);
   const [passwordMismatch, setPasswordMismatch] = useState(false);
-  const [passwordTooShort, setPasswordTooShort] = useState(false); // New state for password length check
+  const [passwordTooShort, setPasswordTooShort] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if the password is less than 6 characters
     if (password.length < 6) {
       setPasswordTooShort(true);
       return;
     }
 
-    setPasswordTooShort(false); // Reset error if password is valid length
+    setPasswordTooShort(false);
 
     if (password !== confirmPassword) {
       setPasswordMismatch(true);
@@ -37,19 +37,17 @@ export default function Signup() {
     setPasswordMismatch(false);
 
     try {
-      // Generate a unique confirmation token
       const token = Math.random().toString(36).substring(2);
 
-      // Send the confirmation email to the user
       await sendMail({
         sendTo: email,
         subject: "Please verify your registration",
         name: username,
-        message: `Hello ${username},\n\nPlease click the following link to confirm your registration:\n\n<a href="${homeUrl}confirm-email?token=${token}&username=${username}&email=${email}&password=${password}&subscribe=${subscribeEmail}" style="color:#fff;text-decoration:none;font-weight:600;margin:20px 0;border-radius:4px;display:block;background:#137e43;text-align:center;border-radius:5px;padding: 12px 19px;width: max-content;font-size: 15px;text-transform: uppercase;">Confirm Your Email</a>\n\nThank you!`,
+        message: `Hello ${username},\n\nPlease click the button below to confirm your registration:\n\n<a href="${homeUrl}confirm-email?token=${token}&username=${username}&email=${email}&password=${password}&subscribe=${subscribeEmail}" style="color:#fff;text-decoration:none;font-weight:600;margin:20px 0;border-radius:4px;display:block;background:#137e43;text-align:center;border-radius:5px;padding: 12px 19px;width: max-content;font-size: 15px;text-transform: uppercase;">Confirm Your Email</a>\n\nThank you!`,
       });
 
-      console.log("Email sent with confirmation link");
-      // After sending the email, you could redirect the user to a page confirming that they need to check their email
+
+      Cookies.set('register_verify_email', 'true', { expires: 5 / 1440 });
       router.push(`${homeUrl}check-your-email?email=${email}`);
     } catch (err) {
       setError(err.message || "An error occurred");

@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
+
 import {
   apiUrl,
   freeShipping,
@@ -50,7 +52,7 @@ export default function CashOnDeliveryPayment({ userData }) {
 
 
 
-console.log(billingAddress?.phone)
+
 
 
   const [loading, setLoading] = useState(false);
@@ -201,7 +203,7 @@ console.log(billingAddress?.phone)
                 ),
               });
 
-              console.log("Order successfully created");
+        
 
               // Reset cart and validation states after successful payment
               setCartItems([]); // Clear cart items
@@ -213,6 +215,9 @@ console.log(billingAddress?.phone)
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false); // Reset payment terms
               localStorage.removeItem("cartItems"); // Remove items from localStorage
+              Cookies.set('checkout_success', 'true', { expires: 1 / 1440 });
+
+              
 
               // Redirect to success page
               router.push(`${homeUrl}checkout/success`);

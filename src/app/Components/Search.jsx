@@ -22,7 +22,7 @@ export default function Search() {
   }, []);
 
   const handleOnSearch = (string, results) => {
-    console.log(string, results);
+ 
   };
 
   const handleOnSelect = (item) => {

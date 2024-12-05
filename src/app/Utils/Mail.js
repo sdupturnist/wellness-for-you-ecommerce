@@ -83,7 +83,6 @@ export async function sendMail({  sendTo, subject, message, name }) {
         
     `,
   });
-  console.log("Message Sent", info.messageId);
-  console.log("Mail sent to", siteEmail);
+
   return info;
 }

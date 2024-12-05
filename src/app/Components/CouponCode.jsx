@@ -51,7 +51,7 @@ export default function CouponCode() {
         const data = await response.json();
         setAllCouponData(data);
       } catch (err) {
-        console.log(err.message);
+      
       } finally {
       }
     };
@@ -85,7 +85,7 @@ export default function CouponCode() {
       const currentDate = new Date();
       const couponExpirationDate = new Date(expirationDate);
 
-      //    console.log(parseInt(discountAmount))
+  
 
       if (couponExpirationDate < currentDate) {
         setMessage("This coupon has expired");

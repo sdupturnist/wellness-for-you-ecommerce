@@ -5,6 +5,10 @@ import { useAuthContext } from "../Context/authContext";
 import Loading from "../Components/Loading";
 import { homeUrl } from "./variables";
 
+
+
+
+
 const withAuth = (WrappedComponent) => {
   return (props) => {
     const { auth, loadingAuth } = useAuthContext();

@@ -96,7 +96,7 @@ export default function MyOrder({ data, orderView, userInfo }) {
 
                 
                   {/* <ul className="list-order-view"> */}
-                  {/* {console.log(data)} */}
+              
                   {/* <li> */}
                   {/* <label>Amount</label> */}
                   {/* <span > */}

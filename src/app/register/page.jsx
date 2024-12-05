@@ -1,10 +1,17 @@
+
+
 import Link from "next/link";
 import Images from "../Components/Images";
 import SectionHeader from "../Components/SectionHeader";
 import { homeUrl } from "../Utils/variables";
-import Signup from "../Components/Forms/Signup";
+import Register from "../Components/Register";
+
+
 
 export default function SignupPage() {
+
+
+
   return (
     <div className="bg-bggray">
       <section className="sm:bg-white bg-bggray py-0">
@@ -22,7 +29,7 @@ export default function SignupPage() {
           <div className="bg-white sm:p-14 p-8 sm:max-w-[500px] max-w-[400px] w-full mx-auto relative sm:top-[-200px] top-[-100px] rounded-lg border border-border">
             <SectionHeader title="Create a account" titleCenter />
             <div className="grid gap-5 pt-3">
-              <Signup />
+            <Register/>
               <Link
                 href={`${homeUrl}login`}
                 className="btn btn-light btn-large">

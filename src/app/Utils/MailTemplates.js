@@ -1,6 +1,6 @@
 'use client'
 
-import { currency, formatDate } from "./variables"
+import { currency, formatDate, siteName } from "./variables"
 
 export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount) => {
     
@@ -113,6 +113,46 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     
   return item;
 }
+
+
+
+
+
+//WELCOME
+export let WelcomeEmailTemplate  = (content, name) => {
+
+
+  const item = `<table role="presentation" style="width: 100%; background-color: #ffffff; padding: 20px;">
+        <tr>
+            <td>
+                <table role="presentation" style="width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px;">
+                    <tr>
+                        <td style="padding-bottom: 20px;">
+                            <h1 style="color: #333333; font-size: 24px; margin: 0;">Welcome to ${siteName}!</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px; line-height: 1.6; color: #555555; ">
+                            <p>Hello, ${name || ''}</p>
+                            <p>${content}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="font-size: 14px; color: #777777; margin-bottom:0;">Best regards,</p>
+                            <p style="font-size: 14px; color: #777777; margin-top:5px;">Team ${siteName}</p>
+                         
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>`
+
+  return item
+
+}
+
 
 
 

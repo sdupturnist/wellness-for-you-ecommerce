@@ -5,9 +5,12 @@ import { useCartContext } from "../Context/cartContext";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import AddToWishList from "./AddToWishList";
 import Link from "next/link";
-import { homeUrl } from "../Utils/variables";
+import { apiUrl, homeUrl } from "../Utils/variables";
 import Notification from "./Notification";
 import Swal from "sweetalert2";
+import { userId } from "../Utils/UserInfo";
+
+
 
 export default function AddToCart({
   itemid,
@@ -28,6 +31,8 @@ export default function AddToCart({
   const [notification, setNotification] = useState(null);
 
   const [isActiveWishList, setIsActiveWishList] = useState(active);
+  const [loading, setLoading] = useState(true);
+  const [activeWishlist, setActiveWishlist] = useState([]);
 
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -36,13 +41,14 @@ export default function AddToCart({
     }
   }, [itemid]);
 
-  // Memoize safeCartItems to avoid unnecessary recalculations
+ 
   const safeCartItems = useMemo(
     () => (Array.isArray(cartItems) ? cartItems : []),
     [cartItems]
   );
 
-  // Effect hook to sync quantity with cartItems
+  
+
   useEffect(() => {
     const currentItem = safeCartItems.find((item) => item.id === itemid);
     if (currentItem) {
@@ -52,19 +58,24 @@ export default function AddToCart({
     }
   }, [safeCartItems, itemid]);
 
-  // Store cartItems length in the cookie
-  // const updateCartLengthCookie = (updatedCartItems) => {
-  //   const cartLength = updatedCartItems.length;
 
-  //   // Update the cart length cookie via the POST API route
-  //   fetch(`${homeUrl}api/setCookie/cart-length`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ cartItemsLength: cartLength }),
-  //   });
-  // };
+  
+  
+  useEffect(() => {
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setActiveWishlist(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+
+
+ 
 
   const updateCartLengthCookie = async (updatedCartItems) => {
     const cartLength = updatedCartItems.length;
@@ -81,14 +92,14 @@ export default function AddToCart({
       if (response.ok) {
         // Successfully updated cart length in cookie
         const data = await response.json();
-        console.log("Success:", data.message); // Log success message from response
+      
       } else {
         // If the response status is not OK, log failure
-        console.log("Error: Failed to update cart length", response.statusText);
+      
       }
     } catch (error) {
       // Log any error that occurred during the fetch
-      console.log("Request failed with error:", error);
+  
     }
   };
 
@@ -302,7 +313,7 @@ export default function AddToCart({
   };
 
 
-  const [activeWishlist, setActiveWishlist] = useState([]);
+ 
 
   return (
     <>
@@ -444,7 +455,7 @@ export default function AddToCart({
                       </ul>
                     }
                   </details>
-                   <AddToWishList
+                  <AddToWishList
             activeWishlist={
               activeWishlist &&
               Object.values(activeWishlist).includes(itemid) &&

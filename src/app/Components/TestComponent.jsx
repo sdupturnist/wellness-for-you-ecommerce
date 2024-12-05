@@ -74,7 +74,7 @@ export default function TestComponent() {
           message: OrderPlacedEmailTemplate(siteLogo),
         });
 
-        console.log("Success");
+    
       } else {
         const errorResponse = await response.json();
         console.error(

@@ -1170,3 +1170,52 @@ function validate_token(WP_REST_Request $request) {
     return new WP_REST_Response('Invalid token.', 403);
 }
 
+
+//PASSWORD CHANGE
+
+// Register the custom endpoint for password change
+function custom_password_change_endpoint() {
+    register_rest_route( 'custom/v1', '/change-password/', array(
+        'methods'  => 'POST',
+        'callback' => 'change_user_password',
+    ));
+}
+add_action( 'rest_api_init', 'custom_password_change_endpoint' );
+
+// Callback function to handle the password change
+function change_user_password( WP_REST_Request $request ) {
+    // Get parameters from the request
+    $user_id = $request->get_param( 'user_id' );
+    $old_password = sanitize_text_field( $request->get_param( 'old_password' ) );
+    $new_password = sanitize_text_field( $request->get_param( 'new_password' ) );
+
+    // Check if the user exists
+    $user = get_user_by( 'id', $user_id );
+    if ( ! $user ) {
+        return new WP_Error( 'invalid_user', 'The specified user does not exist.', array( 'status' => 400 ) );
+    }
+
+    // Check if the old password is correct
+    if ( ! wp_check_password( $old_password, $user->user_pass, $user_id ) ) {
+        return new WP_Error( 'incorrect_password', 'The old password is incorrect.', array( 'status' => 400 ) );
+    }
+
+    // Validate the new password
+    if ( empty( $new_password ) ) {
+        return new WP_Error( 'invalid_password', 'The new password cannot be empty.', array( 'status' => 400 ) );
+    }
+
+    // Update the password
+    wp_set_password( $new_password, $user_id );
+
+    // Return success response
+    return new WP_REST_Response( 'Password changed successfully', 200 );
+}
+
+
+//https://admin.wellness4u.in/wp-json/custom/v1/change-password/
+// {
+//     "user_id":14,
+//     "old_password": "123456",
+//       "new_password": "123456789"
+// }

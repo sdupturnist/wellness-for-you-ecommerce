@@ -19,20 +19,36 @@ export default function CheckoutAddress() {
 
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch(`${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setAdditionalsavedAddress(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //       setLoading(false);
+  //     });
+  // }, [savedAddress]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`
+      );
+      const data = await response.json();
+      setAdditionalsavedAddress(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetch(`${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAdditionalsavedAddress(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, [savedAddress]);
+    fetchData();
+  }, []);
 
   const additionalAddresses = useMemo(() => {
     return savedAddress?.meta_data?.find(
@@ -107,6 +123,7 @@ export default function CheckoutAddress() {
           <SectionHeader title="Add new billing details" card />
 
           <AddNewAddressForm
+            onAddressAdded={fetchData}
             addressCount={additionalAddresses ? additionalAddresses?.length : 0}
           />
         </div>

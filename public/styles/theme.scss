@@ -338,7 +338,7 @@ button:disabled {
 @apply list-none;
    
 li{
-    @apply bg-white sm:rounded-[12px]  sm:border border-b  border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
+    @apply w-full bg-white sm:rounded-[12px]  sm:border border-b  border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all;
 }
     
 
@@ -374,6 +374,57 @@ li{
         @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px]
     }
 }
+
+
+
+
+
+.product-col-small{
+    @apply list-none;
+       
+    li{
+        @apply w-full bg-white sm:rounded-[12px]  sm:border border-b sm:last:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all mb-5 sm:p-5 py-5 ;
+    
+    .img-box{
+        @apply border rounded-md sm:min-w-[70px] sm:max-w-[70px]  sm:min-h-[70px] sm:max-h-[70px] min-w-[130px] min-h-[130px] max-h-[130px]  max-w-[130px] items-center flex;
+    }
+    
+    }
+        
+    
+        .img-box{
+           @apply w-full min-h-[190px] p-[5px]  justify-center items-center gap-2.5 inline-flex;
+      img{
+       @apply  w-[80px] h-[80px] object-contain;
+      }
+        }
+    
+       
+        .btn{
+            @apply rounded-md  text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
+        }
+        .product-title{
+            @apply text-[14px] text-dark;
+        }
+        .product-price{
+            @apply text-[0.875rem] font-bold text-dark;
+        }
+        .product-price-regular{
+            @apply text-[0.875rem] line-through opacity-50;
+        }
+        .product-offer{
+            @apply text-[12px];
+            color: $PRIMARY;
+        }
+        svg{
+    
+        }
+    
+        .count{
+            @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px]
+        }
+    }
+
 
 
 .product-card-left-right{

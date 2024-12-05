@@ -1,22 +1,35 @@
-'use client'
+"use client";
 
-import { useAuthContext } from "../Context/authContext";
+import { useEffect, useState } from "react";
+import ModalPopup from "../Components/ModalPopup";
 import { homeUrl } from "./variables";
-import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
-
-
-
-const { auth } = useAuthContext(); // Destructure auth from useAuthContext
-
-  const router = useRouter(); // Initialize the router
-
-
-
-export let IsLoggined = ({url}) => {
-    if (auth) {
-      router.push(url);
-    } else {
-      router.push(`${homeUrl}login`);
-    }
-  };
+export const isLoggined = (auth, router, url, heading, desc) => {
+  if (auth) {
+    router.push(`${homeUrl}/${url}`);
+  } else {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-light",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: heading,
+        text: desc,
+        icon: false,
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          router.push(`${homeUrl}/login`);
+        }
+      });
+  }
+};

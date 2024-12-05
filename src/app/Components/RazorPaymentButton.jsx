@@ -121,7 +121,7 @@ export default function RazorPayment({ userData }) {
         order_id: data.orderId, // Use the order ID received from the API
         handler: async function (response) {
           // Step 3: Handle payment success
-          console.log("Payment Successful: " + response.razorpay_payment_id);
+        //  console.log("Payment Successful: " + response.razorpay_payment_id);
           setUpdatePaymentStatus("success");
 
           setPaymentId(response.razorpay_payment_id || "null");

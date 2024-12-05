@@ -19,33 +19,41 @@ export default function Address() {
   const [error, setError] = useState(null);
 
   // Fetch user data and addresses on mount or when userData.id changes
+
+
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`
+      );
+      const data = await response.json();
+      setSavedAddress(data);
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to fetch addresses. Please try again later.");
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${apiUrl}wp-json/wc/v3/customers/${userData?.id}${woocommerceKey}`
-        );
-        const data = await response.json();
-        setSavedAddress(data);
-        setLoading(false);
-      } catch (error) {
-        setError("Failed to fetch addresses. Please try again later.");
-        setLoading(false);
-      }
-    };
 
     if (userData?.id) {
       fetchData();
     }
   }, [userData?.id]);
 
-  const additionalAddresses = useMemo(() => {
-    return savedAddress?.meta_data?.find(
-      (item) => item.key === "additional_addresses"
-    )?.value;
-  }, [savedAddress]);
+  // Extract additional addresses from meta_data
+  const additionalAddresses = savedAddress?.meta_data?.find(
+    (item) => item.key === "additional_addresses"
+  )?.value;
 
+  // Handle address deletion
   const deleteAddress = (id) => {
+
+ 
+
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -64,6 +72,8 @@ export default function Address() {
         cancelButtonText: "Cancel",
         reverseButtons: true,
       })
+
+      
       .then((result) => {
         if (result.isConfirmed) {
           fetch(
@@ -78,7 +88,7 @@ export default function Address() {
             .then((res) => res.json())
             .then(() => {
               // Re-fetch addresses after deletion
-              fetchData();
+            fetchData(); // This should ensure the latest data is fetched.
             })
             .catch((error) => {
               console.error("Error deleting address:", error);
@@ -87,6 +97,8 @@ export default function Address() {
         }
       });
   };
+
+
 
   return loading ? (
     <div className="flex items-center justify-center sm:min-h-[70vh] min-h-[50vh]">
@@ -152,7 +164,7 @@ export default function Address() {
               </div>
             ))
           )}
-          <AddNewAddress />
+                <AddNewAddress onAddressAdded={fetchData} />
         </div>
       </section>
     </div>

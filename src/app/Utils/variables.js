@@ -103,14 +103,14 @@ export let accountMenus = [
   //   url: 'account/rewards',
   //   icon: <GiftIcon className="sm:size-4 size-[18px] text-primary" />,
   // },
+  // {
+  //   label: 'Edit profile',
+  //   url: 'account/edit-profile',
+  //   icon: <UserIcon className="sm:size-4 size-[18px] text-primary" />,
+  // },
   {
-    label: 'Edit profile',
-    url: 'account/edit-profile',
-    icon: <UserIcon className="sm:size-4 size-[18px] text-primary" />,
-  },
-  {
-    label: 'Reset password',
-    url: 'account/reset-password',
+    label: 'Change password',
+    url: 'account/change-password',
     icon: <KeyIcon className="sm:size-4 size-[18px] text-primary" />,
   },
  
@@ -153,6 +153,7 @@ export let OfferPercentage = ({ normalprice, saleprice }) => {
 
 export let currency = '₹'
 export let paymentCurrency = 'INR'
+
 
 
 

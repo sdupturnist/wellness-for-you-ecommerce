@@ -12,7 +12,6 @@ export default async function CategoryPage({ params, searchParams }) {
   const pageId = 76;
   const itemsShowPerPage = 30;
 
-  
   // Fetch all products for the current page
   let allProductsData = await fetch(
     `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
@@ -86,78 +85,76 @@ export default async function CategoryPage({ params, searchParams }) {
       reviews.some((review) => review.product_id === product.id)
     );
 
-   
-
   return (
-  <main>
-    <div className="bg-bggray">
+    <main>
+      <div className="bg-bggray">
         <div className="container">
-      <Breadcrumb />
-      <section className="sm:pb-6 py-0">
-        <div className="container">
-          {allProducts.length > 0 ? (
-            <div
-              className={`${
-                filteredProductsTopProducts.length > 0
-                  ? "lg:grid-cols-[25%_75%]"
-                  : ""
-              } grid grid-cols-1 sm:gap-8 gap-5`}>
-              {filteredProductsTopProducts.length > 0 && (
-                <div className="w-full lg:pr-7 order-last lg:order-1">
-                  <div className="section-header-card">
-                    <SectionHeader title="Top rated products" />
-                    <div className="products product-card-left-right-mobile">
-                      {filteredProductsTopProducts &&
-                        filteredProductsTopProducts.map((item, index) => (
-                          <ProductCard key={index} data={item} column />
-                        ))}
+          <Breadcrumb />
+          <section className="sm:pb-6 py-0">
+            <div className="container">
+              {allProducts.length > 0 ? (
+                <div
+                  className={`${
+                    filteredProductsTopProducts.length > 0
+                      ? "xl:grid-cols-[30%_70%]"
+                      : ""
+                  } grid grid-cols-1 sm:gap-5 gap-5`}>
+                  {filteredProductsTopProducts.length > 0 && (
+                    <div className="w-full xl:pr-7 order-last xl:order-1">
+                      <div className="section-header-card">
+                        <SectionHeader title="Top rated products" />
+                        <ul className="products product-col-small">
+                          {filteredProductsTopProducts &&
+                            filteredProductsTopProducts.map((item, index) => (
+                              <ProductCard key={index} data={item} miniCard/>
+                            ))}
+                        </ul>
+                      </div>
                     </div>
+                  )}
+                  <div className="grid gap-3 sm:gap-0 w-full xl:order-2 order-first ">
+                    {featuredProductsJson.length > 0 && (
+                      <div className="section-header-card">
+                        <SectionHeader title="Featured products" spacingSm />
+                        <ul className="products product-card-left-right-mobile grid xl:grid-cols-3 sm:grid-cols-2 sm:gap-4">
+                          {featuredProductsJson.map((item, index) => (
+                            <ProductCard key={index} data={item} mobileList />
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {allProducts.length > 0 && (
+                      <div className="section-header-card">
+                        <SectionHeader
+                          title="All products"
+                          url="/"
+                          filter
+                          filterData={categoriesJson}
+                          spacingSm
+                        />
+                        <ul className="products product-card-left-right-mobile grid xl:grid-cols-3 sm:grid-cols-2 sm:gap-4">
+                          {allProducts.map((item, index) => (
+                            <ProductCard key={index} data={item} mobileList />
+                          ))}
+                        </ul>
+                        <Pagination
+                          currentPage={parseInt(currentPage, 10)}
+                          totalPages={totalPages}
+                          baseUrl={`${category}`}
+                          itemsShowPerPage={itemsShowPerPage}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
+              ) : (
+                <Alerts large title="Sorry, no page found." noPageUrl />
               )}
-              <div className="grid gap-3 sm:gap-0 w-full lg:order-2 order-first ">
-                {featuredProductsJson.length > 0 && (
-                  <div className="section-header-card">
-                    <SectionHeader title="Featured products" spacingSm />
-                    <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-                      {featuredProductsJson.map((item, index) => (
-                        <ProductCard key={index} data={item} mobileList />
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {allProducts.length > 0 && (
-                  <div className="section-header-card">
-                    <SectionHeader
-                      title="All products"
-                      url="/"
-                      filter
-                      filterData={categoriesJson}
-                      spacingSm
-                    />
-                    <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-                      {allProducts.map((item, index) => (
-                        <ProductCard key={index} data={item} mobileList />
-                      ))}
-                    </ul>
-                    <Pagination
-                      currentPage={parseInt(currentPage, 10)}
-                      totalPages={totalPages}
-                      baseUrl={`${category}`}
-                      itemsShowPerPage={itemsShowPerPage}
-                    />
-                  </div>
-                )}
-              </div>
             </div>
-          ) : (
-            <Alerts large title="Sorry, no products found." noPageUrl />
-          )}
+          </section>
         </div>
-      </section>
-    </div>
-    </div>
-  </main>
+      </div>
+    </main>
   );
 }
 

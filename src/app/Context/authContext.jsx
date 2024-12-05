@@ -19,10 +19,13 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("user_id");
 
+   
+    if(auth){
     if (!token) {
       router.push(homeUrl);
       return;
     }
+  }
 
     const validateToken = async () => {
       try {
@@ -48,7 +51,7 @@ export const AuthProvider = ({ children }) => {
           setAuth(false);
           localStorage.removeItem("token");
           localStorage.removeItem("user_email");
-          router.push("/login");
+         // router.push("/login");
         }
       } catch (err) {
         setAuth(false);
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }) => {
         setError("Session expired or invalid token");
         localStorage.removeItem("token");
         localStorage.removeItem("user_email");
-        router.push("/login");
+       // router.push("/login");
       } finally {
         setLoadingAuth(false);
       }
@@ -73,7 +76,7 @@ export const AuthProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           setUserData(data[0]);
-          console.log(data);
+       
         })
         .catch((error) => {
           console.error("Error fetching data:", error);

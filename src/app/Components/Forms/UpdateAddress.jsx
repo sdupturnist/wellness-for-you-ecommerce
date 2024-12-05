@@ -169,7 +169,7 @@ export default function UpdateAddressForm({ addressCount }) {
         // </table>`,
         //         });
 
-        console.log("Success");
+  
 
         router.back();
 

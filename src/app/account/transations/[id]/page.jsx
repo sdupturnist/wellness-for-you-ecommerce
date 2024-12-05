@@ -1,7 +1,7 @@
 "use client";
 import { Preview, print } from "react-html2pdf";
 import Invoice from "@/app/Components/Invoice";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { apiUrl, siteName, woocommerceKey } from "@/app/Utils/variables";
 import { useParams } from "next/navigation";
 import Loading from "@/app/Components/Loading";
@@ -13,17 +13,11 @@ export default function ViewInvoice({ data }) {
 const [invoice, setInvoice] = useState([])
 const [loading, setLoading] = useState(true)
 
-  const userInfo = {
-    id: 2,
-    name: `Anjali`,
-    email: `upturnistuae@gmail.com`,
-    phone: `911234567890`,
-  };
 
   useEffect(() => {
     // Only run once on mount
     fetch(
-      `${apiUrl}wp-json/wc/v3/orders/${id?.id}${woocommerceKey}&customer=${userInfo?.id}&per_page=1`
+      `${apiUrl}wp-json/wc/v3/orders/${id?.id}${woocommerceKey}&customer=${useId}&per_page=1`
     )
       .then((res) => res.json())
       .then((data) => {

@@ -44,7 +44,7 @@ export default function AccountHeader({ back }) {
         )}
         {back && (
           <>
-            <button onClick={router.back}>
+            <button onClick={(e) => router.back}>
               <ArrowLeftIcon className="size-5 text-dark" />
             </button>
             <h3 className="text-lg font-semibold capitalize">

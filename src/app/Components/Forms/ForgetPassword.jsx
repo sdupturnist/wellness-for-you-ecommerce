@@ -36,14 +36,14 @@ export default function PasswordResetRequest() {
         await sendMail({
           sendTo: email,
           subject: "Password Reset Request",
-          message: `Hello,\n\nPlease click the following link to confirm your password reset:\n\n<a href="${homeUrl}/reset-password?token=${token}&email=${email}" style="color:#fff;text-decoration:none;font-weight:600;margin:20px 0;border-radius:4px;display:block;background:#137e43;text-align:center;border-radius:5px;padding: 12px 19px;width: max-content;font-size: 15px;text-transform: uppercase;">Confirm Your Email</a>\n\nThank you!`,
+          message: `Hello,\n\nPlease click the following link to confirm your password reset:\n\n<a href="${homeUrl}reset-password?token=${token}&email=${email}" style="color:#fff;text-decoration:none;font-weight:600;margin:20px 0;border-radius:4px;display:block;background:#137e43;text-align:center;border-radius:5px;padding: 12px 19px;width: max-content;font-size: 15px;text-transform: uppercase;">Confirm Your Email</a>\n\nThank you!`,
         });
 
         setMessage("Your password reset request has been successfully submitted! Please note that the reset link will remain valid for only 1 minute.");
 
-        setTimeout(() => {
-            router.push(`${homeUrl}/login`);
-          }, 3000); 
+        // setTimeout(() => {
+        //     router.push(`${homeUrl}login`);
+        //   }, 3000); 
 
 
       } catch (error) {

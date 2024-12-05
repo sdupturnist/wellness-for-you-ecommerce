@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { apiUrl, homeUrl } from "@/app/Utils/variables";
 import Alerts from "../Alerts";
+import { sendMail } from "@/app/Utils/Mail";
 
 
-export default function ResetPassword() {
+export default function ResetPasswordForm() {
     const router = useRouter();
 
   const searchParams = useSearchParams(); // Get the query parameters
@@ -51,6 +52,13 @@ export default function ResetPassword() {
 
     if (res.ok) {
       setMessage(data.message);
+
+      await sendMail({
+        sendTo: email,
+        subject: "Your password has been successfully changed",
+        message: `We wanted to let you know that your account password has been successfully updated. If you made this change, no further action is required. If you did not request this change, please reset your password immediately to secure your account. For any concerns or assistance, feel free to contact our support team.`,
+      });
+
      
       setTimeout(() => {
         router.push(`${homeUrl}/login`);

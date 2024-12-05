@@ -6,6 +6,7 @@ import { apiUrl, homeUrl, woocommerceKey } from "@/app/Utils/variables";
 import Link from "next/link";
 import Alerts from "../Alerts";
 import { useAuthContext } from "@/app/Context/authContext";
+import Cookies from "js-cookie";  // Import js-cookie
 
 export default function Login() {
   const router = useRouter();
@@ -42,15 +43,22 @@ export default function Login() {
 
       const { token, user_id, user_email, role } = data;
 
-      // Store the token (e.g., in localStorage or a cookie)
+      // Store the token in localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user_email", user_email);
+      localStorage.setItem("u_id", user_id);
+
+      // Store the token in a cookie (expires in 1 hour)
+      Cookies.set("token", token, { expires: 1 / 24 }); // expires in 1 hour
+      Cookies.set("user_email", user_email, { expires: 1 / 24 }); // expires in 1 hour
+      
+
       setAuth(true);
 
       // Redirect the user to a protected page (e.g., dashboard)
       router.back();
 
-      console.log("Loggined");
+  
     } catch (err) {
       setError(err.message);
     } finally {

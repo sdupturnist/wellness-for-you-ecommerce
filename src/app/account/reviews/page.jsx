@@ -8,11 +8,7 @@ import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
 import { useEffect, useState } from "react";
 
 export default function MyReviews() {
-
   const { userData } = useAuthContext();
-
-
-
 
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,8 +38,10 @@ export default function MyReviews() {
     <div className="bg-bggray">
       <section className="pb-0 sm:pt-0 pt-3">
         <div className="sm:bg-transparent max-w-[999px] mx-auto grid sm:gap-6 gap-5">
-          {!reviews?.length > 0 && <Alerts noPageUrl large title="You have no" />}
-          <div className="px-3 sm:px-0">
+          {!reviews?.length > 0 && (
+            <Alerts noPageUrl large title="You have no" />
+          )}
+          <div className="px-5 sm:px-0">
             <Reviews data={reviews} />
           </div>
         </div>

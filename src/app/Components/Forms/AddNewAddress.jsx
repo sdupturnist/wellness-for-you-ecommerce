@@ -18,7 +18,7 @@ import Alerts from "../Alerts";
 import { useCheckoutContext } from "@/app/Context/checkoutContext";
 import { useAuthContext } from "@/app/Context/authContext";
 
-export default function AddNewAddressForm({ addressCount, id, currentData }) {
+export default function AddNewAddressForm({ addressCount, id, currentData, onAddressAdded }) {
   const { setShowAddNewAddress, updateAddress } = useCheckoutContext();
 
   const { userData } = useAuthContext();
@@ -80,6 +80,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
       if (response.ok) {
         //setBillingAddress(requestData);
+        onAddressAdded()
         setLoading(false);
         setStatus(true);
 
@@ -105,7 +106,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData }) {
 
     
 
-        console.log("Success");
+     
 
         //  location.reload();
 

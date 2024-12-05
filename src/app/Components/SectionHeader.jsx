@@ -13,6 +13,7 @@ export default function SectionHeader({
   buttonLabel,
   buttonAction,
   card,
+  noSpacing,
   spacingSm,
   spacingMd,
   titleSmall,
@@ -20,7 +21,7 @@ export default function SectionHeader({
   titleCenter,
 }) {
   return (
-    <div className={`sm:mb-5 mb-4 flex justify-between items-center`}>
+    <div className={`${!noSpacing && 'sm:mb-5 mb-4'} flex justify-between items-center`}>
       {small && !titleSmall && <p className="opacity-50">Payment options</p>}
       {card && !titleSmall && (
         <h3
@@ -34,12 +35,12 @@ export default function SectionHeader({
         <h3
           className={`${
             titleCenter ? "text-center w-full" : ""
-          } text-base font-bold`}>
+          } text-base font-bold first-letter:capitalize`}>
           {title}
         </h3>
       )}
       {!card && !small && !titleSmall && (
-        <h3 className={`${titleCenter && "text-center w-full"} section-title`}>
+        <h3 className={`${titleCenter && "text-center w-full"} section-title first-letter:capitalize`}>
           {title}
         </h3>
       )}
