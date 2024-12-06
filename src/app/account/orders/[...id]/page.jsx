@@ -2,16 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation"; // Import useRouter for navigation
-import Breadcrumb from "@/app/Components/Breadcrumb";
-import AccountHeader from "@/app/Components/AccountHeader";
 import MyOrder from "@/app/Components/MyOrder";
 import SectionHeader from "@/app/Components/SectionHeader";
 import AmountList from "@/app/Components/AmountList";
 import CancelOrder from "@/app/Components/CancelOrder";
-import Return from "@/app/Components/Return";
 import AddNewReturn from "@/app/Components/AddNewReturn";
-import { apiUrl, jwtTocken, woocommerceKey } from "@/app/Utils/variables";
-import ProfileMenu from "@/app/Components/ProfileMenu";
+import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
 import Loading from "@/app/Components/Loading";
 import Alerts from "@/app/Components/Alerts";
 import { userId } from "@/app/Utils/UserInfo";
@@ -36,24 +32,25 @@ export default function OrderItem() {
   const customerId = splitSlug[0];
   const orderId = splitSlug[1];
 
-  const fetchOrder = () => {
-    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
-      .then((res) => res.json())
-      .then((data) => {
-        setOrder(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setError("Error fetching order details.");
-        setLoading(false);
-      });
+  // Fetch order data
+  const fetchOrder = async () => {
+    try {
+      const response = await fetch(
+        `${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`
+      );
+      const data = await response.json();
+      setOrder(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("Error fetching order details.");
+      setLoading(false);
+    }
   };
 
-  // Fetch order on component mount
   useEffect(() => {
     fetchOrder();
-  }, []); // Empty dependency array ensures this runs only once when component mounts
+  }, []); // This runs once when the component mounts
 
   // Redirect to account page if no order is found or if error is present
   useEffect(() => {
@@ -64,6 +61,7 @@ export default function OrderItem() {
 
   const trackingMessage = order?.meta_data.filter((item) => item.key === "tracking");
 
+  // Render the component
   return (
     <div>
       {loading ? (
@@ -135,7 +133,7 @@ export default function OrderItem() {
                     <AmountList data={order} forOrderDetails />
                   </div>
                 </div>
-                {trackingMessage.length > 0 && (
+                {trackingMessage?.length > 0 && (
                   <div className="card-rounded-none-small w-full bg-white py-4 px-3">
                     <SectionHeader
                       title="Track order"
@@ -148,25 +146,24 @@ export default function OrderItem() {
                     </div>
                   </div>
                 )}
-                
 
                 <div className="gap-3 sm:px-0 px-3">
-                   {order?.status === "completed" &&
-                  <AddNewReturn
-                    userInfo={userData && userData}
-                    data={order && order}
-                    orderedDate={order && order?.date_completed}
-                  />
-                   }
-                  {order?.status === "confirmed" ||
-                    ((order?.status === "processing" ||
-                      order?.status === "pending") && (
-                      <CancelOrder
-                        userInfo={userData && userData}
-                        data={order && order}
-                        orderedDate={order && order?.date_completed}
-                      />
-                    ))}
+                  {order?.status === "completed" && (
+                    <AddNewReturn
+                      userInfo={userData && userData}
+                      data={order && order}
+                      orderedDate={order && order?.date_completed}
+                    />
+                  )}
+                  {(order?.status === "confirmed" ||
+                    order?.status === "processing" ||
+                    order?.status === "pending") && (
+                    <CancelOrder
+                      userInfo={userData && userData}
+                      data={order && order}
+                      orderedDate={order && order?.date_completed}
+                    />
+                  )}
 
                   {order?.status === "cancelled" && (
                     <Alerts
