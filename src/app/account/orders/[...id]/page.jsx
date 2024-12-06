@@ -28,6 +28,15 @@ export default function OrderItem() {
   const router = useRouter();
 
 
+    // // Redirect to account page if no order is found
+    useEffect(() => {
+      if (error) {
+        router.push("/account"); // Redirect to account page
+      }
+    }, [error, router]);
+  
+
+
   useEffect(() => {
     // Only run once on mount
     
@@ -59,13 +68,6 @@ export default function OrderItem() {
 
 
   
-
-  // // Redirect to account page if no order is found
-  useEffect(() => {
-    if (error) {
-      router.push("/account"); // Redirect to account page
-    }
-  }, [error, router]);
 
 
 
