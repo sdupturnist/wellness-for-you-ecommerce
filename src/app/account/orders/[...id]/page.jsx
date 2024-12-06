@@ -53,11 +53,11 @@ export default function OrderItem() {
   }, []); // This runs once when the component mounts
 
   // Redirect to account page if no order is found or if error is present
-  useEffect(() => {
-    if (error) {
-      router.push("/account"); // Redirect to account page
-    }
-  }, [error, router]);
+  // useEffect(() => {
+  //   if (error) {
+  //     router.push("/account"); // Redirect to account page
+  //   }
+  // }, [error, router]);
 
   const trackingMessage = order?.meta_data.filter((item) => item.key === "tracking");
 
