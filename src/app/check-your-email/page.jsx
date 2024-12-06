@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import Alerts from "../Components/Alerts";
 import { useSearchParams } from "next/navigation";
 import Loading from "../Components/Loading";
@@ -8,9 +8,20 @@ import Loading from "../Components/Loading";
 const CheckYourEmail = () => {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  
+  // State to check if it's client-side rendering (after mount)
+  const [isClient, setIsClient] = useState(false);
+
+  // UseEffect to set client-side flag after the component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Only render the content on client-side
+  if (!isClient) return <Loading fullscreen />;
 
   return (
-    <Suspense fallback={<Loading fullscreen/>}>
+    <Suspense fallback={<Loading fullscreen />}>
       <section className="pt-0">
         <div className="container">
           <div className="container !px-0 sm:px-5 w-full min-w-full">
