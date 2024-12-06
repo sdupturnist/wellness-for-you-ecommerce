@@ -16,56 +16,58 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user_id = localStorage.getItem("user_id");
+    // Check if the code is running in the browser
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      const user_id = localStorage.getItem("user_id");
 
-   
-    if(auth){
-    if (!token) {
-      router.push(homeUrl);
-      return;
-    }
-  }
+      if (auth) {
+        if (!token) {
+          router.push(homeUrl);
+          return;
+        }
+      }
 
-    const validateToken = async () => {
-      try {
-        const response = await fetch(
-          `${apiUrl}wp-json/custom/v1/validate-token`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token }),
+      const validateToken = async () => {
+        try {
+          const response = await fetch(
+            `${apiUrl}wp-json/custom/v1/validate-token`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token }),
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            setUser({
+              email: localStorage.getItem("user_email"),
+              role: localStorage.getItem("role"),
+            });
+            setAuth(true);
+          } else {
+            setAuth(false);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_email");
+            // router.push("/login");
           }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setUser({
-            email: localStorage.getItem("user_email"),
-            role: localStorage.getItem("role"),
-          });
-          setAuth(true);
-        } else {
+        } catch (err) {
           setAuth(false);
+          console.error("Token validation failed:", err);
+          setError("Session expired or invalid token");
           localStorage.removeItem("token");
           localStorage.removeItem("user_email");
-         // router.push("/login");
+          // router.push("/login");
+        } finally {
+          setLoadingAuth(false);
         }
-      } catch (err) {
-        setAuth(false);
-        console.error("Token validation failed:", err);
-        setError("Session expired or invalid token");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user_email");
-       // router.push("/login");
-      } finally {
-        setLoadingAuth(false);
-      }
-    };
+      };
 
-    validateToken();
+      validateToken();
+    }
   }, [router, auth]);
 
   useEffect(() => {
@@ -76,7 +78,6 @@ export const AuthProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           setUserData(data[0]);
-       
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
