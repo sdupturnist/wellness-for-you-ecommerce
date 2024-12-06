@@ -439,7 +439,7 @@ header a {
 }
 
 .search {
-  @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg border sm:p-[5px] p-[3px];
+  @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg;
 }
 .search input {
   @apply border-none bg-transparent rounded-full w-full shadow-transparent;
@@ -459,12 +459,8 @@ header a {
 .search .dYrfwz {
   justify-content: space-between !important;
 }
-.search .dYrfwz input {
-  border: 0 !important;
-  outline: none !important;
-}
 .search .jiMOeR .wrapper {
-  border: 0 !important;
+  @apply p-[1px] lg:rounded-full  rounded-lg;
 }
 .search .jiMOeR .wrapper:hover,
 .search .jiMOeR .wrapper:focus {

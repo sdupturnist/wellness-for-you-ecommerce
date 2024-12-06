@@ -635,7 +635,7 @@ header {
 
 
 .search {
-    @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg border sm:p-[5px] p-[3px];
+    @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg;
 
     input {
         @apply border-none bg-transparent rounded-full w-full shadow-transparent;
@@ -663,13 +663,15 @@ header {
         justify-content: space-between !important;
 
         input {
-            border: 0 !important;
-            outline: none !important;
+           // border: 0 !important;
+           // outline: none !important;
         }
     }
 
     .jiMOeR .wrapper {
-        border: 0 !important;
+        //border: 0 !important;
+
+        @apply p-[1px] lg:rounded-full  rounded-lg;
     }
 
     .jiMOeR .wrapper:hover,
