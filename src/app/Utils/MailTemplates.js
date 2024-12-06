@@ -263,3 +263,30 @@ export let ContactEmailTemplate = (name, email, message) => {
   return item
 
 }
+
+
+
+
+//SUBSCRIBE FORM - ADMIN
+
+export let SubscribeEmailTemplate = (email) => {
+
+
+  const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+  <tr>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Details</th>
+  </tr>
+ <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Email</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${email}</td>
+  </tr>
+   
+</table>`
+
+  return item
+
+}
+
+
+

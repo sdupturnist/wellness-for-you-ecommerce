@@ -217,9 +217,9 @@ main .container {
 }
 
 :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
-  background-color: #137E43 !important;
+  background-color: #5BA642 !important;
   color: #fff;
-  outline: 2px solid #137E43 !important;
+  outline: 2px solid #5BA642 !important;
 }
 
 button:disabled {
@@ -276,7 +276,7 @@ select {
 }
 .product-card .product-offer {
   @apply text-[12px];
-  color: #137E43;
+  color: #5BA642;
 }
 .product-card .count {
   @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px] leading-[10px] font-semibold py-[4px] pl-[5px];
@@ -316,7 +316,7 @@ select {
 }
 .product-card-left-right-mobile .product-offer {
   @apply text-[12px];
-  color: #137E43;
+  color: #5BA642;
 }
 .product-card-left-right-mobile .count {
   @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px];
@@ -351,7 +351,7 @@ select {
 }
 .product-col-small .product-offer {
   @apply text-[12px];
-  color: #137E43;
+  color: #5BA642;
 }
 .product-col-small .count {
   @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] sm:text-[11px] text-[10px]  leading-[10px] font-semibold py-[4px] pl-[5px];
@@ -380,7 +380,7 @@ select {
 }
 .product-card-left-right .product-offer {
   @apply text-[12px];
-  color: #137E43;
+  color: #5BA642;
 }
 .product-card-left-right .count {
   @apply bg-yellow flex items-center text-dark rounded px-1 gap-[2px] text-[11px] leading-[10px] font-semibold py-[4px] pl-[5px];
@@ -439,7 +439,7 @@ header a {
 }
 
 footer {
-  background: #137E43;
+  background: #5BA642;
 }
 footer a, footer p {
   @apply text-sm font-light text-white;

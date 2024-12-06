@@ -2,13 +2,22 @@
 "use client";
 
 import AccountHeader from "../Components/AccountHeader";
+import Loading from "../Components/Loading";
 import ProfileMenu from "../Components/ProfileMenu";
 import SectionHeader from "../Components/SectionHeader";
+import { useAuthContext } from "../Context/authContext";
 import withAuth from "../Utils/withAuth"; // Import the HOC
 import { usePathname } from "next/navigation";
 
 function AccountLayout({ children }) {
   const pathname = usePathname();
+
+const {auth} = useAuthContext()
+
+if(!auth){
+  return <Loading fullscreen message="You are not logged into your account. Please log in..."/>
+ // return false
+}
 
   return (
     <section className="bg-bggray sm:py-10 py-0">

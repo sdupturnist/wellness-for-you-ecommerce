@@ -4,14 +4,12 @@ import Link from "next/link";
 import { homeUrl, year } from "../Utils/variables";
 import PaymentOptions from "./PaymentOptions";
 import SocialIcons from "./SocialIcons";
-import Subscribe from "./Subscribe";
-import ReadyToGoCart from "./ReadyToGoCart";
-import { useCartContext } from "../Context/cartContext";
-import { usePathname } from "next/navigation";
+import SubscribeForm from "./Forms/SubscribeForm";
+import { useSiteContext } from "../Context/siteContext";
 
 export default function Footer() {
-  const { cartItems } = useCartContext();
-  const pathname = usePathname();
+  const { contactData } = useSiteContext();
+  
 
   return (
     <>
@@ -31,7 +29,7 @@ export default function Footer() {
               <li>
                 <Link href={`${homeUrl}contact-us`}>Contact Us</Link>
               </li>
-             </ul>
+            </ul>
             <ul>
               <li>
                 <Link href={`${homeUrl}privacy-policy`}>Privacy</Link>
@@ -50,23 +48,27 @@ export default function Footer() {
                 <Link href={`${homeUrl}shipping-policy`}>Shipping Policy</Link>
               </li>
             </ul>
-            <ul>
+         {contactData?.acf &&  <ul>
               <li>
-                <Link href="">Address: Calicut, Kerala, India 673004</Link>
+                <Link href="">Address: {contactData?.acf?.address}</Link>
               </li>
               <li>
-                <Link href="">Phone: +91 8089 319 333</Link>
+                <Link href={`tel:${contactData?.acf?.phone}`}>
+                  Phone: {contactData?.acf?.phone}
+                </Link>
               </li>
               <li>
-                <Link href="">Email: sales@wellness4u.in</Link>
+                <Link href={`mailto:${contactData?.acf?.email}`}>
+                  Email: {contactData?.acf?.email}
+                </Link>
               </li>
               <li>
-                <Link href="">Hours: 9am to 5pm, Mon - Fri</Link>
+                <Link href="">Hours: {contactData?.acf?.working_time}</Link>
               </li>
-            </ul>
-            <div className="sm:mt-0 mt-5">
+            </ul> }
+            <div className="lg:mt-0 mt-3">
               <h4>Sign up for newsletter today.</h4>
-              <Subscribe />
+              <SubscribeForm />
             </div>
           </div>
 
@@ -78,7 +80,7 @@ export default function Footer() {
               <PaymentOptions />
             </div>
             <div className="order-first md:order-last">
-              <SocialIcons />
+            {contactData?.acf && <SocialIcons data={contactData && contactData} /> }
             </div>
           </div>
         </div>

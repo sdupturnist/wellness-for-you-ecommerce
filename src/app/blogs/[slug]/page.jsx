@@ -25,7 +25,7 @@ export default async function BlogSingle({ params }) {
   const blog = blog_[0];
 
   let blogsData = await fetch(
-    `${apiUrl}wp-json/wp/v2/posts?per_page=4&offset=1`,
+    `${apiUrl}wp-json/wp/v2/posts?per_page=4&exclude=${blog?.id}`,
     {
       next: {
         revalidate: 60,
@@ -63,14 +63,14 @@ export default async function BlogSingle({ params }) {
               </div>
               <div
                 className={`blog-content text-justify ${
-                  blogs && blogs.length > 1 && "border-b pb-8"
+                  blogs && blogs.length >= 1 && "border-b pb-8"
                 }`}
                 dangerouslySetInnerHTML={{
                   __html: blog && blog?.content?.rendered,
                 }}
               />
 
-              {blogs && blogs.length > 1 && (
+              {blogs && blogs.length >= 1 && (
                 <>
                   <SectionHeader
                     title="More blogs"

@@ -26,16 +26,16 @@ export default function Alerts({
 
   switch (status) {
     case "red":
-      alertClass = "bg-red-500 text-white";
+      alertClass = "bg-red-100 border-red-600 text-red-600";
       break;
     case "green":
-      alertClass = "bg-green-500 text-white";
+      alertClass = "bg-green-100 border-green-600 text-green-600";
       break;
     case "yellow":
-      alertClass = "bg-yellow-500 text-white";
+      alertClass = "bg-yellow-100 border-yellow-600 text-yellow-600";
       break;
     default:
-      alertClass = "bg-gray-300 text-white";
+      alertClass = "bg-gray-100 border-border text-dark";
       break;
   }
 
@@ -46,11 +46,11 @@ export default function Alerts({
           role="alert"
           className={`alert ${
             nobg
-              ? "bg-transparent border-none opacity-40 [&>*]:text-base"
+              ? "bg-transparent  opacity-40 [&>*]:text-base"
               : alertClass
           } rounded-md p-3 sm:text-base flex ${
             center ? "text-center justify-center" : "text-start"
-          }`}>
+          } `}>
           {!noIcon && icon}
           <span
             className={`${center && "text-center"} ${

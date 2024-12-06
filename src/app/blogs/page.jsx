@@ -10,10 +10,10 @@ import {
 
 export default async function Blogs({ params, searchParams }) {
   const currentPage = searchParams.page || 1;
-  const itemsShowPerPage = 8;
+  const itemsShowPerPage = 6;
 
   let blogsData = await fetch(
-    `${apiUrl}wp-json/wp/v2/posts?per_page=${itemsShowPerPage}&page=${parseInt(
+    `${apiUrl}wp-json/wp/v2/posts?per_page=${itemsShowPerPage}&orderby=date&order=desc&page=${parseInt(
       currentPage,
       10
     )}`,

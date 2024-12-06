@@ -299,8 +299,6 @@ tr:nth-child(even) {
 
 
 
-
-
    
 
 }
@@ -615,7 +613,7 @@ a{
 
 
 footer{
-    background: $GREENLIGHT;
+    background: $PRIMARY;
     a, p{
         @apply text-sm font-light text-white
     }

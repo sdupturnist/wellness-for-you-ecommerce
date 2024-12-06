@@ -9,8 +9,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#137E43",   
-        "primary-hover": "#2b8b56",             // Custom Primary Color
+       // primary: "#137E43",   
+       primary: "#5BA642",   
+       "primary-hover": "#498f31",  
+       // "primary-hover": "#2b8b56",             // Custom Primary Color
         "primary-light": "#74B73B",     // Light Primary Color
         "primary-dim": "#E7F2EC",      // Dimmed Primary Color
         secondary: "#313C91",           // Custom Secondary Color

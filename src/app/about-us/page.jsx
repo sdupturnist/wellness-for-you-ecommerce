@@ -8,13 +8,13 @@ export default function Aboutus() {
     <div className="bg-white">
       <section className="pt-0">
         <div className="container !px-0 sm:px-5 w-full min-w-full">
-          <Images
-            imageurl="/images/banner_6.jpg"
+        <Images
+            imageurl="/images/about-bg.webp"
             quality="100"
-            width="1700"
-            height="600"
+            width="2000"
+            height="400"
             alt="Wellness for you"
-            classes="block w-full sm:h-[350px] h-[150px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
+            classes="block w-full sm:h-[400px] h-[200px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
             placeholder={true}
           />
 
