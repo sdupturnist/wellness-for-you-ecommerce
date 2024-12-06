@@ -13,21 +13,23 @@ export function CartProvider({ children }) {
 
   // Load cartItems from localStorage when the component mounts (or updates cartItems)
   useEffect(() => {
-    const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    setCartItems(storedCartItems);
+    // Only run in the browser (client-side)
+    if (typeof window !== "undefined") {
+      const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      setCartItems(storedCartItems);
 
-    const subTotal = storedCartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
+      const subTotal = storedCartItems.reduce((total, item) => {
+        return total + item.price * item.quantity;
+      }, 0);
 
-
-
-    setCartSubTotal(subTotal);
+      setCartSubTotal(subTotal);
+    }
   }, []); // Only run once on initial mount
 
   // Synchronize localStorage with cartItems dynamically on any update
   useEffect(() => {
-    if (cartItems.length > 0) {
+    // Only run in the browser (client-side)
+    if (typeof window !== "undefined" && cartItems.length > 0) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems)); // Update localStorage whenever cartItems changes
     }
   }, [cartItems]); // Effect triggers when cartItems changes
@@ -45,7 +47,7 @@ export function CartProvider({ children }) {
   // Update subtotal when cartItems change
   useEffect(() => {
     const subTotal = cartItems.reduce((total, item) => {
-      return total + (item.price) * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
     setCartSubTotal(subTotal);
   }, [cartItems]); // Recalculate subtotal every time cartItems changes
@@ -68,7 +70,7 @@ export function CartProvider({ children }) {
         cartTotal,
         setCartTotal,
         couponData,
-         setCouponData
+        setCouponData
       }}>
       {children}
     </CartContext.Provider>
