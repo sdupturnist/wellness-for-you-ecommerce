@@ -36,10 +36,8 @@ export default function OrderItem() {
   const customerId = splitSlug[0];
   const orderId = splitSlug[1];
 
-
- function fetchOrder(){
-
-  fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
+  const fetchOrder = () => {
+    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
       .then((res) => res.json())
       .then((data) => {
         setOrder(data);
@@ -47,30 +45,24 @@ export default function OrderItem() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setError("Error fetching order details.");
         setLoading(false);
       });
+  };
 
-      
- }
+  // Fetch order on component mount
+  useEffect(() => {
+    fetchOrder();
+  }, []); // Empty dependency array ensures this runs only once when component mounts
 
-
-useEffect(() => {
-  
-  fetchOrder()
-
-}, []);
-
-
-
-  // Redirect to account page if no order is found
+  // Redirect to account page if no order is found or if error is present
   useEffect(() => {
     if (error) {
       router.push("/account"); // Redirect to account page
     }
   }, [error, router]);
 
-  const trackingMessage =
-    order && order?.meta_data.filter((item) => item.key === "tracking");
+  const trackingMessage = order?.meta_data.filter((item) => item.key === "tracking");
 
   return (
     <div>

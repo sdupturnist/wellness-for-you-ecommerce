@@ -5,12 +5,8 @@ import { useAuthContext } from "../Context/authContext";
 import Loading from "../Components/Loading";
 import { homeUrl } from "./variables";
 
-
-
-
-
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  const WithAuth = (props) => {
     const { auth, loadingAuth } = useAuthContext();
     const router = useRouter();
 
@@ -31,6 +27,11 @@ const withAuth = (WrappedComponent) => {
     // Render the wrapped component if authenticated
     return <WrappedComponent {...props} />;
   };
+
+  // Set the displayName for the HOC
+  WithAuth.displayName = `WithAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return WithAuth;
 };
 
 export default withAuth;
