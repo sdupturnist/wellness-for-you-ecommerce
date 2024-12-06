@@ -10,7 +10,11 @@ export default function Pagination({
 }) {
   const router = useRouter();
 
-  if (totalPages < itemsShowPerPage) {
+
+  console.log(totalPages)
+
+
+  if (totalPages <= 1) {
     return null;
   }
 
@@ -20,7 +24,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="pagination flex gap-2 items-center justify-center text-center mb-5 mt-11 mx-auto">
+    <div className="pagination flex gap-2 items-center justify-center text-center sm:mt-10 mt-7 mx-auto">
       {pages.map((page) => (
         <button
           key={page}

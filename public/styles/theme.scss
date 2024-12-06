@@ -228,6 +228,84 @@ tr:nth-child(even) {
 }
 
 
+.blog-content{
+ 
+    a, p{
+        @apply text-body mb-5
+    }
+
+ li{
+        @apply text-body  pl-[1px] list-disc ml-5 mb-1
+    }
+
+   
+ul, ol{
+    @apply mb-4;
+}
+
+
+    *{
+        @apply last:mb-0
+    }
+    a{
+        @apply text-primary hover:opacity-50 transition-all;
+    }
+    h1,h2,h3,h4,h5,h6{
+        @apply text-dark font-bold mb-2
+    }
+    h1{
+        @apply sm:text-[32px] text-[20px] leading-[1.7];
+    }
+    h2 {
+        @apply sm:text-[20px] text-[20px]  leading-[1.5];
+    }
+    h3{
+        @apply text-[20px]  leading-[1.5];
+    }
+    h4{
+        @apply text-[18px]   leading-[1.5];
+    }
+    h5{
+        @apply text-[16px]   leading-[1.5];
+    }
+    h6{
+        @apply text-[16px]  leading-[1.5];
+    }
+
+    img{
+        @apply rounded-lg my-7;
+    }
+  
+    @apply leading-relaxed;
+
+
+
+
+table {
+    @apply w-full my-0 ;
+}
+
+
+th, td {
+    @apply px-2.5 py-2 text-left;
+}
+
+
+
+
+tr:nth-child(even) {
+    @apply bg-gray-100;
+}
+
+
+
+
+
+   
+
+}
+
+
 :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
   
     background-color: $PRIMARY !important;
@@ -259,8 +337,8 @@ button:disabled {
     @apply whitespace-nowrap  bg-white rounded-md border border-border hover:bg-white hover:border-primary  text-dark font-semibold transition-all;
    }
 
-   input[type="email"], input[type="text"], input[type="number"], input[type="password"], .stdropdown-input, select , textarea{
-    @apply input-md rounded-md text-dark border;
+   input[type="email"], input[type="text"], input[type="number"], input[type="password"], .stdropdown-input, select , textarea, .input{
+    @apply text-[16px] rounded-md text-dark border;
    }
 
 
@@ -604,7 +682,7 @@ footer{
 
     .pagination{
         a, button{
-            @apply sm:size-11 size-8 rounded-full p-3 bg-white border border-border flex items-center justify-center sm:text-sm text-xs text-body transition-all hover:bg-primary hover:text-white
+            @apply sm:size-11 size-10 rounded-full p-3 bg-white border border-border flex items-center justify-center sm:text-sm text-xs text-body transition-all hover:bg-primary hover:text-white
         }
         .active{
             @apply bg-primary text-white

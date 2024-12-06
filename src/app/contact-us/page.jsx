@@ -1,6 +1,8 @@
 import ContactForm from "../Components/Forms/ContactForm";
 import Images from "../Components/Images";
 import SocialIcons from "../Components/SocialIcons";
+import { apiUrl, metaStaticData, siteAuthor } from "../Utils/variables";
+
 
 export default function ContactUs() {
   return (
@@ -60,4 +62,51 @@ export default function ContactUs() {
       </section>
     </div>
   );
+}
+
+
+
+
+export async function generateMetadata({ params, searchParams }, parent) {
+  const pageId = 32;
+
+  const staticData = metaStaticData;
+
+  try {
+    const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
+    const pageData = await page.json();
+
+    // Return metadata object with dynamic values, or fall back to static values
+    return {
+      title: pageData?.yoast_head_json?.title || staticData.title,
+      description:
+        pageData?.yoast_head_json?.description || staticData.description,
+      author: siteAuthor || staticData.author, // Dynamic author or static fallback
+      keywords: pageData?.acf?.seo_keywords || staticData.keywords,
+      viewport: "width=device-width, initial-scale=1",
+      robots: pageData?.yoast_head_json?.robots || staticData.robots,
+      canonical: pageData?.yoast_head_json?.canonical || staticData.canonical,
+      og_locale: staticData.og_locale,
+      og_type: staticData.og_type,
+      og_title: pageData?.yoast_head_json?.og_title || staticData.og_title,
+      og_description:
+        pageData?.yoast_head_json?.og_description || staticData.og_description,
+      og_url: pageData?.yoast_head_json?.canonical || staticData.og_url,
+      og_site_name: staticData.og_site_name,
+      article_modified_time:
+        pageData?.yoast_head_json?.modified_time ||
+        staticData.article_modified_time,
+      twitter_card: staticData.twitter_card,
+      twitter_misc:
+        pageData?.yoast_head_json?.twitter_misc || staticData.twitter_misc,
+      twitter_site: staticData.twitter_site,
+      twitter_creator: staticData.twitter_creator,
+      twitter_image:
+        pageData?.yoast_head_json?.og_image || staticData.twitter_image,
+    };
+  } catch (error) {
+    console.error("Error fetching page data:", error);
+    // Return static data in case of an error
+    return staticData;
+  }
 }

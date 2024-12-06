@@ -31,10 +31,7 @@ export default function Footer() {
               <li>
                 <Link href={`${homeUrl}contact-us`}>Contact Us</Link>
               </li>
-              <li>
-                <Link href={`${homeUrl}account/returns`}>Returns</Link>
-              </li>
-            </ul>
+             </ul>
             <ul>
               <li>
                 <Link href={`${homeUrl}privacy-policy`}>Privacy</Link>

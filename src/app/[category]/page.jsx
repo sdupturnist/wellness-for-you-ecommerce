@@ -7,7 +7,7 @@ import { apiUrl, siteAuthor, woocommerceKey } from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
   const { category } = params;
-  const currentPage = searchParams.page || 1; // Get the current page from the query string, default to 1
+  const currentPage = searchParams.page || 1; 
 
   const pageId = 76;
   const itemsShowPerPage = 30;

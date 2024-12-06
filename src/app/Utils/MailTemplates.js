@@ -233,3 +233,33 @@ export let CancelEmailTemplate = (title, content, order_id, amount, transition_i
 }
 
 
+
+
+
+//CONTACT FORM
+
+export let ContactEmailTemplate = (name, email, message) => {
+
+
+  const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+  <tr>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
+    <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Details</th>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Name</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${name}</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Email</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${email}</td>
+  </tr>
+    <tr>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Message</td>
+    <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${message}</td>
+  </tr>
+</table>`
+
+  return item
+
+}

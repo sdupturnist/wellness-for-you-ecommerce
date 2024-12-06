@@ -8,17 +8,38 @@ import {
   siteAuthor,
 } from "../Utils/variables";
 
-export default async function Blogs() {
-  let blogsData = await fetch(`${apiUrl}wp-json/wp/v2/posts`, {
-    next: {
-      revalidate: 60,
-      cache: "no-store",
-    },
-  });
+export default async function Blogs({ params, searchParams }) {
+  const currentPage = searchParams.page || 1;
+  const itemsShowPerPage = 8;
+
+  let blogsData = await fetch(
+    `${apiUrl}wp-json/wp/v2/posts?per_page=${itemsShowPerPage}&page=${parseInt(
+      currentPage,
+      10
+    )}`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
+
+  let allblogsDataCount = await fetch(
+    `${apiUrl}wp-json/wp/v2/posts?per_page=100`,
+    {
+      next: {
+        revalidate: 60,
+        cache: "no-store",
+      },
+    }
+  );
 
   let blogs = await blogsData.json();
+  let allBlogsData = await allblogsDataCount.json();
 
-
+  const totalBlogs = allBlogsData?.length ?? [];
+  const totalPages = Math.ceil(totalBlogs / itemsShowPerPage);
 
   return (
     <div className="bg-bggray">
@@ -29,22 +50,29 @@ export default async function Blogs() {
               <h1 className="sm:text-3xl text-2xl font-bold text-center">
                 Blogs
               </h1>
-              <div className="grid sm:grid-cols-2 sm:gap-8 gap-5">
-                {blogs &&
-                  blogs.map((item, index) => (
-                    <Card
-                      key={index}
-                      thumbnail={item?.featured_image_url}
-                      alt={item?.title?.rendered}
-                      heading={item?.title?.rendered}
-                      desc={item?.content?.rendered}
-                      date={formatDate(item?.date)}
-                      author="Admin"
-                      url={`${homeUrl}blogs/${item?.slug}`}
-                    />
-                  ))}
+              <div>
+                <div className="grid sm:grid-cols-2 sm:gap-8 gap-5">
+                  {blogs &&
+                    blogs.map((item, index) => (
+                      <Card
+                        key={index}
+                        thumbnail={item?.featured_image_url}
+                        alt={item?.title?.rendered}
+                        heading={item?.title?.rendered}
+                        desc={item?.content?.rendered}
+                        date={formatDate(item?.date)}
+                        author="Admin"
+                        url={`${homeUrl}blogs/${item?.slug}`}
+                      />
+                    ))}
+                </div>
+                <Pagination
+                  currentPage={parseInt(currentPage, 10)}
+                  totalPages={totalPages}
+                  baseUrl={`${homeUrl}blogs`}
+                  itemsShowPerPage={itemsShowPerPage}
+                />
               </div>
-              {/* <Pagination /> */}
             </div>
           </div>
         </div>
