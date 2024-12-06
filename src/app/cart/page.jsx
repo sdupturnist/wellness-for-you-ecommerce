@@ -14,6 +14,7 @@ export default function Cart() {
       <Breadcrumb />
       <section className="sm:bg-white bg-bggray sm:py-10 py-0">
         <div className="container !px-0 sm:px-5">
+          
           <CartView />
         </div>
       </section>
