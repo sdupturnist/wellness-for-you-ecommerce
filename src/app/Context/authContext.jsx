@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiUrl, homeUrl, woocommerceKey } from "../Utils/variables";
+import Cookies from "js-cookie";  // Import js-cookie
 
 const AuthContext = createContext();
 
@@ -16,58 +17,58 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if the code is running in the browser
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      const user_id = localStorage.getItem("user_id");
+    // Get token and user ID from cookies
+    const token = Cookies.get("token");
+    const user_email = Cookies.get("user_email");
 
-      if (auth) {
-        if (!token) {
-          router.push(homeUrl);
-          return;
-        }
+    // Check if user is authenticated, if not, redirect to home
+    if (auth) {
+      if (!token) {
+        router.push(homeUrl);
+        return;
       }
-
-      const validateToken = async () => {
-        try {
-          const response = await fetch(
-            `${apiUrl}wp-json/custom/v1/validate-token`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ token }),
-            }
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            setUser({
-              email: localStorage.getItem("user_email"),
-              role: localStorage.getItem("role"),
-            });
-            setAuth(true);
-          } else {
-            setAuth(false);
-            localStorage.removeItem("token");
-            localStorage.removeItem("user_email");
-            // router.push("/login");
-          }
-        } catch (err) {
-          setAuth(false);
-          console.error("Token validation failed:", err);
-          setError("Session expired or invalid token");
-          localStorage.removeItem("token");
-          localStorage.removeItem("user_email");
-          // router.push("/login");
-        } finally {
-          setLoadingAuth(false);
-        }
-      };
-
-      validateToken();
     }
+
+    // Validate the token with the backend API
+    const validateToken = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}wp-json/custom/v1/validate-token`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser({
+            email: user_email,
+            role: Cookies.get("role"),  // Assuming 'role' is also stored in a cookie
+          });
+          setAuth(true);
+        } else {
+          setAuth(false);
+          Cookies.remove("token");
+          Cookies.remove("user_email");
+          Cookies.remove("role");
+        }
+      } catch (err) {
+        setAuth(false);
+        console.error("Token validation failed:", err);
+        setError("Session expired or invalid token");
+        Cookies.remove("token");
+        Cookies.remove("user_email");
+        Cookies.remove("role");
+      } finally {
+        setLoadingAuth(false);
+      }
+    };
+
+    validateToken();
   }, [router, auth]);
 
   useEffect(() => {

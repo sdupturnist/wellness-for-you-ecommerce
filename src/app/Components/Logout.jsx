@@ -12,14 +12,10 @@ export default function Logout({ small }) {
     useAuthContext();
 
   const handleLogout = () => {
-    // Clear localStorage
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_email");
-    localStorage.removeItem("u_id");
-
     // Clear cookies
     Cookies.remove("token");
     Cookies.remove("user_email");
+    Cookies.remove("u_id"); 
 
     // Reset context and state
     setAuth(false);

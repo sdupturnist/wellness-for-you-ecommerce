@@ -1,7 +1,5 @@
-'use client'
+import Cookies from "js-cookie";
 
-//USER INFO
-
-export let  token = localStorage.getItem("token");
-export let  userId = localStorage.getItem("u_id");
-export let  userEmail = localStorage.getItem("user_email");
+export let token = Cookies.get("token");
+export let userId = Cookies.get("u_id");
+export let userEmail = Cookies.get("user_email");

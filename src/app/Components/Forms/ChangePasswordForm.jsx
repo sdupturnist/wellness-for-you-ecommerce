@@ -43,7 +43,7 @@ export default function ChangePasswordForm() {
   };
 
   const changePassword = async (userId, oldPassword, newPassword) => {
-    const token = localStorage.getItem("jwt_token");
+   // const token = localStorage.getItem("jwt_token");
 
     const response = await fetch(
       `${apiUrl}wp-json/custom/v1/change-password/`,
