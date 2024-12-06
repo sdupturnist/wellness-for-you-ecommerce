@@ -7,6 +7,7 @@ import Link from "next/link";
 import Alerts from "../Alerts";
 import { useAuthContext } from "@/app/Context/authContext";
 import Cookies from "js-cookie";  // Import js-cookie
+import Loading from "../Loading";
 
 export default function Login() {
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function Login() {
       setAuth(true);
 
       // Redirect the user to a protected page (e.g., dashboard)
-      router.back();
+      router.push(`${homeUrl}account`);
 
   
     } catch (err) {
@@ -91,7 +92,7 @@ export default function Login() {
             type="submit"
             className="btn btn-large w-full"
             disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Loading dot classes="size-4 !text-dark"/> : "Login"}
           </button>
           <Link
             className="hover:text-primary transition-all"

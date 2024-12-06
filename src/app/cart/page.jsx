@@ -1,10 +1,10 @@
+'use client'
+
 import Breadcrumb from "../Components/Breadcrumb";
 import CartView from "../Components/CartView";
-import { apiUrl, homeUrl, woocommerceKey } from "../Utils/variables";
-// import { cookies } from 'next/headers';
-// import { NextResponse } from 'next/server';
 
-export default async function Cart() {
+
+export default function Cart() {
 
 
   // const cookieStore = await cookies();

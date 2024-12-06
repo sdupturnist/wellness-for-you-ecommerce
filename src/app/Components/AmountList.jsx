@@ -128,12 +128,13 @@ export default function AmountList({
               data.map((item, index) => (
                 <div key={index}>
                   <div className="items-center mb-5">
+                    {console.log(item.transaction_id)}
                     <SectionHeader
                       spacingSm
                       titleSmall
                       title={`${
                         item.transaction_id
-                          ? `Transaction ID: #`
+                          ? `Transaction ID: #` +  item.transaction_id
                           : `Order ID: #` + item?.id
                       }`}
                     />

@@ -1,6 +1,6 @@
 "use client"; // This is necessary to enable React in this file
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   apiUrl,
@@ -38,6 +38,8 @@ export default function RazorPayment({ userData }) {
     setValidateAddress,
     setUpdatePaymentStatus,
     paymentTerms,
+    paymentMethodOption,
+    paymentId,
     validateTerms,
     setValidateTerms,
     setPaymentId,
@@ -69,10 +71,10 @@ export default function RazorPayment({ userData }) {
   const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
 
-  useLayoutEffect(() => {
-    setBillingAddress("");
-    setValidateTerms(false);
-  }, []);
+  // useLayoutEffect(() => {
+  //   setBillingAddress("");
+  //   setValidateTerms(false);
+  // }, []);
 
   const handlePayment = async () => {
     setLoading(true);
@@ -133,7 +135,7 @@ export default function RazorPayment({ userData }) {
               transaction_id: transationID || "",
               customer_id: userData?.id,
               customer_ip_address: (ip && ip) || "",
-              payment_method: paymentMethodOption || "", // Payment method, such as bacs (direct bank transfer)
+              payment_method: paymentMethodOption || "Razorpay", // Payment method, such as bacs (direct bank transfer)
               payment_method_title: paymentMethodOption || "", // Title to display for the payment method
               set_paid: true, // Whether the order is paid (true/false)
               billing: {
@@ -192,7 +194,7 @@ export default function RazorPayment({ userData }) {
                   billingAddress,
                   cartItems,
                   data.orderId,
-                  paymentMethodOption,
+                  paymentMethodOption || 'Razorpay',
                   userData,
                   paymentId,
                   totalDiscount
@@ -209,7 +211,7 @@ export default function RazorPayment({ userData }) {
                   billingAddress,
                   cartItems,
                   data.orderId,
-                  paymentMethodOption,
+                  paymentMethodOption || 'Razorpay',
                   userData,
                   paymentId,
                   totalDiscount
@@ -253,7 +255,7 @@ export default function RazorPayment({ userData }) {
           postcode: billingAddress?.postcode,
         },
         theme: {
-          color: "#137E43", // Custom theme color
+          color: "#5ba642", // Custom theme color
         },
       };
 

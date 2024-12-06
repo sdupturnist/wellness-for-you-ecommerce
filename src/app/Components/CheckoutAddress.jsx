@@ -48,7 +48,7 @@ export default function CheckoutAddress() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [savedAddress]);
 
   const additionalAddresses = useMemo(() => {
     return savedAddress?.meta_data?.find(

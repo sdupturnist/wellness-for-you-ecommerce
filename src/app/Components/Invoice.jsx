@@ -23,7 +23,7 @@ export default function Invoice({ data }) {
         <tr>
           <td
             style={{
-              backgroundColor: "#137e43",
+              backgroundColor: "#5ba642",
               color: "#fff",
               textAlign: "center",
               padding: "20px",

@@ -39,7 +39,7 @@ export default function Logout({ small }) {
           Logout
         </span>
       ) : (
-        <div className="px-4 pt-3 smpb-4">
+        <div className="px-4 pt-3 sm:pb-4">
           <button
             onClick={handleLogout}
             className="btn btn-light w-full btn-medium !text-red-500 hover:border-red-500"

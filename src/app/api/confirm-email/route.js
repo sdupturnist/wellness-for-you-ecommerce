@@ -1,8 +1,11 @@
 // app/api/confirm-email/route.js
 
 import { NextResponse } from 'next/server';
-import { getUserByToken, createUser } from '@/utils/db'; // Example DB utils
-import { sendConfirmationEmail } from '@/utils/mail'; // Email service
+// import { getUserByToken, createUser } from '../../Utils/db'; // Example DB utils
+
+
+const getUserByToken = null
+const createUser = null
 
 export async function GET(req) {
   const { token } = req.nextUrl.searchParams;

@@ -54,7 +54,7 @@ export async function sendMail({  sendTo, subject, message, name }) {
         <table role="presentation" width="100%" cellspacing="0" cellPadding="0" style="border-collapse: collapse; background:#fff;">
             <!-- Header with Logo and Title -->
             <tr>
-                <td style="background-color: #137E43; color: #fff; text-align: center; padding:  20px; font-size: 28px; font-weight: 600; position: relative;">
+                <td style="background-color: #5ba642; color: #fff; text-align: center; padding:  20px; font-size: 28px; font-weight: 600; position: relative;">
                     <!-- Logo Image (left aligned) -->
                     <img src="${siteLogoWhite}" alt="Logo" style="display:block; height: 40px;">
                  </td>

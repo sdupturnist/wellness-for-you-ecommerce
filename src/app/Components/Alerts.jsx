@@ -6,6 +6,7 @@ import Images from "./Images";
 import { usePathname } from "next/navigation";
 
 export default function Alerts({
+  noLogo,
   status,
   title,
   titleSmall,
@@ -62,18 +63,18 @@ export default function Alerts({
       )}
       {large && (
         <div
-          className={`card bg-white !border-0 min-h-[50vh] rounded-md p-5 items-center justify-center flex text-dark sm:text-xl text-lg font-semi-bold `}>
+          className={`card bg-white !border-0 rounded-md p-5 items-center justify-center flex text-dark sm:text-xl text-lg font-semi-bold sm:min-h-[70vh] min-h-[40vh]`}>
           {/* <FaceFrownIcon className="size-[150px] text-slate-200"/> */}
-          <Images
-            imageurl="/images/banner_7.jpg"
+         {!noLogo && <Images
+            imageurl="/images/not-found.webp"
             quality="100"
-            width="500"
-            height="350"
+            width="750"
+            height="450"
             alt="Wellness for you"
-            classes="block w-full sm:h-[350px] h-[250px] mb-5"
+            classes="block w-full h-[250px] object-contain"
             placeholder={true}
-          />
-          <span className={`${titleSmall ? 'text-lg font-medium' : 'sm:text-2xl text-lg font-semibold'}`}>
+          />}
+          <span className={`${titleSmall ? 'text-lg font-medium' : 'sm:text-lg text-base font-semibold'}`}>
             {title} {!noPageUrl && pathname?.split("/").pop()}
           </span>
           {desc && <p className="sm:text-base mt-3 leading-relaxed">{desc}</p>}

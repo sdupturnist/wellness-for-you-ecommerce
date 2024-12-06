@@ -15,19 +15,14 @@ import ProfileMenu from "@/app/Components/ProfileMenu";
 import Loading from "@/app/Components/Loading";
 import Alerts from "@/app/Components/Alerts";
 import { userId } from "@/app/Utils/UserInfo";
-import { useAuthContext } from "../Context/authContext";
-
+import { useAuthContext } from "@/app/Context/authContext";
 
 export default function OrderItem() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Added error state for error handling
 
-
   const { userData } = useAuthContext();
-
-
-
 
   const { id } = useParams();
   const router = useRouter();
@@ -42,13 +37,9 @@ export default function OrderItem() {
   const orderId = splitSlug[1];
 
 
+ function fetchOrder(){
 
-
-
-  useEffect(() => {
-    // Only run once on mount
-    
-    fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
+  fetch(`${apiUrl}wp-json/wc/v3/orders/${orderId}${woocommerceKey}&customer=${userId}&per_page=1`)
       .then((res) => res.json())
       .then((data) => {
         setOrder(data);
@@ -58,7 +49,16 @@ export default function OrderItem() {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, []);  // Empty dependency array to run the effect once
+
+      
+ }
+
+
+useEffect(() => {
+  
+  fetchOrder()
+
+}, []);
 
 
 
@@ -68,7 +68,6 @@ export default function OrderItem() {
       router.push("/account"); // Redirect to account page
     }
   }, [error, router]);
-
 
   const trackingMessage =
     order && order?.meta_data.filter((item) => item.key === "tracking");
@@ -159,11 +158,13 @@ export default function OrderItem() {
                 )}
 
                 <div className="gap-3 sm:px-0 px-3">
+                   {order?.status === "completed" &&
                   <AddNewReturn
                     userInfo={userData && userData}
                     data={order && order}
                     orderedDate={order && order?.date_completed}
                   />
+                   }
                   {order?.status === "confirmed" ||
                     ((order?.status === "processing" ||
                       order?.status === "pending") && (

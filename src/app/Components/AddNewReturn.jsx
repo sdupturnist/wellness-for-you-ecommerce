@@ -29,6 +29,7 @@ export default function AddNewReturn({ orderedDate, userInfo, data }) {
           </button>
 
           <ModalPopup
+          noButton
             title="Return order?"
             item={<ReturnOrderForm data={data} userInfo={userInfo} />}
           />

@@ -14,6 +14,7 @@ export default function CancelOrder({ orderedDate, userInfo, data }) {
         </button>
 
         <ModalPopup
+        noButton
           title="Cancel order?"
           item={<CancelOrderForm data={data} userInfo={userInfo} />}
         />

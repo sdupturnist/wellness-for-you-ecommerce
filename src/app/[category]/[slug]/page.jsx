@@ -1,3 +1,4 @@
+import Accordion from "@/app/Components/Accordion";
 import AddToCart from "@/app/Components/AddToCart";
 import Alerts from "@/app/Components/Alerts";
 import Breadcrumb from "@/app/Components/Breadcrumb";
@@ -78,6 +79,13 @@ export default async function ItemSingle({ params, searchParams }) {
     }
   );
 
+
+
+
+
+
+
+
   const relatedProductsGet = await relatedProductsData.json();
   const relatedProducts = relatedProductsGet?.products;
   let productReview = await productReviewData.json();
@@ -91,13 +99,68 @@ export default async function ItemSingle({ params, searchParams }) {
       reviews.some((review) => review.product_id === product.id)
     );
 
+
+
+
+    const accordianItems = [
+      { title: 'Description', content:   singleProduct?.description && (
+        <div
+        dangerouslySetInnerHTML={{
+          __html: singleProduct?.description,
+        }}
+      />
+      )} ,
+      { title: 'Specification', content:   singleProduct?.acf?.specification && (
+        <div
+              dangerouslySetInnerHTML={{
+                __html: singleProduct?.acf?.specification,
+              }}
+            />
+      )} ,
+      { title: 'Reviews', content:  <>
+       {productReview.length > 0 && (
+            <div className="grid gap-4 justify-between sm:items-center">
+              <p>Rate this Backer and tell others what you think</p>
+              <div className="sm:mt-0 mt-2">
+                <WriteReview productId={singleProduct?.id} />
+              </div>
+            </div>
+          )}
+
+          <div className={`${productReview.length > 0 && "mt-5"}`}>
+            {productReview.length > 0 ? (
+              <Reviews data={productReview && productReview} />
+            ) : (
+              <div className="items-start">
+                <Alerts
+                status="red"
+                  title="No reviews available yet"
+                />
+                <div className="text-center pb-7 pt-3">
+                  <WriteReview productId={singleProduct?.id} />
+                </div>
+              </div>
+            )}
+          </div>
+      </> },
+    ];
+    
+
+
+// ,
+// <Reviews data={productReview && productReview} />
+
+  
+
+
+
   if (singleProduct) {
     return (
       <main>
         <div className="container">
           <Breadcrumb />
 
-          <section className="bg-white sm:py-14 pb-5 px-5">
+          <section className="bg-white sm:pb-14 pt-0 pb-5 px-5 sm:px-0">
             <div className="container">
               <div className="grid grid-cols-1 sm:gap-12 gap-5 lg:grid-cols-[40%_60%] product-single">
                 <div>
@@ -225,11 +288,15 @@ export default async function ItemSingle({ params, searchParams }) {
                   </div>
                 </div>
               </div>
-              <div className="sm:mt-14 mt-7">
+              <div className="sm:mt-14 mt-10">
                 <div className="grid gap-5">
-                  {singleProduct?.description && (
+
+                <Accordion items={accordianItems} />
+
+
+                  {/* {singleProduct?.description && (
                     <div className="collapse collapse-plus border rounded-lg">
-                      <input type="radio" name="my-accordion-3" />
+                      <input type="radio" name="my-accordion-1" />
                       <div className="collapse-title text-md text-dark font-medium">
                         Description
                       </div>
@@ -241,11 +308,13 @@ export default async function ItemSingle({ params, searchParams }) {
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
 
-                  {singleProduct?.acf?.specification && (
+
+
+                  {/* {singleProduct?.acf?.specification && (
                     <div className="collapse collapse-plus border rounded-lg">
-                      <input type="radio" name="my-accordion-3" />
+                      <input type="radio" name="my-accordion-2" />
                       <div className="collapse-title text-md text-dark font-medium">
                         Specification
                       </div>
@@ -257,7 +326,7 @@ export default async function ItemSingle({ params, searchParams }) {
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {/* {singleProduct?.shipping_delivery && (
                 <div className="collapse collapse-plus border rounded-lg">
@@ -275,7 +344,7 @@ export default async function ItemSingle({ params, searchParams }) {
                 </div>
               )} */}
 
-                  <div
+                  {/* <div
                     className="collapse collapse-plus border rounded-lg"
                     id="reviews">
                     <input type="radio" name="my-accordion-3" />
@@ -298,9 +367,8 @@ export default async function ItemSingle({ params, searchParams }) {
                         ) : (
                           <div className="items-start">
                             <Alerts
+                            status="red"
                               title="No reviews available yet"
-                              center
-                              nobg
                             />
                             <div className="text-center pb-7 pt-3">
                               <WriteReview productId={singleProduct?.id} />
@@ -309,7 +377,7 @@ export default async function ItemSingle({ params, searchParams }) {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

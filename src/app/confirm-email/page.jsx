@@ -1,8 +1,6 @@
-// app/confirm-email/page.js
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiUrl, homeUrl, siteName, woocommerceKey } from "@/app/Utils/variables";
 import Alerts from "../Components/Alerts";
@@ -10,8 +8,8 @@ import Loading from "../Components/Loading";
 import { sendMail } from "../Utils/Mail";
 import { WelcomeEmailTemplate } from "../Utils/MailTemplates";
 
-
-export default function ConfirmEmail() {
+// Component to handle email confirmation
+const ConfirmEmailContent = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -20,9 +18,7 @@ export default function ConfirmEmail() {
   const email = searchParams.get("email");
   const password = searchParams.get("password");
   const subscribe = searchParams.get("subscribe");
-  const token = new URLSearchParams(window.location.search).get("token");
-
-
+  const token = searchParams.get("token");
 
   useEffect(() => {
     const confirmUser = async () => {
@@ -61,19 +57,19 @@ export default function ConfirmEmail() {
           throw new Error("Failed to create customer");
         }
 
-        if(response.ok){
-
+        if (response.ok) {
           await sendMail({
             sendTo: email,
             subject: `Welcome to ${siteName}`,
             name: username,
             message: WelcomeEmailTemplate('Our primary goal at Wellness4u Food Supplements is to provide our customers with a wide selection of nutrition supplements and wellness equipment that have been rigorously tested for both quality and safety. We strive to offer products that not only enhance overall health and well-being but also empower individuals to take control of their own wellness journey.', username),
           });
-
         }
 
         setIsConfirmed(true);
+        router.push(`${homeUrl}login`);
       } catch (err) {
+        console.log(err);
         setError("If this email address is already associated with an existing account, or if there was an error confirming your email, please try again.");
       }
     };
@@ -81,20 +77,17 @@ export default function ConfirmEmail() {
     confirmUser();
   }, [token]);
 
-  const handleRedirect = () => {
-    router.push(`${homeUrl}login`);
-  };
-
   return (
     <section className="pt-0">
       <div className="container">
         <div className="container !px-0 sm:px-5 w-full min-w-full">
           <div className="sm:min-h-[70vh] min-h-[60vh] flex items-center justify-center">
             <div className="text-center grid md:gap-8 sm:gap-6 gap-4 sm:max-w-[60%] max-w-[95%] mx-auto">
-              {error && <Alerts large titleSmall title={error} status="red" buttonLabel="Try again" url={`${homeUrl}/register`} noPageUrl/>}
+              {error && <Alerts large titleSmall title={error} status="red" buttonLabel="Try again" url={`${homeUrl}/register`} noPageUrl />}
               {isConfirmed ? (
                 <Alerts
                   noPageUrl
+                  noLogo
                   title="Email Confirmed Successfully!"
                   large
                   buttonLabel=" Go to login"
@@ -102,15 +95,25 @@ export default function ConfirmEmail() {
                   desc={`Your email has been successfully confirmed. You can now access your account `}
                 />
               ) : (
-                !error && <div className="grid gap-5 items-center justify-center text-center">
-                  <Loading classes="mx-auto" spinner />
-                  <h2>Confirming your email...</h2>
-                </div>
+                !error && (
+                  <div className="grid gap-5 items-center justify-center text-center">
+                    <Loading classes="mx-auto" spinner />
+                    <h2>Confirming your email...</h2>
+                  </div>
+                )
               )}
             </div>
           </div>
         </div>
       </div>
     </section>
+  );
+};
+
+export default function ConfirmEmail() {
+  return (
+    <Suspense fallback={<Loading classes="mx-auto" spinner />}>
+      <ConfirmEmailContent />
+    </Suspense>
   );
 }

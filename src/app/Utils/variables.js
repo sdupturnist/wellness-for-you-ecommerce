@@ -42,9 +42,6 @@ export let homeUrl = process.env.NEXT_PUBLIC_SITE_URL;
 export let apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-//STRIPE CONFIG
-// export let publicKey = `pk_test_51PBumuSFrqNOhHwTB7Rr9WcBG0wxlIC0xkYQIhkOxsf2p1PVip2VzdmEdlNAkqD00GbWkJHtOIp5LW8Pzby8FeLD002sTAqQB5`
-// export let secretKey = 'sk_test_51PBumuSFrqNOhHwTjPOTWHb2gkKgkXHSrZjwS09Yf7EAJ6fo3qfmhmRhjHT5NJMgEsRmdGsJHI8CXHZyNs5lhI2s00hQLz3IER'
 
 
 //RAZORPAY CONFIG
@@ -125,6 +122,27 @@ export let emailUsername = "jaseerali2012@gmail.com"
 export let emailPassword = "avjbzfvwygdyretn"
 export let  siteEmail = "jaseerali2012@gmail.com"
 export let  siteFromEmail = "jaseerali2012@gmail.com"
+
+
+
+//DEFAULT META TAGS
+
+export let  metaTitle = "Wellness4U: Wellgin Ginseng Coffee, Supplements & Medical Equipment | Pan-India"
+export let  metaDescription = "Shop Wellgin Ginseng Coffee, premium health supplements, and medical care equipment at Wellness4U. Top online store offers multivitamins and more for all ages. Fast, reliable delivery across India.	"
+export let metaAuthor = "Admin"
+export let  metaKeywords = "Food Supplements, Multivitamin, Multivitamin for joint care, Vitamin for Knee and Joint Care, Probiotic for Gut health, kids Protein. Vitamin store in Kerala, Vitamin Store in Calicut, Vitamin Store in Thrissur, Vitamin Supplier in Kochi, Vitamin Supplier in South India, Vitamin Supplier in Malappuram, Vitamin Supplier in Palakkad, Vitamin Supplier in Pathanamthitta. Vitamin Store in Kannur, Vitamin Store in Kottayam.	"
+export let  metaViewport = "width=device-width, initial-scale=1"
+export let  metaRobots = "index, follow"
+export let  metaOgTitle = "Wellness4U: Wellgin Ginseng Coffee, Supplements & Medical Equipment | Pan-India"
+export let  metaOgDescription =  "Shop Wellgin Ginseng Coffee, premium health supplements, and medical care equipment at Wellness4U. Top online store offers multivitamins and more for all ages. Fast, reliable delivery across India."
+export let  metaOgImage = siteLogo
+export let  metaOgUrl = homeUrl
+export let  metaOgSiteName = siteName
+export let  metaTwitterCard = "summary_large_image"
+export let  metaTwitterSite = ""
+export let  metaTwitterCreator = ""
+export let  metaTwitterImage = siteLogo
+
 
 
 
