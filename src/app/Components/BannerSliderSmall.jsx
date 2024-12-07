@@ -9,13 +9,14 @@ import { Link } from "react-alice-carousel";
 export default function BannerSliderSmall({ data, url }) {
   const settings = {
     dots: false, // Show navigation dots
-    arrows: false,
-    infinite: true, // Infinite looping
+    arrows: false, // Hide arrows
+    infinite: true, // Infinite loop for continuous scrolling
     speed: 500, // Slide transition speed in ms
     slidesToShow: 1, // Display one testimonial at a time
     slidesToScroll: 1, // Scroll one slide at a time
     autoplay: true, // Enable autoplay
-    autoplaySpeed: 3000,
+    autoplaySpeed: 3000, // Autoplay interval in ms
+    pauseOnHover: true, // Pause autoplay when hovered
   };
   const items = data?.map((item, index) =>
     item?.acf?.url !== null ? (
