@@ -314,11 +314,13 @@ export default function AddToCart({
       {card ? (
         options && !isInCart ? (
           <div className="dropdown dropdown-top mt-1">
-            <button className="btn m-1" onClick={toggleDropdown}>
+            <div 
+              tabIndex={0} role="button"
+            className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
-            </button>
+            </div>
             {
-              <ul className="dropdown-content menu card-cart-options ">
+              <ul tabIndex={0} className="dropdown-content menu card-cart-options z-[1]">
                 {options?.length === 0 ? (
                   <li>
                     <button
@@ -416,14 +418,15 @@ export default function AddToCart({
             {!inCartPage &&
               (options && !isInCart ? (
                 <>
-                  <div className="dropdown  dropdown-top sm:w-fit w-full">
-                    <button
+                  <div className="dropdown dropdown-top sm:w-fit w-full">
+                    <div
+                    tabIndex={0} role="button"
                       className="btn !min-h-14 px-8 sm:w-fit w-full"
                       onClick={toggleDropdown}>
                       {isInCart ? "Go to cart" : "Add to cart"}
-                    </button>
+                    </div>
                     {
-                      <ul className="dropdown-content menu card-cart-options">
+                      <ul tabIndex={0} className="dropdown-content menu card-cart-options z-[1]">
                         {options?.length === 0 ? (
                           <li>
                             <button
