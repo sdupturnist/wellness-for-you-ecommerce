@@ -110,12 +110,12 @@ export let siteFromEmail = "jaseerali2012@gmail.com";
 
 
 //MAILEROO
-export let hostName = "smtp.maileroo.com";
-export let portNumber = 587;
-export let emailUsername = "mail@wellness4u.in";
-export let emailPassword = "e88e7123011b9dc905870ed8";
-export let siteEmail = "jaseerali2012@gmail.com";
-export let siteFromEmail = "care@wellness4u.in";
+// export let hostName = "smtp.maileroo.com";
+// export let portNumber = 587;
+// export let emailUsername = "mail@wellness4u.in";
+// export let emailPassword = "e88e7123011b9dc905870ed8";
+// export let siteEmail = "jaseerali2012@gmail.com";
+// export let siteFromEmail = "care@wellness4u.in";
 
 //DEFAULT META TAGS
 
