@@ -360,11 +360,11 @@ export default function AddToCart({
           </>
         )
       ) : (
-        <div className="items-end flex justify-between lg:mt-0 gap-3">
+        <div className="items-end flex justify-between lg:mt-0 gap-3 w-full">
           <div
             className={`${
               !inCartPage ? "w-auto" : "w-24 sm:w-32"
-            } flex items-center justify-start gap-3 lg:order-first order-last`}>
+            } flex items-center justify-start gap-3 lg:order-first order-last w-full`}>
              
          
 
@@ -441,9 +441,9 @@ export default function AddToCart({
             {!inCartPage &&
               (options && !isInCart ? (
                 <>
-                  <div className="dropdown dropdown-hover dropdown-top">
+                  <div className="dropdown dropdown-hover dropdown-top sm:w-fit w-full">
                     <div
-                      className="btn !min-h-14 px-8"
+                      className="btn !min-h-14 px-8 sm:w-fit w-full"
                       onClick={toggleDropdown}>
                       {isInCart ? "Go to cart" : "Add to cart"}
                     </div>
@@ -490,7 +490,7 @@ export default function AddToCart({
                 </>
               ) : (
                 <>
-                  <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8">
+                  <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8 w-fit">
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </Link>
                   <AddToWishList

@@ -28,7 +28,7 @@ export default function ProductCard({
 }) {
   const category = useParams();
 
-  const itemCaturl = homeUrl + category?.category?.replace("/", "");
+  const itemCaturl = homeUrl + data?.categories[0]?.slug;
 
   const [loading, setLoading] = useState(true);
 
