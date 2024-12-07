@@ -69,7 +69,7 @@ export default function ProductCard({
         productId={data?.id}
       />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
-        <div className="border rounded-md sm:h-auto sm:w-auto h-[70px] w-[70px] sm:border-0 flex sm:block items-center justify-center ">
+        <div className="border rounded-md sm:h-auto sm:w-auto h-[100px] w-[100px] sm:border-0 flex sm:block items-center justify-center ">
           <Link
             className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
@@ -83,7 +83,7 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[60px] sm:my-[15px] m-0 mx-auto"
+              classes="block sm:size-[150px] size-[80px] sm:my-[15px] m-0 mx-auto"
               placeholder={true}
             />
           </Link>
@@ -149,7 +149,7 @@ export default function ProductCard({
         productId={data?.id}
       />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
-        <div className="border rounded-md sm:h-auto sm:w-auto h-[70px] w-[70px] sm:border-0 flex sm:block items-center justify-center">
+        <div className="border rounded-md sm:h-auto sm:w-auto h-[100px] w-[100px] sm:border-0 flex sm:block items-center justify-center">
           <Link
             className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
@@ -163,7 +163,7 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[60px] sm:my-[15px] m-0 mx-auto"
+              classes="block sm:size-[150px] size-[80px] sm:my-[15px] m-0 mx-auto"
               placeholder={true}
             />
           </Link>

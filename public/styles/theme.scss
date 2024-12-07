@@ -525,7 +525,7 @@ select {
         @apply w-full bg-white sm:rounded-[12px] sm:border border-b sm:last:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all mb-5 sm:p-5 py-5;
 
         .img-box {
-            @apply border rounded-md sm:min-w-[70px] sm:max-w-[70px] sm:min-h-[70px] sm:max-h-[70px] min-w-[70px] min-h-[70px] max-h-[70px] max-w-[70px] items-center flex;
+            @apply border rounded-md sm:min-w-[70px] sm:max-w-[70px] sm:min-h-[70px] sm:max-h-[70px] min-w-[70px] min-h-[100px] max-h-[100px] max-w-[100px] items-center flex;
         }
        
 

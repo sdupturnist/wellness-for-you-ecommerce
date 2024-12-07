@@ -412,7 +412,17 @@ add_action( 'rest_api_init', function() {
             'address' => [
                 'required'            => true,
                 'validate_callback'   => function( $param, $request, $key ) {
-                    return isset( $param['address_1'] ) && isset( $param['city'] ); // Basic validation for address fields
+                    // Validate all required address fields
+                    $required_fields = [
+                        'full_name', 'last_name', 'company', 'country',
+                        'address_1', 'address_2', 'state', 'city', 'pincode', 'phone'
+                    ];
+                    foreach ($required_fields as $field) {
+                        if ( !isset($param[$field]) ) {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
             ]
         ]
@@ -429,7 +439,17 @@ add_action( 'rest_api_init', function() {
             'address' => [
                 'required'            => true,
                 'validate_callback'   => function( $param, $request, $key ) {
-                    return isset( $param['address_1'] ) && isset( $param['city'] ); // Basic validation for address fields
+                    // Validate all required address fields
+                    $required_fields = [
+                        'full_name', 'last_name', 'company', 'country',
+                        'address_1', 'address_2', 'state', 'city', 'pincode', 'phone'
+                    ];
+                    foreach ($required_fields as $field) {
+                        if ( !isset($param[$field]) ) {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
             ]
         ]
@@ -564,6 +584,7 @@ function delete_customer_address( $data ) {
         'message' => 'Address deleted successfully.'
     ];
 }
+
 
 
 //POST /customers/{id}/addresses
@@ -1254,3 +1275,96 @@ function add_featured_image_to_rest_api( $data, $post, $context ) {
 
 // Hook into the REST API response for posts
 add_filter( 'rest_prepare_post', 'add_featured_image_to_rest_api', 10, 3 );
+
+
+
+//ADMIN UI
+
+
+function custom_dashboard_color_scheme() {
+    echo '<style>
+        /* Custom color scheme for the dashboard */
+        #wpadminbar {
+            background-color: #5ba642; /* Green for the admin bar */
+        }
+        
+        #adminmenu {
+            background-color: #5ba642; /* Green for the admin menu background */
+        }
+
+        #adminmenu a {
+            color: #ffffff; /* White for menu text */
+        }
+
+        #adminmenu a:hover {
+            background-color: #4b8c37; /* Dark green for hover effect */
+            color: #ffffff; /* White text on hover */
+        }
+
+        body.wp-admin {
+            background-color: #ffffff; /* White for the body background */
+        }
+
+        .wp-core-ui .button-primary {
+            background: #5ba642; /* Green for the primary button */
+            border-color: #5ba642;
+        }
+
+        .wp-core-ui .button-primary:hover {
+            background: #4b8c37; /* Darker green for the hover state */
+            border-color: #4b8c37;
+        }
+
+        /* Collapse button (left menu) */
+        #adminmenu .wp-has-current-submenu > a, 
+        #adminmenu .wp-menu-arrow {
+            background-color: #4b8c37; /* Dark green for the collapsed menu button */
+        }
+
+        /* Collapsed menu items */
+        #adminmenu .wp-has-current-submenu > a:hover,
+        #adminmenu .wp-menu-arrow:hover {
+            background-color: #4b8c37; /* Dark green on hover */
+        }
+		
+		
+		#adminmenu .wp-submenu {
+   
+    background-color: #4a8936;
+}
+
+#adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu .wp-menu-arrow, #adminmenu .wp-menu-arrow div, #adminmenu li.current a.menu-top, #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu {
+    background: #3b7b26;
+    color: #fff;
+}
+
+#adminmenu {
+    
+    margin: 0;
+    padding: 0;
+}
+
+#adminmenu li.menu-top:hover, #adminmenu li.opensub>a.menu-top, #adminmenu li>a.menu-top:focus {
+  
+    background-color: #4a8936;
+    color: #ffffff;
+}
+#adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after, #adminmenu li.wp-has-submenu.wp-not-current-submenu:focus-within:after {
+    border-right-color: #4a8936;
+}
+
+#adminmenu .wp-submenu a:focus, #adminmenu .wp-submenu a:hover, #adminmenu a:hover, #adminmenu li.menu-top>a:focus {
+    color: #ffffff;
+}
+#adminmenu div.wp-menu-image:before {
+    color: #a7aaad;
+    color: rgb(255 255 255);
+}
+
+#adminmenu li a:focus div.wp-menu-image:before, #adminmenu li.opensub div.wp-menu-image:before, #adminmenu li:hover div.wp-menu-image:before {
+    color: #ffffff;
+}
+    </style>';
+}
+add_action('admin_head', 'custom_dashboard_color_scheme');
+

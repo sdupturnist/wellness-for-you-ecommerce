@@ -32,14 +32,14 @@ module.exports = {
     daisyui,
   ],
   daisyui: {
-    themes: false,
-    darkTheme: "light",
+    themes: false,  // Disable themes feature in DaisyUI
+    darkTheme: false,  // Disable dark theme
     base: true,
     styled: true,
     utils: true,
     prefix: "",
     logs: true,
-    themeRoot: ":root",
+    themeRoot: ":root",  // Define theme root
     themes: [
       {
         custom: {
@@ -52,4 +52,5 @@ module.exports = {
       },
     ],
   },
+  darkMode: false,  // Ensure dark mode is completely disabled globally in TailwindCSS
 }

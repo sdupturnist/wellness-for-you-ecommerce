@@ -49,7 +49,6 @@ export default function AddToCart({
     const currentItem = safeCartItems.find((item) => item.id === itemid);
     if (currentItem) {
       setQuantity(currentItem.quantity);
-     
     } else {
       setQuantity(1);
     }
@@ -101,8 +100,7 @@ export default function AddToCart({
 
   // Function to handle cart action (Add/Remove)
   const handleCartAction = (seletedOption, image, price, name) => {
-
-    setCartAddQty(true)
+    setCartAddQty(true);
 
     if (isInCart) {
       // Remove item from cart
@@ -315,10 +313,10 @@ export default function AddToCart({
 
       {card ? (
         options && !isInCart ? (
-          <div className="dropdown dropdown-hover dropdown-top mt-1">
-            <summary className="btn m-1" onClick={toggleDropdown}>
+          <div className="dropdown dropdown-top mt-1">
+            <button className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
-            </summary>
+            </button>
             {
               <ul className="dropdown-content menu card-cart-options ">
                 {options?.length === 0 ? (
@@ -365,88 +363,65 @@ export default function AddToCart({
             className={`${
               !inCartPage ? "w-auto" : "w-24 sm:w-32"
             } flex items-center justify-start gap-3 lg:order-first order-last w-full`}>
-             
-         
-
-{/* FOR CART */}
-           {inCartPage &&  <div
-              className="border-primary bg-primary-dim h-11 [&>*]:text-primary flex items-center border rounded-lg  w-full justify-between lg:max-w-40">
-              <button
-                className="px-2 py-2 hover:opacity-50 transition-all text-dark"
-                onClick={CartMinus}>
-                <MinusIcon
-                  className={` size-4 font-semibold`}
+            {/* FOR CART */}
+            {inCartPage && (
+              <div className="border-primary bg-primary-dim h-11 [&>*]:text-primary flex items-center border rounded-lg  w-full justify-between lg:max-w-40">
+                <button
+                  className="px-2 py-2 hover:opacity-50 transition-all text-dark"
+                  onClick={CartMinus}>
+                  <MinusIcon className={` size-4 font-semibold`} />
+                </button>
+                <input
+                  type="text"
+                  value={quantity}
+                  readOnly
+                  className="text-center w-full !px-0 !h-full !border-none bg-primary-dim !text-primary"
                 />
-              </button>
-              <input
-                type="text"
-                value={quantity}
-                readOnly
-                className="text-center w-full !px-0 !h-full !border-none bg-primary-dim !text-primary"
-              />
-              <button
-                className="py-2 hover:opacity-50 transition-all text-dark px-2"
-                onClick={(e) => CartPlus(options[0]?.item)}>
-                <PlusIcon
-                  className="font-semibold size-4"
+                <button
+                  className="py-2 hover:opacity-50 transition-all text-dark px-2"
+                  onClick={(e) => CartPlus(options[0]?.item)}>
+                  <PlusIcon className="font-semibold size-4" />
+                </button>
+              </div>
+            )}
+
+            {/* FOR SINGLE */}
+
+            {!inCartPage && cartAddQty && (
+              <div
+                className={`${
+                  !inCartPage
+                    ? "h-14"
+                    : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
+                } h-14 flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
+                <button
+                  className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
+                  onClick={CartMinus}>
+                  <MinusIcon className={` size-5 font-semibold`} />
+                </button>
+                <input
+                  type="text"
+                  value={quantity}
+                  readOnly
+                  className={` text-center w-full !px-0 !h-full !border-none`}
                 />
-              </button>
-            </div>
-}
-            
-
-
-
-
- 
-{/* FOR SINGLE */}     
-
-           {!inCartPage && cartAddQty && <div
-              className={`${
-                !inCartPage
-                  ? "h-14"
-                  : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
-              } h-14 flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
-              <button
-                className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
-                onClick={CartMinus}>
-                <MinusIcon
-                  className={` size-5 font-semibold`}
-                />
-              </button>
-              <input
-                type="text"
-                value={quantity}
-                readOnly
-                className={` text-center w-full !px-0 !h-full !border-none`}
-              />
-              <button
-                className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
-                onClick={(e) => CartPlus(options[0]?.item)}>
-                <PlusIcon
-                  className={`size-5 font-semibold`}
-                />
-              </button>
-            </div>
-}
-
-
-
-
-
-
-
-
+                <button
+                  className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
+                  onClick={(e) => CartPlus(options[0]?.item)}>
+                  <PlusIcon className={`size-5 font-semibold`} />
+                </button>
+              </div>
+            )}
 
             {!inCartPage &&
               (options && !isInCart ? (
                 <>
-                  <div className="dropdown dropdown-hover dropdown-top sm:w-fit w-full">
-                    <div
+                  <div className="dropdown  dropdown-top sm:w-fit w-full">
+                    <button
                       className="btn !min-h-14 px-8 sm:w-fit w-full"
                       onClick={toggleDropdown}>
                       {isInCart ? "Go to cart" : "Add to cart"}
-                    </div>
+                    </button>
                     {
                       <ul className="dropdown-content menu card-cart-options">
                         {options?.length === 0 ? (
@@ -490,7 +465,9 @@ export default function AddToCart({
                 </>
               ) : (
                 <>
-                  <Link href={`${homeUrl}cart`} className="btn !min-h-14 px-8 w-fit">
+                  <Link
+                    href={`${homeUrl}cart`}
+                    className="btn !min-h-14 px-8 w-fit">
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </Link>
                   <AddToWishList
