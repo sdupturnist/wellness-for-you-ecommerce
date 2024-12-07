@@ -1,3 +1,6 @@
+// Single Pack,
+// Buy1 Get 1Free (+₹325.00):1299
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -32,6 +35,7 @@ export default function AddToCart({
   const [loading, setLoading] = useState(true);
   const [activeWishlist, setActiveWishlist] = useState([]);
   const [cartAddQty, setCartAddQty] = useState(false);
+  const [showGotoCartBtn, setShowGotoCartBtn] = useState(false);
 
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -312,16 +316,20 @@ export default function AddToCart({
       )}
 
       {card ? (
-        options && !isInCart ? (
+        options.length > 1 && !isInCart ? (
           <div className="dropdown dropdown-top mt-1">
-            <div 
-              tabIndex={0} role="button"
-            className="btn m-1" onClick={toggleDropdown}>
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn m-1"
+              onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
             </div>
             {
-              <ul tabIndex={0} className="dropdown-content menu card-cart-options z-[1]">
-                {options?.length === 0 ? (
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu card-cart-options z-[1]">
+                {options?.length < 1 ? (
                   <li>
                     <button
                       onClick={() =>
@@ -354,7 +362,7 @@ export default function AddToCart({
           <>
             <button
               className={`${isInCart && "!bg-primary !text-white"} btn mt-3`}
-              onClick={(e) => handleCartAction(null)}>
+              onClick={(e) => handleCartAction(name, image, price, name)}>
               {isInCart ? "Remove" : "Add"}
             </button>
           </>
@@ -416,18 +424,21 @@ export default function AddToCart({
             )}
 
             {!inCartPage &&
-              (options && !isInCart ? (
+              (!options.length < 1 && !isInCart ? (
                 <>
                   <div className="dropdown dropdown-top sm:w-fit w-full">
                     <div
-                    tabIndex={0} role="button"
+                      tabIndex={0}
+                      role="button"
                       className="btn !min-h-14 px-8 sm:w-fit w-full"
                       onClick={toggleDropdown}>
                       {isInCart ? "Go to cart" : "Add to cart"}
                     </div>
                     {
-                      <ul tabIndex={0} className="dropdown-content menu card-cart-options z-[1]">
-                        {options?.length === 0 ? (
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content menu card-cart-options z-[1]">
+                        {options?.length < 1 ? (
                           <li>
                             <button
                               onClick={() =>
@@ -468,11 +479,37 @@ export default function AddToCart({
                 </>
               ) : (
                 <>
-                  <Link
-                    href={`${homeUrl}cart`}
-                    className="btn !min-h-14 px-8 w-fit">
-                    {isInCart ? "Go to cart" : "Add to cart"}
-                  </Link>
+                  {options.length > 1 && (
+                    <button
+                      className="btn !min-h-14 px-8 w-fit"
+                      onClick={() =>
+                        handleCartAction(name, image, price, name)
+                      }>
+                      Add to cart
+                    </button>
+                  )}
+                  {options.length < 1 && (
+                    <>
+                      {!isInCart && (
+                        <button
+                          onClick={() => {
+                            handleCartAction(name, image, price, name);
+                            setShowGotoCartBtn(true);
+                          }}
+                          className="btn !min-h-14 px-8 w-fit">
+                          {isInCart ? "Go to cart" : "Add to cart"}
+                        </button>
+                      )}
+
+                      {isInCart && (
+                        <Link
+                          href={`${homeUrl}cart`}
+                          className="btn !min-h-14 px-8 w-fit">
+                          Go to cart
+                        </Link>
+                      )}
+                    </>
+                  )}
                   <AddToWishList
                     activeWishlist={
                       activeWishlist &&

@@ -623,7 +623,7 @@ header {
 
 
 
-    @apply flex items-center justify-between gap-[30px] z-[10] relative;
+    @apply flex items-center justify-between gap-[30px] z-[10] relative shadow-sm;
 
     .logo {
         @apply flex items-center justify-center;
@@ -710,7 +710,7 @@ header {
 
 
 footer {
-    background: $PRIMARY;
+    background: #a76b11;
 
     a,
     p {

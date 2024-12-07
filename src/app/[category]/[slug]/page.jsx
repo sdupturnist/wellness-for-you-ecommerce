@@ -245,8 +245,11 @@ export default async function ItemSingle({ params, searchParams }) {
                   </div>
                 )} */}
 
+
+{/* flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none */}
+
                     {singleProduct?.price && (
-                      <div className="flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none">
+                      <div className="flex gap-3  bg-white">
                         <AddToCart
                           itemid={singleProduct?.id ?? null}
                           price={
