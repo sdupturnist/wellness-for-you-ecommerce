@@ -1,0 +1,15 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+	<title>payment_5-svg</title>
+	<defs>
+		<image  width="780" height="500" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwwAAAH0AQMAAACq7zhlAAAAAXNSR0IB2cksfwAAAANQTFRFDkWVoI/MWwAAAMNJREFUeJztzUERAAAMAqDZv/RSeH6gALm6KBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqHYFQ8BBAH1nE/a8wAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		.s0 { fill: #0e4595 } 
+		.s1 { fill: #ffffff } 
+		.s2 { fill: #f2ae14 } 
+	</style>
+	<path class="s0" d="m40 0h700c22.1 0 40 17.9 40 40v420c0 22.1-17.9 40-40 40h-700c-22.1 0-40-17.9-40-40v-420c0-22.1 17.9-40 40-40z"/>
+	<use id="Layer 1" href="#img1" x="0" y="0"/>
+	<path fill-rule="evenodd" class="s1" d="m293.2 348.7l33.4-195.7h53.3l-33.4 195.7zm238.9-149.1l-4.8-2.2c-9.8-4-22.5-7.8-39.9-7.5-20.9 0-30.6 8.7-30.6 16.8-0.1 9.2 11.3 15.2 30 24.3 30.8 13.9 45 30.9 44.8 53.2-0.4 40.6-36.8 66.8-92.9 66.8-24-0.2-47-4.9-59.5-10.4l7.5-43.8 6.9 3.1c17.5 7.3 28.9 10.3 50.2 10.3 15.4 0 31.8-6 32-19.2 0-8.5-6.9-14.6-27.7-24.2-20.2-9.4-47.1-25.1-46.8-53.2 0.4-38.1 37.5-64.6 90.2-64.6 20.7 0 37.3 4.2 47.8 8.2zm187.8 149h-49.5c0 0-4.9-22.5-6.5-29.4-7.8 0-62.2 0-68.4 0-2 5.2-11.2 29.4-11.2 29.4h-56l79.2-179.4c5.6-12.8 15.2-16.3 28-16.3h41.2c0 0 43.2 195.7 43.2 195.7zm-64.3-69.3c-2.2-9.8-12.4-56.5-12.4-56.5l-3.6-16.9c-2.7 7.4-7.4 19.2-7.1 18.7 0 0-16.8 43.5-21.2 54.7zm-351.1-126.4l-84 195.4-56.5 0.1-47.7-171.2c33.8 17 64.1 50.8 73.9 82.1l5.5 27.1 52.3-133.5c0 0 56.5 0 56.5 0z"/>
+	<path class="s2" d="m146.9 153h-86l-0.7 4c66.9 16.2 111.2 55.4 129.6 102.4l-18.7-89.9c-3.2-12.4-12.6-16.1-24.2-16.5z"/>
+</svg>

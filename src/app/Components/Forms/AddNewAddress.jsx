@@ -49,25 +49,42 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
     setLoading(true);
 
     const requestData = {
+
+
+
       address: {
-        id: addressId,
-        address_1: addressOne,
-        address_2: addressTwo,
-        phone: phone,
-        city: city,
-        state: state,
-        postcode: pinCode,
-        country: country,
-        first_name: firstName,
+        full_name: firstName,
         last_name: lastName,
         company: companyName,
-      },
+        country: country,
+        address_1: addressOne,
+        address_2:  addressTwo,
+        state: state,
+        city: city,
+        pincode: pinCode,
+        phone: phone
+      }
+
+
+      // address: {
+      //   id: addressId,
+      //   address_1: addressOne,
+      //   address_2: addressTwo,
+      //   phone: phone,
+      //   city: city,
+      //   state: state,
+      //   postcode: pinCode,
+      //   country: country,
+      //   first_name: firstName,
+      //   last_name: lastName,
+      //   company: companyName,
+      // },
     };
 
     try {
       // Submit the review
       const response = await fetch(
-        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses${woocommerceKey}`,
+      `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses${woocommerceKey}`,
         {
           method: "POST",
           headers: {

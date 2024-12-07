@@ -25,12 +25,12 @@ export default async function Home({ params, searchParams }) {
     },
   });
 
-  let testimonialdata = await fetch(`${apiUrl}wp-json/wp/v2/testimonials`, {
-    next: {
-      revalidate: 60,
-      cache: "no-store",
-    },
-  });
+  // let testimonialdata = await fetch(`${apiUrl}wp-json/wp/v2/testimonials`, {
+  //   next: {
+  //     revalidate: 60,
+  //     cache: "no-store",
+  //   },
+  // });
 
   let topBannerLargedata = await fetch(
     `${apiUrl}wp-json/wp/v2/home-slider-banner-b`,
@@ -95,7 +95,7 @@ export default async function Home({ params, searchParams }) {
   let page = await pageData.json();
   let topBannerLarge = await topBannerLargedata.json();
   let topBannerSmall = await topBannerSmalldata.json();
-  let testimonial = await testimonialdata.json();
+  // let testimonial = await testimonialdata.json();
   let bottomBannerLarge = await bottomBannerLargedata.json();
   let bottomBannerSmall = await bottomBannerSmalldata.json();
   let featuredProducts = await featuredProductsData.json();
@@ -104,7 +104,7 @@ export default async function Home({ params, searchParams }) {
   return (
     <div className="container">
       <section className="pb-0 sm:pt-8">
-        <div className="grid grid-cols-1 sm:grid-cols-[70%_30%]">
+        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%]">
           {topBannerLarge && (
             <div className="w-full lg:pr-7">
               <BannerSliderLarge data={topBannerLarge} />
@@ -149,9 +149,23 @@ export default async function Home({ params, searchParams }) {
       )}
       <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
         {bottomBannerLarge &&
-          bottomBannerLarge.map((item, index) => (
-            <Link key={index} href={`${homeUrl}${item?.slug}`}>
+          bottomBannerLarge.map((item, index) =>
+            item?.acf?.url !== null ? (
+              <Link key={index} href={item?.acf?.url || homeUrl}>
+                <Images
+                  imageurl={item?.featured_image?.url}
+                  quality="100"
+                  width="1500"
+                  height="500"
+                  title={item?.featured_image?.alt}
+                  alt={item?.featured_image?.alt}
+                  classes="block w-full banner"
+                  placeholder={true}
+                />
+              </Link>
+            ) : (
               <Images
+                key={index}
                 imageurl={item?.featured_image?.url}
                 quality="100"
                 width="1500"
@@ -161,38 +175,54 @@ export default async function Home({ params, searchParams }) {
                 classes="block w-full banner"
                 placeholder={true}
               />
-            </Link>
-          ))}
+            )
+          )}
         <div className="grid md:grid-cols-2 sm:gap-12 gap-6">
           {bottomBannerSmall &&
-            bottomBannerSmall.map((item, index) => (
-              <div key={index}>
-                <Link key={index} href={`${homeUrl}${item?.slug}`}>
+            bottomBannerSmall.map((item, index) =>
+              item?.acf?.url !== null ? (
+                <div key={index}>
+                  <Link href={item?.acf?.url || homeUrl}>
+                    <Images
+                      imageurl={item?.featured_image?.url}
+                      quality="100"
+                      width="600"
+                      height="350"
+                      title={item?.featured_image?.alt}
+                      alt={item?.featured_image?.alt}
+                      classes="block w-full banner"
+                      placeholder={true}
+                    />
+                  </Link>
+                </div>
+              ) : (
+                <div key={index}>
                   <Images
+                    key={index}
                     imageurl={item?.featured_image?.url}
                     quality="100"
                     width="600"
                     height="350"
                     title={item?.featured_image?.alt}
                     alt={item?.featured_image?.alt}
-                    classes="block w-full banner sm:h-[350px]"
+                    classes="block w-full banner"
                     placeholder={true}
                   />
-                </Link>
-              </div>
-            ))}
+                </div>
+              )
+            )}
         </div>
       </section>
-      {testimonial.length > 0 && (
-        <section className="testimonials text-center border-t">
-          <div className="max-w-screen-lg mx-auto gap-7">
-            <Testimonials data={testimonial} />
-          </div>
-        </section>
-      )}
+      {/* {testimonial.length > 0 && ( */}
+      {/* <section className="testimonials text-center border-t"> */}
+      {/* <div className="max-w-screen-lg mx-auto gap-7"> */}
+      {/* <Testimonials data={testimonial} /> */}
+      {/* </div> */}
+      {/* </section> */}
+      {/* )} */}
       {page?.content?.rendered && (
-        <section className="about content border-t sm:pb-14 sm:text-center text-justify">
-          <div className="max-w-screen-lg mx-auto [&>*]:opacity-70">
+        <section className="about content border-t sm:pb-14 text-center">
+          <div className="max-w-screen-lg mx-auto [&>*]:opacity-70 sm:[&>*]:text-[14px] [&>*]:text-[13px] [&>*]:leading-[1.7]">
             <div
               dangerouslySetInnerHTML={{
                 __html: page?.content?.rendered,

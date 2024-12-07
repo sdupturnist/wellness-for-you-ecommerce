@@ -26,7 +26,7 @@ export default function CartListItem() {
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((item, index) => (
           <li key={index}>
-          <div className="flex items-center justify-start w-full sm:gap-0 gap-3">
+          <div className="flex items-center justify-start w-full sm:gap-0 gap-3 mb-5 sm:mb-0">
             <Link
               className="flex items-center min-w-32"
               href={`/product/${item?.slug}`} // Assuming slug is a product-specific URL

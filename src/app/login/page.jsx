@@ -18,7 +18,7 @@ export default function LoginPage() {
             classes="block w-full sm:h-[300px] h-[150px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
             placeholder={true}
           />
-  <div className="bg-white sm:p-14 p-8 sm:max-w-[500px] max-w-[400px] w-full mx-auto relative sm:top-[-200px] top-[-100px] rounded-lg border border-border">
+  <div className="bg-white sm:p-14 p-8 sm:max-w-[500px] max-w-[90%] w-full mx-auto relative sm:top-[-200px] top-[-100px] rounded-lg border border-border">
             <SectionHeader title="Log in to your account" titleCenter />
             <div className="grid gap-5 pt-3">
               <Login />

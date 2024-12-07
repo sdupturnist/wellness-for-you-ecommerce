@@ -18,7 +18,7 @@ export default function CartView() {
 
   return (
     <div
-      className={`grid sm:gap-16 gap-5 ${
+      className={`grid sm:gap-16 gap-4 ${
         !cartItems.length > 0 ? "lg:grid-cols-1" : "lg:grid-cols-[60%,28%]"
       } cart lg:justify-between`}>
       <div

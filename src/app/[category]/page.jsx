@@ -14,7 +14,7 @@ export default async function CategoryPage({ params, searchParams }) {
 
   // Fetch all products for the current page
   let allProductsData = await fetch(
-    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
+    `${apiUrl}wp-json/wc-custom/v1/products?sort_by_acf=asc&category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
     {
       next: {
         revalidate: 1,

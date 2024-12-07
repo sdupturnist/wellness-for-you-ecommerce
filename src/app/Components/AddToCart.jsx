@@ -10,8 +10,6 @@ import Notification from "./Notification";
 import Swal from "sweetalert2";
 import { userId } from "../Utils/UserInfo";
 
-
-
 export default function AddToCart({
   itemid,
   price,
@@ -22,7 +20,7 @@ export default function AddToCart({
   options,
   slug,
   active,
-  singlePage
+  singlePage,
 }) {
   const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } =
     useCartContext();
@@ -33,6 +31,7 @@ export default function AddToCart({
   const [isActiveWishList, setIsActiveWishList] = useState(active);
   const [loading, setLoading] = useState(true);
   const [activeWishlist, setActiveWishlist] = useState([]);
+  const [cartAddQty, setCartAddQty] = useState(false);
 
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -41,26 +40,21 @@ export default function AddToCart({
     }
   }, [itemid]);
 
- 
   const safeCartItems = useMemo(
     () => (Array.isArray(cartItems) ? cartItems : []),
     [cartItems]
   );
 
-  
-
   useEffect(() => {
     const currentItem = safeCartItems.find((item) => item.id === itemid);
     if (currentItem) {
       setQuantity(currentItem.quantity);
+     
     } else {
-      setQuantity(0);
+      setQuantity(1);
     }
   }, [safeCartItems, itemid]);
 
-
-  
-  
   useEffect(() => {
     fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
       .then((res) => res.json())
@@ -72,10 +66,6 @@ export default function AddToCart({
         console.error("Error fetching data:", error);
       });
   }, []);
-
-
-
- 
 
   const updateCartLengthCookie = async (updatedCartItems) => {
     const cartLength = updatedCartItems.length;
@@ -92,14 +82,11 @@ export default function AddToCart({
       if (response.ok) {
         // Successfully updated cart length in cookie
         const data = await response.json();
-      
       } else {
         // If the response status is not OK, log failure
-      
       }
     } catch (error) {
       // Log any error that occurred during the fetch
-  
     }
   };
 
@@ -114,6 +101,9 @@ export default function AddToCart({
 
   // Function to handle cart action (Add/Remove)
   const handleCartAction = (seletedOption, image, price, name) => {
+
+    setCartAddQty(true)
+
     if (isInCart) {
       // Remove item from cart
       const updatedCartItems = safeCartItems.filter(
@@ -147,7 +137,7 @@ export default function AddToCart({
       setNotification({
         message: `Item added to your cart.`,
         type: "success",
-       });
+      });
 
       setTimeout(() => {
         setNotification(null);
@@ -186,11 +176,11 @@ export default function AddToCart({
     // Update local quantity state
     setQuantity((prevQuantity) => prevQuantity + 1);
 
-
-    singlePage &&  setNotification({
-      message: `Item added to your cart.`,
-      type: "success",
-    });
+    singlePage &&
+      setNotification({
+        message: `Item added to your cart.`,
+        type: "success",
+      });
 
     setTimeout(() => {
       setNotification(null);
@@ -312,14 +302,11 @@ export default function AddToCart({
       });
   };
 
-
- 
-
   return (
     <>
       {notification && (
         <Notification
-        url={homeUrl+`cart`}
+          url={homeUrl + `cart`}
           message={notification.message}
           type={notification.type}
           onClose={() => setNotification(null)}
@@ -328,12 +315,12 @@ export default function AddToCart({
 
       {card ? (
         options && !isInCart ? (
-          <details className="dropdown mt-2">
+          <div className="dropdown dropdown-hover dropdown-top mt-1">
             <summary className="btn m-1" onClick={toggleDropdown}>
               {isInCart ? "Remove" : "Add"}
             </summary>
             {
-              <ul className="menu card-cart-options">
+              <ul className="dropdown-content menu card-cart-options ">
                 {options?.length === 0 ? (
                   <li>
                     <button
@@ -362,7 +349,7 @@ export default function AddToCart({
                 )}
               </ul>
             }
-          </details>
+          </div>
         ) : (
           <>
             <button
@@ -378,54 +365,90 @@ export default function AddToCart({
             className={`${
               !inCartPage ? "w-auto" : "w-24 sm:w-32"
             } flex items-center justify-start gap-3 lg:order-first order-last`}>
-            <div
-              className={`${
-                !inCartPage
-                  ? "h-14"
-                  : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
-              } flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
+             
+         
+
+{/* FOR CART */}
+           {inCartPage &&  <div
+              className="border-primary bg-primary-dim h-11 [&>*]:text-primary flex items-center border rounded-lg  w-full justify-between lg:max-w-40">
               <button
-                className={`${
-                  inCartPage ? "px-2" : "px-4"
-                } py-2 hover:opacity-50 transition-all text-dark`}
+                className="px-2 py-2 hover:opacity-50 transition-all text-dark"
                 onClick={CartMinus}>
                 <MinusIcon
-                  className={`${
-                    !inCartPage ? "size-5" : "size-4"
-                  } font-semibold`}
+                  className={` size-4 font-semibold`}
                 />
               </button>
               <input
                 type="text"
                 value={quantity}
                 readOnly
-                className={`${
-                  inCartPage && "bg-primary-dim !text-primary"
-                } text-center w-full !px-0 !h-full !border-none`}
+                className="text-center w-full !px-0 !h-full !border-none bg-primary-dim !text-primary"
               />
               <button
-                className={`${
-                  inCartPage ? "px-2" : "px-4"
-                } py-2 hover:opacity-50 transition-all text-dark`}
+                className="py-2 hover:opacity-50 transition-all text-dark px-2"
                 onClick={(e) => CartPlus(options[0]?.item)}>
                 <PlusIcon
-                  className={`${
-                    !inCartPage ? "size-5" : "size-4"
-                  } font-semibold`}
+                  className="font-semibold size-4"
                 />
               </button>
             </div>
+}
+            
+
+
+
+
+ 
+{/* FOR SINGLE */}     
+
+           {!inCartPage && cartAddQty && <div
+              className={`${
+                !inCartPage
+                  ? "h-14"
+                  : "border-primary bg-primary-dim h-11 [&>*]:text-primary"
+              } h-14 flex items-center border rounded-lg  w-full justify-between lg:max-w-40`}>
+              <button
+                className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
+                onClick={CartMinus}>
+                <MinusIcon
+                  className={` size-5 font-semibold`}
+                />
+              </button>
+              <input
+                type="text"
+                value={quantity}
+                readOnly
+                className={` text-center w-full !px-0 !h-full !border-none`}
+              />
+              <button
+                className={` px-4 py-2 hover:opacity-50 transition-all text-dark`}
+                onClick={(e) => CartPlus(options[0]?.item)}>
+                <PlusIcon
+                  className={`size-5 font-semibold`}
+                />
+              </button>
+            </div>
+}
+
+
+
+
+
+
+
+
+
             {!inCartPage &&
               (options && !isInCart ? (
                 <>
-                  <details className="dropdown mt-2">
-                    <summary
+                  <div className="dropdown dropdown-hover dropdown-top">
+                    <div
                       className="btn !min-h-14 px-8"
                       onClick={toggleDropdown}>
                       {isInCart ? "Go to cart" : "Add to cart"}
-                    </summary>
+                    </div>
                     {
-                      <ul className="menu card-cart-options">
+                      <ul className="dropdown-content menu card-cart-options">
                         {options?.length === 0 ? (
                           <li>
                             <button
@@ -454,16 +477,16 @@ export default function AddToCart({
                         )}
                       </ul>
                     }
-                  </details>
+                  </div>
                   <AddToWishList
-            activeWishlist={
-              activeWishlist &&
-              Object.values(activeWishlist).includes(itemid) &&
-              "active"
-            }
-            itemName={name}
-            productId={itemid}
-          />
+                    activeWishlist={
+                      activeWishlist &&
+                      Object.values(activeWishlist).includes(itemid) &&
+                      "active"
+                    }
+                    itemName={name}
+                    productId={itemid}
+                  />
                 </>
               ) : (
                 <>
@@ -471,14 +494,14 @@ export default function AddToCart({
                     {isInCart ? "Go to cart" : "Add to cart"}
                   </Link>
                   <AddToWishList
-            activeWishlist={
-              activeWishlist &&
-              Object.values(activeWishlist).includes(itemid) &&
-              "active"
-            }
-            itemName={name}
-            productId={itemid}
-          />
+                    activeWishlist={
+                      activeWishlist &&
+                      Object.values(activeWishlist).includes(itemid) &&
+                      "active"
+                    }
+                    itemName={name}
+                    productId={itemid}
+                  />
                 </>
               ))}
           </div>

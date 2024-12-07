@@ -98,6 +98,8 @@ export default function Address() {
       });
   };
 
+  
+
 
 
   return loading ? (
@@ -126,7 +128,7 @@ export default function Address() {
                 <div className="pb-2">
                   <div className="flex gap-3 mb-2">
                     <label className="font-semibold">
-                      {item?.first_name} {item?.last_name}
+                   {item?.full_name} {item?.last_name}
                     </label>
                   </div>
                   <div className="!grid gap-1 [&>*]:text-base [&>*]:opacity-70 sm:max-w-[60%]">

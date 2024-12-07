@@ -1,25 +1,23 @@
-
 import Images from "../Components/Images";
 import { apiUrl, metaStaticData, siteAuthor } from "../Utils/variables";
-
 
 export default function Aboutus() {
   return (
     <div className="bg-white">
-      <section className="pt-0">
-        <div className="container !px-0 sm:px-5 w-full min-w-full">
-        <Images
+      <section className="sm:pt-0">
+        <div className="container sm:px-0 w-full min-w-full">
+          <Images
             imageurl="/images/about-bg.webp"
             quality="100"
             width="2000"
             height="400"
             alt="Wellness for you"
-            classes="block w-full sm:h-[400px] h-[200px] sm:rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
+            classes="block w-full sm:h-[400px] h-[150px] rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
             placeholder={true}
           />
 
-          <div className="container">
-            <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid gap-7">
+          <div className="container sm:px-5 !px-0">
+            <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid sm:gap-7 gap-3">
               <h1 className="sm:text-3xl text-2xl font-bold">About Us</h1>
               <div className="content text-justify">
                 <h2>Company&apos;s Journey</h2>
@@ -80,8 +78,6 @@ export default function Aboutus() {
     </div>
   );
 }
-
-
 
 export async function generateMetadata({ params, searchParams }, parent) {
   const pageId = 32;

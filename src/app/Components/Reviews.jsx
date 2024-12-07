@@ -10,12 +10,12 @@ export default function Reviews({ data }) {
 
     // Render filled stars (yellow)
     for (let i = 0; i < count; i++) {
-      stars.push(<StarIcon key={i} className="h-6 w-6 text-yellow" />);
+      stars.push(<StarIcon key={i} className="sm:h-5 sm:w-5 w-[15px] h-[15px] text-yellow" />);
     }
 
     // Render empty stars (red)
     for (let i = count; i < totalStars; i++) {
-      stars.push(<StarIcon key={i} className="h-6 w-6 text-gray-200" />);
+      stars.push(<StarIcon key={i} className="sm:h-5 sm:w-5 w-[15px] h-[15px] text-gray-200" />);
     }
 
     return stars;

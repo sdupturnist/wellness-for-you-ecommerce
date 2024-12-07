@@ -13,8 +13,9 @@ export default function Price({ regular, sale }) {
           {regular}
         </span>
       )}
-
-      <OfferPercentage normalprice={regular} saleprice={sale} />
+  <span className="pl-2">
+     <OfferPercentage normalprice={regular} saleprice={sale} />
+     </span>
     </div>
   );
 }

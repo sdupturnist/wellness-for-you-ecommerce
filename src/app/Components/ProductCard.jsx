@@ -68,10 +68,10 @@ export default function ProductCard({
         itemName={data?.name}
         productId={data?.id}
       />
-      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-        <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
+        <div className="border rounded-md sm:h-auto sm:w-auto h-[70px] w-[70px] sm:border-0 flex sm:block items-center justify-center ">
           <Link
-            className="flex items-center justify-center min-w-32 min-h-[250px]"
+            className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
             <Images
               imageurl={
@@ -83,13 +83,13 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
+              classes="block sm:size-[150px] size-[60px] sm:my-[15px] m-0 mx-auto"
               placeholder={true}
             />
           </Link>
         </div>
 
-        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[60%]">
+        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[50%]">
           <div>
             <Link href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title leading-[1.6em] text-dark mb-2">
@@ -148,10 +148,10 @@ export default function ProductCard({
         itemName={data?.name}
         productId={data?.id}
       />
-      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-5 pb-1">
-        <div className="border rounded-md h-[130px] sm:border-0 sm:h-auto flex sm:block items-center">
+      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
+        <div className="border rounded-md sm:h-auto sm:w-auto h-[70px] w-[70px] sm:border-0 flex sm:block items-center justify-center">
           <Link
-            className="flex items-center justify-center min-w-32 min-h-[250px]"
+            className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
             <Images
               imageurl={
@@ -163,13 +163,13 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[80px] my-[15px] mx-auto"
+              classes="block sm:size-[150px] size-[60px] sm:my-[15px] m-0 mx-auto"
               placeholder={true}
             />
           </Link>
         </div>
 
-        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[60%]">
+        <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[50%]">
           <div>
             <Link href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title leading-[1.6em] text-dark mb-2">

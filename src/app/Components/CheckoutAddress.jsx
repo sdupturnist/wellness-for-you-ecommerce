@@ -56,6 +56,9 @@ export default function CheckoutAddress() {
     )?.value;
   }, [savedAddress?.meta_data]);
 
+
+
+
   return (
     <div className={`card-rounded-none-small w-full bg-white py-5 px-4`}>
       <SectionHeader title="Billing details" card />
@@ -75,7 +78,7 @@ export default function CheckoutAddress() {
               <ListOptionsAddress
                 data={additionalAddresses && additionalAddresses?.billing}
                 title={`${
-                  additionalAddresses && additionalAddresses?.first_name
+                  additionalAddresses && additionalAddresses?.full_name
                 }, ${additionalAddresses && additionalAddresses?.last_name}`}
                 titleBold
               />
@@ -89,7 +92,7 @@ export default function CheckoutAddress() {
           !showAddNewAddress && (
             <ListOptionsAddress
               data={additionalAddresses?.billing}
-              title={`${additionalAddresses?.first_name}, ${additionalAddresses?.last_name}`}
+              title={`${additionalAddresses?.full_name}, ${additionalAddresses?.last_name}`}
               titleBold
             />
           )
@@ -101,7 +104,7 @@ export default function CheckoutAddress() {
                 <ListOptionsAddress
                   key={index}
                   data={item}
-                  title={`${item && item?.first_name}, ${
+                  title={`${item && item?.full_name}, ${
                     item && item?.last_name
                   }`}
                   titleBold

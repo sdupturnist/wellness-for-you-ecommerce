@@ -1,17 +1,38 @@
 "use client";
 
-import Link from "next/link";
 import { useCheckoutContext } from "../Context/checkoutContext";
 import { useEffect, useState } from "react";
-import { homeUrl } from "../Utils/variables";
+import ModalPopup from "./ModalPopup";
+import { apiUrl } from "../Utils/variables";
 
 export default function PaymentOptionsList({ data }) {
-  const { setPaymentMethodOption, setPaymentTerms, paymentTerms, validateTerms, setValidateTerms } =
-    useCheckoutContext();
+  const {
+    setPaymentMethodOption,
+    setPaymentTerms,
+    paymentTerms,
+    validateTerms,
+    setValidateTerms,
+  } = useCheckoutContext();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const enabledGateways =
     data && data.filter((gateway) => gateway.enabled === true);
+
+  const [termsContent, setTermsContent] = useState([]);
+
+  const terms = () =>
+    fetch(`${apiUrl}wp-json/wp/v2/pages/36`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTermsContent(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+  useEffect(() => {
+    setTermsContent(terms);
+  }, []);
 
   useEffect(() => {
     if (
@@ -31,6 +52,17 @@ export default function PaymentOptionsList({ data }) {
 
   return (
     <>
+      <ModalPopup
+        title="Terms and conditions"
+        item={
+          <div
+            className="content"
+            dangerouslySetInnerHTML={{
+              __html: (terms && termsContent?.content?.rendered) || "",
+            }}></div>
+        }
+        noButton
+      />
       {data &&
         enabledGateways.map((item, index) => (
           <div key={index} className="list-options-small !gap-2 mb-1">
@@ -55,15 +87,21 @@ export default function PaymentOptionsList({ data }) {
               className="checkbox  checkbox-success checkbox-sm"
               name="selected_address"
               onChange={(e) => {
-                setPaymentTerms(!paymentTerms),
-                setValidateTerms(true)
+                setPaymentTerms(!paymentTerms), setValidateTerms(true);
               }}
             />
-             <label>
-              I have read and agree to the website <Link className="underline" href={`${homeUrl}terms-conditions`}>terms and conditions</Link>.
+            <label>
+              I have read and agree to the website{" "}
+              <span
+                className="underline text-primary cursor-pointer hover:opacity-60 transition-all"
+                onClick={(e) =>
+                  document.getElementById("modal_all").showModal()
+                }>
+                terms and conditions
+              </span>
+              .
             </label>
           </div>
-       
         </div>
       </div>
     </>

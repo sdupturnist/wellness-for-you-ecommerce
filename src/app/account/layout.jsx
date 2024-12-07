@@ -28,7 +28,7 @@ if(!auth){
             <aside className="xl:w-1/5 xl:order-first order-last w-full">
               <ProfileMenu />
             </aside>
-            <div className="lg:w-[999px] w-full xl:order-last order-first mx-auto mb-5 xl:mb-0 xl:pt-0 pt-3">
+            <div className="lg:w-[999px] w-full xl:order-last order-first mx-auto mb-3 xl:mb-0 xl:pt-0 pt-3">
               <div className="px-5 sm:px-0">
                 <SectionHeader noSpacing title={pathname?.split("/").pop()?.replace(/-/g, ' ')} />
               </div>

@@ -16,6 +16,7 @@ import {
   apiUrl,
   convertStringToJSON,
   currency,
+  homeUrl,
   metaStaticData,
   OfferPercentage,
   siteAuthor,
@@ -79,13 +80,6 @@ export default async function ItemSingle({ params, searchParams }) {
     }
   );
 
-
-
-
-
-
-
-
   const relatedProductsGet = await relatedProductsData.json();
   const relatedProducts = relatedProductsGet?.products;
   let productReview = await productReviewData.json();
@@ -99,26 +93,32 @@ export default async function ItemSingle({ params, searchParams }) {
       reviews.some((review) => review.product_id === product.id)
     );
 
-
-
-
-    const accordianItems = [
-      { title: 'Description', content:   singleProduct?.description && (
+  const accordianItems = [
+    {
+      title: "Description",
+      content: singleProduct?.description && (
         <div
-        dangerouslySetInnerHTML={{
-          __html: singleProduct?.description,
-        }}
-      />
-      )} ,
-      { title: 'Specification', content:   singleProduct?.acf?.specification && (
+          dangerouslySetInnerHTML={{
+            __html: singleProduct?.description,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Specification",
+      content: singleProduct?.acf?.specification && (
         <div
-              dangerouslySetInnerHTML={{
-                __html: singleProduct?.acf?.specification,
-              }}
-            />
-      )} ,
-      { title: 'Reviews', content:  <>
-       {productReview.length > 0 && (
+          dangerouslySetInnerHTML={{
+            __html: singleProduct?.acf?.specification,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Reviews",
+      content: (
+        <>
+          {productReview.length > 0 && (
             <div className="grid gap-4 justify-between sm:items-center">
               <p>Rate this Backer and tell others what you think</p>
               <div className="sm:mt-0 mt-2">
@@ -132,27 +132,20 @@ export default async function ItemSingle({ params, searchParams }) {
               <Reviews data={productReview && productReview} />
             ) : (
               <div className="items-start">
-                <Alerts
-                status="red"
-                  title="No reviews available yet"
-                />
+                <Alerts status="red" title="No reviews available yet" />
                 <div className="text-center pb-7 pt-3">
                   <WriteReview productId={singleProduct?.id} />
                 </div>
               </div>
             )}
           </div>
-      </> },
-    ];
-    
+        </>
+      ),
+    },
+  ];
 
-
-// ,
-// <Reviews data={productReview && productReview} />
-
-  
-
-
+  // ,
+  // <Reviews data={productReview && productReview} />
 
   if (singleProduct) {
     return (
@@ -164,7 +157,7 @@ export default async function ItemSingle({ params, searchParams }) {
             <div className="container">
               <div className="grid grid-cols-1 sm:gap-12 gap-5 lg:grid-cols-[40%_60%] product-single">
                 <div>
-                  <div className="border sm:rounded-xl rounded-lg overflow-hidden sm:min-h-[600px] sm:pt-8 pb-16 bg-white min-h-80">
+                  <div className="border sm:rounded-xl rounded-lg overflow-hidden sm:min-h-[600px] p-5 pb-7 bg-white min-h-80">
                     {singleProduct && singleProduct?.images?.length > 1 ? (
                       <ImageSlider data={singleProduct?.images} />
                     ) : (
@@ -227,7 +220,7 @@ export default async function ItemSingle({ params, searchParams }) {
                                   saleprice={singleProduct?.sale_price}
                                 />
                               )}
-                              % off)
+                              )
                             </span>
                           </div>
                         )}
@@ -267,7 +260,8 @@ export default async function ItemSingle({ params, searchParams }) {
                             singleProduct && singleProduct?.acf?.options
                           )}
                           singlePage
-                        />
+                          slug={singleProduct?.slug}
+ />
                       </div>
                     )}
                     <div className="gap-2 sm:inline-flex my-5">
@@ -283,102 +277,18 @@ export default async function ItemSingle({ params, searchParams }) {
                       <small className="opacity-50 mb-3 block">
                         Share with
                       </small>
-                      <SocialShare />
+                      <SocialShare
+                        url={`${homeUrl}/${singleProduct?.categories[0]?.slug}/${singleProduct?.slug}`}
+                        title={`${singleProduct?.name}`}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               <div className="sm:mt-14 mt-10">
                 <div className="grid gap-5">
-
-                <Accordion items={accordianItems} />
-
-
-                  {/* {singleProduct?.description && (
-                    <div className="collapse collapse-plus border rounded-lg">
-                      <input type="radio" name="my-accordion-1" />
-                      <div className="collapse-title text-md text-dark font-medium">
-                        Description
-                      </div>
-                      <div className="collapse-content content">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: singleProduct?.description,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )} */}
-
-
-
-                  {/* {singleProduct?.acf?.specification && (
-                    <div className="collapse collapse-plus border rounded-lg">
-                      <input type="radio" name="my-accordion-2" />
-                      <div className="collapse-title text-md text-dark font-medium">
-                        Specification
-                      </div>
-                      <div className="collapse-content content">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: singleProduct?.acf?.specification,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )} */}
-
-                  {/* {singleProduct?.shipping_delivery && (
-                <div className="collapse collapse-plus border rounded-lg">
-                  <input type="radio" name="my-accordion-3" />
-                  <div className="collapse-title text-md text-dark font-medium">
-                    Shipping Delivery
-                  </div>
-                  <div className="collapse-content content">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: singleProduct?.shipping_delivery,
-                      }}
-                    />
-                  </div>
-                </div>
-              )} */}
-
-                  {/* <div
-                    className="collapse collapse-plus border rounded-lg"
-                    id="reviews">
-                    <input type="radio" name="my-accordion-3" />
-                    <div className="collapse-title text-md text-dark font-medium">
-                      Reviews
-                    </div>
-                    <div className="collapse-content">
-                      {productReview.length > 0 && (
-                        <div className="grid gap-4 justify-between sm:items-center">
-                          <p>Rate this Backer and tell others what you think</p>
-                          <div className="sm:mt-0 mt-2">
-                            <WriteReview productId={singleProduct?.id} />
-                          </div>
-                        </div>
-                      )}
-
-                      <div className={`${productReview.length > 0 && "mt-5"}`}>
-                        {productReview.length > 0 ? (
-                          <Reviews data={productReview && productReview} />
-                        ) : (
-                          <div className="items-start">
-                            <Alerts
-                            status="red"
-                              title="No reviews available yet"
-                            />
-                            <div className="text-center pb-7 pt-3">
-                              <WriteReview productId={singleProduct?.id} />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div> */}
-                </div>
+                  <Accordion items={accordianItems} />
+</div>
               </div>
 
               {relatedProducts.length > 0 && (

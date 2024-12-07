@@ -169,13 +169,14 @@ section {
   @apply rounded-lg my-7;
 }
 .content table {
-  @apply w-full my-0;
+  @apply w-full my-0 border border-border;
+  border: solid thin #ddd !important;
 }
-.content th,
-.content td {
-  @apply px-2.5 py-2 text-left;
+.content table th,
+.content table td {
+  @apply px-2.5 py-2 text-left border border-border;
 }
-.content tr:nth-child(even) {
+.content table tr:nth-child(even) {
   @apply bg-gray-100;
 }
 
@@ -364,7 +365,7 @@ select {
   @apply w-full bg-white sm:rounded-[12px] sm:border border-b sm:last:border-b last:border-b-0 border-border sm:flex-col sm:justify-start items-start sm:inline-flex sm:hover:shadow-lg transition-all mb-5 sm:p-5 py-5;
 }
 .product-col-small li .img-box {
-  @apply border rounded-md sm:min-w-[70px] sm:max-w-[70px] sm:min-h-[70px] sm:max-h-[70px] min-w-[130px] min-h-[130px] max-h-[130px] max-w-[130px] items-center flex;
+  @apply border rounded-md sm:min-w-[70px] sm:max-w-[70px] sm:min-h-[70px] sm:max-h-[70px] min-w-[70px] min-h-[70px] max-h-[70px] max-w-[70px] items-center flex;
 }
 .product-col-small .img-box {
   @apply w-full min-h-[190px] p-[5px] justify-center items-center gap-2.5 inline-flex;
@@ -536,7 +537,7 @@ footer ol li {
 }
 
 .product-single h1 {
-  @apply sm:text-[28pz] leading-[1.7] text-2xl font-bold;
+  @apply sm:text-[32px] leading-[1.5] text-[24px]  font-bold;
 }
 .product-single .product-price {
   @apply text-2xl font-bold leading-normal text-dark;
@@ -567,7 +568,7 @@ footer ol li {
   @apply grid;
 }
 .review-list li {
-  @apply border p-6 grid gap-3 rounded-lg mb-4 last:mb-0;
+  @apply border sm:p-6 p-4 grid sm:gap-3 gap-2 rounded-lg mb-4 last:mb-0;
 }
 
 .card {
@@ -714,4 +715,15 @@ footer ol li {
     background-color: #ffffff !important;
     /* Fallback to white background */
   }
+}
+table {
+  @apply w-full my-0 border border-border;
+  border: solid thin #ddd !important;
+}
+table th,
+table td {
+  @apply px-2.5 py-2 text-left border border-border;
+}
+table tr:nth-child(even) {
+  @apply bg-gray-100;
 }

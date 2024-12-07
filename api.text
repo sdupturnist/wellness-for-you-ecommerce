@@ -183,8 +183,6 @@ function include_acf_fields_in_api_response($response, $post, $request) {
 
 ////////REST API PRODUCTS////////
 // Hook into REST API initialization to register custom routes
-
-// Register REST API endpoint
 add_action( 'rest_api_init', function() {
     register_rest_route( 'wc-custom/v1', '/products', [
         'methods' => 'GET',
@@ -218,6 +216,14 @@ add_action( 'rest_api_init', function() {
                     return is_numeric( $param );
                 },
             ],
+            'sort_by_acf' => [
+                'required' => false,
+                'validate_callback' => function( $param, $request, $key ) {
+                    // Check that it's either 'asc' or 'desc' for sorting
+                    return in_array( $param, ['asc', 'desc'] );
+                },
+                'default' => 'asc', // Default sort order is ascending
+            ],
         ],
     ]);
 });
@@ -231,6 +237,7 @@ function get_wc_custom_products( $data ) {
     $page = $data->get_param( 'page' );
     $per_page = $data->get_param( 'per_page' );
     $reviews_count = $data->get_param( 'reviews_count' ); // reviews_count filter
+    $sort_by_acf = $data->get_param( 'sort_by_acf' ); // ACF sort option
 
     // Arguments for WP_Query to get the products
     $args = array(
@@ -294,6 +301,13 @@ function get_wc_custom_products( $data ) {
             'compare' => '>=', // Filter for products with reviews greater than or equal to the specified value
             'type' => 'NUMERIC',
         );
+    }
+
+    // If sorting by the ACF field 'product_sort_order_number' is requested
+    if ( $sort_by_acf ) {
+        $args['meta_key'] = 'product_sort_order_number'; // ACF key to sort by
+        $args['orderby'] = 'meta_value_num'; // Sort by numeric ACF field
+        $args['order'] = strtoupper( $sort_by_acf ); // 'asc' or 'desc'
     }
 
     // Run the query
@@ -1224,12 +1238,19 @@ function change_user_password( WP_REST_Request $request ) {
 //POSTS IMAGE URL
 
 
-function add_image_to_api_response( $data, $post, $context ) {
+// Add featured image URL to REST API response
+function add_featured_image_to_rest_api( $data, $post, $context ) {
+    // Check if the post has a featured image
     if ( has_post_thumbnail( $post->ID ) ) {
-        $thumbnail_url = get_the_post_thumbnail_url( $post->ID, 'full' );
-        $data->data['featured_image_url'] = $thumbnail_url;
+        // Get the featured image URL
+        $featured_image_url = get_the_post_thumbnail_url( $post->ID, 'full' );
+        
+        // Add the featured image URL to the REST API response
+        $data->data['featured_image_url'] = $featured_image_url;
     }
+
     return $data;
 }
 
-add_filter( 'rest_prepare_post', 'add_image_to_api_response', 10, 3 );
+// Hook into the REST API response for posts
+add_filter( 'rest_prepare_post', 'add_featured_image_to_rest_api', 10, 3 );

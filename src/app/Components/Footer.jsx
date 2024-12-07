@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <>
       <footer className="spacing">
-        <div className="container grid gap-8">
+        <div className="container grid sm:gap-8 gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             <ul>
               <li>
@@ -72,7 +72,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="md:flex grid gap-5 justify-between border-t border-dim pt-8">
+          <div className="md:flex grid gap-5 justify-between border-t border-dim pt-5">
             <p className="order-last md:order-1">
               Wellness4U Food Supplements © {year}
             </p>
