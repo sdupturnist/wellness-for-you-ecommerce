@@ -250,12 +250,12 @@ export default async function ItemSingle({ params, searchParams }) {
 
                     {singleProduct?.price && (
                       <div className="flex gap-3  bg-white">
-                        <AddToCart
+     <AddToCart
                           itemid={singleProduct?.id ?? null}
                           price={
                             singleProduct?.sale_price !== null
-                              ? singleProduct?.sale_price
-                              : singleProduct?.regular_price
+                              ? singleProduct?.regular_price
+                              : singleProduct?.sale_price
                           }
                           name={singleProduct?.name}
                           image={singleProduct?.images[0]?.src}
