@@ -12,9 +12,16 @@ import { useEffect, useLayoutEffect } from "react";
 import { isLoggined } from "../Utils/checkAuth";
 
 export default function CartView() {
-  const { cartItems } = useCartContext();
+  const { cartItems, setGuestUser } = useCartContext();
   const { auth } = useAuthContext(); // Get authentication status
   const router = useRouter();
+
+  const handleGuestCheckout = () => {
+    if (!auth) {
+      setGuestUser(true)
+      router.push(`${homeUrl}/checkout`);
+    }
+  };
 
   return (
     <div
@@ -50,6 +57,13 @@ export default function CartView() {
                 className="btn btn-large">
                 Proceed to checkout
               </button>
+              {!auth && (
+                <button
+                  onClick={handleGuestCheckout}
+                  className="btn btn-light btn-large">
+                  Continue as a guest
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -2,17 +2,19 @@
 
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 import {
   apiUrl,
   freeShipping,
   homeUrl,
+  isValidEmail,
   jwtTocken,
   paymentCurrency,
   siteEmail,
   siteLogo,
   siteName,
+  woocommerceKey,
 } from "../Utils/variables"; // Ensure you use environment variables here for sensitive info
 import { useCartContext } from "../Context/cartContext";
 import Alerts from "./Alerts";
@@ -20,8 +22,6 @@ import { useCheckoutContext } from "../Context/checkoutContext";
 import { sendMail } from "../Utils/Mail";
 import { OrderPlacedEmailTemplate } from "../Utils/MailTemplates";
 import Swal from "sweetalert2";
-
-
 
 export default function CashOnDeliveryPayment({ userData }) {
   const {
@@ -35,6 +35,9 @@ export default function CashOnDeliveryPayment({ userData }) {
     setCouponCode,
     setDiscount,
     couponData,
+    guestUserData,
+    guestUser,
+    setGuestUserDataValidation,
   } = useCartContext();
 
   const {
@@ -50,14 +53,11 @@ export default function CashOnDeliveryPayment({ userData }) {
     setBillingAddress,
   } = useCheckoutContext();
 
-
-
-
-
-
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
+  const [guestCheckoutCount, setGuestCheckoutCount] = useState(false);
+
   const router = useRouter();
 
   // Calculate the amount to pay after applying any discount
@@ -75,13 +75,34 @@ export default function CashOnDeliveryPayment({ userData }) {
 
   // Handle the payment and order creation logic
   const handlePayment = async () => {
-    // Validation checks for billing address and payment terms
-
-    if (!billingAddress && validateAddress === false) {
-      setValidateAddress(true);
-      setValidate(true);
-      setValidationMessage("Please select a billing address");
-      return;
+    if (guestUser) {
+      if (
+        guestUserData === null ||
+        guestUserData?.address?.full_name === "" ||
+        guestUserData?.address?.last_name === "" ||
+        guestUserData?.address?.country === "" ||
+        guestUserData?.address?.address_1 === "" ||
+        guestUserData?.address?.address_2 === "" ||
+        guestUserData?.address?.state === "" ||
+        guestUserData?.address?.city === "" ||
+        guestUserData?.address?.pincode === "" ||
+        guestUserData?.address?.phone === "" ||
+        guestUserData?.address?.email === "" ||
+        !isValidEmail(guestUserData?.address?.email)
+      ) {
+        console.log("field error");
+        setGuestUserDataValidation(true);
+        return;
+      } else {
+        setGuestUserDataValidation(false);
+      }
+    } else {
+      if (!billingAddress && validateAddress === false) {
+        setValidateAddress(true);
+        setValidate(true);
+        setValidationMessage("Please select a billing address");
+        return;
+      }
     }
 
     if (validateTerms === false) {
@@ -118,31 +139,71 @@ export default function CashOnDeliveryPayment({ userData }) {
             // Prepare the order information for WooCommerce API
             const orderInfo = {
               transaction_id: "", // No transaction ID for COD
-              customer_id: userData?.id,
+              customer_id: userData?.id || 1,
               payment_method: "cash_on_delivery", // Payment method for COD
               payment_method_title: "Cash on Delivery", // Payment method title
               set_paid: false, // Mark as unpaid for COD
               billing: {
-                first_name: billingAddress?.fullname_and_lastname || "",
-                last_name: billingAddress?.fullname_and_lastname || "",
-                address_1: billingAddress?.address_1 || "",
-                address_2: billingAddress?.address_2 || "",
-                city: billingAddress?.city || "",
-                state: billingAddress?.state || "",
-                postcode: billingAddress?.postcode || "",
-                country: billingAddress?.country || "",
-                email: userData?.email || "",
-                phone: userData?.phone || "",
+                first_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.full_name ||
+                  "",
+                last_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.last_name ||
+                  "",
+                address_1:
+                  billingAddress?.address_1 ||
+                  guestUserData?.address?.address_1 ||
+                  "",
+                address_2:
+                  billingAddress?.address_2 ||
+                  guestUserData?.address?.address_2 ||
+                  "",
+                city:
+                  billingAddress?.city || guestUserData?.address?.city || "",
+                state:
+                  billingAddress?.state || guestUserData?.address?.state || "",
+                postcode:
+                  billingAddress?.postcode ||
+                  guestUserData?.address?.postcode ||
+                  "",
+                country:
+                  billingAddress?.country ||
+                  guestUserData?.address?.country ||
+                  "",
+                email: userData?.email || guestUserData?.address?.email || "",
+                phone: userData?.phone || guestUserData?.address?.phone || "",
               },
               shipping: {
-                first_name: billingAddress?.fullname_and_lastname || "",
-                last_name: billingAddress?.fullname_and_lastname || "",
-                address_1: billingAddress?.address_1 || "",
-                address_2: billingAddress?.address_2 || "",
-                city: billingAddress?.city || "",
-                state: billingAddress?.state || "",
-                postcode: billingAddress?.postcode || "",
-                country: billingAddress?.country || "",
+                first_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.full_name ||
+                  "",
+                last_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.last_name ||
+                  "",
+                address_1:
+                  billingAddress?.address_1 ||
+                  guestUserData?.address?.address_1 ||
+                  "",
+                address_2:
+                  billingAddress?.address_2 ||
+                  guestUserData?.address?.address_2 ||
+                  "",
+                city:
+                  billingAddress?.city || guestUserData?.address?.city || "",
+                state:
+                  billingAddress?.state || guestUserData?.address?.state || "",
+                postcode:
+                  billingAddress?.postcode ||
+                  guestUserData?.address?.postcode ||
+                  "",
+                country:
+                  billingAddress?.country ||
+                  guestUserData?.address?.country ||
+                  "",
               },
               line_items: filteredItems || [],
               coupon_lines: couponData || [],
@@ -157,7 +218,7 @@ export default function CashOnDeliveryPayment({ userData }) {
 
             // Step 2: Send the order information to WooCommerce API
             const response = await fetch(
-              `${apiUrl}wp-json/wc/v3/orders`, // WooCommerce orders endpoint
+              `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}`, // WooCommerce orders endpoint
               {
                 method: "POST",
                 headers: {
@@ -171,16 +232,16 @@ export default function CashOnDeliveryPayment({ userData }) {
             if (response.ok) {
               // Send email notification to the user
               await sendMail({
-                sendTo: userData?.email,
+                sendTo: userData?.email || guestUserData?.address?.email,
                 subject: "You Have Successfully Ordered",
-                name: userData?.name,
+                name: userData?.name || guestUserData?.address?.full_name,
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
-                  billingAddress,
+                  guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   "COD", // No order ID for COD
                   "Cash on Delivery", // Payment method
-                  userData,
+                  guestUser ? guestUserData?.address : userData,
                   "",
                   totalDiscount || 0
                 ),
@@ -193,17 +254,15 @@ export default function CashOnDeliveryPayment({ userData }) {
                 name: "Admin",
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
-                  billingAddress,
+                  guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   "COD", // No order ID for COD
                   "Cash on Delivery", // Payment method
-                  userData,
+                  guestUser ? guestUserData?.address : userData,
                   "",
                   totalDiscount || 0
                 ),
               });
-
-        
 
               // Reset cart and validation states after successful payment
               setCartItems([]); // Clear cart items
@@ -215,9 +274,7 @@ export default function CashOnDeliveryPayment({ userData }) {
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false); // Reset payment terms
               localStorage.removeItem("cartItems"); // Remove items from localStorage
-              Cookies.set('checkout_success', 'true', { expires: 1 / 1440 });
-
-              
+              Cookies.set("checkout_success", "true", { expires: 1 / 1440 });
 
               // Redirect to success page
               router.push(`${homeUrl}checkout/success`);

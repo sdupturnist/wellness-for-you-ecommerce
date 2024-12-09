@@ -10,11 +10,22 @@ import { apiUrl, woocommerceKey } from "../Utils/variables";
 import PaymentButton from "../Components/PaymentButton";
 import PaymentOptionsList from "../Components/PaymentOptionsList";
 import withAuth from "../Utils/withAuth";
+import { useCartContext } from "../Context/cartContext";
+import GuestCheckoutAddressForm from "../Components/Forms/GuestCheckoutAddressForm";
 
-function Checkout() {
+
+
+export default function Checkout() {
+
+
+  const { guestUser, setGuestUser } = useCartContext();
+
+
+
   // State to store the fetched data
   const [paymentOptions, setPaymentOptions] = useState(null);
   const [couponCodes, setCouponCodes] = useState(null);
+  
 
   // Fetch data on component mount
   useEffect(() => {
@@ -53,6 +64,7 @@ function Checkout() {
     fetchData();
   }, []); // Empty dependency array ensures this runs only once when the component mounts
 
+  console.log(guestUser)
   return (
     <div className="bg-bggray">
       <Breadcrumb />
@@ -60,7 +72,14 @@ function Checkout() {
         <div className="container !px-0 sm:px-5">
           <div className="grid sm:gap-16 gap-5 lg:grid-cols-[60%,35%] checkout lg:justify-between">
             <div className="grid gap-7">
-              <CheckoutAddress />
+             
+             {!guestUser ? <CheckoutAddress />
+             :
+              <div className="card bg-white grid mt-5">
+              <SectionHeader title="Add billing details" card />
+              <GuestCheckoutAddressForm/>
+              </div>
+}
             </div>
             <div className="grid gap-7">
               <div className="card-rounded-none-small w-full bg-white py-5 px-4">
@@ -92,4 +111,4 @@ function Checkout() {
   );
 }
 
-export default withAuth(Checkout);
+// export default withAuth(Checkout);

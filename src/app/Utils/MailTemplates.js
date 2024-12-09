@@ -40,7 +40,7 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
           <b>Date Added:</b> ${formatDate(today)}<br>
           <b>Payment Method:</b> ${paymentMethodOption}<br>
           <b>Shipping Method:</b> Free Shipping</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${userData?.email}" target="_blank">${userData?.email}</a><br>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${userData?.email || billingAddress?.email}" target="_blank">${userData?.email || billingAddress?.email}</a><br>
           <b>Telephone:</b> ${billingAddress?.phone}<br>
           <b>Order Status:</b> Processing<br></td>
       </tr>
@@ -69,8 +69,8 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     </thead>
     <tbody>
       <tr>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname || billingAddress?.full_name}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname || billingAddress?.full_name}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
       </tr>
     </tbody>
   </table>

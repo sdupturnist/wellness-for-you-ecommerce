@@ -4,10 +4,13 @@ import { useEffect } from "react";
 import { useAuthContext } from "../Context/authContext";
 import Loading from "../Components/Loading";
 import { homeUrl } from "./variables";
+import { useCartContext } from "../Context/cartContext";
 
 const withAuth = (WrappedComponent) => {
   const WithAuth = (props) => {
+
     const { auth, loadingAuth } = useAuthContext();
+   const {guestUser} = useCartContext()
     const router = useRouter();
 
     useEffect(() => {

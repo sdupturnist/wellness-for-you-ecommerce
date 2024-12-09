@@ -6,6 +6,7 @@ import {
   apiUrl,
   freeShipping,
   homeUrl,
+  isValidEmail,
   paymentCurrency,
   publicKey,
   siteEmail,
@@ -31,6 +32,9 @@ export default function RazorPayment({ userData }) {
     setCouponCode,
     setDiscount,
     couponData,
+    guestUserData,
+    guestUser,
+    setGuestUserDataValidation,
   } = useCartContext();
   const {
     billingAddress,
@@ -79,11 +83,52 @@ export default function RazorPayment({ userData }) {
   const handlePayment = async () => {
     setLoading(true);
 
-    if (!billingAddress && validateAddress === false) {
-      setValidateAddress(true);
-      setValidate(true);
-      setValidationMessage("Please select a billing address");
-      return;
+    // if (!billingAddress && validateAddress === false) {
+    //   setValidateAddress(true);
+    //   setValidate(true);
+    //   setValidationMessage("Please select a billing address");
+    //   return;
+    // }
+
+    // if (validateTerms === false) {
+    //   setValidateTerms(true);
+    //   setValidate(true);
+    //   setValidationMessage(
+    //     "You must accept the terms and conditions to proceed."
+    //   );
+    //   return;
+    // }
+
+
+
+    if (guestUser) {
+      if (
+        guestUserData === null ||
+        guestUserData?.address?.full_name === "" ||
+        guestUserData?.address?.last_name === "" ||
+        guestUserData?.address?.country === "" ||
+        guestUserData?.address?.address_1 === "" ||
+        guestUserData?.address?.address_2 === "" ||
+        guestUserData?.address?.state === "" ||
+        guestUserData?.address?.city === "" ||
+        guestUserData?.address?.pincode === "" ||
+        guestUserData?.address?.phone === "" ||
+        guestUserData?.address?.email === "" ||
+        !isValidEmail(guestUserData?.address?.email)
+      ) {
+        console.log("field error");
+        setGuestUserDataValidation(true);
+        return;
+      } else {
+        setGuestUserDataValidation(false);
+      }
+    } else {
+      if (!billingAddress && validateAddress === false) {
+        setValidateAddress(true);
+        setValidate(true);
+        setValidationMessage("Please select a billing address");
+        return;
+      }
     }
 
     if (validateTerms === false) {
@@ -94,6 +139,8 @@ export default function RazorPayment({ userData }) {
       );
       return;
     }
+
+
 
     try {
       // Step 1: Create the order ID from the server
@@ -133,32 +180,72 @@ export default function RazorPayment({ userData }) {
             // PUT Order to WooCommerce API
             const orderInfo = {
               transaction_id: transationID || "",
-              customer_id: userData?.id,
+              customer_id: userData?.id || 1,
               customer_ip_address: (ip && ip) || "",
               payment_method: paymentMethodOption || "Razorpay", // Payment method, such as bacs (direct bank transfer)
               payment_method_title: paymentMethodOption || "", // Title to display for the payment method
               set_paid: true, // Whether the order is paid (true/false)
               billing: {
-                first_name: billingAddress?.fullname_and_lastname || "",
-                last_name: billingAddress?.fullname_and_lastname || "",
-                address_1: billingAddress?.address_1 || "",
-                address_2: billingAddress?.address_2 || "",
-                city: billingAddress?.city || "",
-                state: billingAddress?.state || "",
-                postcode: billingAddress?.postcode || "",
-                country: billingAddress?.country || "",
-                email: userData?.email || "",
-                phone: userData?.phone || "",
+                first_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.full_name ||
+                  "",
+                last_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.last_name ||
+                  "",
+                address_1:
+                  billingAddress?.address_1 ||
+                  guestUserData?.address?.address_1 ||
+                  "",
+                address_2:
+                  billingAddress?.address_2 ||
+                  guestUserData?.address?.address_2 ||
+                  "",
+                city:
+                  billingAddress?.city || guestUserData?.address?.city || "",
+                state:
+                  billingAddress?.state || guestUserData?.address?.state || "",
+                postcode:
+                  billingAddress?.postcode ||
+                  guestUserData?.address?.postcode ||
+                  "",
+                country:
+                  billingAddress?.country ||
+                  guestUserData?.address?.country ||
+                  "",
+                email: userData?.email || guestUserData?.address?.email || "",
+                phone: userData?.phone || guestUserData?.address?.phone || "",
               },
               shipping: {
-                first_name: billingAddress?.fullname_and_lastname || "",
-                last_name: billingAddress?.fullname_and_lastname || "",
-                address_1: billingAddress?.address_1 || "",
-                address_2: billingAddress?.address_2 || "",
-                city: billingAddress?.city || "",
-                state: billingAddress?.state || "",
-                postcode: billingAddress?.postcode || "",
-                country: billingAddress?.country || "",
+                first_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.full_name ||
+                  "",
+                last_name:
+                  billingAddress?.fullname_and_lastname ||
+                  guestUserData?.address?.last_name ||
+                  "",
+                address_1:
+                  billingAddress?.address_1 ||
+                  guestUserData?.address?.address_1 ||
+                  "",
+                address_2:
+                  billingAddress?.address_2 ||
+                  guestUserData?.address?.address_2 ||
+                  "",
+                city:
+                  billingAddress?.city || guestUserData?.address?.city || "",
+                state:
+                  billingAddress?.state || guestUserData?.address?.state || "",
+                postcode:
+                  billingAddress?.postcode ||
+                  guestUserData?.address?.postcode ||
+                  "",
+                country:
+                  billingAddress?.country ||
+                  guestUserData?.address?.country ||
+                  "",
               },
               line_items: filteredItems || [],
               coupon_lines: couponData || [],
@@ -172,7 +259,7 @@ export default function RazorPayment({ userData }) {
             };
 
             const response = await fetch(
-              `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}`,
+              `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}`, // WooCommerce orders endpoint
               {
                 method: "POST",
                 headers: {
@@ -186,16 +273,16 @@ export default function RazorPayment({ userData }) {
             if (response.ok) {
               // Send mail notification to user (update the sendMail function as needed)
               await sendMail({
-                sendTo: userData?.email,
-                subject: `You Have Successfully Ordered`,
-                name: userData?.name,
+                sendTo: userData?.email || guestUserData?.address?.email,
+                subject: "You Have Successfully Ordered",
+                name: userData?.name || guestUserData?.address?.full_name,
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
-                  billingAddress,
+                  guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   data.orderId,
                   paymentMethodOption || 'Razorpay',
-                  userData,
+                  guestUser ? guestUserData?.address : userData,
                   paymentId,
                   totalDiscount
                 ),
@@ -208,11 +295,11 @@ export default function RazorPayment({ userData }) {
                 name: `Admin`,
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
-                  billingAddress,
+                  guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   data.orderId,
                   paymentMethodOption || 'Razorpay',
-                  userData,
+                  guestUser ? guestUserData?.address : userData,
                   paymentId,
                   totalDiscount
                 ),

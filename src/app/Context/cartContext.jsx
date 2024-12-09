@@ -10,6 +10,9 @@ export function CartProvider({ children }) {
   const [couponCode, setCouponCode] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [couponData, setCouponData] = useState([]);
+  const [guestUser, setGuestUser] = useState(false);
+  const [guestUserData, setGuestUserData] = useState(null);
+  const [guestUserDataValidation, setGuestUserDataValidation] = useState(false);
 
   // Load cartItems from localStorage when the component mounts (or updates cartItems)
   useEffect(() => {
@@ -70,7 +73,13 @@ export function CartProvider({ children }) {
         cartTotal,
         setCartTotal,
         couponData,
-        setCouponData
+        setCouponData,
+        guestUser, 
+        setGuestUser,
+        guestUserData,
+         setGuestUserData,
+         guestUserDataValidation, 
+         setGuestUserDataValidation
       }}>
       {children}
     </CartContext.Provider>

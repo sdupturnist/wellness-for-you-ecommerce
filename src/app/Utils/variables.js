@@ -26,7 +26,7 @@ export let freeShipping = true;
 export let returnDays = 7;
 
 //JWT AUTH TOCKEN
-export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzI5NjgxNjUsIm5iZiI6MTczMjk2ODE2NSwiZXhwIjoxNzMzNTcyOTY1LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.bWJoTwTwXd5bLDWKAEIL7mRk95knBzZfipgSCHbt4z0`;
+export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzM3NDgwMTYsIm5iZiI6MTczMzc0ODAxNiwiZXhwIjoxNzM0MzUyODE2LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ`;
 
 //.ENV
 export let homeUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -272,3 +272,10 @@ export let emailTemplate = () => {
 </body>
 </html>`;
 };
+
+
+
+export let isValidEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+}
