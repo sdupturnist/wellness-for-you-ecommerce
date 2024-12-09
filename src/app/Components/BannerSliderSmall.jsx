@@ -24,24 +24,25 @@ export default function BannerSliderSmall({ data, url }) {
         <Images
           imageurl={item?.featured_image?.url}
           quality="100"
-          width="500"
-          height="250"
+          width="400"
+          height="200"
           title={item?.featured_image?.alt}
           alt={item?.featured_image?.alt}
-          classes="block w-full banner"
+          classes="block  banner"
           placeholder={true}
         />
       </Link>
     ) : (
+      
       <Images
         key={index}
         imageurl={item?.featured_image?.url}
         quality="100"
-        width="500"
-        height="250"
+        width="400"
+        height="200"
         title={item?.featured_image?.alt}
         alt={item?.featured_image?.alt}
-        classes="block w-full banner"
+        classes="block  banner"
         placeholder={true}
       />
     )

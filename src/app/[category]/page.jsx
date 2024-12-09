@@ -2,12 +2,13 @@ import Alerts from "../Components/Alerts";
 import Breadcrumb from "../Components/Breadcrumb";
 import Pagination from "../Components/Pagination";
 import ProductCard from "../Components/ProductCard";
+import ProductGrid from "../Components/ProductGrid";
 import SectionHeader from "../Components/SectionHeader";
 import { apiUrl, siteAuthor, woocommerceKey } from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
   const { category } = params;
-  const currentPage = searchParams.page || 1; 
+  const currentPage = searchParams.page || 1;
 
   const pageId = 76;
   const itemsShowPerPage = 30;
@@ -65,7 +66,19 @@ export default async function CategoryPage({ params, searchParams }) {
     }
   );
 
+  // TOP products
+  let topProductsData = await fetch(
+    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc`,
+    {
+      next: {
+        revalidate: 1,
+        cache: "no-store",
+      },
+    }
+  );
+
   // Parse responses to JSON
+  let topProductsDataJson = await topProductsData.json();
   let allProductsDataJson = await allProductsData.json();
   let featuredProductsJson = await featuredProductsData.json();
   let reviews = await reviewsData.json();
@@ -79,11 +92,19 @@ export default async function CategoryPage({ params, searchParams }) {
   const totalPages = Math.ceil(totalProducts / itemsShowPerPage);
 
   // Filter the products based on matching product_id from the reviews
+  // const filteredProductsTopProducts =
+  //   allProducts &&
+  //   allProducts.filter((product) =>
+  //     reviews.some((review) => review.product_id === product.id)
+  //   );
+
   const filteredProductsTopProducts =
-    allProducts &&
-    allProducts.filter((product) =>
-      reviews.some((review) => review.product_id === product.id)
+    topProductsDataJson &&
+    topProductsDataJson.filter(
+      (product) => product.acf && product.acf.top === true
     );
+
+  //console.log(topProductsDataJson)
 
   return (
     <main>
@@ -93,36 +114,8 @@ export default async function CategoryPage({ params, searchParams }) {
           <section className="sm:pb-6 py-0">
             <div className="container">
               {allProducts.length > 0 ? (
-                <div
-                  className={`${
-                    filteredProductsTopProducts.length > 0
-                      ? "xl:grid-cols-[30%_70%]"
-                      : ""
-                  } grid grid-cols-1 sm:gap-5 gap-5`}>
-                  {filteredProductsTopProducts.length > 0 && (
-                    <div className="w-full xl:pr-7 order-last xl:order-1">
-                      <div className="section-header-card">
-                        <SectionHeader title="Top rated products" />
-                        <ul className="products product-col-small">
-                          {filteredProductsTopProducts &&
-                            filteredProductsTopProducts.map((item, index) => (
-                              <ProductCard key={index} data={item} miniCard/>
-                            ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
+                <div className={`grid grid-cols-1 sm:gap-5 gap-5`}>
                   <div className="grid gap-3 sm:gap-0 w-full xl:order-2 order-first ">
-                    {featuredProductsJson.length > 0 && (
-                      <div className="section-header-card">
-                        <SectionHeader title="Featured products" spacingSm />
-                        <ul className={`${filteredProductsTopProducts.length > 0 ? 'xl:grid-cols-3' : 'xl:grid-cols-4'} products product-card-left-right-mobile grid  sm:grid-cols-2 sm:gap-4`}>
-                          {featuredProductsJson.map((item, index) => (
-                            <ProductCard key={index} data={item} mobileList />
-                          ))}
-                        </ul>
-                      </div>
-                    )}
                     {allProducts.length > 0 && (
                       <div className="section-header-card">
                         <SectionHeader
@@ -132,17 +125,19 @@ export default async function CategoryPage({ params, searchParams }) {
                           filterData={categoriesJson}
                           spacingSm
                         />
-                        <ul className={`${filteredProductsTopProducts.length > 0 ? 'xl:grid-cols-3' : 'xl:grid-cols-4'} products product-card-left-right-mobile grid  sm:grid-cols-2 sm:gap-4`}>
-                          {allProducts.map((item, index) => (
-                            <ProductCard key={index} data={item} mobileList />
-                          ))}
-                        </ul>
+                        <ProductGrid items={allProducts} />
                         <Pagination
                           currentPage={parseInt(currentPage, 10)}
                           totalPages={totalPages}
                           baseUrl={`${category}`}
                           itemsShowPerPage={itemsShowPerPage}
                         />
+                      </div>
+                    )}
+                    {filteredProductsTopProducts.length > 0 && (
+                      <div className="section-header-card">
+                        <SectionHeader title="Top rated products" spacingSm />
+                        <ProductGrid items={filteredProductsTopProducts} />
                       </div>
                     )}
                   </div>

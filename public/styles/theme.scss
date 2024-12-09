@@ -152,7 +152,19 @@ section {
 }
 
 .banner {
-    @apply sm:rounded-xl rounded-md
+    @apply sm:rounded-xl rounded-md;
+    
+   
+
+
+}
+
+.slick-slide img {
+
+    @apply lg:h-[200px] w-full lg:object-cover;
+
+
+
 }
 
 .content {
@@ -419,13 +431,22 @@ select {
 
 
 
-    @apply bg-white rounded-[12px] border border-border flex-col justify-start items-start inline-flex sm:hover:shadow-lg transition-all;
+    @apply bg-white rounded-[12px] border border-border  justify-start items-start  sm:hover:shadow-lg transition-all w-full  flex flex-col h-full;
 
+ 
+    .img-link{
+        @apply  sm:h-[250px] h-[170px]  flex items-center justify-center w-full;
+    }
+ 
+    img {
+        @apply  sm:h-[200px] h-[130px] object-contain;
+    }
+ 
     .img-box {
         @apply w-full min-h-[190px] p-[5px] justify-center items-center gap-2.5 inline-flex;
 
         img {
-            @apply w-[152px] h-[152px] object-contain;
+            @apply  sm:h-[200px] ;
         }
     }
 
@@ -436,7 +457,7 @@ select {
 
 
     .product-title {
-        @apply text-[14px] text-dark;
+        @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] mb-2 line-clamp-2;
     }
 
     .product-price {
@@ -491,7 +512,7 @@ select {
     }
 
     .product-title {
-        @apply text-[14px] text-dark;
+        @apply sm:text-[14px] text-[13px] text-dark;
     }
 
     .product-price {
@@ -629,7 +650,7 @@ header {
         @apply flex items-center justify-center;
 
         img {
-            @apply w-full block min-h-[70px];
+            @apply w-full block sm:min-h-[70px] min-h-[50px];
         }
     }
 
@@ -708,7 +729,7 @@ header {
 
 
 footer {
-    background: #a76b11;
+    background: #5BA642;
 
     a,
     p {

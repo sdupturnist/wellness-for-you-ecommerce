@@ -25,11 +25,11 @@ export default function BannerSliderLarge({ data, url }) {
         <Images
           imageurl={item?.featured_image?.url}
           quality="100"
-          width="900"
-          height="250"
+          width="800"
+          height="200"
           title={item?.featured_image?.alt}
           alt={item?.featured_image?.alt}
-          classes="block w-full banner"
+          classes="block banner"
           placeholder={true}
         />
       </Link>
@@ -38,11 +38,11 @@ export default function BannerSliderLarge({ data, url }) {
         key={index}
         imageurl={item?.featured_image?.url}
         quality="100"
-        width="900"
-        height="250"
+        width="800"
+        height="200"
         title={item?.featured_image?.alt}
         alt={item?.featured_image?.alt}
-        classes="block w-full banner"
+        classes="block banner"
         placeholder={true}
       />
     )

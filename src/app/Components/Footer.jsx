@@ -50,7 +50,7 @@ export default function Footer() {
             </ul>
          {contactData?.acf &&  <ul>
               <li>
-                <Link href="">Address: {contactData?.acf?.address}</Link>
+                <p>Address: {contactData?.acf?.address}</p>
               </li>
               <li>
                 <Link href={`tel:${contactData?.acf?.phone}`}>
@@ -63,7 +63,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="">Hours: {contactData?.acf?.working_time}</Link>
+                <p>Hours: {contactData?.acf?.working_time}</p>
               </li>
             </ul> }
             <div className="lg:mt-0 mt-3">

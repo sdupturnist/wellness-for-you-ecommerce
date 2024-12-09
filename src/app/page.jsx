@@ -2,7 +2,6 @@ import Link from "next/link";
 import BannerSliderLarge from "./Components/BannerSliderLarge";
 import BannerSliderSmall from "./Components/BannerSliderSmall";
 import Images from "./Components/Images";
-import ProductSlider from "./Components/ProductSlider";
 import SectionHeader from "./Components/SectionHeader";
 import Testimonials from "./Components/Testimonials";
 import {
@@ -14,6 +13,7 @@ import {
   woocommerceKey,
 } from "./Utils/variables";
 import ProductCard from "./Components/ProductCard";
+import ProductGrid from "./Components/ProductGrid";
 
 export default async function Home({ params, searchParams }) {
   const pageId = 19;
@@ -138,11 +138,7 @@ export default async function Home({ params, searchParams }) {
         <section className="featured-products products pt-0">
           <SectionHeader title="Featured products" />
 
-          <ul className="products product-card-left-right-mobile grid xl:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-            {featuredProducts.map((item, index) => (
-              <ProductCard key={index} data={item} mobileList />
-            ))}
-          </ul>
+          <ProductGrid items={featuredProducts} />
 
           {/* <ProductSlider data={featuredProducts} /> */}
         </section>

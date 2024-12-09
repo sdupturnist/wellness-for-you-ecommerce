@@ -147,7 +147,7 @@ export default function AddToWishList({
                 title={isActive ? "Remove from wishlist" : "Add to wishlist"}
                 onClick={handleClickRemove}
                 disabled={isLoading}
-                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 sm:right-3 right-0 z-10">
+                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
                 {isLoading ? (
                   <Loading dot classes="size-[16px] !text-dark opacity-25" />
                 ) : (
@@ -165,7 +165,7 @@ export default function AddToWishList({
                 title={isActive ? "Remove from wishlist" : "Add to wishlist"}
                 onClick={handleClickRemove}
                 disabled={isLoading}
-                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 sm:right-3 right-0 z-10">
+                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
                 {isLoading ? (
                   <Loading dot classes="size-[16px]  !text-dark opacity-25" />
                 ) : (
@@ -178,7 +178,7 @@ export default function AddToWishList({
               title={isActive ? "Remove from wishlist" : "Add to wishlist"}
               onClick={handleClickAdd}
               disabled={isLoading}
-              className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 sm:right-3 right-0 z-10">
+              className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
               {isLoading ? (
                 <Loading dot classes="size-[16px]  !text-dark opacity-25" />
               ) : (

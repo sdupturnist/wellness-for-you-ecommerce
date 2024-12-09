@@ -316,45 +316,44 @@ export default function ProductCard({
           </div>
         </>
       ) : (
-        <div className="product-card w-full mr-2">
+        <div className="product-card relative">
           <AddToWishList
             small
             active
             itemName={data?.name}
             productId={data?.id}
           />
-          <div className="block w-full">
+          <Link href={`${itemCaturl}/${data?.slug}`} className="img-link">
+            <Images
+              imageurl={
+                data?.images[0]?.src ||
+                (data?.images.length > 0 && data?.images)
+              }
+              quality="100"
+              width="250"
+              height="250"
+              title={`${data?.images[0]?.alt || data?.name}`}
+              alt={`${data?.images[0]?.alt || data?.name}`}
+              classes="block mx-auto"
+              placeholder={true}
+            />
+          </Link>
+          <div className="sm:p-4 p-3 flex flex-col flex-grow relative">
             <Link href={`${itemCaturl}/${data?.slug}`}>
-              <Images
-                imageurl={
-                  data?.images[0]?.src ||
-                  (data?.images.length > 0 && data?.images)
-                }
-                quality="100"
-                width="150"
-                height="150"
-                title={`${data?.images[0]?.alt || data?.name}`}
-                alt={`${data?.images[0]?.alt || data?.name}`}
-                classes="block sm:size-[150px] size-[90px] my-[20px] mx-auto"
-                placeholder={true}
-              />
+              <h3 className="product-title">{data?.name}</h3>
             </Link>
-
-            <div className="p-4 pt-0">
-              <Link href={`${itemCaturl}/${data?.slug}`}>
-                <h3 className="product-title leading-[1.6em] text-dark mb-2">
-                  {data?.name}
-                </h3>
-              </Link>
+            <div className="flex items-center absolute sm:top-[-8px] top-[-5px]">
               {data?.rating_count > 0 && (
                 <ReviewCount
                   average={data?.average_rating}
                   ratingCount={data?.rating_count}
                 />
               )}
-              {data?.price && (
-                <Price regular={data?.regular_price} sale={data?.price} />
-              )}
+            </div>
+            {data?.price && (
+              <Price regular={data?.regular_price} sale={data?.price} />
+            )}
+            <div className="mt-auto">
               {!inCartPage && data?.price && (
                 <AddToCart
                   card

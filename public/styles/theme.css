@@ -383,6 +383,10 @@ section {
   @apply sm:rounded-xl rounded-md;
 }
 
+.slick-slide img {
+  @apply lg:h-[200px] w-full lg:object-cover;
+}
+
 .content {
   @apply leading-relaxed;
 }
@@ -554,19 +558,25 @@ select {
 }
 
 .product-card {
-  @apply bg-white rounded-[12px] border border-border flex-col justify-start items-start inline-flex sm:hover:shadow-lg transition-all;
+  @apply bg-white rounded-[12px] border border-border  justify-start items-start  sm:hover:shadow-lg transition-all w-full  flex flex-col h-full;
+}
+.product-card .img-link {
+  @apply sm:h-[250px] h-[170px]  flex items-center justify-center w-full;
+}
+.product-card img {
+  @apply sm:h-[200px] h-[130px] object-contain;
 }
 .product-card .img-box {
   @apply w-full min-h-[190px] p-[5px] justify-center items-center gap-2.5 inline-flex;
 }
 .product-card .img-box img {
-  @apply w-[152px] h-[152px] object-contain;
+  @apply sm:h-[200px];
 }
 .product-card .btn {
   @apply rounded-md text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
 }
 .product-card .product-title {
-  @apply text-[14px] text-dark;
+  @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] mb-2 line-clamp-2;
 }
 .product-card .product-price {
   @apply text-[0.875rem] font-bold text-dark;
@@ -606,7 +616,7 @@ select {
   @apply rounded-md text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
 }
 .product-card-left-right-mobile .product-title {
-  @apply text-[14px] text-dark;
+  @apply sm:text-[14px] text-[13px] text-dark;
 }
 .product-card-left-right-mobile .product-price {
   @apply text-[0.875rem] font-bold text-dark;
@@ -697,10 +707,7 @@ header .logo {
   @apply flex items-center justify-center;
 }
 header .logo img {
-  @apply w-full block;
-}
-header a {
-  @apply hover:opacity-50 transition-all;
+  @apply w-full block sm:min-h-[70px] min-h-[50px];
 }
 
 .search {
@@ -744,7 +751,7 @@ header a {
 }
 
 footer {
-  background: #a76b11;
+  background: #5BA642;
 }
 footer a,
 footer p {
