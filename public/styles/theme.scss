@@ -629,13 +629,11 @@ header {
         @apply flex items-center justify-center;
 
         img {
-            @apply w-full block;
+            @apply w-full block min-h-[70px];
         }
     }
 
-    a {
-        @apply hover:opacity-50 transition-all;
-    }
+    
 }
 
 
