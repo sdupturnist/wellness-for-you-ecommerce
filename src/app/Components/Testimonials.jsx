@@ -1,8 +1,8 @@
 "use client";
 import Slider from "react-slick";
 import { StarIcon } from "@heroicons/react/24/solid";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+//import "slick-carousel/slick/slick.css";
+//import "slick-carousel/slick/slick-theme.css";
 
 export default function Testimonials({ data }) {
   const settings = {
