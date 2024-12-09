@@ -107,6 +107,7 @@ export default async function Home({ params, searchParams }) {
         <div className="grid grid-cols-1 lg:grid-cols-[70%_30%]">
           {topBannerLarge && (
             <div className="w-full lg:pr-7">
+              {console.log(topBannerLarge)}
               <BannerSliderLarge data={topBannerLarge} />
             </div>
           )}

@@ -7,10 +7,12 @@ import { homeUrl } from "../Utils/variables";
 import Link from "next/link";
 
 export default function BannerSliderLarge({ data, url }) {
+
+  console.log(data)
   const settings = {
     dots: false, // Show navigation dots
     arrows: false, // Hide arrows
-    infinite: true, // Infinite loop for continuous scrolling
+    infinite: data?.length > 1 ? true : false , // Infinite loop for continuous scrolling
     speed: 500, // Slide transition speed in ms
     slidesToShow: 1, // Display one testimonial at a time
     slidesToScroll: 1, // Scroll one slide at a time
@@ -20,7 +22,7 @@ export default function BannerSliderLarge({ data, url }) {
   };
 
   const items = data?.map((item, index) =>
-    item?.acf?.url !== null ? (
+    item?.acf?.url !== null || item?.acf?.url !== '' ? (
       <Link key={index} href={item?.acf?.url || homeUrl}>
         <Images
           imageurl={item?.featured_image?.url}

@@ -19,7 +19,7 @@ export default function BannerSliderSmall({ data, url }) {
     pauseOnHover: true, // Pause autoplay when hovered
   };
   const items = data?.map((item, index) =>
-    item?.acf?.url !== null ? (
+    item?.acf?.url !== null || item?.acf?.url !== '' ? (
       <Link key={index} href={item?.acf?.url || homeUrl}>
         <Images
           imageurl={item?.featured_image?.url}
