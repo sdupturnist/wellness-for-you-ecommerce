@@ -155,7 +155,7 @@ export default function RazorPayment({ userData }) {
       const data = await response.json();
 
       if (!data.success) {
-        alert("Error creating order");
+       // alert("Error creating order");
         setLoading(false);
         return;
       }

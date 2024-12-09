@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthContext } from "../Context/authContext";
@@ -8,16 +8,19 @@ import { useCartContext } from "../Context/cartContext";
 
 const withAuth = (WrappedComponent) => {
   const WithAuth = (props) => {
-
     const { auth, loadingAuth } = useAuthContext();
-   const {guestUser} = useCartContext()
+    const { guestUser } = useCartContext();
     const router = useRouter();
 
+    console.log(loadingAuth);
+
     useEffect(() => {
-      if (!loadingAuth && !auth) {
-        router.push(`${homeUrl}/login`); // Redirect to login if user is not authenticated
+      // Only redirect to login if not a guest user and authentication is not available
+      if (!guestUser && !loadingAuth && !auth) {
+        router.push(`${homeUrl}/login`);
+        return; // Simply exit the useEffect without returning anything
       }
-    }, [auth, loadingAuth, router]);
+    }, [auth, loadingAuth, guestUser, router]);
 
     if (loadingAuth) {
       return (
@@ -27,7 +30,7 @@ const withAuth = (WrappedComponent) => {
       );
     }
 
-    // Render the wrapped component if authenticated
+    // Render the wrapped component if authenticated or a guest
     return <WrappedComponent {...props} />;
   };
 

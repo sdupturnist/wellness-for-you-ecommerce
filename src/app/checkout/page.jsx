@@ -15,7 +15,7 @@ import GuestCheckoutAddressForm from "../Components/Forms/GuestCheckoutAddressFo
 
 
 
-export default function Checkout() {
+function Checkout() {
 
 
   const { guestUser, setGuestUser } = useCartContext();
@@ -111,4 +111,4 @@ export default function Checkout() {
   );
 }
 
-// export default withAuth(Checkout);
+ export default withAuth(Checkout);
