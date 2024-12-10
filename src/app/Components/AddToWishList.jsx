@@ -15,6 +15,7 @@ export default function AddToWishList({
   small,
   activeWishlist,
   onWishlistChange,
+  inCartPage,
 }) {
   const router = useRouter();
 
@@ -22,37 +23,6 @@ export default function AddToWishList({
 
   const [isActive, setIsActive] = useState(activeWishlist);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Fetch wishlist on mount or when userId changes
-  // useEffect(() => {
-  //   if (userId) {
-  //     setIsLoading(true);
-  //     fetch(`https://admin.wellness4u.in/wp-json/wishlist/v1/items?user_id=${userId}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data);  // Log the response to inspect it
-  //         // Check if 'data' is an array
-  //         if (Array.isArray(data)) {
-  //           setWishlist(data);
-  //           seTest(data);
-  //           setIsActive(data.some(item => item.product_id === productId)); // Check if the product is in the wishlist
-  //         } else {
-  //           console.error("Expected an array but got:", data);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching data:", error);
-  //       })
-  //       .finally(() => {
-  //         setIsLoading(false);
-  //       });
-  //   }
-  // }, [userId, productId]);
 
   // Handle the click to add/remove from wishlist
   const handleClickAdd = () => {
@@ -83,8 +53,6 @@ export default function AddToWishList({
       .then((data) => {
         setIsActive(!isActive);
         if (onWishlistChange) onWishlistChange(data);
-
-       
       })
       .catch((error) => {
         console.error("Error updating wishlist:", error);
@@ -121,12 +89,8 @@ export default function AddToWishList({
     })
       .then((res) => res.json())
       .then((data) => {
-       
-
         setIsActive(!isActive);
         if (onWishlistChange) onWishlistChange(data);
-
-     
       })
       .catch((error) => {
         console.error("Error updating wishlist:", error);
@@ -139,7 +103,50 @@ export default function AddToWishList({
 
   return (
     <>
-      {small ? (
+      {inCartPage && (
+        <>
+          {activeWishlist === "active" ? (
+            isActive === false ? (
+              <button
+                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
+                onClick={handleClickRemove}
+                disabled={isLoading}
+                className="join-item option-btn">
+                {isLoading ? (
+                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
+                ) : (
+                  "Remove from wishlist"
+                )}
+              </button>
+            ) : (
+              <button
+                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
+                onClick={handleClickRemove}
+                disabled={isLoading}
+                className="join-item option-btn">
+                {isLoading ? (
+                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
+                ) : (
+                  "Remove from wishlist"
+                )}
+              </button>
+            )
+          ) : (
+            <button
+              title={isActive ? "Remove from wishlist" : "Add to wishlist"}
+              onClick={handleClickAdd}
+              disabled={isLoading}
+              className="join-item option-btn">
+              {isLoading ? (
+                <Loading dot classes="size-[16px] !text-dark opacity-25" />
+              ) : (
+                "Add to wishlist"
+              )}
+            </button>
+          )}
+        </>
+      )}
+      {!inCartPage && small && (
         <>
           {activeWishlist === "active" ? (
             isActive === false ? (
@@ -191,7 +198,9 @@ export default function AddToWishList({
             </button>
           )}
         </>
-      ) : (
+      )}
+
+      {!inCartPage && !small && (
         //FOR SINGLE PAGE
         <>
           {activeWishlist === "active" ? (

@@ -11,7 +11,7 @@ export default function Pagination({
   const router = useRouter();
 
 
-  console.log(totalPages)
+
 
 
   if (totalPages <= 1) {

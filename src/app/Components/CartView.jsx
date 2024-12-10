@@ -16,6 +16,8 @@ export default function CartView() {
   const { auth } = useAuthContext(); // Get authentication status
   const router = useRouter();
 
+
+
   const handleGuestCheckout = () => {
     if (!auth) {
       setGuestUser(true)

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import CryptoJS from 'crypto-js';
 
 import {
   apiUrl,
@@ -38,6 +39,7 @@ export default function CashOnDeliveryPayment({ userData }) {
     guestUserData,
     guestUser,
     setGuestUserDataValidation,
+    setGuestUser
   } = useCartContext();
 
   const {
@@ -56,22 +58,31 @@ export default function CashOnDeliveryPayment({ userData }) {
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
-  const [guestCheckoutCount, setGuestCheckoutCount] = useState(false);
+  const [cartListedItems, setCartListedItems] = useState([]);
 
   const router = useRouter();
 
-  // Calculate the amount to pay after applying any discount
-  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
 
-  // Filter out image and id from the cart items before sending to the backend
+
+
+
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
   const totalDiscount = discount || 0;
+
+
+  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
+
+
+
+  
 
   useLayoutEffect(() => {
     setBillingAddress("");
     setValidateTerms(false);
   }, []);
+
+
 
   // Handle the payment and order creation logic
   const handlePayment = async () => {
@@ -230,6 +241,10 @@ export default function CashOnDeliveryPayment({ userData }) {
             );
 
             if (response.ok) {
+
+
+          
+
               // Send email notification to the user
               await sendMail({
                 sendTo: userData?.email || guestUserData?.address?.email,
@@ -243,7 +258,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "Cash on Delivery", // Payment method
                   guestUser ? guestUserData?.address : userData,
                   "",
-                  totalDiscount || 0
+                  totalDiscount || 0,
+                  cartSubTotal
                 ),
               });
 
@@ -260,7 +276,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "Cash on Delivery", // Payment method
                   guestUser ? guestUserData?.address : userData,
                   "",
-                  totalDiscount || 0
+                  totalDiscount || 0,
+                  cartSubTotal
                 ),
               });
 
@@ -273,9 +290,13 @@ export default function CashOnDeliveryPayment({ userData }) {
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false); // Reset payment terms
-              localStorage.removeItem("cartItems"); // Remove items from localStorage
+              setGuestUser(false)
+
+              localStorage.removeItem("cart"); // Remove items from localStorage
               Cookies.set("checkout_success", "true", { expires: 1 / 1440 });
 
+
+              
               // Redirect to success page
               router.push(`${homeUrl}checkout/success`);
             } else {

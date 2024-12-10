@@ -64,7 +64,6 @@ function Checkout() {
     fetchData();
   }, []); // Empty dependency array ensures this runs only once when the component mounts
 
-  console.log(guestUser)
   return (
     <div className="bg-bggray">
       <Breadcrumb />

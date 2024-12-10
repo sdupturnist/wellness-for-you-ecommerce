@@ -10,6 +10,7 @@ export default async function RefundPolicy() {
 
   let page = await pageData.json();
 
+  
   return (
     <div>
       <section className="pt-0">

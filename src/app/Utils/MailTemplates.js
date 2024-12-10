@@ -2,16 +2,17 @@
 
 import { currency, formatDate, siteName } from "./variables"
 
-export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount) => {
+export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount, cartSubTotal) => {
     
   let today = new Date();
 
 
 
   // Calculate Sub-Total dynamically
-  let subTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
+  // let cartSubTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
+
   let freeShipping = 0.00; // Assuming free shipping for now, can be dynamic
-  let total = subTotal + freeShipping; // Add shipping to total if necessary
+  let total = cartSubTotal + freeShipping; // Add shipping to total if necessary
 
 
 
@@ -90,7 +91,7 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     <tfoot>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Sub-Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${subTotal.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${cartSubTotal.toFixed(2)}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Discount:</b></td>

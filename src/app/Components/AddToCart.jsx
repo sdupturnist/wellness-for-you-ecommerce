@@ -8,10 +8,13 @@ import { useCartContext } from "../Context/cartContext";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import AddToWishList from "./AddToWishList";
 import Link from "next/link";
-import { apiUrl, homeUrl } from "../Utils/variables";
+import { apiUrl, encryptData, homeUrl, jwtTocken } from "../Utils/variables";
 import Notification from "./Notification";
 import Swal from "sweetalert2";
 import { userId } from "../Utils/UserInfo";
+import { useAuthContext } from "../Context/authContext";
+import { isLoggined } from "../Utils/checkAuth";
+import { useRouter } from "next/navigation";
 
 export default function AddToCart({
   itemid,
@@ -28,14 +31,51 @@ export default function AddToCart({
   const { cartItems, setCartItems, setCart, setDiscount, setCouponCode } =
     useCartContext();
 
+  
+const { auth } = useAuthContext(); // Get authentication status
+const router = useRouter();
+
+
+
   const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(null);
 
   const [isActiveWishList, setIsActiveWishList] = useState(active);
   const [loading, setLoading] = useState(true);
-  const [activeWishlist, setActiveWishlist] = useState([]);
   const [cartAddQty, setCartAddQty] = useState(false);
   const [showGotoCartBtn, setShowGotoCartBtn] = useState(false);
+
+  
+  
+
+
+  useEffect(() => {
+    if (itemid) {
+      setLoading(false);
+    }
+  }, [itemid]);
+  
+
+
+  const [activeWishlist, setActiveWishlist] = useState([]);
+
+  useEffect(() => {
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setActiveWishlist(data);
+       setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+
+ 
+  //console.log(decryptData(localStorage.getItem("cart")))
+
+
 
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -95,7 +135,8 @@ export default function AddToCart({
 
   // Function to update cart in localStorage
   const updateCartInLocalStorage = (updatedCartItems) => {
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    localStorage.setItem("cart", encryptData(updatedCartItems));
+    ////localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
   };
 
@@ -149,6 +190,10 @@ export default function AddToCart({
 
   // Function to increase item quantity
   const CartPlus = (seletedOption) => {
+
+    console.log('test')
+
+
     const updatedCartItems = safeCartItems.map((item) =>
       item.id === itemid
         ? { ...item, quantity: item.quantity + 1 } // Increase quantity
@@ -164,7 +209,7 @@ export default function AddToCart({
         price: parseInt(price),
         name: name,
         image: image,
-        option: seletedOption || null,
+       // option: seletedOption || null,
         slug: slug,
       });
     }
@@ -251,58 +296,97 @@ export default function AddToCart({
         if (result.isConfirmed) {
           const updatedCartItems = cartItems.filter((item) => item.id !== id);
           setCartItems(updatedCartItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+          localStorage.setItem("cart", encryptData(updatedCartItems));
+          //localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
           updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
         }
       });
   };
 
-  const moveToWishList = (id, name) => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-light",
+  const moveToWishList = (productId) => {
+
+    if (!auth) {
+      isLoggined(
+        auth,
+        router,
+        null,
+        "Login to Add to Wishlist",
+        "Please log in to your account to add this item to your wishlist."
+      );
+      return false;
+    }
+
+    fetch(`${apiUrl}wp-json/wishlist/v1/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      buttonsStyling: false,
-    });
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: `Do you need to move ${name} item to the wishlist?`,
-        icon: false,
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
+      body: JSON.stringify({
+        user_id: userId,
+        product_id: productId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+       // setIsActive(!isActive);
+       // if (onWishlistChange) onWishlistChange(data);
+
+       
       })
-      .then((result) => {
-        if (result.isConfirmed) {
-          //TO WISH LIST
-          const savedWishlist =
-            JSON.parse(localStorage.getItem("wishlist")) || [];
-
-          if (isActiveWishList) {
-            // If already in wishlist, remove it
-            const updatedWishlist = savedWishlist.filter(
-              (itemId) => itemId !== id
-            );
-            localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-            setIsActiveWishList(false);
-          } else {
-            // If not in wishlist, add it
-            savedWishlist.push(id);
-            localStorage.setItem("wishlist", JSON.stringify(savedWishlist));
-            setIsActiveWishList(true);
-          }
-
-          //REMOVED FROM CART
-          const updatedCartItems = cartItems.filter((item) => item.id !== id);
-          setCartItems(updatedCartItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-          updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
-        }
+      .catch((error) => {
+        console.error("Error updating wishlist:", error);
+        alert("There was an error updating the wishlist. Please try again.");
+      })
+      .finally(() => {
+        //setIsLoading(false); // Re-enable the button after completion
       });
   };
+
+
+
+  const handleClickRemove = () => {
+    setIsLoading(true); // Disable button while processing
+
+    if (!auth) {
+      isLoggined(
+        auth,
+        router,
+        null,
+        "Login to Add to Wishlist",
+        "Please log in to your account to add this item to your wishlist."
+      );
+      return false;
+    }
+
+    fetch(`${apiUrl}wp-json/wishlist/v1/remove`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        product_id: productId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+       
+
+        setIsActive(!isActive);
+        if (onWishlistChange) onWishlistChange(data);
+
+     
+      })
+      .catch((error) => {
+        console.error("Error updating wishlist:", error);
+        alert("There was an error updating the wishlist. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false); // Re-enable the button after completion
+      });
+    
+  };
+  
 
   return (
     <>
@@ -389,7 +473,7 @@ export default function AddToCart({
                 />
                 <button
                   className="py-2 hover:opacity-50 transition-all text-dark px-2"
-                  onClick={(e) => CartPlus(options[0]?.item)}>
+                  onClick={(e) => CartPlus(options[0]?.item || price)}>
                   <PlusIcon className="font-semibold size-4" />
                 </button>
               </div>
@@ -524,19 +608,25 @@ export default function AddToCart({
           </div>
 
           {inCartPage && (
-            <div className="flex justify-end">
+            <div className="flex justify-end relative">
               <div className="join">
-                <button
-                  className="join-item option-btn"
-                  onClick={() => moveToWishList(itemid, name)}>
-                  Move to wishlist
-                </button>
+              <AddToWishList
+        small
+        inCartPage
+        activeWishlist={
+          activeWishlist &&
+          Object.values(activeWishlist).includes(itemid) &&
+          "active"
+        }
+        itemName={name}
+        productId={itemid}
+      />  
                 <button
                   className="join-item option-btn"
                   onClick={() => removeFromCartConfirm(itemid, name)}>
                   Remove
                 </button>
-              </div>
+               </div>
             </div>
           )}
         </div>

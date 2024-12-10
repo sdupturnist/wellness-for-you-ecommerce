@@ -1,6 +1,5 @@
 "use client";
 
-import { avatar } from "../Components/Avatars";
 import { accountMenus, homeUrl } from "../Utils/variables";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeftIcon, HeartIcon, Bars2Icon } from "@heroicons/react/24/solid";

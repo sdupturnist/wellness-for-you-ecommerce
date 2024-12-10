@@ -151,10 +151,11 @@ export default function GuestCheckoutAddressForm({ addressCount, currentData, on
         <input
           type="text"
           className="input"
-          placeholder="Apartment, suite, unit, etc. (optional)"
+          placeholder="Apartment, suite, unit, etc."
           value={addressTwo}
           onChange={(e) => handleChange(e, setAddressTwo)}
           autoComplete="off"
+          required
         />
 
         {/* State Select */}

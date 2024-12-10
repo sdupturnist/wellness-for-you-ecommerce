@@ -6,7 +6,6 @@ import AddNewAddressForm from "./Forms/AddNewAddress";
 import Alerts from "./Alerts";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
 import Skelton from "./Skelton";
-import "animate.css/animate.min.css";
 import { useCheckoutContext } from "../Context/checkoutContext";
 import { useAuthContext } from "../Context/authContext";
 

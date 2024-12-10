@@ -8,6 +8,8 @@ import Alerts from "../Alerts";
 import { useAuthContext } from "@/app/Context/authContext";
 import Cookies from "js-cookie";  // Import js-cookie for cookies handling
 import Loading from "../Loading";
+import { useCartContext } from "@/app/Context/cartContext";
+
 
 export default function Login() {
   const router = useRouter();
@@ -18,6 +20,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const { setAuth } = useAuthContext();
+  const {setGuestUser} = useCartContext()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -53,6 +56,7 @@ export default function Login() {
 
       // Updating auth context
       setAuth(true);
+      setGuestUser(false)
 
       // Redirecting user to account page (or wherever necessary)
       router.push(`${homeUrl}account`);

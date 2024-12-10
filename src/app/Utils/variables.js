@@ -13,6 +13,7 @@ import {
   CalendarIcon,
   ArrowUturnUpIcon,
 } from "@heroicons/react/24/solid";
+import CryptoJS from "crypto-js";
 
 const date = new Date();
 
@@ -279,3 +280,17 @@ export let isValidEmail = (email) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
 }
+
+
+
+
+export let encryptData = (data) => {
+  const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), jwtTocken).toString();
+  return encrypted;
+};
+
+export let decryptData = (encryptedData) => {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, jwtTocken);
+  const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return decrypted;
+};

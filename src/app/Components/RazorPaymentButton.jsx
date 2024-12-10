@@ -7,6 +7,7 @@ import {
   freeShipping,
   homeUrl,
   isValidEmail,
+  jwtTocken,
   paymentCurrency,
   publicKey,
   siteEmail,
@@ -35,6 +36,7 @@ export default function RazorPayment({ userData }) {
     guestUserData,
     guestUser,
     setGuestUserDataValidation,
+    setGuestUser
   } = useCartContext();
   const {
     billingAddress,
@@ -74,6 +76,8 @@ export default function RazorPayment({ userData }) {
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
+
+  console.log(cartSubTotal)
 
   // useLayoutEffect(() => {
   //   setBillingAddress("");
@@ -248,7 +252,7 @@ export default function RazorPayment({ userData }) {
                   "",
               },
               line_items: filteredItems || [],
-              coupon_lines: couponData || [],
+             coupon_lines: couponData || [],
               shipping_lines: [
                 {
                   method_id: "free_shipping", // Shipping method ID for free shipping
@@ -264,7 +268,7 @@ export default function RazorPayment({ userData }) {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  // Authorization: jwtTocken, // Use appropriate authorization if needed
+                  Authorization: `Bearer ${jwtTocken}`, // Authorization header with JWT token
                 },
                 body: JSON.stringify(orderInfo),
               }
@@ -284,7 +288,8 @@ export default function RazorPayment({ userData }) {
                   paymentMethodOption || 'Razorpay',
                   guestUser ? guestUserData?.address : userData,
                   paymentId,
-                  totalDiscount
+                  totalDiscount || 0,
+                  cartSubTotal
                 ),
               });
 
@@ -301,7 +306,8 @@ export default function RazorPayment({ userData }) {
                   paymentMethodOption || 'Razorpay',
                   guestUser ? guestUserData?.address : userData,
                   paymentId,
-                  totalDiscount
+                  totalDiscount || 0,
+                  cartSubTotal
                 ),
               });
 
@@ -314,7 +320,9 @@ export default function RazorPayment({ userData }) {
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false);
-              localStorage.removeItem("cartItems");
+              setGuestUser(false)
+              localStorage.removeItem("cart"); // Remove items from localStorage
+             
 
               // Redirect on success
               router.push(`${homeUrl}checkout/success`);

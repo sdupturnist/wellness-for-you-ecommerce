@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { decryptData, encryptData } from "../Utils/variables";
 
 const CartContext = createContext();
+
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(0);
@@ -13,29 +15,89 @@ export function CartProvider({ children }) {
   const [guestUser, setGuestUser] = useState(false);
   const [guestUserData, setGuestUserData] = useState(null);
   const [guestUserDataValidation, setGuestUserDataValidation] = useState(false);
+  const [cartListedItems, setCartListedItems] = useState([]);
 
+  
   // Load cartItems from localStorage when the component mounts (or updates cartItems)
   useEffect(() => {
     // Only run in the browser (client-side)
     if (typeof window !== "undefined") {
-      const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    //  const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const storedCartItems = localStorage.getItem("cart") && decryptData(localStorage.getItem("cart"))  || [];
       setCartItems(storedCartItems);
 
       const subTotal = storedCartItems.reduce((total, item) => {
         return total + item.price * item.quantity;
       }, 0);
 
-      setCartSubTotal(subTotal);
-    }
-  }, []); // Only run once on initial mount
 
-  // Synchronize localStorage with cartItems dynamically on any update
-  useEffect(() => {
-    // Only run in the browser (client-side)
-    if (typeof window !== "undefined" && cartItems.length > 0) {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems)); // Update localStorage whenever cartItems changes
+
+
+
+      const productIds = storedCartItems.map(product => product.product_id).join(',');
+     
+      
+
+          fetch(`https://admin.wellness4u.in/wp-json/wc/v3/products?include=${productIds}&consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03`)
+            .then((res) => res.json())
+            .then((data) => {
+              setCartListedItems(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching data:", error);
+            });
+    
+
+    
+    
+    const filteredData = cartListedItems
+      .map(product => {
+    
+        const cartItem = cartItems.find(item => item.product_id === product.id);
+        if (cartItem) {
+       
+          const price = parseFloat(product.price);
+
+       
+    
+          return {
+            ...product,
+            totalPrice: price * cartItem.quantity, // price from productData
+            quantity: cartItem.quantity
+          };
+        }
+        return null;
+      })
+      .filter(item => item !== null); // Remove any null values
+    
+    
+    const subtotal = filteredData.reduce((total, item) => total + item.totalPrice, 0);
+    
+   // console.log("Filtered Product Data:", filteredData);
+    //console.log("Subtotal:", subtotal);
+   
+  
+ setCartSubTotal(subtotal);
+
     }
-  }, [cartItems]); // Effect triggers when cartItems changes
+  }, [cartListedItems]); 
+
+
+
+
+
+  useEffect(() => {
+   
+    if (typeof window !== "undefined" && cartItems.length > 0) {
+      localStorage.setItem("cart", encryptData(cartItems));
+      ///localStorage.setItem("cartItems", JSON.stringify(cartItems)); // Update localStorage whenever cartItems changes
+    }
+  }, [cartItems]); 
+
+
+  //console.log(cartItems)
+
+
 
   const addToCart = (item) => {
     const updatedCartItems = [...cartItems, item];
@@ -47,13 +109,6 @@ export function CartProvider({ children }) {
     setCartItems(updatedCartItems);
   };
 
-  // Update subtotal when cartItems change
-  useEffect(() => {
-    const subTotal = cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-    setCartSubTotal(subTotal);
-  }, [cartItems]); // Recalculate subtotal every time cartItems changes
 
   return (
     <CartContext.Provider
@@ -79,7 +134,9 @@ export function CartProvider({ children }) {
         guestUserData,
          setGuestUserData,
          guestUserDataValidation, 
-         setGuestUserDataValidation
+         setGuestUserDataValidation,
+         cartListedItems, 
+         setCartListedItems
       }}>
       {children}
     </CartContext.Provider>

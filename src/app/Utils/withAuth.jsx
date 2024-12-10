@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent) => {
     const { guestUser } = useCartContext();
     const router = useRouter();
 
-    console.log(loadingAuth);
+   
 
     useEffect(() => {
       // Only redirect to login if not a guest user and authentication is not available

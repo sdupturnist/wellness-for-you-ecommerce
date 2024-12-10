@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function BannerSliderLarge({ data, url }) {
 
-  console.log(data)
+
   const settings = {
     dots: false, // Show navigation dots
     arrows: false, // Hide arrows
