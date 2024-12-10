@@ -146,9 +146,11 @@ export default async function Home({ params, searchParams }) {
       <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
         {bottomBannerLarge &&
           bottomBannerLarge.map((item, index) =>
-            item?.acf?.url !== null ? (
+
+           
+            item?.acf?.url !== "" ? (
               <Link key={index} href={item?.acf?.url || homeUrl}>
-                <Images
+                 <Images
                   imageurl={item?.featured_image?.url}
                   quality="100"
                   width="1500"
@@ -161,38 +163,45 @@ export default async function Home({ params, searchParams }) {
               </Link>
             ) : (
               <Images
-                key={index}
-                imageurl={item?.featured_image?.url}
-                quality="100"
-                width="1500"
-                height="500"
-                title={item?.featured_image?.alt}
-                alt={item?.featured_image?.alt}
-                classes="block w-full banner"
-                placeholder={true}
-              />
+              key={index}
+              imageurl={item?.featured_image?.url}
+              quality="100"
+              width="1500"
+              height="500"
+              title={item?.featured_image?.alt}
+              alt={item?.featured_image?.alt}
+              classes="block w-full banner"
+              placeholder={true}
+            />
+
+
+        
             )
           )}
         <div className="grid md:grid-cols-2 sm:gap-12 gap-6">
-          {bottomBannerSmall &&
-            bottomBannerSmall.map((item, index) =>
-              item?.acf?.url !== null ? (
-                <div key={index}>
-                  <Link href={item?.acf?.url || homeUrl}>
-                    <Images
-                      imageurl={item?.featured_image?.url}
-                      quality="100"
-                      width="600"
-                      height="350"
-                      title={item?.featured_image?.alt}
-                      alt={item?.featured_image?.alt}
-                      classes="block w-full banner"
-                      placeholder={true}
-                    />
-                  </Link>
-                </div>
-              ) : (
-                <div key={index}>
+
+
+        {bottomBannerSmall &&
+          bottomBannerSmall.map((item, index) =>
+
+           
+            item?.acf?.url !== "" ? (
+              <div key={index}>
+              <Link href={item?.acf?.url || homeUrl}>
+                <Images
+                  imageurl={item?.featured_image?.url}
+                  quality="100"
+                  width="600"
+                  height="350"
+                  title={item?.featured_image?.alt}
+                  alt={item?.featured_image?.alt}
+                  classes="block w-full banner"
+                  placeholder={true}
+                />
+              </Link>
+            </div>
+            ) : (
+              <div key={index}>
                   <Images
                     key={index}
                     imageurl={item?.featured_image?.url}
@@ -205,9 +214,13 @@ export default async function Home({ params, searchParams }) {
                     placeholder={true}
                   />
                 </div>
-              )
-            )}
-        </div>
+
+
+        
+            )
+          )}
+
+  </div>
       </section>
       {/* {testimonial.length > 0 && ( */}
       {/* <section className="testimonials text-center border-t"> */}

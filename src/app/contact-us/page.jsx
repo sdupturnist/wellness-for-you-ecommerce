@@ -4,11 +4,20 @@ import Images from "../Components/Images";
 import SocialIcons from "../Components/SocialIcons";
 import { apiUrl, metaStaticData, siteAuthor } from "../Utils/variables";
 
+export default async function ContactUs() {
+  let pageData = await fetch(`${apiUrl}wp-json/wp/v2/pages/32`, {
+    next: {
+      revalidate: 60,
+      cache: "no-store",
+    },
+  });
 
-export default function ContactUs() {
+  let page = await pageData.json();
+
+  console.log(page);
+
   return (
-  
-       <div className="bg-white">
+    <div className="bg-white">
       <section className="sm:pt-0">
         <div className="container sm:px-0 w-full min-w-full">
           <Images
@@ -23,16 +32,18 @@ export default function ContactUs() {
 
           <div className="container sm:px-5 !px-0">
             <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid sm:gap-7 gap-3">
-              <h1 className="sm:text-3xl text-2xl font-bold sm:text-center text-start">
-                Contact Us
+              <h1 className="sm:text-3xl text-2xl font-bold text-start">
+                {page?.title?.rendered}
               </h1>
-              <div className="grid gap-8 lg:grid-cols-2 sm:mt-8">
-             <ContactInfo/>
-                <div className="tf-content-right">
-                  <p className="mb-6">
-                    If you’ve got great products you&apos;re making or looking to
-                    work with us, then drop us a line.
-                  </p>
+              <div
+                className="[&>*]:text-base [&>*]:mb-3 border-b border-border pb-5"
+                dangerouslySetInnerHTML={{
+                  __html: page?.content?.rendered,
+                }}
+              />
+              <div className="grid gap-8 lg:grid-cols-2 mt-4">
+                <ContactInfo />
+                <div className="tf-content-right sm:mt-5 mt-2 lg:mt-0 border-t border-border pt-10 lg:pt-0 lg:border-none">
                   <div>
                     <ContactForm />
                   </div>
@@ -45,9 +56,6 @@ export default function ContactUs() {
     </div>
   );
 }
-
-
-
 
 export async function generateMetadata({ params, searchParams }, parent) {
   const pageId = 32;

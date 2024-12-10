@@ -82,7 +82,7 @@ export default function ListOptionsAddress({
   const handleSelectAddress = (selectedBillingAddress) => {
     setBillingAddress(selectedBillingAddress);
     setValidateAddress(false);
- 
+
   };
 
 
@@ -100,15 +100,18 @@ export default function ListOptionsAddress({
             <input
               onChange={(e) =>
                 handleSelectAddress({
-                  fullname_and_lastname: title,
-                  company: savedAddress?.company,
+
+                  firstName: savedAddress?.full_name,
+                  lastName: "",
                   country: savedAddress?.country,
-                  address_1: savedAddress?.address_1,
-                  address_2: savedAddress?.address_2,
+                  houseName: savedAddress?.address_1,
+                  street: savedAddress?.address_2,
+                  landmark:savedAddress?.landmark,
                   state: savedAddress?.state,
                   city: savedAddress?.city,
+                  pinCode: savedAddress?.pincode,
                   phone: savedAddress?.phone,
-                  postcode: savedAddress?.postcode,
+                  
                 })
               }
               type="radio"
@@ -127,17 +130,17 @@ export default function ListOptionsAddress({
           {savedAddress?.address_2 && <span>{savedAddress?.address_2}</span>}
           {savedAddress?.company && <span>{savedAddress?.company}</span>}
           {savedAddress?.city && (
-            <span>
+            <>
               {savedAddress?.city && <span>{savedAddress?.city}, </span>}
               {savedAddress?.state && <span>{savedAddress?.state}, </span>}
               {savedAddress?.country && <span>{savedAddress?.country}, </span>}
-              {savedAddress?.postcode && <br />}
-              {savedAddress?.postcode && (
-                <span>Pin. {savedAddress?.postcode}</span>
+
+              {savedAddress?.pincode && (
+                <span>Pin. {savedAddress?.pincode}</span>
               )}
-              {savedAddress?.phone && <br />}
+
               {savedAddress?.phone && <span>Ph. {savedAddress?.phone}</span>}
-            </span>
+            </>
           )}
 
           <div>

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PencilIcon } from '@heroicons/react/20/solid'; 
+import { PencilIcon } from "@heroicons/react/20/solid";
 import {
   CountrySelect,
   CitySelect,
@@ -26,22 +26,19 @@ export default function UpdateAddressForm({ addressCount }) {
 
   const { editData } = useSiteContext();
 
-
-
   const { userData } = useAuthContext();
 
   const [region, setRegion] = useState("");
   const [countryid, setCountryid] = useState(0);
   const [stateid, setstateid] = useState(0);
   const [country, setCountry] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseName, setHousename] = useState("");
+  const [landmark, setLandmark] = useState("");
   const [state, setstate] = useState("");
   const [city, setCity] = useState("");
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [phone, setPhone] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [addressOne, setAddressOne] = useState("");
-  const [addressTwo, setAddressTwo] = useState("");
   const [pinCode, setPinCode] = useState("");
 
   const [status, setStatus] = useState(false);
@@ -56,23 +53,21 @@ export default function UpdateAddressForm({ addressCount }) {
     setLoading(true);
 
     const updatedData = {
-
-     address: {
-          full_name: firstName || editData?.full_name,
-          last_name: lastName || editData?.last_name,
-          company: companyName || editData?.company,
-          country: country || editData?.country,
-          address_1: addressOne || editData?.address_1,
-          address_2:  addressTwo || editData?.address_2,
-          state: state || editData?.state,
-          city: city || editData?.city,
-          pincode: pinCode || editData?.pincode,
-          phone: phone || editData?.phone
-        }
-     
+      address: {
+        firstName: firstName || editData?.full_name,
+        lastName: "",
+        country: country || editData?.country,
+        houseName: houseName || editData?.address_1,
+        street: street || editData?.address_2,
+        landmark: landmark || editData?.landmark,
+        state: state || editData?.state,
+        city: city || editData?.city,
+        pinCode: pinCode || editData?.pincode,
+        phone: phone || editData?.phone,
+      },
     };
 
-   // `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses/${id?.id}${woocommerceKey}`,
+    // `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses/${id?.id}${woocommerceKey}`,
 
     try {
       const response = await fetch(
@@ -103,15 +98,11 @@ export default function UpdateAddressForm({ addressCount }) {
         setstate("");
         setCity("");
         setFirstName("");
-        setLastName("");
-        setCompanyName("");
-        setAddressOne("");
-        setAddressTwo("");
+        setPhone("");
         setPinCode("");
-
-        
-
-  
+        setStreet("");
+        setHousename("");
+        setLandmark("");
 
         router.back();
 
@@ -138,10 +129,6 @@ export default function UpdateAddressForm({ addressCount }) {
     }
   };
 
-
-
-  
-
   return (
     <form onSubmit={handleSubmit} autoComplete="none">
       <div className="grid gap-4">
@@ -157,48 +144,60 @@ export default function UpdateAddressForm({ addressCount }) {
             title="There was an issue adding your new address. Please try again."
           />
         )}
-    <input
-             defaultValue={
-              (editData && editData?.full_name) || editData?.shipping?.full_name
-            }
+
+        <input
+          defaultValue={
+            (editData && editData?.full_name) || editData?.shipping?.firstName
+          }
           type="text"
-        className="input"
+          className="input"
           placeholder="Full Name"
           onChange={(e) => setFirstName(e.target.value)}
           required
           autoComplete="none"
-         
         />
         <input
           defaultValue={
-            (editData && editData?.last_name) || editData?.shipping?.last_name
-          }
-          type="text"
-          className="input"
-          placeholder="Last Name"
-          onChange={(e) => setLastName(e.target.value)}
-          required
-          autoComplete="none"
-        />
-         <input
-          defaultValue={
-            (editData && editData?.phone)
+            (editData && editData?.phone) || editData?.shipping?.phone
           }
           type="number"
           className="input"
-          placeholder="Phone"
+          placeholder="Contact Number"
           onChange={(e) => setPhone(e.target.value)}
           required
           autoComplete="none"
         />
         <input
           defaultValue={
-            (editData && editData?.company) || editData?.shipping?.company
+            (editData && editData?.address_1) || editData?.shipping?.address_1
           }
           type="text"
           className="input"
-          onChange={(e) => setCompanyName(e.target.value)}
-          placeholder="Company name"
+          placeholder="House Name or Number"
+          onChange={(e) => setHousename(e.target.value)}
+          required
+          autoComplete="none"
+        />
+        <input
+          defaultValue={
+            (editData && editData?.address_2) || editData?.shipping?.address_2
+          }
+          type="text"
+          className="input"
+          placeholder="Street Name or Area"
+          onChange={(e) => setStreet(e.target.value)}
+          required
+          autoComplete="none"
+        />
+        <input
+          defaultValue={
+            (editData && editData?.landmark) || editData?.shipping?.landmark
+          }
+          type="text"
+          className="input"
+          placeholder="Nearest Landmark"
+          onChange={(e) => setLandmark(e.target.value)}
+          required
           autoComplete="none"
         />
         <CountrySelect
@@ -211,37 +210,17 @@ export default function UpdateAddressForm({ addressCount }) {
           autoComplete="none"
           required
         />
-        <input
-          defaultValue={
-            (editData && editData?.address_1) || editData?.shipping?.address_1
-          }
-          type="text"
-          className="input"
-          placeholder="House number and street name"
-          onChange={(e) => setAddressOne(e.target.value)}
-          required
-        />
-        <input
-          defaultValue={
-            (editData && editData?.address_2) || editData?.shipping?.address_2
-          }
-          type="text"
-          className="input"
-          placeholder="Apartment, suite, unit, etc. (optional)"
-          onChange={(e) => setAddressTwo(e.target.value)}
-          autoComplete="none"
-        />
+
         <StateSelect
           countryid={countryid}
           onChange={(e) => {
-            setstateid(e.id); // Updates the stateid when the user selects a state
-            setstate(e.name || e.target.value); // Updates the state name based on selection
+            setstateid(e.id);
+            setstate(e.name || e.target.value);
           }}
           placeHolder="State"
           required
           autoComplete="none"
         />
-
         <CitySelect
           countryid={countryid}
           stateid={stateid}
@@ -254,7 +233,7 @@ export default function UpdateAddressForm({ addressCount }) {
         />
         <input
           defaultValue={
-            (editData && editData?.postcode) || editData?.shipping?.postcode
+            (editData && editData?.pincode) || editData?.shipping?.pincode
           }
           type="number"
           className="input"

@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { currency, homeUrl } from "../Utils/variables";
+import {
+  currency,
+  homeUrl,
+  shippingCharge,
+  shippingChargeLimit,
+} from "../Utils/variables";
 import SectionHeader from "./SectionHeader";
 import { useCartContext } from "../Context/cartContext";
 import { useEffect } from "react";
@@ -39,12 +44,23 @@ export default function AmountList({
                 </span>
               </li>
             )}
+            {shippingChargeLimit > cartSubTotal && (
+              <li>
+                <span className="label">Shipping fee</span>
+                <span className="val ">
+                  {currency}
+                  {shippingCharge}
+                </span>
+              </li>
+            )}
             <li className="border-t border-border pt-3 mt-3">
               <span className="label">Total</span>
               <span className="val text-lg font-bold !grid justify-end text-end grid-2">
                 <span className="block">
                   {currency}
-                  {cartSubTotal - discount}
+                  {cartSubTotal +
+                    (shippingChargeLimit > cartSubTotal && shippingCharge) -
+                    discount}
                 </span>
                 {couponCode && (
                   <span className="text-xs text-primary font-normal mt-1">
@@ -59,67 +75,64 @@ export default function AmountList({
       case forOrderDetails:
         return (
           <ul className="amount-list capitalize">
-      
-        
-          {data?.line_items && data?.line_items.map((item, index) => (
-            <li key={index}>
-              <span className="label">
-                {item?.name} x {item?.quantity}
-              </span>
-              <span className="val">
-                {currency}
-                {(item?.subtotal)}
-              </span>
-            </li>
-          ))}
-        
+            {data?.line_items &&
+              data?.line_items.map((item, index) => (
+                <li key={index}>
+                  <span className="label">
+                    {item?.name} x {item?.quantity}
+                  </span>
+                  <span className="val">
+                    {currency}
+                    {item?.subtotal}
+                  </span>
+                </li>
+              ))}
 
-          
-          {/* <li> */}
+            {/* <li> */}
             {/* <span className="label">Payment Method</span> */}
             {/* <span className="val">{data?.payment_method_title}</span> */}
-          {/* </li> */}
-        
-          {/* Subtotal Calculation */}
-          <li>
-            <span className="label">Subtotal</span>
-            <span className="val">
-              {currency}
-              {data?.line_items?.reduce((acc, item) => {
-                const priceWithQuantity = item?.price * item?.quantity;
-                return acc + priceWithQuantity;
-              }, 0) + parseInt(data?.discount_total, 10)}
-            </span>
-          </li>
-          <li>
-            <span className="label">Shipping</span>
-            <span
-              className={`${
-                data?.shipping_lines[0]?.method_id === "free_shipping" &&
-                "!text-green-600"
-              } val`}>
-              {data?.shipping_lines[0]?.method_title}
-            </span>
-          </li>
-          {data?.discount_total > 0 && (
+            {/* </li> */}
+
+            {/* Subtotal Calculation */}
             <li>
-              <span className="label !text-green-600">Coupon discount</span>
-              <span className="val !text-green-600">
-                -{currency}
-                {data?.discount_total}
+              <span className="label">Subtotal</span>
+              <span className="val">
+                {currency}
+                {data?.line_items?.reduce((acc, item) => {
+                  const priceWithQuantity = item?.price * item?.quantity;
+                  return acc + priceWithQuantity;
+                }, 0) + parseInt(data?.discount_total, 10)}
               </span>
             </li>
-          )}
-        
-          <li>
-            <span className="label">Total</span>
-            <span className="val text-lg font-bold">
-              {currency}
-              {data?.total}
-            </span>
-          </li>
-        </ul>
-        
+            <li>
+              <span className="label">Shipping</span>
+              <span
+                className={`${
+                  data?.shipping_lines[0]?.method_id === "free_shipping" &&
+                  "!text-green-600"
+                } val`}>
+                {data?.shipping_lines[0]?.method_id === "free_shipping" &&  data?.shipping_lines[0]?.method_title}
+                {data?.shipping_lines[0]?.method_id === "flat_rate" &&  currency+shippingCharge}
+              </span>
+            </li>
+            {data?.discount_total > 0 && (
+              <li>
+                <span className="label !text-green-600">Coupon discount</span>
+                <span className="val !text-green-600">
+                  -{currency}
+                  {data?.discount_total}
+                </span>
+              </li>
+            )}
+
+            <li>
+              <span className="label">Total</span>
+              <span className="val text-lg font-bold">
+                {currency}
+                {data?.total}
+              </span>
+            </li>
+          </ul>
         );
       case tableView:
         return (
@@ -128,12 +141,12 @@ export default function AmountList({
               data.map((item, index) => (
                 <div key={index}>
                   <div className="items-center mb-5">
-                  <SectionHeader
+                    <SectionHeader
                       spacingSm
                       titleSmall
                       title={`${
                         item.transaction_id
-                          ? `Transaction ID: #` +  item.transaction_id
+                          ? `Transaction ID: #` + item.transaction_id
                           : `Order ID: #` + item?.id
                       }`}
                     />
@@ -163,7 +176,7 @@ export default function AmountList({
                       </li>
                     )}
                   </ul>
-              
+
                   {/* <Invoice/> */}
                   {item?.status === "completed" && (
                     <Link

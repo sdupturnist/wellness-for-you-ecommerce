@@ -12,12 +12,12 @@ export default function SuccessPage() {
         <div className="sm:min-h-[70vh] min-h-[60vh] flex items-center justify-center">
           <div className="text-center grid md:gap-8 sm:gap-6 gap-4 sm:max-w-[60%] max-w-[95%] mx-auto">
             <Alerts
-              title="Thank You for Your Order!"
+            noPageUrl
+              title="Thank you for your Order!"
               large
-              url={`${homeUrl}account/orders`}
-              buttonLabel="My Orders"
-              desc="Thank you for shopping with us! We’ll keep you updated on your
-            order status."
+              url={`${homeUrl}`}
+              buttonLabel="Continue Shopping"
+              desc="We will keep you updated on your order status via given email address. Alternatively, you can check your order status at My Account > Orders"
             />
           </div>
         </div>

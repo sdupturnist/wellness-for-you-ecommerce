@@ -21,13 +21,14 @@ const date = new Date();
 //export let userTocken = `9AzTrOe80vVVRgu80WPjO5itzqXJzWFVLhfxZjm6ujiCUsQvIQr1kmxT7PFj8QTkuO7QQ0H3CsbHsx3lImBghkdt0gIbA3VSjcKL4G4CEzwCYF`;
 
 //WOOCOMMERECE
-export let woocommerceKey =
-  "?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03";
-export let freeShipping = true;
+export let woocommerceKey = "?consumer_key=ck_c10388e89a3e74feeaf32ec349bf9f810f8071bc&consumer_secret=cs_48ef9b20fbd7ca0883b3cb20e9cd0d78398f3d03";
+export let freeShipping = false;
+export let shippingCharge = 70;
+export let shippingChargeLimit = 999;
 export let returnDays = 7;
 
 //JWT AUTH TOCKEN
-export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzM3NDgwMTYsIm5iZiI6MTczMzc0ODAxNiwiZXhwIjoxNzM0MzUyODE2LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ`;
+export let jwtTocken = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FkbWluLndlbGxuZXNzNHUuaW4iLCJpYXQiOjE3MzM4NDc4MzEsIm5iZiI6MTczMzg0NzgzMSwiZXhwIjoxNzM0NDUyNjMxLCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.wCTfj60G327wQIzorM2Gx1vOP42mN7KxaFzxOBLGB_g`;
 
 //.ENV
 export let homeUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -77,11 +78,11 @@ export let accountMenus = [
   //   url: 'account/returns',
   //   icon: <TruckIcon className="sm:size-4 size-[18px] text-primary" />,
   // },
-  {
-    label: "Reviews",
-    url: "account/reviews",
-    icon: <StarIcon className="sm:size-4 size-[18px] text-primary" />,
-  },
+  // {
+  //   label: "Reviews",
+  //   url: "account/reviews",
+  //   icon: <StarIcon className="sm:size-4 size-[18px] text-primary" />,
+  // },
   // {
   //   label: 'Reward Points',
   //   url: 'account/rewards',

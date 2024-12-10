@@ -51,10 +51,7 @@ export default function SubscribeForm() {
           message: `Thank you for subscribing to our newsletter! We're excited to have you on board. You'll now be the first to know about our latest products, exclusive offers, and insider news. Stay tuned for exciting updates coming your way!`,
         });
 
-        setTimeout(() => {
-          router.push(`${homeUrl}/login`);
-        }, 3000);
-      } else {
+       } else {
         setError(data.message || "An error occurred. Please try again.");
       }
     } catch (error) {

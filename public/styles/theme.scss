@@ -159,7 +159,9 @@ section {
 
 }
 
-.slick-slide img {
+
+
+ .slick-slide img.banner {
 
     @apply lg:h-[200px] w-full lg:object-cover;
 

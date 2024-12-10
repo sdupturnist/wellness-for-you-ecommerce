@@ -191,7 +191,7 @@ const router = useRouter();
   // Function to increase item quantity
   const CartPlus = (seletedOption) => {
 
-    console.log('test')
+   
 
 
     const updatedCartItems = safeCartItems.map((item) =>

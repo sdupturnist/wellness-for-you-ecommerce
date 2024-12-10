@@ -18,7 +18,12 @@ import Alerts from "../Alerts";
 import { useCheckoutContext } from "@/app/Context/checkoutContext";
 import { useAuthContext } from "@/app/Context/authContext";
 
-export default function AddNewAddressForm({ addressCount, id, currentData, onAddressAdded }) {
+export default function AddNewAddressForm({
+  addressCount,
+  id,
+  currentData,
+  onAddressAdded,
+}) {
   const { setShowAddNewAddress, updateAddress } = useCheckoutContext();
 
   const { userData } = useAuthContext();
@@ -27,14 +32,13 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
   const [countryid, setCountryid] = useState(0);
   const [stateid, setstateid] = useState(0);
   const [country, setCountry] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseName, setHousename] = useState("");
+  const [landmark, setLandmark] = useState("");
   const [state, setstate] = useState("");
   const [city, setCity] = useState("");
   const [firstName, setFirstName] = useState("");
   const [phone, setPhone] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [addressOne, setAddressOne] = useState("");
-  const [addressTwo, setAddressTwo] = useState("");
   const [pinCode, setPinCode] = useState("");
 
   const [status, setStatus] = useState(false);
@@ -49,42 +53,24 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
     setLoading(true);
 
     const requestData = {
-
-
-
       address: {
-        full_name: firstName,
-        last_name: lastName,
-        company: companyName,
+        firstName: firstName,
+        lastName: "",
         country: country,
-        address_1: addressOne,
-        address_2:  addressTwo,
+        houseName: houseName,
+        street: street,
+        landmark: landmark,
         state: state,
         city: city,
-        pincode: pinCode,
-        phone: phone
-      }
-
-
-      // address: {
-      //   id: addressId,
-      //   address_1: addressOne,
-      //   address_2: addressTwo,
-      //   phone: phone,
-      //   city: city,
-      //   state: state,
-      //   postcode: pinCode,
-      //   country: country,
-      //   first_name: firstName,
-      //   last_name: lastName,
-      //   company: companyName,
-      // },
+        pinCode: pinCode,
+        phone: phone,
+      },
     };
 
     try {
       // Submit the review
       const response = await fetch(
-      `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses${woocommerceKey}`,
+        `${apiUrl}wp-json/wc/v3/customers/${userData?.id}/addresses${woocommerceKey}`,
         {
           method: "POST",
           headers: {
@@ -97,7 +83,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
 
       if (response.ok) {
         //setBillingAddress(requestData);
-        onAddressAdded()
+        onAddressAdded();
         setLoading(false);
         setStatus(true);
 
@@ -112,18 +98,13 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
         setstate("");
         setCity("");
         setFirstName("");
-        setLastName("");
         setPhone("");
-        setCompanyName("");
-        setAddressOne("");
-        setAddressTwo("");
         setPinCode("");
+        setStreet("");
+        setHousename("");
+        setLandmark("");
 
         setShowAddNewAddress(false);
-
-    
-
-     
 
         //  location.reload();
 
@@ -172,17 +153,9 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
           autoComplete="none"
         />
         <input
-          type="text"
-          className="input"
-          placeholder="Last Name"
-          onChange={(e) => setLastName(e.target.value)}
-          required
-          autoComplete="none"
-        />
-         <input
           type="number"
           className="input"
-          placeholder="Phone"
+          placeholder="Contact Number"
           onChange={(e) => setPhone(e.target.value)}
           required
           autoComplete="none"
@@ -190,8 +163,25 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
         <input
           type="text"
           className="input"
-          onChange={(e) => setCompanyName(e.target.value)}
-          placeholder="Company name"
+          placeholder="House Name or Number"
+          onChange={(e) => setHousename(e.target.value)}
+          required
+          autoComplete="none"
+        />
+        <input
+          type="text"
+          className="input"
+          placeholder="Street Name or Area"
+          onChange={(e) => setStreet(e.target.value)}
+          required
+          autoComplete="none"
+        />
+        <input
+          type="text"
+          className="input"
+          placeholder="Nearest Landmark"
+          onChange={(e) => setLandmark(e.target.value)}
+          required
           autoComplete="none"
         />
         <CountrySelect
@@ -204,20 +194,7 @@ export default function AddNewAddressForm({ addressCount, id, currentData, onAdd
           autoComplete="none"
           required
         />
-        <input
-          type="text"
-          className="input"
-          placeholder="House number and street name"
-          onChange={(e) => setAddressOne(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          className="input"
-          placeholder="Apartment, suite, unit, etc. (optional)"
-          onChange={(e) => setAddressTwo(e.target.value)}
-          autoComplete="none"
-        />
+
         <StateSelect
           countryid={countryid}
           onChange={(e) => {

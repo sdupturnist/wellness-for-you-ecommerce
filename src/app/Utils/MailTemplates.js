@@ -2,7 +2,8 @@
 
 import { currency, formatDate, siteName } from "./variables"
 
-export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount, cartSubTotal) => {
+
+export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount, cartSubTotal, shippingCharge) => {
     
   let today = new Date();
 
@@ -11,8 +12,8 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
   // Calculate Sub-Total dynamically
   // let cartSubTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
 
-  let freeShipping = 0.00; // Assuming free shipping for now, can be dynamic
-  let total = cartSubTotal + freeShipping; // Add shipping to total if necessary
+
+  let total = cartSubTotal + shippingCharge; 
 
 
 
@@ -70,8 +71,8 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     </thead>
     <tbody>
       <tr>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname || billingAddress?.full_name}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.fullname_and_lastname || billingAddress?.full_name}<br>${billingAddress?.address_1}<br>${billingAddress?.address_2}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
       </tr>
     </tbody>
   </table>
@@ -99,7 +100,7 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
       </tr>
           <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Free Shipping:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${freeShipping.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${shippingCharge.toFixed(2)}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Total:</b></td>

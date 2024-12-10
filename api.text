@@ -414,8 +414,8 @@ add_action( 'rest_api_init', function() {
                 'validate_callback'   => function( $param, $request, $key ) {
                     // Validate all required address fields
                     $required_fields = [
-                        'full_name', 'last_name', 'company', 'country',
-                        'address_1', 'address_2', 'state', 'city', 'pincode', 'phone'
+                        'firstName', 'lastName', 'country', 'houseName',
+                        'street', 'landmark', 'state', 'city', 'pinCode', 'phone'
                     ];
                     foreach ($required_fields as $field) {
                         if ( !isset($param[$field]) ) {
@@ -441,8 +441,8 @@ add_action( 'rest_api_init', function() {
                 'validate_callback'   => function( $param, $request, $key ) {
                     // Validate all required address fields
                     $required_fields = [
-                        'full_name', 'last_name', 'company', 'country',
-                        'address_1', 'address_2', 'state', 'city', 'pincode', 'phone'
+                        'firstName', 'lastName', 'country', 'houseName',
+                        'street', 'landmark', 'state', 'city', 'pinCode', 'phone'
                     ];
                     foreach ($required_fields as $field) {
                         if ( !isset($param[$field]) ) {
@@ -475,6 +475,21 @@ function add_customer_address( $data ) {
         return new WP_Error( 'no_customer', 'Customer not found.', ['status' => 404] );
     }
 
+    // Map the input fields to the expected structure
+    $mapped_address = [
+        'full_name'  => $address_data['firstName'],
+        'last_name'  => $address_data['lastName'],
+        'company'    => $address_data['company'] ?? '', // Optional field
+        'country'    => $address_data['country'],
+        'address_1'  => $address_data['houseName'],
+        'address_2'  => $address_data['street'],
+        'landmark'   => $address_data['landmark'] ?? '', // Optional field
+        'state'      => $address_data['state'],
+        'city'       => $address_data['city'],
+        'pincode'    => $address_data['pinCode'],
+        'phone'      => $address_data['phone']
+    ];
+
     // Store the new address as user meta (you can store multiple addresses)
     $existing_addresses = get_user_meta( $customer_id, 'additional_addresses', true );
     if ( !$existing_addresses ) {
@@ -483,10 +498,10 @@ function add_customer_address( $data ) {
 
     // Generate a new ID for the address
     $new_address_id = $existing_addresses ? max(array_column($existing_addresses, 'id')) + 1 : 1;
-    $address_data['id'] = $new_address_id;
+    $mapped_address['id'] = $new_address_id;
 
     // Add the new address to the array
-    $existing_addresses[] = $address_data;
+    $existing_addresses[] = $mapped_address;
 
     // Update user meta with the new array of addresses
     update_user_meta( $customer_id, 'additional_addresses', $existing_addresses );
@@ -494,7 +509,7 @@ function add_customer_address( $data ) {
     return [
         'success' => true,
         'message' => 'New address added successfully.',
-        'address' => $address_data
+        'address' => $mapped_address
     ];
 }
 
@@ -509,6 +524,21 @@ function update_customer_address( $data ) {
         return new WP_Error( 'no_customer', 'Customer not found.', ['status' => 404] );
     }
 
+    // Map the input fields to the expected structure
+    $mapped_address = [
+        'full_name'  => $address_data['firstName'],
+        'last_name'  => $address_data['lastName'],
+        'company'    => $address_data['company'] ?? '', // Optional field
+        'country'    => $address_data['country'],
+        'address_1'  => $address_data['houseName'],
+        'address_2'  => $address_data['street'],
+        'landmark'   => $address_data['landmark'] ?? '', // Optional field
+        'state'      => $address_data['state'],
+        'city'       => $address_data['city'],
+        'pincode'    => $address_data['pinCode'],
+        'phone'      => $address_data['phone']
+    ];
+
     // Get the current list of addresses
     $existing_addresses = get_user_meta( $customer_id, 'additional_addresses', true );
 
@@ -522,7 +552,7 @@ function update_customer_address( $data ) {
         if ( $address['id'] == $address_id ) {
             $address_found = true;
             // Update the address with new data
-            $existing_addresses[$index] = array_merge($address, $address_data);
+            $existing_addresses[$index] = array_merge($address, $mapped_address);
             break;
         }
     }
@@ -537,7 +567,7 @@ function update_customer_address( $data ) {
     return [
         'success' => true,
         'message' => 'Address updated successfully.',
-        'address' => $address_data
+        'address' => $mapped_address
     ];
 }
 
@@ -584,6 +614,7 @@ function delete_customer_address( $data ) {
         'message' => 'Address deleted successfully.'
     ];
 }
+
 
 
 

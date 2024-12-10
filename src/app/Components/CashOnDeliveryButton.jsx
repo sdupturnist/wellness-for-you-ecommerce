@@ -3,18 +3,15 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import CryptoJS from 'crypto-js';
 
 import {
   apiUrl,
-  freeShipping,
   homeUrl,
   isValidEmail,
   jwtTocken,
-  paymentCurrency,
+  shippingCharge,
   siteEmail,
   siteLogo,
-  siteName,
   woocommerceKey,
 } from "../Utils/variables"; // Ensure you use environment variables here for sensitive info
 import { useCartContext } from "../Context/cartContext";
@@ -27,7 +24,6 @@ import Swal from "sweetalert2";
 export default function CashOnDeliveryPayment({ userData }) {
   const {
     cartItems,
-    couponCode,
     discount,
     cartSubTotal,
     setCartItems,
@@ -39,7 +35,8 @@ export default function CashOnDeliveryPayment({ userData }) {
     guestUserData,
     guestUser,
     setGuestUserDataValidation,
-    setGuestUser
+    setGuestUser,
+    haveShippingCharge,
   } = useCartContext();
 
   const {
@@ -47,10 +44,8 @@ export default function CashOnDeliveryPayment({ userData }) {
     validateAddress,
     setValidateAddress,
     setUpdatePaymentStatus,
-    paymentTerms,
     validateTerms,
     setValidateTerms,
-    setPaymentId,
     setPaymentTerms,
     setBillingAddress,
   } = useCheckoutContext();
@@ -58,45 +53,33 @@ export default function CashOnDeliveryPayment({ userData }) {
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
-  const [cartListedItems, setCartListedItems] = useState([]);
 
   const router = useRouter();
-
-
-
-
 
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
   const totalDiscount = discount || 0;
 
 
-  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
-
-
-
-  
 
   useLayoutEffect(() => {
     setBillingAddress("");
     setValidateTerms(false);
   }, []);
 
-
-
   // Handle the payment and order creation logic
   const handlePayment = async () => {
     if (guestUser) {
       if (
         guestUserData === null ||
-        guestUserData?.address?.full_name === "" ||
-        guestUserData?.address?.last_name === "" ||
+        guestUserData?.address?.firstName === "" ||
         guestUserData?.address?.country === "" ||
-        guestUserData?.address?.address_1 === "" ||
-        guestUserData?.address?.address_2 === "" ||
+        guestUserData?.address?.houseName === "" ||
+        guestUserData?.address?.street === "" ||
+        guestUserData?.address?.landmark === "" ||
         guestUserData?.address?.state === "" ||
         guestUserData?.address?.city === "" ||
-        guestUserData?.address?.pincode === "" ||
+        guestUserData?.address?.pinCode === "" ||
         guestUserData?.address?.phone === "" ||
         guestUserData?.address?.email === "" ||
         !isValidEmail(guestUserData?.address?.email)
@@ -156,19 +139,19 @@ export default function CashOnDeliveryPayment({ userData }) {
               set_paid: false, // Mark as unpaid for COD
               billing: {
                 first_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.full_name ||
                   "",
                 last_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.last_name ||
                   "",
                 address_1:
-                  billingAddress?.address_1 ||
+                  billingAddress?.houseName ||
                   guestUserData?.address?.address_1 ||
                   "",
                 address_2:
-                  billingAddress?.address_2 ||
+                  billingAddress?.street ||
                   guestUserData?.address?.address_2 ||
                   "",
                 city:
@@ -188,19 +171,19 @@ export default function CashOnDeliveryPayment({ userData }) {
               },
               shipping: {
                 first_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.full_name ||
                   "",
                 last_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.last_name ||
                   "",
                 address_1:
-                  billingAddress?.address_1 ||
+                  billingAddress?.houseName ||
                   guestUserData?.address?.address_1 ||
                   "",
                 address_2:
-                  billingAddress?.address_2 ||
+                  billingAddress?.street ||
                   guestUserData?.address?.address_2 ||
                   "",
                 city:
@@ -218,13 +201,21 @@ export default function CashOnDeliveryPayment({ userData }) {
               },
               line_items: filteredItems || [],
               coupon_lines: couponData || [],
-              shipping_lines: [
-                {
-                  method_id: "free_shipping", // Shipping method for free shipping
-                  method_title: "Free Shipping", // Shipping method title
-                  total: "0", // No shipping charge for free shipping
-                },
-              ],
+              shipping_lines: haveShippingCharge
+                ? [
+                    {
+                      method_id: "flat_rate",
+                      method_title: "Flat Rate",
+                      total: shippingCharge.toString(), // Ensure shippingCharge is a string
+                    },
+                  ]
+                : [
+                    {
+                      method_id: "free_shipping", // Shipping method for free shipping
+                      method_title: "Free Shipping", // Shipping method title
+                      total: "0", // No shipping charge for free shipping
+                    },
+                  ],
             };
 
             // Step 2: Send the order information to WooCommerce API
@@ -241,15 +232,13 @@ export default function CashOnDeliveryPayment({ userData }) {
             );
 
             if (response.ok) {
-
-
-          
-
               // Send email notification to the user
               await sendMail({
                 sendTo: userData?.email || guestUserData?.address?.email,
                 subject: "You Have Successfully Ordered",
-                name: userData?.name || guestUserData?.address?.full_name,
+                name:
+                  billingAddress?.firstName ||
+                  guestUserData?.address?.full_name,
                 message: OrderPlacedEmailTemplate(
                   siteLogo,
                   guestUser ? guestUserData?.address : billingAddress,
@@ -259,7 +248,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   guestUser ? guestUserData?.address : userData,
                   "",
                   totalDiscount || 0,
-                  cartSubTotal
+                  cartSubTotal,
+                  shippingCharge
                 ),
               });
 
@@ -277,7 +267,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   guestUser ? guestUserData?.address : userData,
                   "",
                   totalDiscount || 0,
-                  cartSubTotal
+                  cartSubTotal,
+                  shippingCharge
                 ),
               });
 
@@ -290,13 +281,11 @@ export default function CashOnDeliveryPayment({ userData }) {
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false); // Reset payment terms
-              setGuestUser(false)
+              setGuestUser(false);
 
               localStorage.removeItem("cart"); // Remove items from localStorage
               Cookies.set("checkout_success", "true", { expires: 1 / 1440 });
 
-
-              
               // Redirect to success page
               router.push(`${homeUrl}checkout/success`);
             } else {

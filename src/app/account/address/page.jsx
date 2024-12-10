@@ -13,14 +13,12 @@ import { useAuthContext } from "@/app/Context/authContext";
 export default function Address() {
   const { userData } = useAuthContext();
   const { setEditData } = useSiteContext();
-  
+
   const [savedAddress, setSavedAddress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch user data and addresses on mount or when userData.id changes
-
-
 
   const fetchData = async () => {
     try {
@@ -36,9 +34,7 @@ export default function Address() {
     }
   };
 
-
   useEffect(() => {
-
     if (userData?.id) {
       fetchData();
     }
@@ -51,9 +47,6 @@ export default function Address() {
 
   // Handle address deletion
   const deleteAddress = (id) => {
-
- 
-
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -73,7 +66,6 @@ export default function Address() {
         reverseButtons: true,
       })
 
-      
       .then((result) => {
         if (result.isConfirmed) {
           fetch(
@@ -88,7 +80,7 @@ export default function Address() {
             .then((res) => res.json())
             .then(() => {
               // Re-fetch addresses after deletion
-            fetchData(); // This should ensure the latest data is fetched.
+              fetchData(); // This should ensure the latest data is fetched.
             })
             .catch((error) => {
               console.error("Error deleting address:", error);
@@ -97,10 +89,6 @@ export default function Address() {
         }
       });
   };
-
-  
-
-
 
   return loading ? (
     <div className="flex items-center justify-center sm:min-h-[70vh] min-h-[50vh]">
@@ -128,23 +116,23 @@ export default function Address() {
                 <div className="pb-2">
                   <div className="flex gap-3 mb-2">
                     <label className="font-semibold">
-                   {item?.full_name} {item?.last_name}
+                      {item?.full_name} {item?.last_name}
                     </label>
                   </div>
+
                   <div className="!grid gap-1 [&>*]:text-base [&>*]:opacity-70 sm:max-w-[60%]">
                     {item?.address_1 && <span>{item?.address_1}</span>}
                     {item?.address_2 && <span>{item?.address_2}</span>}
                     {item?.company && <span>{item?.company}</span>}
                     {item?.city && (
-                      <span>
+                      <>
                         {item?.city && <span>{item?.city}, </span>}
                         {item?.state && <span>{item?.state}, </span>}
                         {item?.country && <span>{item?.country}, </span>}
-                        {item?.postcode && <br />}
-                        {item?.postcode && <span>Pin. {item?.postcode}</span>}
-                        {item?.phone && <br />}
+                        {item?.pincode && <span>Pin. {item?.pincode}</span>}
+
                         {item?.phone && <span>Ph. {item?.phone}</span>}
-                      </span>
+                      </>
                     )}
                     <div>
                       <div className="join mt-4 !gap-0">
@@ -166,7 +154,7 @@ export default function Address() {
               </div>
             ))
           )}
-                <AddNewAddress onAddressAdded={fetchData} />
+          <AddNewAddress onAddressAdded={fetchData} />
         </div>
       </section>
     </div>

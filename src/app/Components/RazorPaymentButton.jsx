@@ -1,15 +1,15 @@
 "use client"; // This is necessary to enable React in this file
 
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   apiUrl,
-  freeShipping,
   homeUrl,
   isValidEmail,
   jwtTocken,
   paymentCurrency,
   publicKey,
+  shippingCharge,
   siteEmail,
   siteLogo,
   siteName,
@@ -24,7 +24,6 @@ import { OrderPlacedEmailTemplate } from "../Utils/MailTemplates";
 export default function RazorPayment({ userData }) {
   const {
     cartItems,
-    couponCode,
     discount,
     cartSubTotal,
     setCartItems,
@@ -36,21 +35,20 @@ export default function RazorPayment({ userData }) {
     guestUserData,
     guestUser,
     setGuestUserDataValidation,
-    setGuestUser
+    setGuestUser,
+    haveShippingCharge,
   } = useCartContext();
   const {
     billingAddress,
     validateAddress,
     setValidateAddress,
     setUpdatePaymentStatus,
-    paymentTerms,
     paymentMethodOption,
     paymentId,
     validateTerms,
     setValidateTerms,
     setPaymentId,
     setPaymentTerms,
-    setBillingAddress,
   } = useCheckoutContext();
 
   const [ip, setIp] = useState(null);
@@ -77,8 +75,6 @@ export default function RazorPayment({ userData }) {
   const [validationMessage, setValidationMessage] = useState("");
   const router = useRouter();
 
-  console.log(cartSubTotal)
-
   // useLayoutEffect(() => {
   //   setBillingAddress("");
   //   setValidateTerms(false);
@@ -103,19 +99,17 @@ export default function RazorPayment({ userData }) {
     //   return;
     // }
 
-
-
     if (guestUser) {
       if (
         guestUserData === null ||
-        guestUserData?.address?.full_name === "" ||
-        guestUserData?.address?.last_name === "" ||
+        guestUserData?.address?.firstName === "" ||
         guestUserData?.address?.country === "" ||
-        guestUserData?.address?.address_1 === "" ||
-        guestUserData?.address?.address_2 === "" ||
+        guestUserData?.address?.houseName === "" ||
+        guestUserData?.address?.street === "" ||
+        guestUserData?.address?.landmark === "" ||
         guestUserData?.address?.state === "" ||
         guestUserData?.address?.city === "" ||
-        guestUserData?.address?.pincode === "" ||
+        guestUserData?.address?.pinCode === "" ||
         guestUserData?.address?.phone === "" ||
         guestUserData?.address?.email === "" ||
         !isValidEmail(guestUserData?.address?.email)
@@ -144,8 +138,6 @@ export default function RazorPayment({ userData }) {
       return;
     }
 
-
-
     try {
       // Step 1: Create the order ID from the server
       const response = await fetch(`${homeUrl}api/checkout/razorpay`, {
@@ -159,7 +151,7 @@ export default function RazorPayment({ userData }) {
       const data = await response.json();
 
       if (!data.success) {
-       // alert("Error creating order");
+        // alert("Error creating order");
         setLoading(false);
         return;
       }
@@ -174,7 +166,7 @@ export default function RazorPayment({ userData }) {
         order_id: data.orderId, // Use the order ID received from the API
         handler: async function (response) {
           // Step 3: Handle payment success
-        //  console.log("Payment Successful: " + response.razorpay_payment_id);
+          //  console.log("Payment Successful: " + response.razorpay_payment_id);
           setUpdatePaymentStatus("success");
 
           setPaymentId(response.razorpay_payment_id || "null");
@@ -191,19 +183,19 @@ export default function RazorPayment({ userData }) {
               set_paid: true, // Whether the order is paid (true/false)
               billing: {
                 first_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.full_name ||
                   "",
                 last_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.last_name ||
                   "",
                 address_1:
-                  billingAddress?.address_1 ||
+                  billingAddress?.houseName ||
                   guestUserData?.address?.address_1 ||
                   "",
                 address_2:
-                  billingAddress?.address_2 ||
+                  billingAddress?.street ||
                   guestUserData?.address?.address_2 ||
                   "",
                 city:
@@ -223,19 +215,19 @@ export default function RazorPayment({ userData }) {
               },
               shipping: {
                 first_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.full_name ||
                   "",
                 last_name:
-                  billingAddress?.fullname_and_lastname ||
+                  billingAddress?.firstName ||
                   guestUserData?.address?.last_name ||
                   "",
                 address_1:
-                  billingAddress?.address_1 ||
+                  billingAddress?.houseName ||
                   guestUserData?.address?.address_1 ||
                   "",
                 address_2:
-                  billingAddress?.address_2 ||
+                  billingAddress?.street ||
                   guestUserData?.address?.address_2 ||
                   "",
                 city:
@@ -252,14 +244,22 @@ export default function RazorPayment({ userData }) {
                   "",
               },
               line_items: filteredItems || [],
-             coupon_lines: couponData || [],
-              shipping_lines: [
-                {
-                  method_id: "free_shipping", // Shipping method ID for free shipping
-                  method_title: "Free Shipping", // Shipping method title
-                  total: "0", // Shipping cost for free shipping
-                },
-              ],
+              coupon_lines: couponData || [],
+              shipping_lines: haveShippingCharge
+                ? [
+                    {
+                      method_id: "flat_rate",
+                      method_title: "Flat Rate",
+                      total: shippingCharge.toString(), // Ensure shippingCharge is a string
+                    },
+                  ]
+                : [
+                    {
+                      method_id: "free_shipping", // Shipping method for free shipping
+                      method_title: "Free Shipping", // Shipping method title
+                      total: "0", // No shipping charge for free shipping
+                    },
+                  ],
             };
 
             const response = await fetch(
@@ -285,11 +285,12 @@ export default function RazorPayment({ userData }) {
                   guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   data.orderId,
-                  paymentMethodOption || 'Razorpay',
+                  paymentMethodOption || "Razorpay",
                   guestUser ? guestUserData?.address : userData,
                   paymentId,
                   totalDiscount || 0,
-                  cartSubTotal
+                  cartSubTotal,
+                  shippingCharge
                 ),
               });
 
@@ -303,11 +304,12 @@ export default function RazorPayment({ userData }) {
                   guestUser ? guestUserData?.address : billingAddress,
                   cartItems,
                   data.orderId,
-                  paymentMethodOption || 'Razorpay',
+                  paymentMethodOption || "Razorpay",
                   guestUser ? guestUserData?.address : userData,
                   paymentId,
                   totalDiscount || 0,
-                  cartSubTotal
+                  cartSubTotal,
+                  shippingCharge
                 ),
               });
 
@@ -320,9 +322,8 @@ export default function RazorPayment({ userData }) {
               setValidateTerms(false); // Reset terms validation flag
               setValidateAddress(false); // Reset address validation flag
               setPaymentTerms(false);
-              setGuestUser(false)
+              setGuestUser(false);
               localStorage.removeItem("cart"); // Remove items from localStorage
-             
 
               // Redirect on success
               router.push(`${homeUrl}checkout/success`);

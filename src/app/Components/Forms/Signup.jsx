@@ -103,7 +103,7 @@ export default function Signup() {
           <div className="grid gap-4">
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Full name"
               className="input"
               value={username}
               onChange={(e) => setUsername(e.target.value)}

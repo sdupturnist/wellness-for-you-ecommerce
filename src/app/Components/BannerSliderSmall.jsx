@@ -6,7 +6,6 @@ import Images from "./Images";
 import { homeUrl } from "../Utils/variables";
 import Link from "next/link";
 
-
 export default function BannerSliderSmall({ data, url }) {
   const settings = {
     dots: false, // Show navigation dots
@@ -20,7 +19,7 @@ export default function BannerSliderSmall({ data, url }) {
     pauseOnHover: true, // Pause autoplay when hovered
   };
   const items = data?.map((item, index) =>
-    item?.acf?.url !== null || item?.acf?.url !== '' ? (
+    item?.acf?.url !== "" ? (
       <Link key={index} href={item?.acf?.url || homeUrl}>
         <Images
           imageurl={item?.featured_image?.url}
@@ -34,7 +33,6 @@ export default function BannerSliderSmall({ data, url }) {
         />
       </Link>
     ) : (
-      
       <Images
         key={index}
         imageurl={item?.featured_image?.url}

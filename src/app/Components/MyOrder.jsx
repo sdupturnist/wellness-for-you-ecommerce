@@ -55,7 +55,7 @@ export default function MyOrder({ data, orderView, userInfo }) {
                     <div key={index} className="flex gap-4 items-center">
                       <div className="border rounded-md flex items-center sm:h-[60px] sm:w-[60px] h-[50px] w-[50px] p-3">
                        <Images
-                          imageurl={item?.image?.src || item?.image}
+                          imageurl={item?.image?.src || item?.image || '/images/image-placeholder.webp'}
                           quality="100"
                           width="100"
                           height="100"

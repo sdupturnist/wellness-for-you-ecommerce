@@ -10,17 +10,16 @@ import { useRouter } from "next/navigation";
 import { useAuthContext } from "../Context/authContext"; // import useAuthContext here
 import { useEffect, useLayoutEffect } from "react";
 import { isLoggined } from "../Utils/checkAuth";
+import Swal from "sweetalert2";
 
 export default function CartView() {
-  const { cartItems, setGuestUser } = useCartContext();
+  const { cartItems, setGuestUser, guestUser } = useCartContext();
   const { auth } = useAuthContext(); // Get authentication status
   const router = useRouter();
 
-
-
   const handleGuestCheckout = () => {
     if (!auth) {
-      setGuestUser(true)
+      setGuestUser(true);
       router.push(`${homeUrl}/checkout`);
     }
   };
@@ -47,18 +46,49 @@ export default function CartView() {
               <CouponCode />
               <AmountList />
               <button
-                onClick={() =>
-                  isLoggined(
-                    auth,
-                    router,
-                    "checkout",
-                    "Login to Checkout",
-                    "Log in to your account to continue with the checkout process."
-                  )
-                }
-                className="btn btn-large">
-                Proceed to checkout
-              </button>
+  onClick={() => {
+    if (!auth) {
+      // If not authenticated, show the SweetAlert dialog
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "Login to Checkout",
+          text: "Log in to your account to continue with the checkout process.",
+          icon: false,
+          showCancelButton: true, // Show cancel button
+          confirmButtonText: "Login",
+          cancelButtonText: "Guest checkout",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // If user confirms (clicks "Login")
+            router.push(`${homeUrl}/login`);
+          } else if (result.isDismissed) {
+            // If user cancels (clicks "Guest checkout")
+            setGuestUser(true);
+            router.push(`${homeUrl}/checkout`);
+          }
+        });
+    } else {
+      // If user is authenticated, directly go to checkout
+      router.push(`${homeUrl}/checkout`);
+    }
+  }}
+  className="btn btn-large"
+>
+  Proceed to checkout
+</button>
+
+
+
               {!auth && (
                 <button
                   onClick={handleGuestCheckout}
