@@ -281,7 +281,7 @@ export default function RazorPayment({ userData }) {
                 body: JSON.stringify(orderInfo),
               }
             );
-
+  
             if (response.ok) {
               // Send mail notification to user (update the sendMail function as needed)
               await sendMail({
