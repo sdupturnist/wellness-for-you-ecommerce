@@ -1111,3 +1111,52 @@ table {
     }
 
 }
+
+
+
+/////FLOAT ICONS
+.floatig-icons{
+
+ 
+    @apply fixed right-0 top-[40%] z-10;
+
+    li{
+        @apply  relative mb-2;
+
+        span{
+        @apply opacity-0 fixed right-0 shadow-sm font-semibold sm:text-[14px] text-[12px] -z-10 text-nowrap whitespace-nowrap bg-white border border-border sm:min-h-[50px] min-h-[40px] sm:max-h-[50px] max-h-[40px] sm:p-3 sm:pl-4 sm:pr-5 py-[10px] pr-[20px] pl-[15px] rounded-l-lg;
+
+        width: max-content;
+
+        transform: translate(-50%, 0);
+       
+    }
+        .icon{
+            @apply bg-primary sm:min-h-[50px] sm:min-w-[50px] min-h-[40px] min-w-[40px]  flex items-center justify-center shadow-md hover:bg-primary-light rounded-l-md;
+            *{
+                @apply sm:size-6 size-5 text-white
+            }
+
+         
+        }
+
+
+        &:hover{
+            @apply max-w-fit;
+            span{
+                @apply transition-all  opacity-100  w-max sm:translate-x-[-45px] translate-x-[-35px];
+
+               
+                width: max-content;
+                 //transform: translate(-45px, 0);
+            }
+
+            // .icon{
+            //     -webkit-box-shadow:-3px 0px 2px 0px rgba(0, 0, 0, 0.35);
+            //     -moz-box-shadow: -3px 0px 2px 0px rgba(0, 0, 0, 0.35);
+            //     box-shadow: -3px 0px 2px 0px rgba(0, 0, 0, 0.35);
+    
+            // }
+        }
+    }
+}

@@ -14,6 +14,7 @@ import {
 } from "./Utils/variables";
 import ProductCard from "./Components/ProductCard";
 import ProductGrid from "./Components/ProductGrid";
+import FloatingIcons from "./Components/FloatingIcons";
 
 export default async function Home({ params, searchParams }) {
   const pageId = 19;
@@ -102,55 +103,67 @@ export default async function Home({ params, searchParams }) {
   let categories = await categoriesData.json();
 
   return (
-    <div className="container">
-      <section className="pb-0 sm:pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%]">
-          {topBannerLarge && (
-            <div className="w-full lg:pr-7">
-              <BannerSliderLarge data={topBannerLarge} />
-            </div>
-          )}
-          {topBannerSmall && (
-            <div className="lg:block hidden w-full">
-              <BannerSliderSmall data={topBannerSmall} />
-            </div>
-          )}
-        </div>
-      </section>
-      <section className="banners-full grid sm:gap-12 gap-6 pt-6 sm:pt-10">
-        {categories &&
-          categories.map((item, index) => (
-            <Link key={index} href={`${homeUrl}${item?.slug}`}>
-              <Images
-                imageurl={item?.image?.src}
-                quality="100"
-                width="1500"
-                height="500"
-                title={item?.featured_image?.image?.alt}
-                alt={item?.featured_image?.image?.alt}
-                classes="block w-full banner"
-                placeholder={true}
-              />
-            </Link>
-          ))}
-      </section>
-      {featuredProducts.length > 0 && (
-        <section className="featured-products products pt-0">
-          <SectionHeader title="Featured products" />
-
-          <ProductGrid items={featuredProducts} />
-
-          {/* <ProductSlider data={featuredProducts} /> */}
+    <>
+      <div className="container">
+        <section className="pb-0 sm:pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[70%_30%]">
+            {topBannerLarge && (
+              <div className="w-full lg:pr-7">
+                <BannerSliderLarge data={topBannerLarge} />
+              </div>
+            )}
+            {topBannerSmall && (
+              <div className="lg:block hidden w-full">
+                <BannerSliderSmall data={topBannerSmall} />
+              </div>
+            )}
+          </div>
         </section>
-      )}
-      <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
-        {bottomBannerLarge &&
-          bottomBannerLarge.map((item, index) =>
+        <section className="banners-full grid sm:gap-12 gap-6 pt-6 sm:pt-10">
+          {categories &&
+            categories.map((item, index) => (
+              <Link key={index} href={`${homeUrl}${item?.slug}`}>
+                <Images
+                  imageurl={item?.image?.src}
+                  quality="100"
+                  width="1500"
+                  height="500"
+                  title={item?.featured_image?.image?.alt}
+                  alt={item?.featured_image?.image?.alt}
+                  classes="block w-full banner"
+                  placeholder={true}
+                />
+              </Link>
+            ))}
+        </section>
+        {featuredProducts.length > 0 && (
+          <section className="featured-products products pt-0">
+            <SectionHeader title="Featured products" />
 
-           
-            item?.acf?.url !== "" ? (
-              <Link key={index} href={item?.acf?.url || homeUrl}>
-                 <Images
+            <ProductGrid items={featuredProducts} />
+
+            {/* <ProductSlider data={featuredProducts} /> */}
+          </section>
+        )}
+        <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
+          {bottomBannerLarge &&
+            bottomBannerLarge.map((item, index) =>
+              item?.acf?.url !== "" ? (
+                <Link key={index} href={item?.acf?.url || homeUrl}>
+                  <Images
+                    imageurl={item?.featured_image?.url}
+                    quality="100"
+                    width="1500"
+                    height="500"
+                    title={item?.featured_image?.alt}
+                    alt={item?.featured_image?.alt}
+                    classes="block w-full banner"
+                    placeholder={true}
+                  />
+                </Link>
+              ) : (
+                <Images
+                  key={index}
                   imageurl={item?.featured_image?.url}
                   quality="100"
                   width="1500"
@@ -160,86 +173,64 @@ export default async function Home({ params, searchParams }) {
                   classes="block w-full banner"
                   placeholder={true}
                 />
-              </Link>
-            ) : (
-              <Images
-              key={index}
-              imageurl={item?.featured_image?.url}
-              quality="100"
-              width="1500"
-              height="500"
-              title={item?.featured_image?.alt}
-              alt={item?.featured_image?.alt}
-              classes="block w-full banner"
-              placeholder={true}
-            />
-
-
-        
-            )
-          )}
-        <div className="grid md:grid-cols-2 sm:gap-12 gap-6">
-
-
-        {bottomBannerSmall &&
-          bottomBannerSmall.map((item, index) =>
-
-           
-            item?.acf?.url !== "" ? (
-              <div key={index}>
-              <Link href={item?.acf?.url || homeUrl}>
-                <Images
-                  imageurl={item?.featured_image?.url}
-                  quality="100"
-                  width="600"
-                  height="350"
-                  title={item?.featured_image?.alt}
-                  alt={item?.featured_image?.alt}
-                  classes="block w-full banner"
-                  placeholder={true}
-                />
-              </Link>
-            </div>
-            ) : (
-              <div key={index}>
-                  <Images
-                    key={index}
-                    imageurl={item?.featured_image?.url}
-                    quality="100"
-                    width="600"
-                    height="350"
-                    title={item?.featured_image?.alt}
-                    alt={item?.featured_image?.alt}
-                    classes="block w-full banner"
-                    placeholder={true}
-                  />
-                </div>
-
-
-        
-            )
-          )}
-
-  </div>
-      </section>
-      {/* {testimonial.length > 0 && ( */}
-      {/* <section className="testimonials text-center border-t"> */}
-      {/* <div className="max-w-screen-lg mx-auto gap-7"> */}
-      {/* <Testimonials data={testimonial} /> */}
-      {/* </div> */}
-      {/* </section> */}
-      {/* )} */}
-      {page?.content?.rendered && (
-        <section className="about content border-t sm:pb-14 text-center">
-          <div className="max-w-screen-lg mx-auto [&>*]:opacity-70 sm:[&>*]:text-[14px] [&>*]:text-[13px] [&>*]:leading-[1.7]">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: page?.content?.rendered,
-              }}></div>
+              )
+            )}
+          <div className="grid md:grid-cols-2 sm:gap-12 gap-6">
+            {bottomBannerSmall &&
+              bottomBannerSmall.map((item, index) =>
+                item?.acf?.url !== "" ? (
+                  <div key={index}>
+                    <Link href={item?.acf?.url || homeUrl}>
+                      <Images
+                        imageurl={item?.featured_image?.url}
+                        quality="100"
+                        width="600"
+                        height="350"
+                        title={item?.featured_image?.alt}
+                        alt={item?.featured_image?.alt}
+                        classes="block w-full banner"
+                        placeholder={true}
+                      />
+                    </Link>
+                  </div>
+                ) : (
+                  <div key={index}>
+                    <Images
+                      key={index}
+                      imageurl={item?.featured_image?.url}
+                      quality="100"
+                      width="600"
+                      height="350"
+                      title={item?.featured_image?.alt}
+                      alt={item?.featured_image?.alt}
+                      classes="block w-full banner"
+                      placeholder={true}
+                    />
+                  </div>
+                )
+              )}
           </div>
         </section>
-      )}
-    </div>
+        {/* {testimonial.length > 0 && ( */}
+        {/* <section className="testimonials text-center border-t"> */}
+        {/* <div className="max-w-screen-lg mx-auto gap-7"> */}
+        {/* <Testimonials data={testimonial} /> */}
+        {/* </div> */}
+        {/* </section> */}
+        {/* )} */}
+        {page?.content?.rendered && (
+          <section className="about content border-t sm:pb-14 text-center">
+            <div className="max-w-screen-lg mx-auto [&>*]:opacity-70 sm:[&>*]:text-[14px] [&>*]:text-[13px] [&>*]:leading-[1.7]">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: page?.content?.rendered,
+                }}></div>
+            </div>
+          </section>
+        )}
+      </div>
+      <FloatingIcons />
+    </>
   );
 }
 
