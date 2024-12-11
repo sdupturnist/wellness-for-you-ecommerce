@@ -60,7 +60,7 @@ export default function CashOnDeliveryPayment({ userData }) {
 
   const totalDiscount = discount || 0;
 
-  console.log(guestUserData)
+  // console.log(guestUserData);
 
   useLayoutEffect(() => {
     setBillingAddress("");
@@ -138,21 +138,21 @@ export default function CashOnDeliveryPayment({ userData }) {
               payment_method_title: "Cash on Delivery", // Payment method title
               set_paid: false, // Mark as unpaid for COD
               billing: {
-                first_name:
+                  first_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.full_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 last_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.last_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 address_1:
                   billingAddress?.houseName ||
-                  guestUserData?.address?.address_1 ||
+                  guestUserData?.address?.houseName ||
                   "",
                 address_2:
                   billingAddress?.street ||
-                  guestUserData?.address?.address_2 ||
+                  guestUserData?.address?.street ||
                   "",
                 city:
                   billingAddress?.city || guestUserData?.address?.city || "",
@@ -160,7 +160,7 @@ export default function CashOnDeliveryPayment({ userData }) {
                   billingAddress?.state || guestUserData?.address?.state || "",
                 postcode:
                   billingAddress?.postcode ||
-                  guestUserData?.address?.postcode ||
+                  guestUserData?.address?.pinCode ||
                   "",
                 country:
                   billingAddress?.country ||
@@ -171,33 +171,35 @@ export default function CashOnDeliveryPayment({ userData }) {
               },
               shipping: {
                 first_name:
-                  billingAddress?.firstName ||
-                  guestUserData?.address?.full_name ||
-                  "",
-                last_name:
-                  billingAddress?.firstName ||
-                  guestUserData?.address?.last_name ||
-                  "",
-                address_1:
-                  billingAddress?.houseName ||
-                  guestUserData?.address?.address_1 ||
-                  "",
-                address_2:
-                  billingAddress?.street ||
-                  guestUserData?.address?.address_2 ||
-                  "",
-                city:
-                  billingAddress?.city || guestUserData?.address?.city || "",
-                state:
-                  billingAddress?.state || guestUserData?.address?.state || "",
-                postcode:
-                  billingAddress?.postcode ||
-                  guestUserData?.address?.postcode ||
-                  "",
-                country:
-                  billingAddress?.country ||
-                  guestUserData?.address?.country ||
-                  "",
+                billingAddress?.firstName ||
+                guestUserData?.address?.firstName ||
+                "",
+              last_name:
+                billingAddress?.firstName ||
+                guestUserData?.address?.firstName ||
+                "",
+              address_1:
+                billingAddress?.houseName ||
+                guestUserData?.address?.houseName ||
+                "",
+              address_2:
+                billingAddress?.street ||
+                guestUserData?.address?.street ||
+                "",
+              city:
+                billingAddress?.city || guestUserData?.address?.city || "",
+              state:
+                billingAddress?.state || guestUserData?.address?.state || "",
+              postcode:
+                billingAddress?.postcode ||
+                guestUserData?.address?.pinCode ||
+                "",
+              country:
+                billingAddress?.country ||
+                guestUserData?.address?.country ||
+                "",
+              email: userData?.email || guestUserData?.address?.email || "",
+              phone: userData?.phone || guestUserData?.address?.phone || "",
               },
               line_items: filteredItems || [],
               coupon_lines: couponData || [],
@@ -249,7 +251,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "",
                   totalDiscount || 0,
                   cartSubTotal,
-                  shippingCharge
+                  shippingCharge,
+                  haveShippingCharge
                 ),
               });
 
@@ -268,7 +271,8 @@ export default function CashOnDeliveryPayment({ userData }) {
                   "",
                   totalDiscount || 0,
                   cartSubTotal,
-                  shippingCharge
+                  shippingCharge,
+                  haveShippingCharge
                 ),
               });
 

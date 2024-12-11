@@ -64,7 +64,13 @@ export default function RazorPayment({ userData }) {
   }, []);
 
   // Calculate payAmount (considering discount)
-  const payAmount = discount ? cartSubTotal - discount : cartSubTotal;
+  const payAmount = haveShippingCharge
+    ? discount
+      ? cartSubTotal - discount + shippingCharge
+      : cartSubTotal + shippingCharge
+    : discount
+    ? cartSubTotal - discount
+    : cartSubTotal;
 
   const filteredItems = cartItems.map(({ id, image, ...rest }) => rest);
 
@@ -184,19 +190,19 @@ export default function RazorPayment({ userData }) {
               billing: {
                 first_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.full_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 last_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.last_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 address_1:
                   billingAddress?.houseName ||
-                  guestUserData?.address?.address_1 ||
+                  guestUserData?.address?.houseName ||
                   "",
                 address_2:
                   billingAddress?.street ||
-                  guestUserData?.address?.address_2 ||
+                  guestUserData?.address?.street ||
                   "",
                 city:
                   billingAddress?.city || guestUserData?.address?.city || "",
@@ -204,7 +210,7 @@ export default function RazorPayment({ userData }) {
                   billingAddress?.state || guestUserData?.address?.state || "",
                 postcode:
                   billingAddress?.postcode ||
-                  guestUserData?.address?.postcode ||
+                  guestUserData?.address?.pinCode ||
                   "",
                 country:
                   billingAddress?.country ||
@@ -216,19 +222,19 @@ export default function RazorPayment({ userData }) {
               shipping: {
                 first_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.full_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 last_name:
                   billingAddress?.firstName ||
-                  guestUserData?.address?.last_name ||
+                  guestUserData?.address?.firstName ||
                   "",
                 address_1:
                   billingAddress?.houseName ||
-                  guestUserData?.address?.address_1 ||
+                  guestUserData?.address?.houseName ||
                   "",
                 address_2:
                   billingAddress?.street ||
-                  guestUserData?.address?.address_2 ||
+                  guestUserData?.address?.street ||
                   "",
                 city:
                   billingAddress?.city || guestUserData?.address?.city || "",
@@ -236,12 +242,14 @@ export default function RazorPayment({ userData }) {
                   billingAddress?.state || guestUserData?.address?.state || "",
                 postcode:
                   billingAddress?.postcode ||
-                  guestUserData?.address?.postcode ||
+                  guestUserData?.address?.pinCode ||
                   "",
                 country:
                   billingAddress?.country ||
                   guestUserData?.address?.country ||
                   "",
+                email: userData?.email || guestUserData?.address?.email || "",
+                phone: userData?.phone || guestUserData?.address?.phone || "",
               },
               line_items: filteredItems || [],
               coupon_lines: couponData || [],
@@ -290,7 +298,8 @@ export default function RazorPayment({ userData }) {
                   paymentId,
                   totalDiscount || 0,
                   cartSubTotal,
-                  shippingCharge
+                  shippingCharge,
+                  haveShippingCharge
                 ),
               });
 
@@ -309,7 +318,8 @@ export default function RazorPayment({ userData }) {
                   paymentId,
                   totalDiscount || 0,
                   cartSubTotal,
-                  shippingCharge
+                  shippingCharge,
+                  haveShippingCharge
                 ),
               });
 

@@ -1287,12 +1287,12 @@ function change_user_password( WP_REST_Request $request ) {
 // }
 
 
-//POSTS IMAGE URL
+//POSTS and PAGES IMAGE URL
 
 
-// Add featured image URL to REST API response
+// Add featured image URL to REST API response for posts and pages
 function add_featured_image_to_rest_api( $data, $post, $context ) {
-    // Check if the post has a featured image
+    // Check if the post/page has a featured image
     if ( has_post_thumbnail( $post->ID ) ) {
         // Get the featured image URL
         $featured_image_url = get_the_post_thumbnail_url( $post->ID, 'full' );
@@ -1306,6 +1306,10 @@ function add_featured_image_to_rest_api( $data, $post, $context ) {
 
 // Hook into the REST API response for posts
 add_filter( 'rest_prepare_post', 'add_featured_image_to_rest_api', 10, 3 );
+
+// Hook into the REST API response for pages
+add_filter( 'rest_prepare_page', 'add_featured_image_to_rest_api', 10, 3 );
+
 
 
 

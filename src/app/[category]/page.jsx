@@ -4,7 +4,12 @@ import Pagination from "../Components/Pagination";
 import ProductCard from "../Components/ProductCard";
 import ProductGrid from "../Components/ProductGrid";
 import SectionHeader from "../Components/SectionHeader";
-import { apiUrl, homeUrl, siteAuthor, woocommerceKey } from "../Utils/variables";
+import {
+  apiUrl,
+  homeUrl,
+  siteAuthor,
+  woocommerceKey,
+} from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
   const { category } = params;
@@ -104,8 +109,6 @@ export default async function CategoryPage({ params, searchParams }) {
       (product) => product.acf && product.acf.top === true
     );
 
-
-
   return (
     <main>
       <div className="bg-bggray">
@@ -143,7 +146,13 @@ export default async function CategoryPage({ params, searchParams }) {
                   </div>
                 </div>
               ) : (
-                <Alerts large title="Sorry, No products Found" noPageUrl url={homeUrl} buttonLabel="Return to home"/>
+                <Alerts
+                  large
+                  title="Sorry, No products Found"
+                  noPageUrl
+                  url={homeUrl}
+                  buttonLabel="Return to home"
+                />
               )}
             </div>
           </section>

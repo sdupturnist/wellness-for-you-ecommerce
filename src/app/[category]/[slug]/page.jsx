@@ -5,6 +5,7 @@ import Breadcrumb from "@/app/Components/Breadcrumb";
 import Features from "@/app/Components/Features";
 import Images from "@/app/Components/Images";
 import ImageSlider from "@/app/Components/ImagesSlider";
+import ImageWithZoom from "@/app/Components/ImageZoom";
 import ProductCard from "@/app/Components/ProductCard";
 import ReviewCount from "@/app/Components/ReviewCount";
 import Reviews from "@/app/Components/Reviews";
@@ -144,8 +145,6 @@ export default async function ItemSingle({ params, searchParams }) {
     },
   ];
 
-  // ,
-  // <Reviews data={productReview && productReview} />
 
   if (singleProduct) {
     return (
@@ -161,20 +160,18 @@ export default async function ItemSingle({ params, searchParams }) {
                     {singleProduct && singleProduct?.images?.length > 1 ? (
                       <ImageSlider data={singleProduct?.images} />
                     ) : (
-                      <Images
-                        imageurl={singleProduct?.images[0]?.src}
-                        quality="100"
-                        width="800"
-                        height="800"
-                        title={`${
-                          singleProduct?.images[0]?.alt || singleProduct?.name
-                        }`}
-                        alt={`${
-                          singleProduct?.images[0]?.alt || singleProduct?.name
-                        }`}
-                        classes="block w-full mx-auto"
-                        placeholder={true}
-                      />
+
+                      <ImageWithZoom
+                      imageurl={singleProduct?.images[0]?.src}
+                      quality="100"
+                      width="800"
+                      height="800"
+                      title={singleProduct?.images[0]?.alt || singleProduct?.name}
+                      alt={singleProduct?.images[0]?.alt || singleProduct?.name}
+                      classes="block w-full mx-auto"
+                      placeholder={true} // lazy loading if needed
+                    />
+                  
                     )}
                   </div>
                 </div>
@@ -245,12 +242,11 @@ export default async function ItemSingle({ params, searchParams }) {
                   </div>
                 )} */}
 
-
-{/* flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none */}
+                    {/* flex gap-3 lg:relative fixed bottom-0 left-0 right-0 z-40 bg-white lg:py-3 py-2 lg:px-0 px-4 border-t lg:border-none */}
 
                     {singleProduct?.price && (
                       <div className="flex gap-3  bg-white">
-     <AddToCart
+                        <AddToCart
                           itemid={singleProduct?.id ?? null}
                           price={
                             singleProduct?.sale_price !== null
@@ -264,7 +260,7 @@ export default async function ItemSingle({ params, searchParams }) {
                           )}
                           singlePage
                           slug={singleProduct?.slug}
- />
+                        />
                       </div>
                     )}
                     <div className="gap-2 sm:inline-flex my-5">
@@ -291,7 +287,7 @@ export default async function ItemSingle({ params, searchParams }) {
               <div className="sm:mt-14 mt-10">
                 <div className="grid gap-5">
                   <Accordion items={accordianItems} />
-</div>
+                </div>
               </div>
 
               {relatedProducts.length > 0 && (
@@ -312,7 +308,7 @@ export default async function ItemSingle({ params, searchParams }) {
               {allProducts && filteredProductsTopProducts.length > 0 && (
                 <div className="sm:mt-10 mt-5">
                   <div className="section-header-card !p-0">
-                    <SectionHeader title="Top rated products" spacingSm />
+                    <SectionHeader title="Best selling products" spacingSm />
                     <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
                       {allProducts &&
                         filteredProductsTopProducts.map((item, index) => (

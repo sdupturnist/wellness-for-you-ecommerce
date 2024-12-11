@@ -1,33 +1,47 @@
-'use client'
+"use client";
 
-import { currency, formatDate, siteName } from "./variables"
+import { currency, formatDate, siteName } from "./variables";
 
-
-
-
-export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount, cartSubTotal, shippingCharge) => {
-    
+export let OrderPlacedEmailTemplate = (
+  siteLogo,
+  billingAddress,
+  cartItems,
+  orderId,
+  paymentMethodOption,
+  userData,
+  paymentid,
+  discount,
+  cartSubTotal,
+  shippingCharge,
+  haveShippingCharge
+) => {
   let today = new Date();
-
-  
 
   // Calculate Sub-Total dynamically
   // let cartSubTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
 
-
-  let total = cartSubTotal + shippingCharge; 
-
-
+  let total = cartSubTotal + shippingCharge;
 
   // Mapping cart items into a string of <tr> for the table
-  const orderItems = cartItems.map((item, index) => (
-    `<tr>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${item?.name}</td>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${item?.quantity}</td>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${item?.price}</td>
-      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(item?.price * item?.quantity).toFixed(2)}</td>
+  const orderItems = cartItems
+    .map(
+      (item, index) =>
+        `<tr>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${
+        item?.name
+      }</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${
+        item?.quantity
+      }</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${
+          item?.price
+        }</td>
+      <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(
+          item?.price * item?.quantity
+        ).toFixed(2)}</td>
     </tr>`
-  )).join(''); // Make sure to join all items into one string
+    )
+    .join(""); // Make sure to join all items into one string
 
   const item = `
   <p style="margin-top:0px;margin-bottom:20px">Thank you for your interest in Wellness4U Food Supplements products. Your order has been received and will be processed once payment has been confirmed.</p>
@@ -43,8 +57,12 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>Order ID:</b> ${orderId}<br>
           <b>Date Added:</b> ${formatDate(today)}<br>
           <b>Payment Method:</b> ${paymentMethodOption}<br>
-          <b>Shipping Method:</b> Free Shipping</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${userData?.email || billingAddress?.email}" target="_blank">${userData?.email || billingAddress?.email}</a><br>
+          <b>Shipping Method:</b> ${
+            haveShippingCharge ? "Flat Rate" : "Free Shipping"
+          }</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"><b>E-mail:</b><a href="mailto:${
+          userData?.email || billingAddress?.email
+        }" target="_blank">${userData?.email || billingAddress?.email}</a><br>
           <b>Telephone:</b> ${billingAddress?.phone}<br>
           <b>Order Status:</b> Processing<br></td>
       </tr>
@@ -73,8 +91,20 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     </thead>
     <tbody>
       <tr>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${
+          billingAddress?.firstName || billingAddress?.firstName
+        }<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${
+    billingAddress?.landmark
+  }<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${
+    billingAddress?.state
+  }<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${
+          billingAddress?.firstName || billingAddress?.firstName
+        }<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${
+    billingAddress?.landmark
+  }<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${
+    billingAddress?.state
+  }<br>${billingAddress?.country}</td>
       </tr>
     </tbody>
   </table>
@@ -94,38 +124,44 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     <tfoot>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Sub-Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${cartSubTotal.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${cartSubTotal.toFixed(
+    2
+  )}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Discount:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${discount !== 0 ? discount : '0'}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${
+    discount !== 0 ? discount : "0"
+  }</td>
       </tr>
           <tr>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Free Shipping:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${shippingCharge.toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>${
+          haveShippingCharge ? "Shipping charge" : "Free Shipping"
+        }:</b></td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${shippingCharge.toFixed(
+    2
+  )}</td>
       </tr>
       <tr>
         <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px" colspan="3"><b>Total:</b></td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(discount !== 0 ? total-discount : total).toFixed(2)}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:right;padding:7px">${currency}${(discount !==
+  0
+    ? total - discount
+    : total
+  ).toFixed(2)}</td>
       </tr>
     </tfoot>
   </table>
   
   <p style="margin-top:0px;margin-bottom:20px">Please reply to this e-mail if you have any questions.</p>
   <font color="#888888"></font>
-  `
-    
+  `;
+
   return item;
-}
-
-
-
-
+};
 
 //WELCOME
-export let WelcomeEmailTemplate  = (content, name) => {
-
-
+export let WelcomeEmailTemplate = (content, name) => {
   const item = `<table role="presentation" style="width: 100%; background-color: #ffffff; padding: 20px;">
         <tr>
             <td>
@@ -137,7 +173,7 @@ export let WelcomeEmailTemplate  = (content, name) => {
                     </tr>
                     <tr>
                         <td style="font-size: 16px; line-height: 1.6; color: #555555; ">
-                            <p>Hello, ${name || ''}</p>
+                            <p>Hello, ${name || ""}</p>
                             <p>${content}</p>
                         </td>
                     </tr>
@@ -151,19 +187,20 @@ export let WelcomeEmailTemplate  = (content, name) => {
                 </table>
             </td>
         </tr>
-    </table>`
+    </table>`;
 
-  return item
-
-}
-
-
-
+  return item;
+};
 
 //RETURN
-export let ReturnEmailTemplate = (title, content, order_id, amount, opened, transition_id) => {
-
-
+export let ReturnEmailTemplate = (
+  title,
+  content,
+  order_id,
+  amount,
+  opened,
+  transition_id
+) => {
   const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
   <tr>
     <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
@@ -193,18 +230,19 @@ export let ReturnEmailTemplate = (title, content, order_id, amount, opened, tran
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Transaction ID</td>
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${transition_id}</td>
   </tr>
-</table>`
+</table>`;
 
-  return item
-
-}
-
-
+  return item;
+};
 
 //CANCELLATION
-export let CancelEmailTemplate = (title, content, order_id, amount, transition_id) => {
-
-
+export let CancelEmailTemplate = (
+  title,
+  content,
+  order_id,
+  amount,
+  transition_id
+) => {
   const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
   <tr>
     <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
@@ -230,21 +268,14 @@ export let CancelEmailTemplate = (title, content, order_id, amount, transition_i
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Transaction ID</td>
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${transition_id}</td>
   </tr>
-</table>`
+</table>`;
 
-  return item
-
-}
-
-
-
-
+  return item;
+};
 
 //CONTACT FORM
 
 export let ContactEmailTemplate = (name, email, message) => {
-
-
   const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
   <tr>
     <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
@@ -262,20 +293,14 @@ export let ContactEmailTemplate = (name, email, message) => {
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">Message</td>
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${message}</td>
   </tr>
-</table>`
+</table>`;
 
-  return item
-
-}
-
-
-
+  return item;
+};
 
 //SUBSCRIBE FORM - ADMIN
 
 export let SubscribeEmailTemplate = (email) => {
-
-
   const item = `<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
   <tr>
     <th style="padding: 8px 12px; border: 1px solid #ddd; text-align: left; background-color: #f4f4f4; font-family: Arial, sans-serif;">Field</th>
@@ -286,11 +311,7 @@ export let SubscribeEmailTemplate = (email) => {
     <td style="padding: 8px 12px; border: 1px solid #ddd; font-family: Arial, sans-serif;">${email}</td>
   </tr>
    
-</table>`
+</table>`;
 
-  return item
-
-}
-
-
-
+  return item;
+};

@@ -83,7 +83,7 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[80px] sm:my-[15px] m-0 mx-auto"
+              classes="block sm:size-[250px] size-[80px] sm:my-[15px] m-0 mx-auto object-contain"
               placeholder={true}
             />
           </Link>
@@ -163,7 +163,7 @@ export default function ProductCard({
               height="150"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[150px] size-[80px] sm:my-[15px] m-0 mx-auto"
+              classes="block sm:size-[250px] size-[80px] sm:my-[15px] m-0 mx-auto object-contain"
               placeholder={true}
             />
           </Link>
@@ -243,7 +243,7 @@ export default function ProductCard({
               height="200"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block sm:size-[50px] size-[50px] my-[15px] mx-auto"
+              classes="block sm:size-[50px] size-[50px] my-[15px] mx-auto object-contain"
               placeholder={true}
             />
           </Link>
@@ -334,7 +334,7 @@ export default function ProductCard({
               height="250"
               title={`${data?.images[0]?.alt || data?.name}`}
               alt={`${data?.images[0]?.alt || data?.name}`}
-              classes="block mx-auto"
+              classes="block mx-auto object-contain"
               placeholder={true}
             />
           </Link>

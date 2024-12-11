@@ -14,18 +14,18 @@ export default async function ContactUs() {
 
   let page = await pageData.json();
 
-  console.log(page);
+ 
 
   return (
     <div className="bg-white">
       <section className="sm:pt-0">
         <div className="container sm:px-0 w-full min-w-full">
           <Images
-            imageurl="/images/contact-bg.webp"
+            imageurl={page?.featured_image_url}
             quality="100"
             width="2000"
             height="400"
-            alt="Wellness for you"
+            alt= {page?.title?.rendered}
             classes="block w-full sm:h-[400px] h-[150px] rounded-lg object-cover sm:my-5 sm:w-[98%] mx-auto"
             placeholder={true}
           />
