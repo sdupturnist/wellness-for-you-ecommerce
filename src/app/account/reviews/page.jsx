@@ -37,7 +37,7 @@ export default function MyReviews() {
   ) : (
     <div className="bg-bggray">
       <section className="pb-0 sm:pt-0 pt-3">
-        <div className="sm:bg-transparent max-w-[999px] mx-auto grid sm:gap-6 gap-5">
+        <div className="sm:bg-transparent max-w-[999px] mx-auto grid sm:gap-6 gap-3">
           {!reviews?.length > 0 && (
             <Alerts noPageUrl large title="You have no" />
           )}

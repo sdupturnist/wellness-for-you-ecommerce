@@ -60,7 +60,7 @@ export default function CashOnDeliveryPayment({ userData }) {
 
   const totalDiscount = discount || 0;
 
-
+  console.log(guestUserData)
 
   useLayoutEffect(() => {
     setBillingAddress("");

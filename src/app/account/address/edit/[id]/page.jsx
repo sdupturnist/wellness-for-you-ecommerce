@@ -8,7 +8,7 @@ export default function EditAddress() {
   return (
     <div className="bg-bggray">
       <section className="pb-0 sm:pt-0 pt-3">
-        <div className="sm:bg-transparent max-w-[999px] mx-auto grid sm:gap-6 gap-5">
+        <div className="sm:bg-transparent max-w-[999px] mx-auto grid sm:gap-6 gap-3">
           <div className="card-rounded-none-small w-full bg-white py-4 px-3">
             <SectionHeader title="Edit address" card-sm spacingSm titleSmall />
             <UpdateAddressForm />

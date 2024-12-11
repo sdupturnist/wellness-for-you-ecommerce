@@ -159,7 +159,7 @@ export let OfferPercentage = ({ normalprice, saleprice }) => {
   );
 
   return (
-    <span className="product-offer font-semibold">{discountPercentage}% OFF</span>
+    <span className="product-offer font-semibold inline-block">{discountPercentage}% OFF</span>
   ); // Return the discount percentage
 };
 

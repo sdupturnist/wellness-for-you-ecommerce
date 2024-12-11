@@ -46,48 +46,51 @@ export default function CartView() {
               <CouponCode />
               <AmountList />
               <button
-  onClick={() => {
-    if (!auth) {
-      // If not authenticated, show the SweetAlert dialog
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-light",
-        },
-        buttonsStyling: false,
-      });
+                onClick={() => {
+                  if (!auth) {
+                    // If not authenticated, show the SweetAlert dialog
+                    const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-light",
+                        denyButton: "btn btn-light",
+                      },
+                      buttonsStyling: false,
+                    });
 
-      swalWithBootstrapButtons
-        .fire({
-          title: "Login to Checkout",
-          text: "Log in to your account to continue with the checkout process.",
-          icon: false,
-          showCancelButton: true, // Show cancel button
-          confirmButtonText: "Login",
-          cancelButtonText: "Guest checkout",
-          reverseButtons: true,
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            // If user confirms (clicks "Login")
-            router.push(`${homeUrl}/login`);
-          } else if (result.isDismissed) {
-            // If user cancels (clicks "Guest checkout")
-            setGuestUser(true);
-            router.push(`${homeUrl}/checkout`);
-          }
-        });
-    } else {
-      // If user is authenticated, directly go to checkout
-      router.push(`${homeUrl}/checkout`);
-    }
-  }}
-  className="btn btn-large"
->
-  Proceed to checkout
-</button>
+                    swalWithBootstrapButtons
+                      .fire({
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: "Save",
+                        denyButtonText: `Guest checkout`,
 
-
+                        title: "Login to Checkout",
+                        text: "Log in to your account to continue with the checkout process.",
+                        icon: false,
+                        // showCancelButton: true, // Show cancel button
+                        confirmButtonText: "Login",
+                        // cancelButtonText: "Guest checkout",
+                        reverseButtons: true,
+                      })
+                      .then((result) => {
+                        if (result.isConfirmed) {
+                          // If user confirms (clicks "Login")
+                          router.push(`${homeUrl}/login`);
+                        } else if (result.isDenied) {
+                          // If user cancels (clicks "Guest checkout")
+                          setGuestUser(true);
+                          router.push(`${homeUrl}/checkout`);
+                        }
+                      });
+                  } else {
+                    // If user is authenticated, directly go to checkout
+                    router.push(`${homeUrl}/checkout`);
+                  }
+                }}
+                className="btn btn-large">
+                Proceed to checkout
+              </button>
 
               {!auth && (
                 <button

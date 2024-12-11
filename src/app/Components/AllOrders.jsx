@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { apiUrl, woocommerceKey } from "../Utils/variables";
@@ -6,7 +6,6 @@ import MyOrder from "./MyOrder";
 import Alerts from "./Alerts";
 import Loading from "./Loading";
 import { useAuthContext } from "../Context/authContext";
-
 
 export default function AllOrders() {
   const { userData } = useAuthContext();
@@ -16,7 +15,9 @@ export default function AllOrders() {
 
   useEffect(() => {
     // Only run once on mount
-    fetch(`${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userData?.id}&per_page=100`)
+    fetch(
+      `${apiUrl}wp-json/wc/v3/orders${woocommerceKey}&customer=${userData?.id}&per_page=100`
+    )
       .then((res) => res.json())
       .then((data) => {
         // Ensure that data is an array before setting it to orders
@@ -30,8 +31,6 @@ export default function AllOrders() {
       });
   }, [userData?.id]); // Re-run the effect if userData.id changes
 
-
-
   return (
     <div>
       {loading ? (
@@ -40,7 +39,7 @@ export default function AllOrders() {
         </div>
       ) : (
         <ul className="general-list">
-   {userData && Array.isArray(orders) && orders.length > 0 ? (
+          {userData && Array.isArray(orders) && orders.length > 0 ? (
             orders.map((item, index) => (
               <MyOrder data={item} key={index} userInfo={userData} />
             ))

@@ -67,7 +67,7 @@ function Checkout() {
               {!guestUser ? (
                 <CheckoutAddress />
               ) : (
-                <div className="card bg-white grid mt-5">
+                <div className="card bg-white grid">
                   <SectionHeader title="Add billing details" card />
                   <GuestCheckoutAddressForm />
                 </div>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Loading from "@/app/Components/Loading";
 import { apiUrl, woocommerceKey } from "@/app/Utils/variables";
 import { useAuthContext } from "@/app/Context/authContext";
+import ProductGrid from "@/app/Components/ProductGrid";
 
 
 export default function WishList() {
@@ -14,7 +15,6 @@ export default function WishList() {
   const [loading, setLoading] = useState(true);
 
   const { userData } = useAuthContext();
-
 
   // Fetch wishlist items
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function WishList() {
               {items.length === 0 ? (
                 showAlert && (
                   <Alerts
-                  noPageUrl
+                    noPageUrl
                     large
                     title="You have not any products in your wishlist"
                   />
@@ -91,11 +91,7 @@ export default function WishList() {
                   <div className="grid gap-3 sm:gap-0 w-full lg:order-2 order-first ">
                     {wishlist && (
                       <div className="section-header-card">
-                        <ul className="products product-card-left-right-mobile grid lg:grid-cols-4 sm:grid-cols-2 sm:gap-4">
-                          {items.map((item, index) => (
-                            <ProductCard key={index} data={item} mobileList />
-                          ))}
-                        </ul>
+<ProductGrid items={items} />
                       </div>
                     )}
                   </div>

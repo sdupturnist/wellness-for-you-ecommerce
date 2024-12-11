@@ -3,11 +3,13 @@
 import { currency, formatDate, siteName } from "./variables"
 
 
+
+
 export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orderId, paymentMethodOption, userData, paymentid, discount, cartSubTotal, shippingCharge) => {
     
   let today = new Date();
 
-
+  
 
   // Calculate Sub-Total dynamically
   // let cartSubTotal = cartItems.reduce((acc, item) => acc + (item?.price * item?.quantity), 0);
@@ -71,8 +73,8 @@ export let OrderPlacedEmailTemplate = (siteLogo, billingAddress, cartItems, orde
     </thead>
     <tbody>
       <tr>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
-        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.postcode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
+        <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">${billingAddress?.firstName || billingAddress?.firstName}<br>${billingAddress?.houseName}<br>${billingAddress?.street}<br>${billingAddress?.landmark}<br>${billingAddress?.city} ${billingAddress?.pinCode}<br>${billingAddress?.state}<br>${billingAddress?.country}</td>
       </tr>
     </tbody>
   </table>

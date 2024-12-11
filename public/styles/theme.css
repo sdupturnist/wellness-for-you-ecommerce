@@ -576,7 +576,7 @@ select {
   @apply rounded-md text-[12px] font-bold border-primary bg-primary-dim text-primary uppercase sm:h-[35px] h-[30px] min-h-[30px] sm:px-4 px-3 hover:bg-primary hover:text-white hover:shadow-lg;
 }
 .product-card .product-title {
-  @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] mb-2 line-clamp-2;
+  @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] sm:mb-2 mb-1 line-clamp-2;
 }
 .product-card .product-price {
   @apply text-[0.875rem] font-bold text-dark;
@@ -619,7 +619,7 @@ select {
   @apply sm:text-[14px] text-[13px] text-dark;
 }
 .product-card-left-right-mobile .product-price {
-  @apply text-[0.875rem] font-bold text-dark;
+  @apply sm:text-[0.875rem] text-[13px] font-bold text-dark;
 }
 .product-card-left-right-mobile .product-price-regular {
   @apply text-[0.875rem] line-through opacity-50;
@@ -732,7 +732,7 @@ header .logo img {
   justify-content: space-between !important;
 }
 .search .jiMOeR .wrapper {
-  @apply p-[1px] lg:rounded-full  rounded-lg;
+  @apply p-[1px] rounded-full;
 }
 .search .jiMOeR .wrapper:hover,
 .search .jiMOeR .wrapper:focus {
@@ -861,10 +861,20 @@ footer ol li {
 }
 
 .added-cart-list li {
-  @apply lg:flex items-center justify-between gap-8 border-b border-border sm:pb-3 py-6 first:pt-0;
+  @apply lg:flex items-center justify-between gap-8 xl:rounded-none rounded-lg mb-5 xl:mb-0 lg:py-5 p-5 lg:px-0 bg-white;
+}
+@media only screen and (min-width: 999px) {
+  .added-cart-list li {
+    border-bottom: solid thin #ECECEC;
+  }
+}
+@media only screen and (max-width: 999px) {
+  .added-cart-list li {
+    border: solid thin #ECECEC;
+  }
 }
 .added-cart-list button.option-btn {
-  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[20px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
+  @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[20px] sm:h-[30px] h-[45px] min-h-[45px] border  border lg:rounded-lg rounded-md;
 }
 
 .general-list li {
@@ -882,7 +892,7 @@ footer ol li {
   @apply grid;
 }
 .amount-list li {
-  @apply flex items-center justify-between text-sm py-3 border-b border-border last:border-none;
+  @apply flex  gap-7 items-center justify-between text-sm py-3 border-b border-border last:border-none;
 }
 .amount-list li .val {
   @apply text-dark block p-0 m-0;
@@ -1022,4 +1032,18 @@ table tr:nth-child(even) {
 .floatig-icons li:hover span {
   @apply transition-all  opacity-100  w-max sm:translate-x-[-45px] translate-x-[-35px];
   width: max-content;
+}
+
+:where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
+  color: #5BA642 !important;
+  background-color: #E7F2EC !important;
+  outline: none !important;
+}
+
+.dropdown.dropdown-open .dropdown-content,
+.dropdown.dropdown-hover:hover .dropdown-content,
+.dropdown:not(.dropdown-hover):focus .dropdown-content,
+.dropdown:not(.dropdown-hover):focus-within .dropdown-content {
+  visibility: visible;
+  opacity: 1;
 }

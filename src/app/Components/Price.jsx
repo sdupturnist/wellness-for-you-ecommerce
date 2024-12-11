@@ -8,12 +8,12 @@ export default function Price({ regular, sale }) {
         {sale}
       </span>
       {sale !== regular && (
-        <span className="product-price-regular ml-2">
+        <span className="product-price-regular mx-[6px]">
           {currency}
           {regular}
         </span>
       )}
-  <span className="pl-2">
+  <span>
      <OfferPercentage normalprice={regular} saleprice={sale} />
      </span>
     </div>

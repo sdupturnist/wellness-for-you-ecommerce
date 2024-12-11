@@ -459,7 +459,7 @@ select {
 
 
     .product-title {
-        @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] mb-2 line-clamp-2;
+        @apply sm:text-[14px] text-[12px] text-dark leading-[1.6em] sm:mb-2 mb-1 line-clamp-2;
     }
 
     .product-price {
@@ -518,7 +518,7 @@ select {
     }
 
     .product-price {
-        @apply text-[0.875rem] font-bold text-dark;
+        @apply sm:text-[0.875rem] text-[13px] font-bold text-dark;
     }
 
     .product-price-regular {
@@ -698,7 +698,7 @@ header {
     .jiMOeR .wrapper {
         //border: 0 !important;
 
-        @apply p-[1px] lg:rounded-full  rounded-lg;
+        @apply p-[1px] rounded-full;
     }
 
     .jiMOeR .wrapper:hover,
@@ -900,11 +900,23 @@ footer {
 
 .added-cart-list {
     li {
-        @apply lg:flex items-center justify-between gap-8 border-b border-border sm:pb-3 py-6 first:pt-0
+        @apply lg:flex items-center justify-between gap-8 xl:rounded-none rounded-lg mb-5 xl:mb-0 lg:py-5 p-5 lg:px-0 bg-white;
+
+      
+
+        @media only screen and (min-width: 999px) {
+            border-bottom: solid thin $BORDER;
+          }
+
+          @media only screen and (max-width: 999px) {
+            border: solid thin $BORDER;
+          }
+
+
     }
 
     button.option-btn {
-        @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[20px] sm:h-[30px] h-[45px] min-h-[45px] lg:border sm:border-0 border sm:rounded-lg rounded-md;
+        @apply whitespace-nowrap join-item text-sm font-normal lg:hover:bg-primary-dim sm:hover:border-transparent lg:px-[20px] lg:h-[45px] lg:min-h-[40px] px-[20px] sm:h-[30px] h-[45px] min-h-[45px] border  border lg:rounded-lg rounded-md;
     }
 }
 
@@ -931,7 +943,7 @@ footer {
     @apply grid;
 
     li {
-        @apply flex items-center justify-between text-sm py-3 border-b border-border last:border-none;
+        @apply flex  gap-7 items-center justify-between text-sm py-3 border-b border-border last:border-none;
 
         .val {
             @apply text-dark block p-0 m-0;
@@ -1159,4 +1171,20 @@ table {
             // }
         }
     }
+}
+
+
+:where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > :not(ul, details, .menu-title)):is(summary):not(.active, .btn):focus-visible, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn).focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):not(summary, .active, .btn):focus, :where(.menu li:not(.menu-title, .disabled) > details > summary:not(.menu-title)):is(summary):not(.active, .btn):focus-visible {
+    color: $PRIMARY !important;
+    background-color: $PRIMARY-DIM !important;
+    outline: none !important;
+}
+
+
+.dropdown.dropdown-open .dropdown-content, 
+.dropdown.dropdown-hover:hover .dropdown-content, 
+.dropdown:not(.dropdown-hover):focus .dropdown-content, 
+.dropdown:not(.dropdown-hover):focus-within .dropdown-content {
+    visibility: visible;
+    opacity: 1;
 }

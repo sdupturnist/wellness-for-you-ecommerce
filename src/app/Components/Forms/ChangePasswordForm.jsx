@@ -101,7 +101,7 @@ export default function ChangePasswordForm() {
             required
           />
           <input
-            placeholder="onfirm New Password"
+            placeholder="Confirm New Password"
             type="password"
             id="confirmPassword"
             value={confirmPassword}

@@ -44,8 +44,6 @@ export default function CartListItem() {
       };
     });
 
-
-
   return (
     <>
       <ul className="added-cart-list mb-5">
@@ -53,9 +51,9 @@ export default function CartListItem() {
           mergedCart &&
           mergedCart.map((item, index) => (
             <li key={index}>
-              <div className="flex items-center justify-start w-full sm:gap-0 gap-3 mb-5 sm:mb-0">
+              <div className="flex items-center justify-start w-full gap-5 mb-5 lg:mb-0">
                 <Link
-                  className="flex items-center min-w-32"
+                  className="border rounded-md flex items-center sm:h-[60px] sm:w-[60px] h-[70px] w-[70px] min-h-[70px] min-w-[70px] sm:p-3 p-1"
                   href={`/product/${item?.slug}`} // Assuming slug is a product-specific URL
                 >
                   <Images
@@ -65,20 +63,20 @@ export default function CartListItem() {
                     height="100"
                     title={item?.name || "Product"}
                     alt={item?.name || "Product"}
-                    classes="size-[80px] sm:size-[90px] m-[15px]block mx-auto"
+                    classes="size-[50px] block mx-auto object-contain"
                     placeholder={true}
                   />
                 </Link>
-                <div className="p-5 pl-0 pr-0 w-full grid items-center">
+                <div className="w-full grid items-center">
                   <Link href={`/product/${item?.slug}`}>
-                    <h3 className="product-title text-dark mb-2">
+                    <h3 className="product-title font-semibold sm:font-medium mb-1">
                       {item?.option || item?.name}
                     </h3>
                   </Link>
                   {item?.price && (
                     <div>
                       <div>
-                        <span className="product-price">
+                        <span className="product-price text-sm opacity-70">
                           {currency}
                           {item?.price} x {item?.quantity} items
                         </span>
@@ -97,7 +95,9 @@ export default function CartListItem() {
                   image={item?.image && item?.image}
                   item={item?.product_id}
                   options={
-                    item?.option && convertStringToJSON(item && item?.option) || item?.price
+                    (item?.option &&
+                      convertStringToJSON(item && item?.option)) ||
+                    item?.price
                   }
                 />
               )}

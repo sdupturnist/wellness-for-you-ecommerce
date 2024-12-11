@@ -342,7 +342,7 @@ export default function ProductCard({
             <Link href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title">{data?.name}</h3>
             </Link>
-            <div className="flex items-center absolute sm:top-[-8px] top-[-5px]">
+            <div className="flex items-center absolute top-[-8px]">
               {data?.rating_count > 0 && (
                 <ReviewCount
                   average={data?.average_rating}

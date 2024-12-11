@@ -88,7 +88,7 @@ export default function OrderItem() {
         <>
           <div className="bg-bggray">
             <section className="pb-0 sm:pt-0 pt-3">
-              <div className="sm:bg-transparent max-w-[999px] mx-auto grid gap-5">
+              <div className="sm:bg-transparent max-w-[999px] mx-auto grid gap-3">
                 <ul>
                   <MyOrder data={order} orderView />
                 </ul>
