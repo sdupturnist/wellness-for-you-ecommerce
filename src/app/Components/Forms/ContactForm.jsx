@@ -30,6 +30,10 @@ export default function ContactForm() {
       setSuccess(
         "Thanks for contacting us! Our team is reviewing your submission and will get back to you soon."
       );
+     setName("")
+     setEmail("")
+     setMessage("")
+
     } catch (error) {
       console.error("Error sending email:", error);
       setError(error);

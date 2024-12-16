@@ -23,7 +23,7 @@ export default function Invoice({ data }) {
         <tr>
           <td
             style={{
-              backgroundColor: "#5ba642",
+              backgroundColor: "#fff",
               color: "#fff",
               textAlign: "center",
               padding: "20px",
@@ -31,9 +31,9 @@ export default function Invoice({ data }) {
               fontWeight: "600",
             }}>
             <img
-              src={siteLogoWhite}
+              src="/images/logo.webp"
               alt="Logo"
-              style={{ display: "block", height: "40px", width: "100px"}}
+              style={{ display: "block", height: "60px", width: "auto"}}
             />
           </td>
         </tr>
