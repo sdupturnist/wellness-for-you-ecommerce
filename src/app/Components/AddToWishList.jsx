@@ -8,12 +8,12 @@ import { useRouter } from "next/navigation";
 import Loading from "./Loading";
 import { useAuthContext } from "../Context/authContext";
 import { apiUrl } from "../Utils/variables";
+import { useSiteContext } from "../Context/siteContext";
 
 export default function AddToWishList({
   productId,
   itemName,
   small,
-  activeWishlist,
   onWishlistChange,
   inCartPage,
 }) {
@@ -21,13 +21,16 @@ export default function AddToWishList({
 
   const { auth } = useAuthContext();
 
-  const [isActive, setIsActive] = useState(activeWishlist);
+  const { activeWishlist } = useSiteContext();
+
   const [isLoading, setIsLoading] = useState(false);
 
-  // Handle the click to add/remove from wishlist
-  const handleClickAdd = () => {
-    setIsLoading(true); // Disable button while processing
+  const wishlistItems =
+    JSON.parse(sessionStorage.getItem("wishlist_data")) ||
+    (auth && activeWishlist);
 
+  // Handle the click to add/remove from wishlist
+  const handleClickAdd = (userId, productId) => {
     if (!auth) {
       isLoggined(
         auth,
@@ -39,6 +42,7 @@ export default function AddToWishList({
       return false;
     }
 
+    setIsLoading(true); // Disable button while processing
     fetch(`${apiUrl}wp-json/wishlist/v1/add`, {
       method: "POST",
       headers: {
@@ -51,7 +55,15 @@ export default function AddToWishList({
     })
       .then((res) => res.json())
       .then((data) => {
-        setIsActive(!isActive);
+        let wishlist =
+          JSON.parse(sessionStorage.getItem("wishlist_data")) || {};
+
+        let nextKey = Object.keys(wishlist).length;
+
+        wishlist[nextKey] = productId;
+
+        sessionStorage.setItem("wishlist_data", JSON.stringify(wishlist));
+
         if (onWishlistChange) onWishlistChange(data);
       })
       .catch((error) => {
@@ -63,9 +75,7 @@ export default function AddToWishList({
       });
   };
 
-  const handleClickRemove = () => {
-    setIsLoading(true); // Disable button while processing
-
+  const handleClickRemove = (userId, productId) => {
     if (!auth) {
       isLoggined(
         auth,
@@ -76,6 +86,8 @@ export default function AddToWishList({
       );
       return false;
     }
+
+    setIsLoading(true); // Disable button while processing
 
     fetch(`${apiUrl}wp-json/wishlist/v1/remove`, {
       method: "POST",
@@ -89,7 +101,21 @@ export default function AddToWishList({
     })
       .then((res) => res.json())
       .then((data) => {
-        setIsActive(!isActive);
+        // Retrieve the current wishlist from sessionStorage
+        let wishlist =
+          JSON.parse(sessionStorage.getItem("wishlist_data")) || {};
+
+        // Find the key that corresponds to the productId and remove it
+        for (let key in wishlist) {
+          if (wishlist[key] === productId) {
+            delete wishlist[key]; // Remove the productId from the wishlist
+            break; // Exit the loop after deleting the productId
+          }
+        }
+
+        // Update the sessionStorage with the modified wishlist
+        sessionStorage.setItem("wishlist_data", JSON.stringify(wishlist));
+
         if (onWishlistChange) onWishlistChange(data);
       })
       .catch((error) => {
@@ -105,62 +131,22 @@ export default function AddToWishList({
     <>
       {inCartPage && (
         <>
-          {activeWishlist === "active" ? (
-            isActive === false ? (
+          {Object.values(wishlistItems).includes(productId) === productId ? (
+            wishlistItems === false ? (
               <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
+                title={
+                  wishlistItems ? "Remove from wishlist" : "Add to wishlist"
+                }
+                onClick={() => handleClickRemove(userId, productId)}
                 disabled={isLoading}
                 className="join-item option-btn">
-                {isLoading ? (
-                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
-                ) : (
-                  "Remove from wishlist"
-                )}
-              </button>
-            ) : (
-              <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
-                disabled={isLoading}
-                className="join-item option-btn">
-                {isLoading ? (
-                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
-                ) : (
-                  "Remove from wishlist"
-                )}
-              </button>
-            )
-          ) : (
-            <button
-              title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-              onClick={handleClickAdd}
-              disabled={isLoading}
-              className="join-item option-btn">
-              {isLoading ? (
-                <Loading dot classes="size-[16px] !text-dark opacity-25" />
-              ) : (
-                "Add to wishlist"
-              )}
-            </button>
-          )}
-        </>
-      )}
-      {!inCartPage && small && (
-        <>
-          {activeWishlist === "active" ? (
-            isActive === false ? (
-              <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
-                disabled={isLoading}
-                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
                 {isLoading ? (
                   <Loading dot classes="size-[16px] !text-dark opacity-25" />
                 ) : (
                   <HeartIcon
                     className={`${
-                      activeWishlist === "active" || isActive
+                      wishlistItems &&
+                      Object.values(wishlistItems).includes(productId)
                         ? "text-red-500"
                         : "text-body opacity-25"
                     } size-6`}
@@ -169,21 +155,89 @@ export default function AddToWishList({
               </button>
             ) : (
               <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
+                title={
+                  wishlistItems === "active"
+                    ? "Remove from wishlist"
+                    : "Add to wishlist"
+                }
+                onClick={() => handleClickRemove(userId, productId)}
                 disabled={isLoading}
-                className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
+                className="join-item option-btn">
                 {isLoading ? (
-                  <Loading dot classes="size-[16px]  !text-dark opacity-25" />
+                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
                 ) : (
-                  <HeartIcon className={`text-body opacity-25 size-6`} />
+                  <HeartIcon
+                    className={`${
+                      wishlistItems &&
+                      Object.values(wishlistItems).includes(productId)
+                        ? "text-red-500"
+                        : "text-body opacity-25"
+                    } size-6`}
+                  />
                 )}
               </button>
             )
           ) : (
             <button
-              title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-              onClick={handleClickAdd}
+              title={
+                wishlistItems === "active"
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
+              onClick={() => handleClickAdd(userId, productId)}
+              disabled={isLoading}
+              className="join-item option-btn">
+              {isLoading ? (
+                <Loading dot classes="size-[16px] !text-dark opacity-25" />
+              ) : (
+                <HeartIcon
+                  className={`${
+                    wishlistItems &&
+                    Object.values(wishlistItems).includes(productId)
+                      ? "text-red-500"
+                      : "text-body opacity-25"
+                  } size-6`}
+                />
+              )}
+            </button>
+          )}
+        </>
+      )}
+      {!inCartPage && small && (
+        <>
+          {wishlistItems && Object.values(wishlistItems).includes(productId) ? (
+            <button
+              title={
+                wishlistItems &&
+                Object.values(wishlistItems).includes(productId)
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
+              onClick={() => handleClickRemove(userId, productId)}
+              disabled={isLoading}
+              className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
+              {isLoading ? (
+                <Loading dot classes="size-[16px] !text-dark opacity-25" />
+              ) : (
+                <HeartIcon
+                  className={`${
+                    wishlistItems &&
+                    Object.values(wishlistItems).includes(productId)
+                      ? "text-red-500"
+                      : "text-body opacity-25"
+                  } size-6`}
+                />
+              )}
+            </button>
+          ) : (
+            <button
+              title={
+                wishlistItems &&
+                Object.values(wishlistItems).includes(productId)
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
+              onClick={() => handleClickAdd(userId, productId)}
               disabled={isLoading}
               className="size-8 flex items-center justify-center rounded-full p-[6px] shadow-sm absolute top-3 right-3 z-10">
               {isLoading ? (
@@ -191,7 +245,10 @@ export default function AddToWishList({
               ) : (
                 <HeartIcon
                   className={`${
-                    isActive ? "text-red-500" : "text-body opacity-25"
+                    wishlistItems &&
+                    Object.values(wishlistItems).includes(productId)
+                      ? "text-red-500"
+                      : "text-body opacity-25"
                   } size-6`}
                 />
               )}
@@ -203,11 +260,15 @@ export default function AddToWishList({
       {!inCartPage && !small && (
         //FOR SINGLE PAGE
         <>
-          {activeWishlist === "active" ? (
-            isActive === false ? (
+          {wishlistItems && Object.values(wishlistItems).includes(productId)  ? (
+            wishlistItems && Object.values(wishlistItems).includes(productId)  ? (
               <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
+                title={
+                  wishlistItems && Object.values(wishlistItems).includes(productId) 
+                    ? "Remove from wishlist"
+                    : "Add to wishlist"
+                }
+                onClick={() => handleClickRemove(userId, productId)}
                 disabled={isLoading}
                 className="btn-light bg-white border !min-h-14 !px-4 remove-from-list">
                 {isLoading ? (
@@ -215,7 +276,7 @@ export default function AddToWishList({
                 ) : (
                   <HeartIcon
                     className={`${
-                      activeWishlist === "active" || isActive
+                      wishlistItems && Object.values(wishlistItems).includes(productId) 
                         ? "text-red-500"
                         : "text-body opacity-25"
                     } size-6`}
@@ -224,8 +285,12 @@ export default function AddToWishList({
               </button>
             ) : (
               <button
-                title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-                onClick={handleClickRemove}
+                title={
+                  wishlistItems && Object.values(wishlistItems).includes(productId) 
+                    ? "Remove from wishlist"
+                    : "Add to wishlist"
+                }
+                onClick={() => handleClickRemove(userId, productId)}
                 disabled={isLoading}
                 className="btn-light bg-white border !min-h-14 !px-4 remove-from-list">
                 {isLoading ? (
@@ -237,8 +302,12 @@ export default function AddToWishList({
             )
           ) : (
             <button
-              title={isActive ? "Remove from wishlist" : "Add to wishlist"}
-              onClick={handleClickAdd}
+              title={
+                wishlistItems && Object.values(wishlistItems).includes(productId) 
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
+              onClick={() => handleClickAdd(userId, productId)}
               disabled={isLoading}
               className="btn-light bg-white border !min-h-14 !px-4 remove-from-list">
               {isLoading ? (
@@ -246,7 +315,9 @@ export default function AddToWishList({
               ) : (
                 <HeartIcon
                   className={`${
-                    isActive ? "text-red-500" : "text-body opacity-25"
+                    wishlistItems && Object.values(wishlistItems).includes(productId) 
+                      ? "text-red-500"
+                      : "text-body opacity-25"
                   } size-6`}
                 />
               )}

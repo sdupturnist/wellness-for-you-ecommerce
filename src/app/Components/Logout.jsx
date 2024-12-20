@@ -16,6 +16,7 @@ export default function Logout({ small }) {
     Cookies.remove("token");
     Cookies.remove("user_email");
     Cookies.remove("u_id"); 
+    sessionStorage.removeItem('wishlist_data');
 
     // Reset context and state
     setAuth(false);

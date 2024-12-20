@@ -76,7 +76,7 @@ export default function CartView() {
                       .then((result) => {
                         if (result.isConfirmed) {
                           // If user confirms (clicks "Login")
-                          router.push(`${homeUrl}/login`);
+                          router.push(`${homeUrl}/login?login-status=false`);
                         } else if (result.isDenied) {
                           // If user cancels (clicks "Guest checkout")
                           setGuestUser(true);

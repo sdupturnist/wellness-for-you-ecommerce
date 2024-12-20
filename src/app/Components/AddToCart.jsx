@@ -552,13 +552,9 @@ const router = useRouter();
                     }
                   </div>
                   <AddToWishList
-                    activeWishlist={
-                      activeWishlist &&
-                      Object.values(activeWishlist).includes(itemid) &&
-                      "active"
-                    }
-                    itemName={name}
-                    productId={itemid}
+activeWishlist={itemid}
+itemName={name}
+productId={itemid}
                   />
                 </>
               ) : (
@@ -594,14 +590,11 @@ const router = useRouter();
                       )}
                     </>
                   )}
+                
                   <AddToWishList
-                    activeWishlist={
-                      activeWishlist &&
-                      Object.values(activeWishlist).includes(itemid) &&
-                      "active"
-                    }
-                    itemName={name}
-                    productId={itemid}
+                  activeWishlist={itemid}
+                  itemName={name}
+                  productId={itemid}
                   />
                 </>
               ))}
@@ -612,12 +605,7 @@ const router = useRouter();
               <div className="join">
               <AddToWishList
         small
-        inCartPage
-        activeWishlist={
-          activeWishlist &&
-          Object.values(activeWishlist).includes(itemid) &&
-          "active"
-        }
+        activeWishlist={itemid}
         itemName={name}
         productId={itemid}
       />  

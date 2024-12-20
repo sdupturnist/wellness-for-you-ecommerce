@@ -119,7 +119,7 @@ export default async function Home({ params, searchParams }) {
             )}
           </div>
         </section>
-        <section className="banners-full grid sm:gap-12 gap-6 pt-6 sm:pt-10">
+        <section className="banners-full grid sm:gap-8 gap-5 pt-6 sm:pt-8 sm:pb-6 pb-4">
           {categories &&
             categories.map((item, index) => (
               <Link key={index} href={`${homeUrl}${item?.slug}`}>
@@ -137,7 +137,7 @@ export default async function Home({ params, searchParams }) {
             ))}
         </section>
         {featuredProducts.length > 0 && (
-          <section className="featured-products products pt-0">
+          <section className="featured-products products pt-0 sm:pb-6">
             <SectionHeader title="Featured products" />
 
             <ProductGrid items={featuredProducts} />
@@ -145,7 +145,7 @@ export default async function Home({ params, searchParams }) {
             {/* <ProductSlider data={featuredProducts} /> */}
           </section>
         )}
-        <section className="banners-bottom grid sm:gap-12 gap-6 pt-0">
+        <section className="banners-bottom grid sm:gap-8 gap-5 pt-0">
           {bottomBannerLarge &&
             bottomBannerLarge.map((item, index) =>
               item?.acf?.url !== "" ? (
@@ -175,7 +175,7 @@ export default async function Home({ params, searchParams }) {
                 />
               )
             )}
-          <div className="grid md:grid-cols-2 sm:gap-12 gap-6">
+          <div className="grid md:grid-cols-2 sm:gap-8 gap-5">
             {bottomBannerSmall &&
               bottomBannerSmall.map((item, index) =>
                 item?.acf?.url !== "" ? (

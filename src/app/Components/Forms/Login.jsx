@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { apiUrl, homeUrl } from "@/app/Utils/variables";  // Ensure these URLs are correctly set
 import Link from "next/link";
 import Alerts from "../Alerts";
@@ -13,6 +13,10 @@ import { useCartContext } from "@/app/Context/cartContext";
 
 export default function Login() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const loginStatus = searchParams.get('login-status');
+
+ // console.log(loginStatus)
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,7 +63,7 @@ export default function Login() {
       setGuestUser(false)
 
       // Redirecting user to account page (or wherever necessary)
-      router.push(`${homeUrl}account`);
+      router.push(`${homeUrl}${loginStatus === "false" ? 'checkout' : 'account'}`);
 
     } catch (err) {
       setError(err.message);

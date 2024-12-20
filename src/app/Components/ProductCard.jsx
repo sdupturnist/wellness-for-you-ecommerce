@@ -60,11 +60,7 @@ export default function ProductCard({
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
       <AddToWishList
         small
-        activeWishlist={
-          activeWishlist &&
-          Object.values(activeWishlist).includes(data?.id) &&
-          "active"
-        }
+        
         itemName={data?.name}
         productId={data?.id}
       />
@@ -140,11 +136,7 @@ export default function ProductCard({
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
       <AddToWishList
         small
-        activeWishlist={
-          activeWishlist &&
-          Object.values(activeWishlist).includes(data?.id) &&
-          "active"
-        }
+        activeWishlist={data?.id}
         itemName={data?.name}
         productId={data?.id}
       />
@@ -222,11 +214,7 @@ export default function ProductCard({
     <li className="w-full sm:w-auto sm:mr-2 justify-between  relative">
       <AddToWishList
         small
-        activeWishlist={
-          activeWishlist &&
-          Object.values(activeWishlist).includes(data?.id) &&
-          "active"
-        }
+        
         itemName={data?.name}
         productId={data?.id}
       />
@@ -320,6 +308,11 @@ export default function ProductCard({
           <AddToWishList
             small
             active
+            activeWishlist={
+              activeWishlist &&
+              Object.values(activeWishlist).includes(data?.id) &&
+              "active"
+            }
             itemName={data?.name}
             productId={data?.id}
           />
