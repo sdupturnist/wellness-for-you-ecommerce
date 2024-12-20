@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiUrl, homeUrl } from "@/app/Utils/variables";  // Ensure these URLs are correctly set
 import Link from "next/link";
@@ -10,13 +10,10 @@ import Cookies from "js-cookie";  // Import js-cookie for cookies handling
 import Loading from "../Loading";
 import { useCartContext } from "@/app/Context/cartContext";
 
-
-export default function Login() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const loginStatus = searchParams.get('login-status');
-
- // console.log(loginStatus)
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -107,5 +104,13 @@ export default function Login() {
         </div>
       </form>
     </>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<Loading fullscreen/>}>
+      <LoginForm />
+    </Suspense>
   );
 }
