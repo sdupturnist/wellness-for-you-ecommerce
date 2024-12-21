@@ -12,6 +12,7 @@ import Loading from "./Loading";
 export default function ProductWrapper({ searchParams, category }) {
   const currentPage = searchParams.page || 1;
   const itemsShowPerPage = 30;
+  const cacheExpiryTime = 10 * 60 * 1000; // 10 minutes expiry
 
   const [allProducts, setAllProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -19,19 +20,24 @@ export default function ProductWrapper({ searchParams, category }) {
   const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Use ref to cache previous fetched data to avoid redundant API calls
   const prevCategory = useRef(category);
   const prevPage = useRef(currentPage);
 
+  // Helper function to check if the cache is expired
+  const isCacheExpired = (timestamp) => {
+    return Date.now() - timestamp > cacheExpiryTime;
+  };
+
   // Fetch categories once and cache them
   useEffect(() => {
     const cachedCategories = sessionStorage.getItem("categoriesJson");
-    if (cachedCategories) {
+    const cachedCategoriesTimestamp = sessionStorage.getItem("categoriesJsonTimestamp");
+
+    if (cachedCategories && cachedCategoriesTimestamp && !isCacheExpired(Number(cachedCategoriesTimestamp))) {
       setCategoriesJson(JSON.parse(cachedCategories));
-    
     } else {
-    
       axios
         .get(`${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}`, {
           params: { orderby: "name", order: "desc" }
@@ -40,6 +46,7 @@ export default function ProductWrapper({ searchParams, category }) {
           const categoriesData = response.data;
           setCategoriesJson(categoriesData);
           sessionStorage.setItem("categoriesJson", JSON.stringify(categoriesData)); // Cache categories in sessionStorage
+          sessionStorage.setItem("categoriesJsonTimestamp", Date.now().toString()); // Cache timestamp
         })
         .catch((err) => {
           setError("Error fetching categories");
@@ -56,54 +63,95 @@ export default function ProductWrapper({ searchParams, category }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Parallelize API requests with Promise.all() and optimize responses
-        const [
-          allProductsDataRes,
-          allProductsCountRes,
-          topProductsDataRes
-        ] = await Promise.all([
-          axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
-            params: {
-              sort_by_acf: 'asc',
-              category: category,
-              search: '',
-              min_price: 0,
-              page: currentPage,
-              per_page: itemsShowPerPage,
-              reviews_count: 0
-            }
-          }),
-          axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
-            params: {
-              category: category,
-              search: '',
-              min_price: 0,
-              page: 0,
-              per_page: 100,
-              reviews_count: 0
-            }
-          }),
-          axios.get(`${apiUrl}wp-json/wc/v3/products${woocommerceKey}`, {
-            params: { orderby: 'id', order: 'desc' }
-          })
-        ]);
+        // Check for cached product data for this category and page
+        const cachedProducts = sessionStorage.getItem(`products-${category}-${currentPage}`);
+        const cachedTotalProducts = sessionStorage.getItem(`total-products-${category}`);
+        const cachedTopProducts = sessionStorage.getItem(`top-products-${category}`);
 
-        // Extract data from responses
-        const allProductsDataJson = allProductsDataRes.data;
-        const allProductsCountJson = allProductsCountRes.data;
-        const topProductsDataJson = topProductsDataRes.data;
+        const cachedProductsTimestamp = sessionStorage.getItem(`products-${category}-${currentPage}-timestamp`);
+        const cachedTotalProductsTimestamp = sessionStorage.getItem(`total-products-${category}-timestamp`);
+        const cachedTopProductsTimestamp = sessionStorage.getItem(`top-products-${category}-timestamp`);
 
-        // Set states with the fetched data
-        setAllProducts(allProductsDataJson?.products || []);
-        setTotalProducts(allProductsCountJson?.products?.length || 0);
-        setTopProducts(
-          topProductsDataJson.filter(
-            (product) => product.acf && product.acf.top === true
-          )
-        );
+        let useCache = true;
+
+        if (
+          !cachedProducts ||
+          !cachedTotalProducts ||
+          !cachedTopProducts ||
+          isCacheExpired(Number(cachedProductsTimestamp)) ||
+          isCacheExpired(Number(cachedTotalProductsTimestamp)) ||
+          isCacheExpired(Number(cachedTopProductsTimestamp))
+        ) {
+          useCache = false;
+        }
+
+        if (useCache) {
+          // Use cached data if available and valid
+          setAllProducts(JSON.parse(cachedProducts));
+          setTotalProducts(Number(cachedTotalProducts));
+          setTopProducts(JSON.parse(cachedTopProducts));
+          setLoading(false);
+        } else {
+          // Fetch fresh data if cache is expired or unavailable
+          const [
+            allProductsDataRes,
+            allProductsCountRes,
+            topProductsDataRes
+          ] = await Promise.all([
+            axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
+              params: {
+                sort_by_acf: 'asc',
+                category: category,
+                search: '',
+                min_price: 0,
+                page: currentPage,
+                per_page: itemsShowPerPage,
+                reviews_count: 0
+              }
+            }),
+            axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
+              params: {
+                category: category,
+                search: '',
+                min_price: 0,
+                page: 0,
+                per_page: 100,
+                reviews_count: 0
+              }
+            }),
+            axios.get(`${apiUrl}wp-json/wc/v3/products${woocommerceKey}`, {
+              params: { orderby: 'id', order: 'desc' }
+            })
+          ]);
+
+          // Extract data from responses
+          const allProductsDataJson = allProductsDataRes.data;
+          const allProductsCountJson = allProductsCountRes.data;
+          const topProductsDataJson = topProductsDataRes.data;
+
+          // Set states with the fetched data
+          setAllProducts(allProductsDataJson?.products || []);
+          setTotalProducts(allProductsCountJson?.products?.length || 0);
+          setTopProducts(
+            topProductsDataJson.filter(
+              (product) => product.acf && product.acf.top === true
+            )
+          );
+
+          // Cache data in sessionStorage
+          sessionStorage.setItem(`products-${category}-${currentPage}`, JSON.stringify(allProductsDataJson?.products || []));
+          sessionStorage.setItem(`total-products-${category}`, JSON.stringify(allProductsCountJson?.products?.length || 0));
+          sessionStorage.setItem(`top-products-${category}`, JSON.stringify(topProductsDataJson.filter(product => product.acf && product.acf.top === true)));
+
+          // Cache timestamps
+          sessionStorage.setItem(`products-${category}-${currentPage}-timestamp`, Date.now().toString());
+          sessionStorage.setItem(`total-products-${category}-timestamp`, Date.now().toString());
+          sessionStorage.setItem(`top-products-${category}-timestamp`, Date.now().toString());
+
+          setLoading(false);
+        }
       } catch (err) {
         setError("Error fetching data");
-      } finally {
         setLoading(false);
       }
     };
