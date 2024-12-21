@@ -13,23 +13,37 @@ export const SiteProvider = ({ children }) => {
   const [hideCartItem, setHideCartItem] = useState({});
 
   useEffect(() => {
-    // Fetching contact info
+    // Check if userId is defined, else handle accordingly
+    if (!userId) {
+      // Handle scenario where user is not logged in (e.g., show login prompt)
+      console.warn("User is not logged in. Fetching wishlist for guest.");
+      // Optionally, you could show a login prompt or redirect here
+      return; // Exit early or handle it differently
+    }
+  
+    // Proceed with the fetch request if userId is valid
     fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`, {
       method: "GET",
       credentials: "same-origin", // Include cookies with the request if necessary
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch wishlist data");
+        }
+        return res.json();
+      })
       .then((data) => {
-        sessionStorage.setItem("wishlist_data", JSON.stringify(data));
-
-        // Set the state and loading
-        setActiveWishlist(data); // or use 'data' if it's from the API response
-        setLoading(false);
+        sessionStorage.setItem("wishlist_data", JSON.stringify(data)); // Save data in sessionStorage
+        setActiveWishlist(data); // Set state with fetched data
+        setLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        // You could also display an error message to the user here
+        setLoading(false);
       });
-  }, []);
+  }, [userId]); // Re-run the effect when userId changes
+  
 
   useEffect(() => {
     // Fetching contact info

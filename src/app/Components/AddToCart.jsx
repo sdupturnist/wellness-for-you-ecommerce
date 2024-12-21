@@ -16,6 +16,7 @@ import { useAuthContext } from "../Context/authContext";
 import { isLoggined } from "../Utils/checkAuth";
 import { useRouter } from "next/navigation";
 
+
 export default function AddToCart({
   itemid,
   price,
@@ -79,15 +80,24 @@ const router = useRouter();
     }
   }, [safeCartItems, itemid]);
 
-  useEffect(() => {
+
+
+
+
+   const checkUser = async () => {
     fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    .then((res) => res.json())
+    .then((data) => {
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+      };
+
+
+  useEffect(() => {
+    auth && userId && checkUser()
   }, []);
 
   const updateCartLengthCookie = async (updatedCartItems) => {

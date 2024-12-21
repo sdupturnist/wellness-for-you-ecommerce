@@ -29,6 +29,9 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
+
+  
+
     // Validate the token with the backend API
     const validateToken = async () => {
       try {
@@ -68,7 +71,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    validateToken();
+    auth && validateToken();
   }, [router, auth]);
 
   useEffect(() => {
