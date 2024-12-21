@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   apiUrl,
-  decryptData,
-  encryptData,
   shippingChargeLimit,
   woocommerceKey,
 } from "../Utils/variables";
@@ -11,7 +9,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(0);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // Ensure this is initialized as an empty array
   const [cartSubTotal, setCartSubTotal] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const [couponCode, setCouponCode] = useState(false);
@@ -26,8 +24,9 @@ export function CartProvider({ children }) {
   // Load cartItems from localStorage when the component mounts
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedCartItems = decryptData(localStorage.getItem("cart")) || [];
-      setCartItems(storedCartItems);
+      const storedCartItems = localStorage.getItem("cart");
+      // Ensure cartItems is always an array
+      setCartItems(storedCartItems ? JSON.parse(storedCartItems) : []);
     }
   }, []); // Empty dependency array ensures this only runs once on mount
 
@@ -75,7 +74,7 @@ export function CartProvider({ children }) {
   // Update localStorage whenever cartItems change
   useEffect(() => {
     if (typeof window !== "undefined" && cartItems.length > 0) {
-      localStorage.setItem("cart", encryptData(cartItems));
+      localStorage.setItem("cart", JSON.stringify(cartItems));
     }
   }, [cartItems]);
 

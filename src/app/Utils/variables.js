@@ -285,13 +285,13 @@ export let isValidEmail = (email) => {
 
 
 
-export let encryptData = (data) => {
-  const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), jwtTocken).toString();
-  return encrypted;
-};
+// export let encryptData = (data) => {
+//   const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), jwtTocken).toString();
+//   return encrypted;
+// };
 
-export let decryptData = (encryptedData) => {
-  const bytes = CryptoJS.AES.decrypt(encryptedData, jwtTocken);
-  const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  return decrypted;
-};
+// export let decryptData = (encryptedData) => {
+//   const bytes = CryptoJS.AES.decrypt(encryptedData, jwtTocken);
+//   const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+//   return decrypted;
+// };

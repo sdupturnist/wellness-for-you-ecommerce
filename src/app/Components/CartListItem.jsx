@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useCartContext } from "../Context/cartContext";
 import AddToCart from "./AddToCart";
 import Alerts from "./Alerts";
-import { convertStringToJSON, currency, decryptData } from "../Utils/variables";
+import { convertStringToJSON, currency } from "../Utils/variables";
 import Link from "next/link";
 import Images from "./Images";
 
@@ -13,23 +13,19 @@ export default function CartListItem() {
 
   // Load items from localStorage on component mount
   useEffect(() => {
-    //  const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    // Get the cart items from localStorage
+    const storedItems = localStorage.getItem("cart");
 
-    const storedItems =
-      (localStorage.getItem("cart") &&
-        decryptData(localStorage.getItem("cart"))) ||
-      [];
-
-    setCartItems(storedItems);
+    // Ensure cartItems is always an array
+    setCartItems(storedItems ? JSON.parse(storedItems) : []);
   }, [setCartItems]);
 
   // Merge and map the cart with product details
   const mergedCart =
-    cartItems &&
+    Array.isArray(cartItems) &&
     cartItems.map((item) => {
       const product =
-        cartListedItems &&
-        cartItems &&
+        Array.isArray(cartListedItems) &&
         cartListedItems.find((p) => p.id === item.product_id); // Find the corresponding product
 
       return {
@@ -47,7 +43,7 @@ export default function CartListItem() {
   return (
     <>
       <ul className="added-cart-list mb-5">
-        {cartItems && cartItems.length > 0 ? (
+        {Array.isArray(cartItems) && cartItems.length > 0 ? (
           mergedCart &&
           mergedCart.map((item, index) => (
             <li key={index}>

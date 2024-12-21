@@ -13,13 +13,15 @@ import { isLoggined } from "../Utils/checkAuth";
 import Swal from "sweetalert2";
 
 export default function CartView() {
-  const { cartItems, setGuestUser, guestUser } = useCartContext();
-  const { auth } = useAuthContext(); // Get authentication status
+  const { cartItems, setGuestUser, guestUser, } = useCartContext();
+  
+  const { auth, setLoadingAuth } = useAuthContext(); // Get authentication status
   const router = useRouter();
 
   const handleGuestCheckout = () => {
     if (!auth) {
       setGuestUser(true);
+      setLoadingAuth(false)
       router.push(`${homeUrl}/checkout`);
     }
   };

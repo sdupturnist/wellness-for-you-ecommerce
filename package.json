@@ -12,7 +12,6 @@
     "@heroicons/react": "^2.2.0",
     "@stripe/stripe-js": "^5.2.0",
     "aos": "^2.3.4",
-    "crypto-js": "^4.2.0",
     "heroicons": "^2.2.0",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",

@@ -8,7 +8,7 @@ import { useCartContext } from "../Context/cartContext";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import AddToWishList from "./AddToWishList";
 import Link from "next/link";
-import { apiUrl, encryptData, homeUrl, jwtTocken } from "../Utils/variables";
+import { apiUrl, homeUrl, jwtTocken } from "../Utils/variables";
 import Notification from "./Notification";
 import Swal from "sweetalert2";
 import { userId } from "../Utils/UserInfo";
@@ -125,8 +125,8 @@ const router = useRouter();
 
   // Function to update cart in localStorage
   const updateCartInLocalStorage = (updatedCartItems) => {
-    localStorage.setItem("cart", encryptData(updatedCartItems));
-    ////localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    //localStorage.setItem("cart", updatedCartItems);
+    localStorage.setItem("cart", JSON.stringify(updatedCartItems));
     updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
   };
 
@@ -286,8 +286,8 @@ const router = useRouter();
         if (result.isConfirmed) {
           const updatedCartItems = cartItems.filter((item) => item.id !== id);
           setCartItems(updatedCartItems);
-          localStorage.setItem("cart", encryptData(updatedCartItems));
-          //localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+         // localStorage.setItem("cart",updatedCartItems);
+        localStorage.setItem("cart", JSON.stringify(updatedCartItems));
           updateCartLengthCookie(updatedCartItems); // Update cookie with cart length
         }
       });
