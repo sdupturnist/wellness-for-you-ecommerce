@@ -13,7 +13,7 @@ import {
   CalendarIcon,
   ArrowUturnUpIcon,
 } from "@heroicons/react/24/solid";
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 
 const date = new Date();
 
