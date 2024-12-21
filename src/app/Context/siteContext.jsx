@@ -12,53 +12,37 @@ export const SiteProvider = ({ children }) => {
   const [activeWishlist, setActiveWishlist] = useState([]);
   const [hideCartItem, setHideCartItem] = useState({});
 
-  
-
-
   useEffect(() => {
     // Check if userId is defined, else handle accordingly
     if (!userId) {
       // Handle scenario where user is not logged in (e.g., show login prompt)
       console.warn("User is not logged in. Fetching wishlist for guest.");
+      // Optionally, you could show a login prompt or redirect here
       return; // Exit early or handle it differently
     }
   
-    // Check if wishlist data is available in sessionStorage
-    const cachedWishlistData = sessionStorage.getItem(`wishlist_data_${userId}`);
-  
-    if (cachedWishlistData) {
-      // If cached data exists, use it directly
-      setActiveWishlist(JSON.parse(cachedWishlistData));
-      setLoading(false);
-    } else {
-      // Proceed with the fetch request if no cached data is found
-      fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`, {
-        method: "GET",
-        credentials: "same-origin", // Include cookies with the request if necessary
+    // Proceed with the fetch request if userId is valid
+    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`, {
+      method: "GET",
+      credentials: "same-origin", // Include cookies with the request if necessary
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch wishlist data");
+        }
+        return res.json();
       })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to fetch wishlist data");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          // Save the fetched data in sessionStorage with a unique key (userId)
-          sessionStorage.setItem(`wishlist_data_${userId}`, JSON.stringify(data));
-  
-          // Set state with the fetched data
-          setActiveWishlist(data);
-          setLoading(false); // Set loading to false once data is fetched
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          setLoading(false); // Set loading to false on error
-        });
-    }
+      .then((data) => {
+        sessionStorage.setItem("wishlist_data", JSON.stringify(data)); // Save data in sessionStorage
+        setActiveWishlist(data); // Set state with fetched data
+        setLoading(false); // Set loading to false once data is fetched
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        // You could also display an error message to the user here
+        setLoading(false);
+      });
   }, [userId]); // Re-run the effect when userId changes
-
-
-  
   
 
   useEffect(() => {

@@ -64,6 +64,8 @@ export default function AddToWishList({
         wishlist[nextKey] = productId;
 
         const filteredWishlist = wishlist.filter(item => item !== null);
+
+// Store the filtered wishlist in sessionStorage
 sessionStorage.setItem("wishlist_data", JSON.stringify(filteredWishlist));
 
         if (onWishlistChange) onWishlistChange(data);
@@ -128,8 +130,7 @@ sessionStorage.setItem("wishlist_data", JSON.stringify(filteredWishlist));
         }
 
         // Update the sessionStorage with the modified wishlist
-        const filteredWishlist = wishlist.filter(item => item !== null);
-        sessionStorage.setItem("wishlist_data", JSON.stringify(filteredWishlist));
+        sessionStorage.setItem("wishlist_data", JSON.stringify(wishlist));
 
         if (onWishlistChange) onWishlistChange(data);
 
