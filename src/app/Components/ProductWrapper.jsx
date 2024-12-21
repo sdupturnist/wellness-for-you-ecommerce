@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios"; // Import Axios
 import Pagination from "./Pagination";
 import ProductGrid from "./ProductGrid";
 import { apiUrl, homeUrl, woocommerceKey } from "../Utils/variables";
 import Alerts from "./Alerts";
 import SectionHeader from "./SectionHeader";
 import Skelton from "./Skelton";
+import Loading from "./Loading";
 
 export default function ProductWrapper({ searchParams, category }) {
   const currentPage = searchParams.page || 1;
@@ -17,41 +19,83 @@ export default function ProductWrapper({ searchParams, category }) {
   const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Use ref to cache previous fetched data to avoid redundant API calls
+  const prevCategory = useRef(category);
+  const prevPage = useRef(currentPage);
 
- 
-
+  // Fetch categories once and cache them
   useEffect(() => {
+    const cachedCategories = sessionStorage.getItem("categoriesJson");
+    if (cachedCategories) {
+      setCategoriesJson(JSON.parse(cachedCategories));
+    
+    } else {
+    
+      axios
+        .get(`${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}`, {
+          params: { orderby: "name", order: "desc" }
+        })
+        .then((response) => {
+          const categoriesData = response.data;
+          setCategoriesJson(categoriesData);
+          sessionStorage.setItem("categoriesJson", JSON.stringify(categoriesData)); // Cache categories in sessionStorage
+        })
+        .catch((err) => {
+          setError("Error fetching categories");
+        });
+    }
+  }, []); // Only runs once to cache categories
+
+  // Prevent unnecessary API calls when category or page hasn't changed
+  useEffect(() => {
+    if (prevCategory.current === category && prevPage.current === currentPage && !loading) {
+      return; // Skip fetching if no change in category or page and loading is false
+    }
+
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Fetch all products data
-        const allProductsData = await fetch(
-          `${apiUrl}wp-json/wc-custom/v1/products?sort_by_acf=asc&category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`
-        );
-        const allProductsDataJson = await allProductsData.json();
+        // Parallelize API requests with Promise.all() and optimize responses
+        const [
+          allProductsDataRes,
+          allProductsCountRes,
+          topProductsDataRes
+        ] = await Promise.all([
+          axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
+            params: {
+              sort_by_acf: 'asc',
+              category: category,
+              search: '',
+              min_price: 0,
+              page: currentPage,
+              per_page: itemsShowPerPage,
+              reviews_count: 0
+            }
+          }),
+          axios.get(`${apiUrl}wp-json/wc-custom/v1/products`, {
+            params: {
+              category: category,
+              search: '',
+              min_price: 0,
+              page: 0,
+              per_page: 100,
+              reviews_count: 0
+            }
+          }),
+          axios.get(`${apiUrl}wp-json/wc/v3/products${woocommerceKey}`, {
+            params: { orderby: 'id', order: 'desc' }
+          })
+        ]);
 
-        // Fetch total product count for pagination
-        const allProductsDataCount = await fetch(
-          `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=0&per_page=100&reviews_count=0`
-        );
-        const allProductsCountJson = await allProductsDataCount.json();
+        // Extract data from responses
+        const allProductsDataJson = allProductsDataRes.data;
+        const allProductsCountJson = allProductsCountRes.data;
+        const topProductsDataJson = topProductsDataRes.data;
 
-        // Fetch categories for filters
-        const categoriesData = await fetch(
-          `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}&orderby=name&order=desc`
-        );
-        const categoriesJson = await categoriesData.json();
-
-        // Fetch top products
-        const topProductsData = await fetch(
-          `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc`
-        );
-        const topProductsDataJson = await topProductsData.json();
-
-        // Set states with fetched data
+        // Set states with the fetched data
         setAllProducts(allProductsDataJson?.products || []);
         setTotalProducts(allProductsCountJson?.products?.length || 0);
-        setCategoriesJson(categoriesJson);
         setTopProducts(
           topProductsDataJson.filter(
             (product) => product.acf && product.acf.top === true
@@ -65,27 +109,33 @@ export default function ProductWrapper({ searchParams, category }) {
     };
 
     fetchData();
-  }, [category, currentPage]);
+    prevCategory.current = category;
+    prevPage.current = currentPage;
+  }, [category, currentPage, loading]);
 
   const totalPages = Math.ceil(totalProducts / itemsShowPerPage);
 
   if (loading) {
-    return <Skelton catPage/>;
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <Loading spinner />
+      </div>
+    );
   }
 
   if (error) {
     return <div>{error}</div>;
   }
 
+  // Filter top products with top flag
   const filteredProductsTopProducts =
-    topProducts &&
-    topProducts.filter((product) => product.acf && product.acf.top === true);
+    topProducts && topProducts.filter((product) => product.acf && product.acf.top === true);
 
   return (
     <>
       {allProducts.length > 0 ? (
-        <div className={`grid grid-cols-1 sm:gap-5 gap-5`}>
-          <div className="grid gap-3 sm:gap-0 w-full xl:order-2 order-first ">
+        <div className="grid grid-cols-1 sm:gap-5 gap-5">
+          <div className="grid gap-3 sm:gap-0 w-full xl:order-2 order-first">
             {allProducts.length > 0 && (
               <div className="section-header-card">
                 <SectionHeader
