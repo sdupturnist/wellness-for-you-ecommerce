@@ -1,8 +1,9 @@
-import Alerts from "../Components/Alerts";
+
 import Breadcrumb from "../Components/Breadcrumb";
 import Pagination from "../Components/Pagination";
 import ProductCard from "../Components/ProductCard";
 import ProductGrid from "../Components/ProductGrid";
+import ProductWrapper from "../Components/ProductWrapper";
 import SectionHeader from "../Components/SectionHeader";
 import {
   apiUrl,
@@ -12,102 +13,8 @@ import {
 } from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
+
   const { category } = params;
-  const currentPage = searchParams.page || 1;
-
-  const pageId = 76;
-  const itemsShowPerPage = 30;
-
-  // Fetch all products for the current page
-  let allProductsData = await fetch(
-    `${apiUrl}wp-json/wc-custom/v1/products?sort_by_acf=asc&category=${category}&search=&min_price=0&page=${currentPage}&per_page=${itemsShowPerPage}&reviews_count=0`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  let allProductsDataCount = await fetch(
-    `${apiUrl}wp-json/wc-custom/v1/products?category=${category}&search=&min_price=0&page=0&per_page=100&reviews_count=0`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  // Fetch featured products
-  let featuredProductsData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc&featured=true`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  let reviewsData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products/reviews${woocommerceKey}`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  // Fetch categories for filters
-  let categoriesData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products/categories${woocommerceKey}&orderby=name&order=desc`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  // TOP products
-  let topProductsData = await fetch(
-    `${apiUrl}wp-json/wc/v3/products${woocommerceKey}&orderby=id&order=desc`,
-    {
-      next: {
-        revalidate: 1,
-        cache: "no-store",
-      },
-    }
-  );
-
-  // Parse responses to JSON
-  let topProductsDataJson = await topProductsData.json();
-  let allProductsDataJson = await allProductsData.json();
-  let featuredProductsJson = await featuredProductsData.json();
-  let reviews = await reviewsData.json();
-  let categoriesJson = await categoriesData.json();
-  let allProductsCount = await allProductsDataCount.json();
-
-  // Extract necessary data
-  const allProducts = allProductsDataJson?.products;
-  const totalProductsCount = allProductsCount?.products ?? [];
-  const totalProducts = totalProductsCount?.length ?? [];
-  const totalPages = Math.ceil(totalProducts / itemsShowPerPage);
-
-  // Filter the products based on matching product_id from the reviews
-  // const filteredProductsTopProducts =
-  //   allProducts &&
-  //   allProducts.filter((product) =>
-  //     reviews.some((review) => review.product_id === product.id)
-  //   );
-
-  const filteredProductsTopProducts =
-    topProductsDataJson &&
-    topProductsDataJson.filter(
-      (product) => product.acf && product.acf.top === true
-    );
 
   return (
     <main>
@@ -116,44 +23,7 @@ export default async function CategoryPage({ params, searchParams }) {
           <Breadcrumb />
           <section className="sm:pb-6 py-0">
             <div className="container">
-              {allProducts.length > 0 ? (
-                <div className={`grid grid-cols-1 sm:gap-5 gap-5`}>
-                  <div className="grid gap-3 sm:gap-0 w-full xl:order-2 order-first ">
-                    {allProducts.length > 0 && (
-                      <div className="section-header-card">
-                        <SectionHeader
-                          title="All products"
-                          url="/"
-                          filter
-                          filterData={categoriesJson}
-                          spacingSm
-                        />
-                        <ProductGrid items={allProducts} />
-                        <Pagination
-                          currentPage={parseInt(currentPage, 10)}
-                          totalPages={totalPages}
-                          baseUrl={`${category}`}
-                          itemsShowPerPage={itemsShowPerPage}
-                        />
-                      </div>
-                    )}
-                    {filteredProductsTopProducts.length > 0 && (
-                      <div className="section-header-card">
-                        <SectionHeader title="Best selling Product" spacingSm />
-                        <ProductGrid items={filteredProductsTopProducts} />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <Alerts
-                  large
-                  title="Sorry, No products Found"
-                  noPageUrl
-                  url={homeUrl}
-                  buttonLabel="Return to home"
-                />
-              )}
+             <ProductWrapper searchParams={searchParams} category={category}/>
             </div>
           </section>
         </div>

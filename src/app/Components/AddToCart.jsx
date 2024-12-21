@@ -57,25 +57,6 @@ const router = useRouter();
   
 
 
-  const [activeWishlist, setActiveWishlist] = useState([]);
-
-  useEffect(() => {
-    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setActiveWishlist(data);
-       setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-
- 
-  //console.log(decryptData(localStorage.getItem("cart")))
-
-
 
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -102,7 +83,6 @@ const router = useRouter();
     fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
       .then((res) => res.json())
       .then((data) => {
-        setActiveWishlist(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -604,7 +584,7 @@ productId={itemid}
             <div className="flex justify-end relative">
               <div className="join">
               <AddToWishList
-        small
+        inCartPage
         activeWishlist={itemid}
         itemName={name}
         productId={itemid}

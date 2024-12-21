@@ -10,37 +10,26 @@ export const SiteProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState(null); // To capture any errors during the fetch
   const [activeWishlist, setActiveWishlist] = useState([]);
+  const [hideCartItem, setHideCartItem] = useState({});
 
-
-  
   useEffect(() => {
     // Fetching contact info
     fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`, {
-      method: 'GET',
-      credentials: 'same-origin', // Include cookies with the request if necessary
+      method: "GET",
+      credentials: "same-origin", // Include cookies with the request if necessary
     })
       .then((res) => res.json())
       .then((data) => {
-   
-      
+        sessionStorage.setItem("wishlist_data", JSON.stringify(data));
 
-        sessionStorage.setItem('wishlist_data', JSON.stringify(data));
-  
         // Set the state and loading
-        setActiveWishlist(data);  // or use 'data' if it's from the API response
+        setActiveWishlist(data); // or use 'data' if it's from the API response
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
-  
-  
-
-
-
-
-
 
   useEffect(() => {
     // Fetching contact info
@@ -70,8 +59,10 @@ export const SiteProvider = ({ children }) => {
         setEditData,
         contactData,
         setContactData,
-        activeWishlist, 
+        activeWishlist,
         setActiveWishlist,
+        hideCartItem,
+        setHideCartItem,
         loading,
         error, // Pass loading and error to context
       }}>

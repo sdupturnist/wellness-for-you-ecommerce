@@ -1,6 +1,6 @@
 "use client";
 
-export default function Skelton({ productCard, productleftRightCard, listAddress, list }) {
+export default function Skelton({ productCard, productleftRightCard, listAddress, list, catPage }) {
   return (
     <>
 
@@ -55,6 +55,23 @@ export default function Skelton({ productCard, productleftRightCard, listAddress
               <div className="skeleton h-4 w-full"></div>
             </div>
           </div>
+        </div>
+      )}
+
+
+{catPage && (
+          <div className="flex w-full flex-col gap-4">
+     <div className="xl:grid-cols-4 products product-card-left-right-mobile grid grid-cols-2 sm:gap-4 gap-2 sm:px-0 px-[20px] sm:bg-transparent bg-white sm:py-0 py-[20px]">
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+  <div className="skeleton rounded-xl sm:h-[350px] h-[250px] w-full bg-gray-200"></div>
+</div>
+
         </div>
       )}
     </>

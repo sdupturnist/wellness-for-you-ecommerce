@@ -109,7 +109,7 @@ function LoginForm() {
 
 export default function Login() {
   return (
-    <Suspense fallback={<Loading fullscreen/>}>
+    <Suspense fallback={<Loading spinner fullscreen/>}>
       <LoginForm />
     </Suspense>
   );

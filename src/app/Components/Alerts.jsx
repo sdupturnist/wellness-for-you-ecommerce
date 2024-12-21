@@ -36,7 +36,7 @@ export default function Alerts({
       alertClass = "bg-yellow-100 border-yellow-600 text-yellow-600";
       break;
     default:
-      alertClass = "bg-gray-100 border-border text-dark";
+      alertClass = "bg-white border-border text-dark";
       break;
   }
 

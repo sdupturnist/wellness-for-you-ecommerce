@@ -16,17 +16,20 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Skelton from "./Skelton";
 import Price from "./Price";
-import { userId } from "../Utils/UserInfo";
+import { useSiteContext } from "../Context/siteContext";
 
 export default function ProductCard({
   data,
   column,
   mobileList,
   inCartPage,
-  wishlist,
+  wishlistPage,
   miniCard,
 }) {
   const category = useParams();
+
+
+    const { hideCartItem } = useSiteContext();
 
   const itemCaturl = homeUrl + data?.categories[0]?.slug;
 
@@ -38,19 +41,7 @@ export default function ProductCard({
     }
   }, [data]);
 
-  const [activeWishlist, setActiveWishlist] = useState([]);
 
-  useEffect(() => {
-    fetch(`${apiUrl}wp-json/wishlist/v1/items?user_id=${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setActiveWishlist(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
   // const filterWishListFromItems = data && data.filter(product => product.id === 66);
 
@@ -136,7 +127,6 @@ export default function ProductCard({
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
       <AddToWishList
         small
-        activeWishlist={data?.id}
         itemName={data?.name}
         productId={data?.id}
       />
@@ -292,6 +282,77 @@ export default function ProductCard({
       card = miniCardColumn;
       break;
 
+
+      case wishlistPage:
+        card = loading ? (
+          <div className={hideCartItem[data?.id] ? 'hidden' : ''}>
+            <div className="sm:block hidden">
+              <Skelton productCard />
+            </div>
+            <div className="sm:hidden">
+              <Skelton productleftRightCard />
+            </div>
+          </div>
+        ) : (
+          <div className="product-card relative">
+            <AddToWishList
+              small
+              active
+              itemName={data?.name}
+              productId={data?.id}
+              hideRemovedItem
+             />
+            <Link href={`${itemCaturl}/${data?.slug}`} className="img-link">
+              <Images
+                imageurl={
+                  data?.images[0]?.src ||
+                  (data?.images.length > 0 && data?.images)
+                }
+                quality="100"
+                width="250"
+                height="250"
+                title={`${data?.images[0]?.alt || data?.name}`}
+                alt={`${data?.images[0]?.alt || data?.name}`}
+                classes="block mx-auto object-contain"
+                placeholder={true}
+              />
+            </Link>
+            <div className="sm:p-4 p-3 flex flex-col flex-grow relative">
+              <Link href={`${itemCaturl}/${data?.slug}`}>
+                <h3 className="product-title">{data?.name}</h3>
+              </Link>
+              <div className="flex items-center absolute top-[-8px]">
+                {data?.rating_count > 0 && (
+                  <ReviewCount
+                    average={data?.average_rating}
+                    ratingCount={data?.rating_count}
+                  />
+                )}
+              </div>
+              {data?.price && (
+                <Price regular={data?.regular_price} sale={data?.price} />
+              )}
+              <div className="mt-auto">
+                {!inCartPage && data?.price && (
+                  <AddToCart
+                    card
+                    itemid={data?.id}
+                    price={
+                      data?.price !== null ? data?.price : data?.regular_price
+                    }
+                    name={data?.name}
+                    options={convertStringToJSON(data && data?.acf?.options)}
+                    image={data?.images[0]?.src || data?.images}
+                    slug={data?.slug}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        );
+        break;
+        
+
     default:
       // Return nothing or a default layout
       card = loading ? (
@@ -308,14 +369,9 @@ export default function ProductCard({
           <AddToWishList
             small
             active
-            activeWishlist={
-              activeWishlist &&
-              Object.values(activeWishlist).includes(data?.id) &&
-              "active"
-            }
             itemName={data?.name}
             productId={data?.id}
-          />
+           />
           <Link href={`${itemCaturl}/${data?.slug}`} className="img-link">
             <Images
               imageurl={

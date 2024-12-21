@@ -662,7 +662,7 @@ header {
 
 
 .search {
-    @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg;
+    @apply flex items-center gap-[10px] justify-between lg:rounded-full rounded-lg z-50;
 
     input {
         @apply border-none bg-transparent rounded-full w-full shadow-transparent;
@@ -680,6 +680,7 @@ header {
         @apply font-semibold py-3 cursor-pointer
     }
 
+    
 
     .ewTnKk {
         margin: 0px 14px 0 0 !important;
@@ -698,7 +699,7 @@ header {
     .jiMOeR .wrapper {
         //border: 0 !important;
 
-        @apply p-[1px] rounded-full;
+        @apply p-[1px] rounded-[30px];
     }
 
     .jiMOeR .wrapper:hover,
