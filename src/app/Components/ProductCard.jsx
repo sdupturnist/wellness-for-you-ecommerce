@@ -17,6 +17,7 @@ import Link from "next/link";
 import Skelton from "./Skelton";
 import Price from "./Price";
 import { useSiteContext } from "../Context/siteContext";
+import Loading from "./Loading";
 
 export default function ProductCard({
   data,
@@ -28,12 +29,12 @@ export default function ProductCard({
 }) {
   const category = useParams();
 
-
-    const { hideCartItem } = useSiteContext();
+  const { hideCartItem } = useSiteContext();
 
   const itemCaturl = homeUrl + data?.categories[0]?.slug;
 
   const [loading, setLoading] = useState(true);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -41,23 +42,22 @@ export default function ProductCard({
     }
   }, [data]);
 
-
-
   // const filterWishListFromItems = data && data.filter(product => product.id === 66);
 
   const leftRightCard = loading ? (
     <Skelton productleftRightCard />
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
-      <AddToWishList
-        small
-        
-        itemName={data?.name}
-        productId={data?.id}
-      />
+      {clicked && (
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-[9] flex items-center justify-center bg-opacity-90">
+          <Loading dot classes="size-5" />
+        </div>
+      )}
+      <AddToWishList small itemName={data?.name} productId={data?.id} />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
         <div className="border rounded-md sm:h-auto sm:w-auto h-[100px] w-[100px] sm:border-0 flex sm:block items-center justify-center ">
           <Link
+            onClick={() => setClicked(!clicked)}
             className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
             <Images
@@ -78,7 +78,9 @@ export default function ProductCard({
 
         <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[50%]">
           <div>
-            <Link href={`${itemCaturl}/${data?.slug}`}>
+            <Link
+              onClick={() => setClicked(!clicked)}
+              href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title leading-[1.6em] text-dark mb-2">
                 {data?.name}
               </h3>
@@ -125,14 +127,16 @@ export default function ProductCard({
     </>
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 justify-between py-5 sm:pb-0 first:pt-0 relative">
-      <AddToWishList
-        small
-        itemName={data?.name}
-        productId={data?.id}
-      />
+      {clicked && (
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-[9] flex items-center justify-center bg-opacity-90">
+          <Loading dot classes="size-5" />
+        </div>
+      )}
+      <AddToWishList small itemName={data?.name} productId={data?.id} />
       <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
         <div className="border rounded-md sm:h-auto sm:w-auto h-[100px] w-[100px] sm:border-0 flex sm:block items-center justify-center">
           <Link
+            onClick={() => setClicked(!clicked)}
             className="flex items-center justify-center sm:min-w-32 sm:min-h-[250px]"
             href={`${itemCaturl}/${data?.slug}`}>
             <Images
@@ -153,7 +157,9 @@ export default function ProductCard({
 
         <div className="w-full grid items-center sm:px-4 sm:pb-3 sm:max-w-full max-w-[50%]">
           <div>
-            <Link href={`${itemCaturl}/${data?.slug}`}>
+            <Link
+              onClick={() => setClicked(!clicked)}
+              href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title leading-[1.6em] text-dark mb-2">
                 {data?.name}
               </h3>
@@ -202,15 +208,18 @@ export default function ProductCard({
     </>
   ) : (
     <li className="w-full sm:w-auto sm:mr-2 justify-between  relative">
-      <AddToWishList
-        small
-        
-        itemName={data?.name}
-        productId={data?.id}
-      />
+      {clicked && (
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-[9] flex items-center justify-center bg-opacity-90">
+          <Loading dot classes="size-5" />
+        </div>
+      )}
+      <AddToWishList small itemName={data?.name} productId={data?.id} />
       <div className="flex relative h-full w-full sm:gap-0 gap-5">
         <div className="img-box">
-          <Link className="block w-full" href={`${itemCaturl}/${data?.slug}`}>
+          <Link
+            onClick={() => setClicked(!clicked)}
+            className="block w-full"
+            href={`${itemCaturl}/${data?.slug}`}>
             <Images
               imageurl={
                 data?.images[0]?.src ||
@@ -229,7 +238,9 @@ export default function ProductCard({
 
         <div className="w-full grid items-center sm:px-4 sm:max-w-[70%] max-w-[60%]">
           <div>
-            <Link href={`${itemCaturl}/${data?.slug}`}>
+            <Link
+              onClick={() => setClicked(!clicked)}
+              href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title leading-[1.6em] text-dark mb-2">
                 {data?.name}
               </h3>
@@ -282,97 +293,34 @@ export default function ProductCard({
       card = miniCardColumn;
       break;
 
-
-      case wishlistPage:
-        card = loading ? (
-          <div className={hideCartItem[data?.id] ? 'hidden' : ''}>
-            <div className="sm:block hidden">
-              <Skelton productCard />
-            </div>
-            <div className="sm:hidden">
-              <Skelton productleftRightCard />
-            </div>
-          </div>
-        ) : (
-          <div className="product-card relative">
-            <AddToWishList
-              small
-              active
-              itemName={data?.name}
-              productId={data?.id}
-              hideRemovedItem
-             />
-            <Link href={`${itemCaturl}/${data?.slug}`} className="img-link">
-              <Images
-                imageurl={
-                  data?.images[0]?.src ||
-                  (data?.images.length > 0 && data?.images)
-                }
-                quality="100"
-                width="250"
-                height="250"
-                title={`${data?.images[0]?.alt || data?.name}`}
-                alt={`${data?.images[0]?.alt || data?.name}`}
-                classes="block mx-auto object-contain"
-                placeholder={true}
-              />
-            </Link>
-            <div className="sm:p-4 p-3 flex flex-col flex-grow relative">
-              <Link href={`${itemCaturl}/${data?.slug}`}>
-                <h3 className="product-title">{data?.name}</h3>
-              </Link>
-              <div className="flex items-center absolute top-[-8px]">
-                {data?.rating_count > 0 && (
-                  <ReviewCount
-                    average={data?.average_rating}
-                    ratingCount={data?.rating_count}
-                  />
-                )}
-              </div>
-              {data?.price && (
-                <Price regular={data?.regular_price} sale={data?.price} />
-              )}
-              <div className="mt-auto">
-                {!inCartPage && data?.price && (
-                  <AddToCart
-                    card
-                    itemid={data?.id}
-                    price={
-                      data?.price !== null ? data?.price : data?.regular_price
-                    }
-                    name={data?.name}
-                    options={convertStringToJSON(data && data?.acf?.options)}
-                    image={data?.images[0]?.src || data?.images}
-                    slug={data?.slug}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        );
-        break;
-        
-
-    default:
-      // Return nothing or a default layout
+    case wishlistPage:
       card = loading ? (
-        <>
+        <div className={hideCartItem[data?.id] ? "hidden" : ""}>
           <div className="sm:block hidden">
             <Skelton productCard />
           </div>
           <div className="sm:hidden">
             <Skelton productleftRightCard />
           </div>
-        </>
+        </div>
       ) : (
-        <div className="product-card relative">
+        <div className="product-card relative overflow-hidden">
           <AddToWishList
             small
             active
             itemName={data?.name}
             productId={data?.id}
-           />
-          <Link href={`${itemCaturl}/${data?.slug}`} className="img-link">
+            hideRemovedItem
+          />
+          {clicked && (
+            <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-[9] flex items-center justify-center bg-opacity-90">
+              <Loading dot classes="size-5" />
+            </div>
+          )}
+          <Link
+            onClick={() => setClicked(!clicked)}
+            href={`${itemCaturl}/${data?.slug}`}
+            className="img-link">
             <Images
               imageurl={
                 data?.images[0]?.src ||
@@ -388,7 +336,89 @@ export default function ProductCard({
             />
           </Link>
           <div className="sm:p-4 p-3 flex flex-col flex-grow relative">
-            <Link href={`${itemCaturl}/${data?.slug}`}>
+            <Link
+              onClick={() => setClicked(!clicked)}
+              href={`${itemCaturl}/${data?.slug}`}>
+              <h3 className="product-title">{data?.name}</h3>
+            </Link>
+            <div className="flex items-center absolute top-[-8px]">
+              {data?.rating_count > 0 && (
+                <ReviewCount
+                  average={data?.average_rating}
+                  ratingCount={data?.rating_count}
+                />
+              )}
+            </div>
+            {data?.price && (
+              <Price regular={data?.regular_price} sale={data?.price} />
+            )}
+            <div className="mt-auto">
+              {!inCartPage && data?.price && (
+                <AddToCart
+                  card
+                  itemid={data?.id}
+                  price={
+                    data?.price !== null ? data?.price : data?.regular_price
+                  }
+                  name={data?.name}
+                  options={convertStringToJSON(data && data?.acf?.options)}
+                  image={data?.images[0]?.src || data?.images}
+                  slug={data?.slug}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      );
+      break;
+
+    default:
+      // Return nothing or a default layout
+      card = loading ? (
+        <>
+          <div className={`sm:block hidden`}>
+            <Skelton productCard />
+          </div>
+          <div className="sm:hidden">
+            <Skelton productleftRightCard />
+          </div>
+        </>
+      ) : (
+        <div className="product-card relative overflow-hidden">
+          {clicked && (
+            <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-[9] flex items-center justify-center bg-opacity-90">
+              <Loading dot classes="size-5" />
+            </div>
+          )}
+          <AddToWishList
+            small
+            active
+            itemName={data?.name}
+            productId={data?.id}
+          />
+
+          <Link
+            onClick={() => setClicked(!clicked)}
+            href={`${itemCaturl}/${data?.slug}`}
+            className="img-link">
+            <Images
+              imageurl={
+                data?.images[0]?.src ||
+                (data?.images.length > 0 && data?.images)
+              }
+              quality="100"
+              width="250"
+              height="250"
+              title={`${data?.images[0]?.alt || data?.name}`}
+              alt={`${data?.images[0]?.alt || data?.name}`}
+              classes="block mx-auto object-contain"
+              placeholder={true}
+            />
+          </Link>
+          <div className="sm:p-4 p-3 flex flex-col flex-grow relative">
+            <Link
+              onClick={() => setClicked(!clicked)}
+              href={`${itemCaturl}/${data?.slug}`}>
               <h3 className="product-title">{data?.name}</h3>
             </Link>
             <div className="flex items-center absolute top-[-8px]">

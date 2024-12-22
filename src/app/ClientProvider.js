@@ -23,7 +23,7 @@ export default function ClientProvider({ children }) {
 
   if (showNoInternet) {
     return (
-      <div class="fixed inset-0 flex items-center justify-center p-5 text-center text-xl bg-white  z-50 ">
+      <div className="fixed inset-0 flex items-center justify-center p-5 text-center text-xl bg-white  z-50 ">
         <Alerts
           large
           title="No Internet Connection!"

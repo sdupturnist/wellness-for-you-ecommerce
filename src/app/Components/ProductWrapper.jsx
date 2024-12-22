@@ -12,7 +12,7 @@ import Loading from "./Loading";
 export default function ProductWrapper({ searchParams, category }) {
   const currentPage = searchParams.page || 1;
   const itemsShowPerPage = 30;
-  const cacheExpiryTime = 10 * 60 * 1000; // 10 minutes expiry
+  const cacheExpiryTime = 30 * 60 * 1000; // 10 minutes expiry
 
   const [allProducts, setAllProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);

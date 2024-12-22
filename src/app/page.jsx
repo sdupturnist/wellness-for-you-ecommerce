@@ -15,6 +15,8 @@ import {
 import ProductCard from "./Components/ProductCard";
 import ProductGrid from "./Components/ProductGrid";
 import FloatingIcons from "./Components/FloatingIcons";
+import Loading from "./Components/Loading";
+import HomeLargeBanner from "./Components/HomeLargeBanner";
 
 export default async function Home({ params, searchParams }) {
   const pageId = 19;
@@ -122,19 +124,8 @@ export default async function Home({ params, searchParams }) {
         <section className="banners-full grid sm:gap-8 gap-5 pt-6 sm:pt-8 sm:pb-6 pb-4">
           {categories &&
             categories.map((item, index) => (
-              <Link key={index} href={`${homeUrl}${item?.slug}`}>
-                <Images
-                  imageurl={item?.image?.src}
-                  quality="100"
-                  width="1500"
-                  height="500"
-                  title={item?.featured_image?.image?.alt}
-                  alt={item?.featured_image?.image?.alt}
-                  classes="block w-full banner"
-                  placeholder={true}
-                />
-              </Link>
-            ))}
+              <HomeLargeBanner key={index} item={item} index={index}/>
+           ))}
         </section>
         {featuredProducts.length > 0 && (
           <section className="featured-products products pt-0 sm:pb-6">
@@ -145,7 +136,8 @@ export default async function Home({ params, searchParams }) {
             {/* <ProductSlider data={featuredProducts} /> */}
           </section>
         )}
-        <section className="banners-bottom grid sm:gap-8 gap-5 pt-0">
+        <section className="banners-bottom grid sm:gap-8 gap-5 pt-0 relative">
+           
           {bottomBannerLarge &&
             bottomBannerLarge.map((item, index) =>
               item?.acf?.url !== "" ? (

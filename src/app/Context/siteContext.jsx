@@ -7,8 +7,8 @@ const SiteContext = createContext();
 export const SiteProvider = ({ children }) => {
   const [editData, setEditData] = useState(null);
   const [contactData, setContactData] = useState([]);
-  const [loading, setLoading] = useState(true); // To handle loading state
-  const [error, setError] = useState(null); // To capture any errors during the fetch
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
   const [activeWishlist, setActiveWishlist] = useState([]);
   const [hideCartItem, setHideCartItem] = useState({});
 
@@ -39,7 +39,7 @@ export const SiteProvider = ({ children }) => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        // You could also display an error message to the user here
+     
         setLoading(false);
       });
   }, [userId]); // Re-run the effect when userId changes
