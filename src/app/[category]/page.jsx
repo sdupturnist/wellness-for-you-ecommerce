@@ -1,15 +1,9 @@
 
 import Breadcrumb from "../Components/Breadcrumb";
-import Pagination from "../Components/Pagination";
-import ProductCard from "../Components/ProductCard";
-import ProductGrid from "../Components/ProductGrid";
 import ProductWrapper from "../Components/ProductWrapper";
-import SectionHeader from "../Components/SectionHeader";
 import {
   apiUrl,
-  homeUrl,
   siteAuthor,
-  woocommerceKey,
 } from "../Utils/variables";
 
 export default async function CategoryPage({ params, searchParams }) {
@@ -32,49 +26,49 @@ export default async function CategoryPage({ params, searchParams }) {
   );
 }
 
-export async function generateMetadata({ params, searchParams }, parent) {
-  const pageId = 76;
+// export async function generateMetadata({ params, searchParams }, parent) {
+//   const pageId = 76;
 
-  try {
-    // Fetch metadata for the page, e.g., SEO-related information
-    const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
-    const pageData = await page.json();
+//   try {
+//     // Fetch metadata for the page, e.g., SEO-related information
+//     const page = await fetch(`${apiUrl}wp-json/wp/v2/pages/${pageId}`);
+//     const pageData = await page.json();
 
-    const title = pageData?.yoast_head_json?.title || siteName;
-    const description = pageData?.yoast_head_json?.description || "";
-    const ogTitle = pageData?.yoast_head_json?.og_title || title;
-    const ogDescription = pageData?.yoast_head_json?.og_description || "";
-    const canonicalUrl = pageData?.yoast_head_json?.canonical || "";
-    const modifiedTime = pageData?.yoast_head_json?.modified_time || "";
-    const ogImage = pageData?.yoast_head_json?.og_image || "/favicon.ico"; // Fallback image
-    const robots = pageData?.yoast_head_json?.robots || "index, follow"; // Fallback robots directive
-    const keywords = pageData?.acf?.seo_keywords || "";
+//     const title = pageData?.yoast_head_json?.title || siteName;
+//     const description = pageData?.yoast_head_json?.description || "";
+//     const ogTitle = pageData?.yoast_head_json?.og_title || title;
+//     const ogDescription = pageData?.yoast_head_json?.og_description || "";
+//     const canonicalUrl = pageData?.yoast_head_json?.canonical || "";
+//     const modifiedTime = pageData?.yoast_head_json?.modified_time || "";
+//     const ogImage = pageData?.yoast_head_json?.og_image || "/favicon.ico"; // Fallback image
+//     const robots = pageData?.yoast_head_json?.robots || "index, follow"; // Fallback robots directive
+//     const keywords = pageData?.acf?.seo_keywords || "";
 
-    // Return dynamic metadata based on the page data
-    return {
-      title,
-      description,
-      author: siteAuthor,
-      keywords: keywords,
-      viewport: "width=device-width, initial-scale=1",
-      robots: robots,
-      canonical: canonicalUrl,
-      og_locale: "en_US",
-      og_type: "article",
-      og_title: ogTitle,
-      og_description: ogDescription,
-      og_url: canonicalUrl,
-      og_site_name: "Wellness4u",
-      article_modified_time: modifiedTime,
-      twitter_card: "summary_large_image",
-      twitter_misc: {
-        "Est. reading time": "1 minute",
-      },
-      twitter_site: "@yourhandle",
-      twitter_creator: "@yourhandle",
-      twitter_image: ogImage,
-    };
-  } catch (error) {
-    console.error("Error fetching page data:", error);
-  }
-}
+//     // Return dynamic metadata based on the page data
+//     return {
+//       title,
+//       description,
+//       author: siteAuthor,
+//       keywords: keywords,
+//       viewport: "width=device-width, initial-scale=1",
+//       robots: robots,
+//       canonical: canonicalUrl,
+//       og_locale: "en_US",
+//       og_type: "article",
+//       og_title: ogTitle,
+//       og_description: ogDescription,
+//       og_url: canonicalUrl,
+//       og_site_name: "Wellness4u",
+//       article_modified_time: modifiedTime,
+//       twitter_card: "summary_large_image",
+//       twitter_misc: {
+//         "Est. reading time": "1 minute",
+//       },
+//       twitter_site: "@yourhandle",
+//       twitter_creator: "@yourhandle",
+//       twitter_image: ogImage,
+//     };
+//   } catch (error) {
+//     console.error("Error fetching page data:", error);
+//   }
+// }

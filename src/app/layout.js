@@ -23,23 +23,23 @@ import {
 
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata = {
-//   title: metaTitle,
-//   description: metaDescription,
-//   author: metaAuthor,
-//   keywords: metaKeywords,
-//   viewport: metaViewport,
-//   robots: metaViewport,
-//   ogTitle: metaTitle,
-//   ogDescription: metaOgDescription,
-//   ogImage: metaOgImage,
-//   ogUrl: metaOgUrl,
-//   ogSiteName: metaOgSiteName,
-//   twitterCard: metaTwitterCard,
-//   twitterSite: metaTwitterSite,
-//   twitterCreator: metaTwitterCreator,
-//   twitterImage: metaTwitterImage,
-// };
+export const metadata = {
+  title: metaTitle,
+  description: metaDescription,
+  author: metaAuthor,
+  keywords: metaKeywords,
+  viewport: metaViewport,
+  robots: metaViewport,
+  ogTitle: metaTitle,
+  ogDescription: metaOgDescription,
+  ogImage: metaOgImage,
+  ogUrl: metaOgUrl,
+  ogSiteName: metaOgSiteName,
+  twitterCard: metaTwitterCard,
+  twitterSite: metaTwitterSite,
+  twitterCreator: metaTwitterCreator,
+  twitterImage: metaTwitterImage,
+};
 
 export default function RootLayout({ children }) {
   return (
