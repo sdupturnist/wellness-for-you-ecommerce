@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState("");
   const [userData, setUserData] = useState([]);
   const [user, setUser] = useState(null);
-  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [loadingAuth, setLoadingAuth] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 

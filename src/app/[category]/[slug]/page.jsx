@@ -145,7 +145,6 @@ export default async function ItemSingle({ params, searchParams }) {
     },
   ];
 
-
   if (singleProduct) {
     return (
       <main>
@@ -160,18 +159,20 @@ export default async function ItemSingle({ params, searchParams }) {
                     {singleProduct && singleProduct?.images?.length > 1 ? (
                       <ImageSlider data={singleProduct?.images} />
                     ) : (
-
                       <ImageWithZoom
-                      imageurl={singleProduct?.images[0]?.src}
-                      quality="100"
-                      width="800"
-                      height="800"
-                      title={singleProduct?.images[0]?.alt || singleProduct?.name}
-                      alt={singleProduct?.images[0]?.alt || singleProduct?.name}
-                      classes="block w-full mx-auto"
-                      placeholder={true} // lazy loading if needed
-                    />
-                  
+                        imageurl={singleProduct?.images[0]?.src}
+                        quality="100"
+                        width="800"
+                        height="800"
+                        title={
+                          singleProduct?.images[0]?.alt || singleProduct?.name
+                        }
+                        alt={
+                          singleProduct?.images[0]?.alt || singleProduct?.name
+                        }
+                        classes="block w-full mx-auto"
+                        placeholder={true} // lazy loading if needed
+                      />
                     )}
                   </div>
                 </div>
@@ -263,7 +264,7 @@ export default async function ItemSingle({ params, searchParams }) {
                         />
                       </div>
                     )}
-                    <div className="gap-2 sm:inline-flex my-5">
+                    <div className="gap-2 sm:inline-block mb-5 mt-10">
                       {singleProduct?.acf?.features && (
                         <Features
                           data={convertStringToJSON(

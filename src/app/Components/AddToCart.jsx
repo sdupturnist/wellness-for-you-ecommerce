@@ -592,7 +592,7 @@ productId={itemid}
 
           {inCartPage && (
             <div className="flex justify-end relative">
-              <div className="join">
+              <div className="flex items-center justify-between gap-3">
               <AddToWishList
         inCartPage
         activeWishlist={itemid}
@@ -600,7 +600,7 @@ productId={itemid}
         productId={itemid}
       />  
                 <button
-                  className="join-item option-btn"
+                  className="option-btn"
                   onClick={() => removeFromCartConfirm(itemid, name)}>
                   Remove
                 </button>

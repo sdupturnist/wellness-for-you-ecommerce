@@ -355,7 +355,7 @@ small {
 }
 
 .container {
-  @apply mx-auto sm:px-[30px] px-[20px];
+  @apply mx-auto sm:px-[30px] px-[8px];
 }
 
 main .container {
@@ -364,7 +364,7 @@ main .container {
 
 .spacing,
 section {
-  @apply sm:py-12 py-6;
+  @apply sm:py-12 py-3;
 }
 
 .spacing-sm {
@@ -536,7 +536,7 @@ button:disabled {
 }
 
 .btn-light {
-  @apply whitespace-nowrap bg-white rounded-md border border-border hover:bg-white hover:border-primary text-dark font-semibold transition-all;
+  @apply rounded-lg  whitespace-nowrap bg-white  border border-border hover:bg-white hover:border-primary text-dark font-semibold transition-all;
 }
 
 input[type=email],
@@ -707,7 +707,16 @@ header .logo {
   @apply flex items-center justify-center;
 }
 header .logo img {
-  @apply w-full block sm:min-h-[70px] min-h-[50px];
+  @apply w-full block;
+}
+
+.dYrfwz {
+  justify-content: space-between !important;
+}
+@media only screen and (max-width: 575px) {
+  .dYrfwz {
+    min-height: 40px !important;
+  }
 }
 
 .search {
@@ -728,12 +737,6 @@ header .logo img {
 .search .ewTnKk {
   margin: 0px 14px 0 0 !important;
 }
-.search .dYrfwz {
-  justify-content: space-between !important;
-}
-.search .jiMOeR .wrapper {
-  @apply p-[1px] rounded-[30px];
-}
 .search .jiMOeR .wrapper:hover,
 .search .jiMOeR .wrapper:focus {
   box-shadow: rgba(32, 33, 36, 0.28) 0px 0px 0px 0px;
@@ -742,12 +745,31 @@ header .logo img {
   @apply lg:rounded-full rounded-md;
 }
 
+.jiMOeR .wrapper:not(.clicked-search) {
+  @apply p-[1px] rounded-[30px];
+}
+
+.clicked-search .jiMOeR .wrapper {
+  min-height: 44px !important;
+}
+@media only screen and (max-width: 575px) {
+  .clicked-search .jiMOeR .wrapper {
+    border-radius: 0 !important;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .clicked-search input {
+    min-height: 50px !important;
+  }
+}
+
 .jVORrT {
   margin: 3px 0 0 16px !important;
 }
 
 .dYrfwz > input {
   padding: 2px 0 0 13px !important;
+  @apply sm:text-base text-sm;
 }
 
 footer {
@@ -828,7 +850,7 @@ footer ol li {
 }
 
 .features {
-  @apply inline-flex items-center gap-1 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg;
+  @apply inline-flex items-center gap-1 font-semibold rounded-full shadow-sm border-primary-dim border pl-4 pr-4 py-2 text-[12px] uppercase text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg;
 }
 
 .icon-social-share {
@@ -972,7 +994,7 @@ footer ol li {
 }
 
 .section-header-card {
-  @apply sm:mb-8 bg-white sm:p-7 p-4 sm:rounded-lg;
+  @apply sm:mb-8 bg-white sm:p-7 p-[8px] sm:rounded-lg;
 }
 
 .breadcrumbs * {

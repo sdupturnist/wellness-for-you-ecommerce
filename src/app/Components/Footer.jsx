@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <>
       <footer className="spacing">
-        <div className="container grid sm:gap-8 gap-5">
+        <div className="container grid sm:gap-8 gap-5 sm:pb-0 pb-5">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             <ul>
               <li>

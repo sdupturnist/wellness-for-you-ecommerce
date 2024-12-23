@@ -133,7 +133,7 @@ export default function ProductCard({
         </div>
       )}
       <AddToWishList small itemName={data?.name} productId={data?.id} />
-      <div className="sm:grid flex relative h-full w-full sm:gap-0 gap-4 pb-1">
+      <div className="sm:grid flex relative h-full sm:w-full sm:max-w-full max-w-[85%] sm:gap-0 gap-4 pb-1">
         <div className="border rounded-md sm:h-auto sm:w-auto h-[100px] w-[100px] sm:border-0 flex sm:block items-center justify-center">
           <Link
             onClick={() => setClicked(!clicked)}

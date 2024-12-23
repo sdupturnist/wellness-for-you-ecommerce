@@ -107,7 +107,7 @@ export default async function Home({ params, searchParams }) {
   return (
     <>
       <div className="container">
-        <section className="pb-0 sm:pt-8">
+        <section className="pb-0 sm:pt-8 pt-3">
           <div className="grid grid-cols-1 lg:grid-cols-[70%_30%]">
             {topBannerLarge && (
               <div className="w-full lg:pr-7">
@@ -121,14 +121,14 @@ export default async function Home({ params, searchParams }) {
             )}
           </div>
         </section>
-        <section className="banners-full grid sm:gap-8 gap-5 pt-6 sm:pt-8 sm:pb-6 pb-4">
+        <section className="banners-full grid sm:gap-8 gap-2 pt-2 sm:pt-8 sm:pb-6 pb-3">
           {categories &&
             categories.map((item, index) => (
               <HomeLargeBanner key={index} item={item} index={index}/>
            ))}
         </section>
         {featuredProducts.length > 0 && (
-          <section className="featured-products products pt-0 sm:pb-6">
+          <section className="featured-products products pt-0 sm:pb-6 pb-3">
             <SectionHeader title="Featured products" />
 
             <ProductGrid items={featuredProducts} />
@@ -136,7 +136,7 @@ export default async function Home({ params, searchParams }) {
             {/* <ProductSlider data={featuredProducts} /> */}
           </section>
         )}
-        <section className="banners-bottom grid sm:gap-8 gap-5 pt-0 relative">
+        <section className="banners-bottom grid sm:gap-8 gap-2 pt-0 relative">
            
           {bottomBannerLarge &&
             bottomBannerLarge.map((item, index) =>
@@ -167,7 +167,7 @@ export default async function Home({ params, searchParams }) {
                 />
               )
             )}
-          <div className="grid md:grid-cols-2 sm:gap-8 gap-5">
+          <div className="grid md:grid-cols-2 sm:gap-8 gap-2">
             {bottomBannerSmall &&
               bottomBannerSmall.map((item, index) =>
                 item?.acf?.url !== "" ? (

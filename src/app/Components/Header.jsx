@@ -11,7 +11,7 @@ export default function Header() {
   const [searchMobileVisible, setSearchMobileVisible] = useState(false);
 
   return (
-    <header className="py-4 border-b border">
+    <header className="sm:py-4 py-2 border-b border">
       <div className="container">
         <div className="flex items-center justify-between sm:gap-[30px] gap-[20px]">
           <div className="logo">
@@ -20,14 +20,14 @@ export default function Header() {
                 imageurl={siteLogo}
                 quality="100"
                 width="150"
-                height="70"
+                height="50"
                 alt="Wellness for you logo"
-                classes="block w-full sm:h-[50px] h-[65px] object-contain"
+                classes="block w-full sm:h-[70px] h-[45px] object-contain"
                 placeholder={true}
               />
             </Link>
           </div>
-          <div className="block max-w-[767px] w-full">
+          <div className="block sm:max-w-[767px] max-w-[220px] w-full">
             <Search />
           </div>
           <div className="flex items-center justify-between gap-6">

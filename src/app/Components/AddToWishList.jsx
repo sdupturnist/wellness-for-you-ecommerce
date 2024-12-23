@@ -62,7 +62,7 @@ export default function AddToWishList({
 
         wishlist[nextKey] = productId;
 
-        console.log(wishlist);
+    
 
         // Filter out any null values in the wishlist
         const filteredWishlist = Object.values(wishlist).filter(
@@ -159,68 +159,49 @@ export default function AddToWishList({
     <>
       {inCartPage && (
         <>
-          {Object.values(wishlistItems).includes(productId) === productId ? (
-            wishlistItems === false ? (
-              <button
-                title={
+        {wishlistItems && Object.values(wishlistItems).includes(productId) ? (
+          <button
+            title={
+              wishlistItems &&
+              Object.values(wishlistItems).includes(productId)
+                ? "Remove from wishlist"
+                : "Add to wishlist"
+            }
+            onClick={() => handleClickRemove(userId, productId)}
+            disabled={isLoading}
+            className="btn px-[13px] !h-[45px] btn-light bg-white border remove-from-list">
+            {isLoading ? (
+              <Loading dot classes="size-[16px] !text-dark opacity-25" />
+            ) : (
+              <HeartIcon
+                className={`${
                   wishlistItems &&
                   Object.values(wishlistItems).includes(productId)
-                    ? "Remove from wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() => handleClickRemove(userId, productId)}
-                disabled={isLoading}
-                className="join-item option-btn">
-                {isLoading ? (
-                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
-                ) : wishlistItems &&
-                  Object.values(wishlistItems).includes(productId) ? (
-                  "Remove from wishlist"
-                ) : (
-                  "Add to wishlist"
-                )}
-              </button>
+                    ? "text-red-500"
+                    : "text-body opacity-25"
+                } size-5`}
+              />
+            )}
+          </button>
+        ) : (
+          <button
+            title={
+              wishlistItems &&
+              Object.values(wishlistItems).includes(productId)
+                ? "Remove from wishlist"
+                : "Add to wishlist"
+            }
+            onClick={() => handleClickAdd(userId, productId)}
+            disabled={isLoading}
+            className="btn px-[13px] btn-light !h-[45px] bg-white border  remove-from-list">
+            {isLoading ? (
+              <Loading dot classes="size-[16px]  !text-dark opacity-25" />
             ) : (
-              <button
-                title={
-                  wishlistItems === "active"
-                    ? "Remove from wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() => handleClickRemove(userId, productId)}
-                disabled={isLoading}
-                className="join-item option-btn">
-                {isLoading ? (
-                  <Loading dot classes="size-[16px] !text-dark opacity-25" />
-                ) : wishlistItems &&
-                  Object.values(wishlistItems).includes(productId) ? (
-                  "Remove from wishlist"
-                ) : (
-                  "Add to wishlist"
-                )}
-              </button>
-            )
-          ) : (
-            <button
-              title={
-                wishlistItems === "active"
-                  ? "Remove from wishlist"
-                  : "Add to wishlist"
-              }
-              onClick={() => handleClickAdd(userId, productId)}
-              disabled={isLoading}
-              className="join-item option-btn">
-              {isLoading ? (
-                <Loading dot classes="size-[16px] !text-dark opacity-25" />
-              ) : wishlistItems &&
-                Object.values(wishlistItems).includes(productId) ? (
-                "Remove from wishlist"
-              ) : (
-                "Add to wishlist"
-              )}
-            </button>
-          )}
-        </>
+              <HeartIcon className={`text-body opacity-25 size-5`} />
+            )}
+          </button>
+        )}
+      </>
       )}
 
       {!inCartPage && small && (

@@ -44,6 +44,7 @@ export default function ContactInfo() {
         <SocialIcons
           color={"#5ba642"}
           size="24"
+          centerSM
           data={contactData && contactData}
         />
       </div>

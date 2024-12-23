@@ -2,7 +2,7 @@
 
 // import Images from "./Images"
 
-import { CheckIcon } from "@heroicons/react/24/solid";
+import { CheckIcon, CheckCircleIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 
 export default function Features({data}){
@@ -13,7 +13,7 @@ export default function Features({data}){
         <span 
         key={index}
         className="features mr-2 mb-2">
-            <CheckIcon className="size-[10px]"/>
+            <CheckBadgeIcon className="size-[15px]"/>
             {item?.item}
         </span>
           ))

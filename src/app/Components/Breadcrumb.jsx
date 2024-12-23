@@ -11,7 +11,7 @@ export default function Breadcrumb() {
 
   return (
     <div className="container py-2 !px-[20px]">
-      <div className="breadcrumbs text-xs">
+      <div className="breadcrumbs text-xs sm:py-2 py-0">
         <ul className="flex space-x-2">
           <li>
             <Link href={homeUrl}>Home</Link>

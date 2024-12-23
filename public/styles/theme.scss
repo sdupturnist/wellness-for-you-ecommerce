@@ -116,7 +116,7 @@ small {
 
 .container {
 
-    @apply mx-auto sm:px-[30px] px-[20px];
+    @apply mx-auto sm:px-[30px] px-[8px];
 }
 
 
@@ -136,7 +136,7 @@ main {
 
 .spacing,
 section {
-    @apply sm:py-12 py-6;
+    @apply sm:py-12 py-3;
 }
 
 .spacing-sm {
@@ -392,7 +392,7 @@ button:disabled {
 }
 
 .btn-light {
-    @apply whitespace-nowrap bg-white rounded-md border border-border hover:bg-white hover:border-primary text-dark font-semibold transition-all;
+    @apply rounded-lg  whitespace-nowrap bg-white  border border-border hover:bg-white hover:border-primary text-dark font-semibold transition-all;
 }
 
 input[type="email"],
@@ -652,13 +652,24 @@ header {
         @apply flex items-center justify-center;
 
         img {
-            @apply w-full block sm:min-h-[70px] min-h-[50px];
+            @apply w-full block;
         }
     }
 
     
 }
 
+
+.dYrfwz {
+    justify-content: space-between !important;
+
+
+
+       @media only screen and (max-width: 575px) {
+min-height:40px !important;
+       }
+    
+}
 
 
 .search {
@@ -687,20 +698,9 @@ header {
     }
 
 
-    .dYrfwz {
-        justify-content: space-between !important;
+   
 
-        input {
-           // border: 0 !important;
-           // outline: none !important;
-        }
-    }
-
-    .jiMOeR .wrapper {
-        //border: 0 !important;
-
-        @apply p-[1px] rounded-[30px];
-    }
+   
 
     .jiMOeR .wrapper:hover,
     .jiMOeR .wrapper:focus {
@@ -717,6 +717,33 @@ header {
 }
 
 
+.jiMOeR .wrapper:not(.clicked-search) {
+    //border: 0 !important;
+
+    @apply p-[1px] rounded-[30px];
+
+
+}
+
+.clicked-search{
+    .jiMOeR  .wrapper {
+        //border: 0 !important;
+        @media only screen and (max-width: 575px) {
+       border-radius: 0 !important;
+        }
+ min-height: 44px !important;
+        
+
+
+    }
+
+    input{
+     @media only screen and (max-width: 575px) {
+min-height:50px !important;
+       }}
+}
+
+
 .jVORrT {
    
     margin: 3px 0 0 16px !important;
@@ -725,7 +752,10 @@ header {
 
 .dYrfwz > input {
    
-    padding: 2px 0 0 13px !important;
+    padding: 2px 0 0 13px !important; 
+    @apply sm:text-base text-sm;
+
+    
    
 }
 
@@ -856,7 +886,7 @@ footer {
 
 
 .features {
-    @apply inline-flex items-center gap-1 rounded-md bg-primary-dim pl-2 pr-2 py-1 text-xs text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg
+    @apply inline-flex items-center gap-1 font-semibold rounded-full shadow-sm border-primary-dim border pl-4 pr-4 py-2 text-[12px] uppercase text-primary hover:scale-105 transition-all hover:font-semibold hover:shadow-lg
 }
 
 
@@ -1067,7 +1097,7 @@ footer {
 
 
 .section-header-card {
-    @apply sm:mb-8 bg-white sm:p-7 p-4 sm:rounded-lg
+    @apply sm:mb-8 bg-white sm:p-7 p-[8px] sm:rounded-lg
 }
 
 .breadcrumbs {

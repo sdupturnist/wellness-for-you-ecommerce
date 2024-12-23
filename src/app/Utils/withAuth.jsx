@@ -22,6 +22,7 @@ const withAuth = (WrappedComponent) => {
       }
     }, [auth, loadingAuth, guestUser, router]);
 
+    
     if (loadingAuth) {
       return (
         <div className="flex items-center justify-center min-h-[80vh]">

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-export default function SocialIcons({color, size, data}) {
+export default function SocialIcons({color, size, data, centerSM}) {
   return (
-   data && <ul className="flex gap-3">
+   data && <ul className={`${centerSM && 'items-center flex justify-center sm:justify-start'} flex gap-3`}>
       <li>
         <Link href={data?.acf?.instagram} target="_blank" title="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width={size || 20} height={size || 20} fill={color || 'white'} className="bi bi-instagram" viewBox="0 0 16 16">

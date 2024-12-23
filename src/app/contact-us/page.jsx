@@ -30,9 +30,9 @@ export default async function ContactUs() {
             placeholder={true}
           />
 
-          <div className="container sm:px-5 !px-0">
+          <div className="container sm:px-5 !px-0 text-center sm:text-start">
             <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid sm:gap-7 gap-3">
-              <h1 className="sm:text-3xl text-2xl font-bold text-start">
+              <h1 className="sm:text-3xl text-2xl font-bold">
                 {page?.title?.rendered}
               </h1>
               <div
@@ -41,10 +41,10 @@ export default async function ContactUs() {
                   __html: page?.content?.rendered,
                 }}
               />
-              <div className="grid gap-8 lg:grid-cols-2 mt-4">
+              <div className="grid gap-8 lg:grid-cols-2 mt-4 ">
                 <ContactInfo />
                 <div className="tf-content-right sm:mt-5 mt-2 lg:mt-0 border-t border-border pt-10 lg:pt-0 lg:border-none">
-                  <div>
+                  <div className="px-5 sm:px-0">
                     <ContactForm />
                   </div>
                 </div>

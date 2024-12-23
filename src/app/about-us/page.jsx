@@ -26,7 +26,7 @@ export default async function Aboutus() {
           />
 
           <div className="container sm:px-5 !px-0">
-            <div className="sm:pt-8 py-5 pb-5 max-w-[767px] mx-auto grid sm:gap-7 gap-3">
+            <div className="sm:pt-8 py-5 sm:pb-5 pb-3 max-w-[767px] mx-auto grid sm:gap-7 gap-3">
               <h1 className="sm:text-3xl text-2xl font-bold">About Us</h1>
               <div
                 className="content text-justify"
